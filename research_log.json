@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "day": 1,
+      "module_slug": "module_01",
+      "researched_on": "2026-08-29",
+      "scope_note": "Primary sources and teaching video were checked when the module was authored.",
+      "sources": [
+        {
+          "kind": "primary paper",
+          "title": "Adam: A Method for Stochastic Optimization",
+          "authors": "Diederik P. Kingma and Jimmy Ba",
+          "year": 2014,
+          "url": "https://arxiv.org/abs/1412.6980"
+        },
+        {
+          "kind": "primary paper",
+          "title": "Decoupled Weight Decay Regularization",
+          "authors": "Ilya Loshchilov and Frank Hutter",
+          "year": 2017,
+          "url": "https://arxiv.org/abs/1711.05101"
+        },
+        {
+          "kind": "video masterclass",
+          "title": "Adam Optimization Algorithm (C2W2L08)",
+          "authors": "DeepLearning.AI",
+          "year": 2017,
+          "url": "https://www.youtube.com/watch?v=JXQT_vxqwIs"
+        }
+      ],
+      "corrections": []
+    }
+  ]
+}

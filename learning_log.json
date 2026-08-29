@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "day": 1,
+      "module_slug": "module_01",
+      "title": "Optimization Dynamics & AdamW",
+      "domain": "Machine Learning",
+      "status": "ready",
+      "generated_on": "2026-08-29",
+      "studied_on": null,
+      "minutes_spent": 0,
+      "confidence": null,
+      "notes": "",
+      "revisit": false
+    }
+  ]
+}
