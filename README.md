@@ -17,8 +17,10 @@ streamlit run app.py
 
 - **Today** — exactly one due module; if absent, shows the `generate next` research brief.
 - **Archive** — every generated article, simulator, implementation, and personal reflection.
-- **Roadmap** — a 72-day, 24-cycle spine from foundations through systems and frontier work.
-  These are planned titles, not prewritten lessons.
+- **Roadmap** — a rolling, open-ended spine from foundations through systems and frontier
+  work. The current 72 entries are only the mapped-ahead queue, not a terminal curriculum.
+  New ML→CV→EAI cycles are appended before that queue runs low. These are planned titles,
+  not prewritten lessons.
 - **Research log** — source provenance, research dates, corrections, and live literature feeds.
 
 ## Just-in-time workflow
@@ -48,6 +50,7 @@ python -m pytest -q
 python experiments\adamw_reference.py
 ```
 
-The roadmap is intentionally extendable. “Coverage” means repeated, rigorous traversal of
-foundations, modern methods, systems, evaluation, and changing frontiers—not pretending
-that all of computer science can be finished in a fixed number of days.
+The roadmap has no final day. When fewer than 18 mapped lessons remain, six new complete
+ML→CV→EAI cycles are researched and appended. “Coverage” means repeated, rigorous
+traversal of foundations, modern methods, systems, interdisciplinary connections,
+evaluation, and changing frontiers—not pretending that evolving knowledge can be finished.

@@ -16,6 +16,19 @@ fluff or claim finite coverage of an evolving field.
 - A module becomes historical after generation. Correct it by appending provenance or
   correction notes; do not silently rewrite the learner's past context.
 
+## Perpetual rolling horizon
+- There is no terminal curriculum day. The existing lesson list is only a mapped-ahead
+  queue, never a completion boundary.
+- Before `generate next`, calculate mapped days remaining after the current day. If fewer
+  than `horizon_policy.minimum_mapped_ahead_days` remain, research and append
+  `horizon_policy.extension_batch_cycles` complete ML→CV→EAI cycles.
+- Append roadmap spines only—topic, stage, prerequisites, and foundation threads. Do not
+  pre-author those modules.
+- Choose extensions from unresolved learning-log questions, prerequisite gaps, adjacent
+  computer-science foundations, maturing research areas, and generation-day literature.
+- Preserve contiguous day/cycle numbers and strict domain rotation forever. Keep
+  `horizon_policy.terminal_day` null.
+
 ## Generation-day deep research
 Before writing any module:
 1. Re-read its roadmap spine, prerequisites, and previous learning-log questions.

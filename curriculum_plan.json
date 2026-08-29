@@ -1,7 +1,13 @@
 {
-  "version": 1,
+  "version": 2,
   "updated_on": "2026-08-29",
-  "planning_horizon_days": 72,
+  "horizon_policy": {
+    "mode": "rolling_open_ended",
+    "terminal_day": null,
+    "minimum_mapped_ahead_days": 18,
+    "extension_batch_cycles": 6,
+    "extension_rule": "Before the mapped queue drops below 18 future days, research and append six new ML→CV→EAI cycles. Add roadmap spines only; author lesson content just in time."
+  },
   "policy": {
     "rotation": [
       "Machine Learning",
@@ -11,7 +17,7 @@
     "generation": "Just in time: exactly one current-day module is researched and authored per generate-next request.",
     "frontier_refresh": "Before authoring every module, review current literature and revise its emphasis without silently rewriting archived modules.",
     "archive": "Generated modules remain immutable learning artifacts; corrections are appended to their research log.",
-    "coverage": "Spiral from mathematical foundations through modern methods, systems, evaluation, and frontier synthesis. The roadmap is extendable rather than a claim of finite completeness."
+    "coverage": "Spiral indefinitely through mathematical foundations, modern methods, systems, evaluation, interdisciplinary connections, and changing frontiers. There is no terminal lesson or completeness claim."
   },
   "supporting_cs_threads": [
     "Algorithms and data structures",

@@ -126,6 +126,15 @@ def save_state(state: CurriculumState, path: Path = STATE_PATH) -> None:
 def load_plan(path: Path = PLAN_PATH) -> tuple[dict[str, Any], list[PlannedLesson]]:
     """Load roadmap metadata and verify strict day/domain ordering."""
     payload = _read_json(path)
+    horizon = payload.get("horizon_policy", {})
+    if horizon.get("mode") != "rolling_open_ended":
+        raise ValueError("curriculum must use a rolling open-ended horizon")
+    if horizon.get("terminal_day") is not None:
+        raise ValueError("open-ended curriculum cannot define a terminal day")
+    if int(horizon.get("minimum_mapped_ahead_days", 0)) < 1:
+        raise ValueError("minimum_mapped_ahead_days must be positive")
+    if int(horizon.get("extension_batch_cycles", 0)) < 1:
+        raise ValueError("extension_batch_cycles must be positive")
     lessons = [PlannedLesson.from_mapping(item) for item in payload["lessons"]]
     for expected_day, lesson in enumerate(lessons, start=1):
         if lesson.day != expected_day:

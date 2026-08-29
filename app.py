@@ -287,7 +287,7 @@ def render_roadmap(
         _status_for_day(lesson.day, learning_entries) == "completed" for lesson in lessons
     )
     first, second, third, fourth = st.columns(4)
-    first.metric("Planning horizon", f"{len(lessons)} days")
+    first.metric("Currently mapped", f"{len(lessons)} lesson spines")
     second.metric("Completed", completed)
     third.metric("Current day", current_day)
     fourth.metric("Last roadmap review", plan_metadata["updated_on"])
@@ -322,6 +322,14 @@ def render_roadmap(
         + "**."
     )
     st.caption(plan_metadata["policy"]["coverage"])
+    horizon = plan_metadata["horizon_policy"]
+    st.info(
+        f"**Rolling horizon:** no terminal day. When fewer than "
+        f"{horizon['minimum_mapped_ahead_days']} mapped days remain, the curriculum "
+        f"appends {horizon['extension_batch_cycles']} new three-domain cycles based on "
+        "current research and your learning log. Only roadmap spines are added; lesson "
+        "content is still generated on the day you study it."
+    )
 
 
 def render_research_log(

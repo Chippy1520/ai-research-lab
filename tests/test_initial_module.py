@@ -42,9 +42,13 @@ def test_state_rotation_is_strict() -> None:
 
 def test_roadmap_is_broad_contiguous_and_strictly_rotating() -> None:
     metadata, lessons = load_plan(ROOT / "curriculum_plan.json")
-    assert metadata["planning_horizon_days"] == 72
-    assert len(lessons) == 72
-    assert [lesson.day for lesson in lessons] == list(range(1, 73))
+    horizon = metadata["horizon_policy"]
+    assert horizon["mode"] == "rolling_open_ended"
+    assert horizon["terminal_day"] is None
+    assert horizon["minimum_mapped_ahead_days"] > 0
+    assert horizon["extension_batch_cycles"] > 0
+    assert len(lessons) >= 72
+    assert [lesson.day for lesson in lessons] == list(range(1, len(lessons) + 1))
     assert [lesson.domain_index for lesson in lessons[:9]] == [0, 1, 2] * 3
     assert lesson_for_day(1, ROOT / "curriculum_plan.json").topic == (
         "Optimization Dynamics & AdamW"
