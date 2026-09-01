@@ -78,11 +78,25 @@ module.
 - If the next module does not exist, the dashboard must show a just-in-time generation
   brief rather than falling forward to a future module.
 
+## Robotics intelligence protocol
+- Treat `intelligence/ecosystem.json` as dated market observations, not timeless facts.
+- Separate funding, completed private valuation, proposed transaction value, acquisition
+  basis, and public-parent market capitalization. Never infer an undisclosed valuation.
+- Publish jobs only from official company pages or their named ATS; preserve first-seen
+  and last-seen dates and disclose scanner blind spots.
+- Archive one dated report per local day in `intelligence/reports/`. Cite news near the
+  claim, distinguish fact from projection, and record quiet/no-change sections.
+- Turn job requirements into portfolio actions only after repeated evidence across
+  companies or time; do not create a new disconnected project for every posting.
+
 ## Verification before completion
-1. `python -W error -m compileall -q -f app.py curriculum.py modules experiments tests`
+1. `python -W error -m compileall -q -f app.py curriculum.py robotics_intelligence.py modules experiments scripts tests`
 2. `python -m pytest -q`
-3. Run the new module's executable experiment.
-4. Exercise all dashboard views with `streamlit.testing.v1.AppTest`; assert no exceptions.
-5. Start Streamlit and verify `/_stcore/health` before reporting success.
+3. Run the relevant module experiment and `python scripts/update_robotics_jobs.py` when
+   robotics intelligence changed.
+4. Run `python scripts/build_robotics_site.py` when public robotics data or site assets
+   changed; serve `site/` over HTTP and verify that client-side data rendering completes.
+5. Exercise all dashboard views with `streamlit.testing.v1.AppTest`; assert no exceptions.
+6. Start Streamlit and verify `/_stcore/health` before reporting success.
 
 Never replace a requested working artifact with a plan or an unexecuted scaffold.

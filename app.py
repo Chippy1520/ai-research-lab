@@ -24,6 +24,7 @@ from curriculum import (
     save_learning_reflection,
     save_state,
 )
+from robotics_intelligence import render_robotics_intelligence
 
 st.set_page_config(
     page_title="AI Research Lab",
@@ -396,12 +397,12 @@ def main() -> None:
 
     with st.sidebar:
         st.markdown("## ∇ AI Research Lab")
-        st.caption("One current lesson · permanent archive · live research")
+        st.caption("Research curriculum · US robotics intelligence")
         render_focus_timer(60)
         st.divider()
         view = st.radio(
             "Workspace",
-            ["Today", "Archive", "Roadmap", "Research log"],
+            ["Today", "Archive", "Roadmap", "Research log", "Robotics intel"],
             label_visibility="collapsed",
         )
         st.divider()
@@ -415,8 +416,10 @@ def main() -> None:
         render_archive(modules, learning_entries)
     elif view == "Roadmap":
         render_roadmap(plan_metadata, lessons, learning_entries, state.current_day)
-    else:
+    elif view == "Research log":
         render_research_log(plan_metadata, research_entries)
+    else:
+        render_robotics_intelligence()
 
 
 if __name__ == "__main__":

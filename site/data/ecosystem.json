@@ -1,0 +1,482 @@
+{
+  "version": 1,
+  "as_of": "2026-09-01",
+  "scope": "US-headquartered humanoid builders plus foreign companies with substantial US humanoid operations and adjacent US embodied-AI platform companies.",
+  "funding_methodology": "Funding observations are the latest major disclosed raise or transaction capital, not necessarily cumulative capital raised. Read each source card before comparing companies.",
+  "valuation_methodology": "Values are dated observations, not live appraisals. Private marks use the latest completed disclosed financing when available; proposed transactions and reported talks are labeled separately. Tesla is shown at whole-company public market capitalization, not an Optimus segment valuation. Boston Dynamics uses its 2020 acquisition basis because no current standalone mark is public. Undisclosed is more accurate than an inferred number.",
+  "evolution_thesis": "Fact: capital, embodied-AI talent, and startup formation remain concentrated in the Bay Area, while Boston and Pittsburgh retain unusually deep robotics institutions and Austin, Oregon, and Southern California anchor major hardware programs. Projection: over the next 3–5 years, model development is likely to remain concentrated near AI talent and capital, while fleet operations, integration, manufacturing, and field-service hiring spread toward customer and industrial corridors. Commercial evidence—not demo capability—should determine whether humanoid-specific firms sustain their current valuation premium.",
+  "companies": [
+    {
+      "company_id": "figure-ai",
+      "name": "Figure AI",
+      "founded": 2022,
+      "hq_city": "San Jose",
+      "hq_state": "CA",
+      "latitude": 37.3382,
+      "longitude": -121.8863,
+      "cluster": "Bay Area",
+      "category": "Humanoid platform",
+      "focus": "General-purpose humanoids, vertically integrated hardware, Helix vision-language-action models, and industrial/home task deployment.",
+      "stage": "Late-stage private; industrial deployments and production scale-up",
+      "funding_usd_millions": 1000,
+      "valuation_usd_billions": 39,
+      "valuation_label": "$39B post-money",
+      "valuation_as_of": "2025-09-16",
+      "valuation_type": "Completed private financing",
+      "valuation_note": "Figure's official Series C announcement states more than $1B raised at a $39B post-money valuation. This is the latest disclosed financing mark, not a live valuation.",
+      "careers_url": "https://www.figure.ai/careers",
+      "sources": [
+        {
+          "title": "Figure exceeds $1B in Series C funding at $39B post-money valuation",
+          "url": "https://www.figure.ai/news/series-c",
+          "date": "2025-09-16"
+        },
+        {
+          "title": "Figure official careers",
+          "url": "https://www.figure.ai/careers",
+          "date": "accessed 2026-09-01"
+        }
+      ]
+    },
+    {
+      "company_id": "apptronik",
+      "name": "Apptronik",
+      "founded": 2016,
+      "hq_city": "Austin",
+      "hq_state": "TX",
+      "latitude": 30.2672,
+      "longitude": -97.7431,
+      "cluster": "Austin",
+      "category": "Humanoid platform",
+      "focus": "Apollo humanoid hardware, embodied intelligence, fleet tooling, manufacturing and logistics deployment.",
+      "stage": "Late-stage private; customer pilots, data-factory and manufacturing scale-up",
+      "funding_usd_millions": 935,
+      "valuation_usd_billions": 5,
+      "valuation_label": "$5B+ reported",
+      "valuation_as_of": "2026-02-11",
+      "valuation_type": "Completed private financing; lower-bound report",
+      "valuation_note": "Apptronik officially reported more than $935M across its Series A. Contemporary reporting placed the company above $5B; the exact post-money mark was not stated in the company release.",
+      "careers_url": "https://apptronik.com/careers/job-listings",
+      "sources": [
+        {
+          "title": "Apptronik closes over $935 million Series A",
+          "url": "https://apptronik.com/news-collection/apptronik-closes-over-935-million-series-a",
+          "date": "2026-02-11"
+        },
+        {
+          "title": "Apptronik official job listings",
+          "url": "https://apptronik.com/careers/job-listings",
+          "date": "accessed 2026-09-01"
+        },
+        {
+          "title": "Humanoid robot startup Apptronik has now raised $935M at a $5B+ valuation",
+          "url": "https://techcrunch.com/2026/02/11/humanoid-robot-startup-apptronik-has-now-raised-935m-at-a-5b-valuation/",
+          "date": "2026-02-11"
+        }
+      ]
+    },
+    {
+      "company_id": "agility-robotics",
+      "name": "Agility Robotics",
+      "founded": 2015,
+      "hq_city": "Salem",
+      "hq_state": "OR",
+      "latitude": 44.9429,
+      "longitude": -123.0351,
+      "cluster": "Pacific Northwest",
+      "category": "Humanoid platform",
+      "focus": "Digit bipedal mobile manipulation for logistics and industrial material movement, with a dedicated robot factory in Oregon.",
+      "stage": "Commercial deployment; announced public-market transaction",
+      "funding_usd_millions": 620,
+      "valuation_usd_billions": 2.5,
+      "valuation_label": "$2.5B proposed transaction value",
+      "valuation_as_of": "2026-06-24",
+      "valuation_type": "Announced SPAC transaction; not a completed private mark",
+      "valuation_note": "The $2.5B figure is the announced transaction value for the Churchill Capital Corp XI combination. The deal materials describe roughly $620M of pro-forma capital; this should not be read as historical venture funding.",
+      "careers_url": "https://www.agilityrobotics.com/careers",
+      "sources": [
+        {
+          "title": "Agility Robotics to go public through merger with Churchill Capital Corp XI",
+          "url": "https://www.agilityrobotics.com/content/agility-robotics-to-go-public-through-merger-with-churchill-capital-corp-xi",
+          "date": "2026-06-24"
+        },
+        {
+          "title": "Agility Robotics careers",
+          "url": "https://www.agilityrobotics.com/careers",
+          "date": "accessed 2026-09-01"
+        }
+      ]
+    },
+    {
+      "company_id": "boston-dynamics",
+      "name": "Boston Dynamics",
+      "founded": 1992,
+      "hq_city": "Waltham",
+      "hq_state": "MA",
+      "latitude": 42.3765,
+      "longitude": -71.2356,
+      "cluster": "Boston / Cambridge",
+      "category": "Humanoid platform",
+      "focus": "Electric Atlas humanoid R&D alongside commercial Spot and Stretch robots; deep dynamic-control and hardware heritage.",
+      "stage": "Strategic subsidiary; mature commercial non-humanoid products and Atlas development",
+      "funding_usd_millions": null,
+      "valuation_usd_billions": 1.1,
+      "valuation_label": "$1.1B acquisition basis",
+      "valuation_as_of": "2020-12-11",
+      "valuation_type": "Historical acquisition valuation",
+      "valuation_note": "Hyundai Motor Group's purchase from SoftBank valued Boston Dynamics at $1.1B. No current standalone valuation is public, so this historical basis must not be compared as if current.",
+      "careers_url": "https://bostondynamics.com/careers/",
+      "sources": [
+        {
+          "title": "Hyundai Motor Group acquires controlling interest in Boston Dynamics",
+          "url": "https://www.hyundai.com/worldwide/en/newsroom/detail/0000000459",
+          "date": "2020-12-11"
+        },
+        {
+          "title": "Boston Dynamics careers",
+          "url": "https://bostondynamics.com/careers/",
+          "date": "accessed 2026-09-01"
+        }
+      ]
+    },
+    {
+      "company_id": "tesla-optimus",
+      "name": "Tesla / Optimus",
+      "founded": 2003,
+      "hq_city": "Austin",
+      "hq_state": "TX",
+      "latitude": 30.2223,
+      "longitude": -97.6171,
+      "cluster": "Austin",
+      "category": "Humanoid program inside public company",
+      "focus": "Optimus humanoid program combining actuators, perception, autonomy, data collection and Tesla manufacturing infrastructure.",
+      "stage": "Public-company internal program; factory trials and product development",
+      "funding_usd_millions": null,
+      "valuation_usd_billions": 1416,
+      "valuation_label": "$1.416T parent-company market cap",
+      "valuation_as_of": "2026-09-01",
+      "valuation_type": "Public parent market capitalization",
+      "valuation_note": "This is Tesla's whole-company market capitalization snapshot from CompaniesMarketCap, not an Optimus valuation. No defensible standalone Optimus value is publicly disclosed.",
+      "careers_url": "https://www.tesla.com/careers/search/?query=Optimus",
+      "sources": [
+        {
+          "title": "Tesla market capitalization history",
+          "url": "https://companiesmarketcap.com/tesla/marketcap/",
+          "date": "accessed 2026-09-01"
+        },
+        {
+          "title": "Tesla careers search: Optimus",
+          "url": "https://www.tesla.com/careers/search/?query=Optimus",
+          "date": "accessed 2026-09-01"
+        }
+      ]
+    },
+    {
+      "company_id": "1x-technologies",
+      "name": "1X Technologies",
+      "founded": 2014,
+      "hq_city": "Palo Alto",
+      "hq_state": "CA",
+      "latitude": 37.4419,
+      "longitude": -122.143,
+      "cluster": "Bay Area",
+      "category": "Humanoid platform",
+      "focus": "NEO home humanoid and embodied-AI data collection; Norwegian-founded company with substantial Bay Area operations.",
+      "stage": "Late-stage private; home-robot product and manufacturing development",
+      "funding_usd_millions": 100,
+      "valuation_usd_billions": null,
+      "valuation_label": "Undisclosed; $6B talks reported",
+      "valuation_as_of": null,
+      "valuation_type": "No completed valuation disclosed",
+      "valuation_note": "The latest completed round used here is the $100M Series B announced in 2024. Reuters reported SoftBank talks around a $6B value in August 2026, but talks are not a completed valuation and are excluded from the numeric field.",
+      "careers_url": "https://www.1x.tech/careers",
+      "sources": [
+        {
+          "title": "1X announces $100M Series B",
+          "url": "https://www.therobotreport.com/1x-technologies-raises-100m-series-b-advance-neo-humanoid-robot/",
+          "date": "2024-01-11"
+        },
+        {
+          "title": "1X careers",
+          "url": "https://www.1x.tech/careers",
+          "date": "accessed 2026-09-01"
+        }
+      ]
+    },
+    {
+      "company_id": "persona-ai",
+      "name": "Persona AI",
+      "founded": 2024,
+      "hq_city": "Houston",
+      "hq_state": "TX",
+      "latitude": 29.7604,
+      "longitude": -95.3698,
+      "cluster": "Texas industrial corridor",
+      "category": "Humanoid platform",
+      "focus": "Rugged humanoids for shipyards and heavy industrial environments, founded by former NASA robotics leaders.",
+      "stage": "Early-stage private; prototype and industrial-partnership development",
+      "funding_usd_millions": 27,
+      "valuation_usd_billions": null,
+      "valuation_label": "Undisclosed",
+      "valuation_as_of": null,
+      "valuation_type": "No public valuation",
+      "valuation_note": "Persona announced a $27M pre-seed round. No credible valuation was disclosed.",
+      "careers_url": "https://www.persona-ai.com/",
+      "sources": [
+        {
+          "title": "Persona AI raises $27M oversubscribed pre-seed",
+          "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxQTjdZdFBDV2Jwdjk5R1JqOWZpa08wVDZpQnljb01SZ3czTzJCdmcxcjNMUVpsVklGME11amF5eEcxM2xJSFc1Z1FndERselhfNFEyanM4VV83dGZxSExidnJrYmRwUzFKME5JQTU2ZkRnUTV5bm9CdWk5WjR5Ymg2Ul9lc25ZX0tBTHVRQW11cWF5aWJ4cUlDS3prdHV5MjU2Y0w5OWx2MmRxWUp4OXNmWW1YbGI5djI2dmVDVTZpbHhaTUk0dEpPSmR5QkNjXzJrek5MMmhyOS1qOTMz?oc=5",
+          "date": "2025-05-14"
+        },
+        {
+          "title": "Rice University: Persona AI expands in the Ion",
+          "url": "https://news.rice.edu/news/2025/persona-ai-expands-ion-rice-and-ion-district-support-growth-ai-innovation",
+          "date": "2025-05-07"
+        }
+      ]
+    },
+    {
+      "company_id": "foundation",
+      "name": "Foundation",
+      "founded": 2024,
+      "hq_city": "San Francisco",
+      "hq_state": "CA",
+      "latitude": 37.7749,
+      "longitude": -122.4194,
+      "cluster": "Bay Area",
+      "category": "Humanoid platform",
+      "focus": "General-purpose humanoid hardware and autonomy aimed at industrial and defense-relevant work.",
+      "stage": "Early-stage private; prototype and production development",
+      "funding_usd_millions": null,
+      "valuation_usd_billions": null,
+      "valuation_label": "Undisclosed; fundraising reports excluded",
+      "valuation_as_of": null,
+      "valuation_type": "No completed valuation disclosed",
+      "valuation_note": "Media have reported fundraising targets, but a target is not a completed financing. The baseline therefore leaves both funding and valuation undisclosed.",
+      "careers_url": "https://foundation.bot/careers",
+      "sources": [
+        {
+          "title": "Foundation official site",
+          "url": "https://foundation.bot/",
+          "date": "accessed 2026-09-01"
+        },
+        {
+          "title": "Foundation careers",
+          "url": "https://foundation.bot/careers",
+          "date": "accessed 2026-09-01"
+        }
+      ]
+    },
+    {
+      "company_id": "skild-ai",
+      "name": "Skild AI",
+      "founded": 2023,
+      "hq_city": "Pittsburgh",
+      "hq_state": "PA",
+      "latitude": 40.4406,
+      "longitude": -79.9959,
+      "cluster": "Pittsburgh",
+      "category": "Embodied-AI platform",
+      "focus": "Omni-bodied robot foundation models intended to transfer across robot morphologies and tasks.",
+      "stage": "Late-stage private; foundation-model scaling and commercial partnerships",
+      "funding_usd_millions": 1400,
+      "valuation_usd_billions": 14,
+      "valuation_label": "$14B+",
+      "valuation_as_of": "2026-01-14",
+      "valuation_type": "Completed private financing",
+      "valuation_note": "Skild's official Series C announcement states $1.4B raised at a valuation above $14B.",
+      "careers_url": "https://www.skild.ai/career",
+      "sources": [
+        {
+          "title": "Skild AI raises $1.4B Series C",
+          "url": "https://www.skild.ai/blogs/series-c",
+          "date": "2026-01-14"
+        },
+        {
+          "title": "Skild AI careers",
+          "url": "https://www.skild.ai/career",
+          "date": "accessed 2026-09-01"
+        }
+      ]
+    },
+    {
+      "company_id": "physical-intelligence",
+      "name": "Physical Intelligence",
+      "founded": 2024,
+      "hq_city": "San Francisco",
+      "hq_state": "CA",
+      "latitude": 37.781,
+      "longitude": -122.411,
+      "cluster": "Bay Area",
+      "category": "Embodied-AI platform",
+      "focus": "Generalist robot foundation models and cross-embodiment policies rather than a proprietary humanoid hardware platform.",
+      "stage": "Late-stage private research company; model and data scaling",
+      "funding_usd_millions": 600,
+      "valuation_usd_billions": 5.6,
+      "valuation_label": "$5.6B",
+      "valuation_as_of": "2025-11-20",
+      "valuation_type": "Completed private financing",
+      "valuation_note": "Bloomberg reported the completed $600M financing at $5.6B. Later reports of talks around $11B are excluded until a completed round is verified.",
+      "careers_url": "https://www.pi.website/join-us",
+      "sources": [
+        {
+          "title": "Physical Intelligence official site",
+          "url": "https://www.pi.website/",
+          "date": "accessed 2026-09-01"
+        },
+        {
+          "title": "Physical Intelligence raises $600M to advance robot foundation models",
+          "url": "https://www.therobotreport.com/physical-intelligence-raises-600m-advance-robot-foundation-models/",
+          "date": "2025-11-25"
+        }
+      ]
+    },
+    {
+      "company_id": "dexterity",
+      "name": "Dexterity",
+      "founded": 2017,
+      "hq_city": "Redwood City",
+      "hq_state": "CA",
+      "latitude": 37.4852,
+      "longitude": -122.2364,
+      "cluster": "Bay Area",
+      "category": "Industrial physical AI",
+      "focus": "AI-controlled industrial manipulation and container loading with production deployments rather than humanoid morphology.",
+      "stage": "Growth-stage private; revenue deployments in logistics",
+      "funding_usd_millions": 95,
+      "valuation_usd_billions": 1.65,
+      "valuation_label": "$1.65B",
+      "valuation_as_of": "2025-03-11",
+      "valuation_type": "Completed private financing",
+      "valuation_note": "The $95M round was reported at a $1.65B valuation. It is an adjacent physical-AI comparator, not a humanoid company.",
+      "careers_url": "https://jobs.lever.co/dexterity",
+      "sources": [
+        {
+          "title": "Dexterity about",
+          "url": "https://dexterity.ai/about",
+          "date": "accessed 2026-09-01"
+        },
+        {
+          "title": "Dexterity closes $95M funding round at $1.65B valuation",
+          "url": "https://techcrunch.com/2025/03/11/yet-another-ai-robotics-firm-lands-major-funding-as-dexterity-closes-latest-round/",
+          "date": "2025-03-11"
+        }
+      ]
+    },
+    {
+      "company_id": "generalist-ai",
+      "name": "Generalist AI",
+      "founded": 2024,
+      "hq_city": "San Francisco",
+      "hq_state": "CA",
+      "latitude": 37.7901,
+      "longitude": -122.401,
+      "cluster": "Bay Area",
+      "category": "Embodied-AI platform",
+      "focus": "General-purpose robot intelligence for manufacturing and manipulation across hardware platforms.",
+      "stage": "Growth-stage private; model scaling and industrial deployment",
+      "funding_usd_millions": 200,
+      "valuation_usd_billions": 3,
+      "valuation_label": "$3B reported",
+      "valuation_as_of": "2026-08-26",
+      "valuation_type": "Reported completed private financing",
+      "valuation_note": "Contemporary reporting placed the roughly $200M financing at a $3B valuation. This very recent observation needs continued confirmation in subsequent daily scans.",
+      "careers_url": "https://generalistai.com/careers",
+      "sources": [
+        {
+          "title": "Generalist AI official site",
+          "url": "https://generalistai.com/",
+          "date": "accessed 2026-09-01"
+        },
+        {
+          "title": "Robotics startup Generalist reaches $3B valuation",
+          "url": "https://techcrunch.com/2026/08/25/robotics-startup-generalist-reaches-3b-valuation-sources-say/",
+          "date": "2026-08-25"
+        }
+      ]
+    }
+  ],
+  "hubs": [
+    {
+      "name": "Bay Area",
+      "latitude": 37.55,
+      "longitude": -122.18,
+      "company_count": 6,
+      "thesis": "The densest overlap of frontier-AI researchers, venture capital, semiconductor infrastructure, startup mobility, and robotics software formation.",
+      "institutions": ["Stanford", "UC Berkeley", "NVIDIA", "major AI labs"],
+      "organizations": ["Figure", "Physical Intelligence", "Dexterity", "Generalist AI", "1X US", "Foundation"],
+      "outlook": "Likely to retain model, data, and executive concentration; high costs may push hardware production and fleet operations elsewhere."
+    },
+    {
+      "name": "Boston / Cambridge",
+      "latitude": 42.36,
+      "longitude": -71.09,
+      "company_count": 1,
+      "thesis": "Long-duration robotics depth across dynamics, manipulation, autonomy, biotech, and industrial systems, supported by dense research institutions.",
+      "institutions": ["MIT", "Harvard", "Northeastern", "MassRobotics"],
+      "organizations": ["Boston Dynamics", "Amazon Robotics", "Symbotic", "RightHand Robotics"],
+      "outlook": "Should remain a durable hardware and industrial-robotics cluster even if humanoid venture formation is more visible in California."
+    },
+    {
+      "name": "Pittsburgh",
+      "latitude": 40.44,
+      "longitude": -79.99,
+      "company_count": 1,
+      "thesis": "CMU creates unusually concentrated talent in robot learning, autonomy, field robotics, perception, and safety.",
+      "institutions": ["Carnegie Mellon University", "National Robotics Engineering Center", "Pittsburgh Robotics Network"],
+      "organizations": ["Skild AI", "Aurora", "Seegrid", "Gecko Robotics"],
+      "outlook": "Likely to remain a talent and research engine; scaling firms may add Bay Area capital-facing offices while retaining Pittsburgh technical teams."
+    },
+    {
+      "name": "Austin",
+      "latitude": 30.27,
+      "longitude": -97.74,
+      "company_count": 2,
+      "thesis": "University robotics, Tesla manufacturing, semiconductor depth, lower operating costs, and Texas industrial customers reinforce a hardware-to-deployment corridor.",
+      "institutions": ["UT Austin", "Texas Advanced Computing Center", "regional semiconductor ecosystem"],
+      "organizations": ["Apptronik", "Tesla", "Boardwalk Robotics"],
+      "outlook": "Well positioned for humanoid manufacturing, validation, and customer deployment roles, not only research."
+    },
+    {
+      "name": "Pacific Northwest",
+      "latitude": 45.1,
+      "longitude": -122.9,
+      "company_count": 1,
+      "thesis": "Oregon State's legged-robotics lineage anchors Agility, while Seattle contributes cloud, logistics, and manipulation demand through Amazon and a strong software workforce.",
+      "institutions": ["Oregon State University", "University of Washington", "Amazon Robotics"],
+      "organizations": ["Agility Robotics", "Amazon", "Allen Institute for AI"],
+      "outlook": "Oregon can become a meaningful humanoid manufacturing node; Seattle remains strong in logistics autonomy and cloud-connected fleets."
+    },
+    {
+      "name": "Southern California",
+      "latitude": 34.05,
+      "longitude": -118.24,
+      "company_count": 0,
+      "thesis": "Aerospace, defense, entertainment, logistics, and university labs support robotics that must work in complex real-world environments.",
+      "institutions": ["Caltech", "USC", "UCLA", "NASA JPL"],
+      "organizations": ["NASA JPL", "Machina Labs", "GrayMatter Robotics", "Anduril"],
+      "outlook": "Defense and aerospace demand may pull embodied-AI talent toward rugged autonomy and manufacturing rather than consumer humanoids."
+    },
+    {
+      "name": "Texas industrial corridor",
+      "latitude": 29.76,
+      "longitude": -95.37,
+      "company_count": 1,
+      "thesis": "Houston offers direct access to shipbuilding, energy, space, heavy industry, and field-service problems that reward rugged robots over polished demos.",
+      "institutions": ["Rice University", "NASA Johnson Space Center", "Texas Medical Center"],
+      "organizations": ["Persona AI", "Nauticus Robotics", "Intuitive Machines"],
+      "outlook": "Could become a proving ground for hazardous-work humanoids and industrial service, with fewer foundation-model headquarters than the Bay Area."
+    }
+  ],
+  "milestones": [
+    {"year": 1992, "event": "Boston Dynamics founded as an MIT spinout."},
+    {"year": 2015, "event": "Agility Robotics founded from Oregon State legged-robotics work."},
+    {"year": 2016, "event": "Apptronik emerges from UT Austin's Human Centered Robotics Lab."},
+    {"year": 2021, "event": "Tesla publicly introduces the Optimus program."},
+    {"year": 2022, "event": "Figure AI is founded, marking a new venture-backed humanoid wave."},
+    {"year": 2023, "event": "Skild AI is founded around a cross-robot intelligence thesis."},
+    {"year": 2024, "event": "Physical Intelligence, Persona AI, Foundation, and Generalist-era embodied-AI formation accelerates."},
+    {"year": 2025, "event": "Large financing rounds and industrial pilots shift the sector toward production evidence."},
+    {"year": 2026, "event": "Apptronik and Skild announce billion-dollar-scale rounds; Agility announces a $2.5B public transaction."}
+  ]
+}
