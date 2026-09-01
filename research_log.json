@@ -5,8 +5,22 @@
       "day": 1,
       "module_slug": "module_01",
       "researched_on": "2026-08-29",
-      "scope_note": "Primary sources and teaching video were checked when the module was authored.",
+      "scope_note": "Expanded after learner review to cover stochastic-risk formulation, conditioning, momentum, AdaGrad, RMSProp, Adam/AMSGrad convergence, AdamW implementation semantics, schedules, diagnostics, and optimizer selection. Paper metadata, teaching-video IDs, and official implementation documentation were checked at their original sources.",
       "sources": [
+        {
+          "kind": "primary paper",
+          "title": "Adaptive Subgradient Methods for Online Learning and Stochastic Optimization",
+          "authors": "John Duchi, Elad Hazan, and Yoram Singer",
+          "year": 2011,
+          "url": "https://jmlr.org/papers/v12/duchi11a.html"
+        },
+        {
+          "kind": "primary paper",
+          "title": "On the Importance of Initialization and Momentum in Deep Learning",
+          "authors": "Ilya Sutskever, James Martens, George Dahl, and Geoffrey Hinton",
+          "year": 2013,
+          "url": "https://proceedings.mlr.press/v28/sutskever13.html"
+        },
         {
           "kind": "primary paper",
           "title": "Adam: A Method for Stochastic Optimization",
@@ -22,14 +36,43 @@
           "url": "https://arxiv.org/abs/1711.05101"
         },
         {
+          "kind": "primary paper",
+          "title": "On the Convergence of Adam and Beyond",
+          "authors": "Sashank J. Reddi, Satyen Kale, and Sanjiv Kumar",
+          "year": 2019,
+          "url": "https://arxiv.org/abs/1904.09237"
+        },
+        {
+          "kind": "official implementation documentation",
+          "title": "torch.optim.AdamW",
+          "authors": "PyTorch contributors",
+          "year": null,
+          "accessed_on": "2026-08-29",
+          "url": "https://docs.pytorch.org/docs/stable/generated/torch.optim.AdamW.html"
+        },
+        {
           "kind": "video masterclass",
           "title": "Adam Optimization Algorithm (C2W2L08)",
           "authors": "DeepLearning.AI",
-          "year": 2017,
+          "year": null,
+          "accessed_on": "2026-08-29",
           "url": "https://www.youtube.com/watch?v=JXQT_vxqwIs"
+        },
+        {
+          "kind": "video lecture",
+          "title": "Optimization for Deep Learning (Momentum, RMSProp, AdaGrad, Adam)",
+          "authors": "DeepBean",
+          "year": null,
+          "accessed_on": "2026-08-29",
+          "url": "https://www.youtube.com/watch?v=NE88eqLngkg"
         }
       ],
-      "corrections": []
+      "corrections": [
+        {
+          "date": "2026-08-29",
+          "note": "Expanded the initial AdamW-centered chapter into a comparative optimizer treatment after learner feedback that background and coverage were insufficient."
+        }
+      ]
     }
   ]
 }

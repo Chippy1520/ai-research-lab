@@ -362,15 +362,24 @@ def render_research_log(
         ):
             st.write(entry.get("scope_note", ""))
             for source in entry["sources"]:
+                date_label = source.get("year")
+                if date_label is None:
+                    date_label = f"accessed {source.get('accessed_on', 'date unknown')}"
                 st.markdown(
-                    f"- **{source['title']}** — {source['authors']} ({source['year']})  "
+                    f"- **{source['title']}** — {source['authors']} ({date_label})  "
                     f"[{source['kind']}]({source['url']})"
                 )
             corrections = entry.get("corrections", [])
             if corrections:
                 st.markdown("**Corrections and later evidence**")
                 for correction in corrections:
-                    st.markdown(f"- {correction}")
+                    if isinstance(correction, dict):
+                        st.markdown(
+                            f"- **{correction.get('date', 'undated')}** — "
+                            f"{correction.get('note', '')}"
+                        )
+                    else:
+                        st.markdown(f"- {correction}")
             else:
                 st.caption("No corrections have been appended.")
 

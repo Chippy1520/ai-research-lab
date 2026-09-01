@@ -62,8 +62,9 @@ def test_logs_have_day_one_provenance_and_archive_entry() -> None:
     assert learning[0]["module_slug"] == "module_01"
     assert learning[0]["status"] == "ready"
     assert research[0]["module_slug"] == "module_01"
-    assert len(research[0]["sources"]) >= 3
+    assert len(research[0]["sources"]) >= 8
     assert all(source["url"].startswith("https://") for source in research[0]["sources"])
+    assert research[0]["corrections"]
 
 
 def test_learning_reflection_updates_a_copy_atomically(tmp_path: Path) -> None:
@@ -98,6 +99,28 @@ def test_adamw_simulation_is_finite_and_decreases_loss() -> None:
     assert np.all(np.isfinite(trajectory))
     assert losses[-1] < losses[0] * 5e-3
     assert _objective(optimum, hessian, optimum) == 0.0
+
+
+def test_comparison_optimizers_are_reproducible_under_shared_noise() -> None:
+    hessian, optimum = _quadratic_geometry(12.0, 25.0)
+    for method in ("SGD", "Momentum", "AdaGrad", "RMSProp", "AdamW"):
+        first_trajectory, first_losses = _simulate(
+            method, hessian, optimum, 0.02, 0.9, 0.99, 0.01, 60, 0.2, seed=11
+        )
+        second_trajectory, second_losses = _simulate(
+            method, hessian, optimum, 0.02, 0.9, 0.99, 0.01, 60, 0.2, seed=11
+        )
+        assert np.all(np.isfinite(first_trajectory))
+        assert np.array_equal(first_trajectory, second_trajectory)
+        assert np.array_equal(first_losses, second_losses)
+
+
+def test_simulator_rejects_invalid_method_and_noise() -> None:
+    hessian, optimum = _quadratic_geometry(2.0, 0.0)
+    with np.testing.assert_raises(ValueError):
+        _simulate("Unknown", hessian, optimum, 0.01, 0.9, 0.99, 0.0, 10)
+    with np.testing.assert_raises(ValueError):
+        _simulate("SGD", hessian, optimum, 0.01, 0.9, 0.99, 0.0, 10, -0.1)
 
 
 def test_state_json_remains_machine_readable() -> None:
