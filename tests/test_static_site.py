@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 from pathlib import Path
 
@@ -69,6 +70,19 @@ def test_static_entrypoint_references_existing_local_assets() -> None:
         assert "assets/styles.css" in parser.local_assets
         for asset in parser.local_assets:
             assert (SITE / asset).is_file(), (entrypoint, asset)
+
+
+def test_static_pages_keep_editorial_shells_and_us_map() -> None:
+    robotics = (SITE / "index.html").read_text(encoding="utf-8")
+    curriculum = (SITE / "curriculum.html").read_text(encoding="utf-8")
+    assert 'class="news-page"' in robotics
+    assert 'src="assets/us-outline.svg"' in robotics
+    assert 'class="editorial"' in curriculum
+    assert 'role="tablist"' not in curriculum
+
+    svg = ET.parse(SITE / "assets" / "us-outline.svg")
+    namespace = {"svg": "http://www.w3.org/2000/svg"}
+    assert len(svg.findall(".//svg:path", namespace)) == 49
 
 
 def test_pages_workflow_has_daily_sri_lanka_schedule() -> None:

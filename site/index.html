@@ -3,116 +3,75 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A sourced map of US humanoid robotics, embodied AI companies, jobs, and ecosystem signals.">
-  <meta name="theme-color" content="#07130f">
-  <title>US Robotics Intelligence</title>
+  <meta name="description" content="A sourced news desk covering US humanoid robotics, embodied AI companies, jobs, and ecosystem signals.">
+  <meta name="theme-color" content="#f7f5ef">
+  <title>Robotics Intelligence · US News Desk</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/news.css">
   <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script defer src="assets/app.js"></script>
 </head>
-<body>
-  <div class="noise" aria-hidden="true"></div>
-  <header class="topbar">
-    <a class="brand" href="#overview" aria-label="Robotics Intelligence home">
-      <span class="brand-mark">RI</span>
-      <span>US Robotics Intelligence</span>
-    </a>
-    <nav aria-label="Primary navigation">
-      <a href="curriculum.html">Curriculum</a>
-      <a href="#companies">Companies</a>
-      <a href="#geography">Geography</a>
-      <a href="#jobs">Jobs</a>
-      <a href="#brief">Daily brief</a>
+<body class="news-page">
+  <header class="news-header" id="overview">
+    <div class="news-utility"><span>Independent research desk</span><span>United States · Humanoids · Embodied AI</span><a href="curriculum.html">AI Research Curriculum ↗</a></div>
+    <div class="news-masthead"><a href="#overview">Robotics Intelligence</a><p>Evidence before narrative.</p></div>
+    <nav class="news-nav" aria-label="Primary navigation">
+      <a href="#brief">Today’s brief</a><a href="#companies">Companies</a><a href="#geography">Geography</a><a href="#jobs">Hiring desk</a><span id="as-of">Loading edition</span>
     </nav>
-    <div class="status-pill"><span></span><b id="as-of">Loading</b></div>
   </header>
 
-  <main>
-    <section class="hero" id="overview">
-      <div class="hero-copy reveal">
-        <p class="eyebrow">HUMANOIDS · EMBODIED AI · US ECOSYSTEM</p>
-        <h1>Track the machines<br><em>moving into the world.</em></h1>
-        <p class="lede">A sourced intelligence layer for company formation, capital, deployments, geographic concentration, and the engineering roles that reveal where robotics is heading next.</p>
-        <div class="hero-actions">
-          <a class="button primary" href="#brief">Read today’s brief</a>
-          <a class="button ghost" href="#jobs">Explore openings</a>
-          <a class="button ghost" href="curriculum.html">Open curriculum</a>
-        </div>
-      </div>
-      <div class="hero-orbit reveal" aria-hidden="true">
-        <div class="orbit orbit-one"></div>
-        <div class="orbit orbit-two"></div>
-        <div class="core"><span>PHYSICAL</span><strong>AI</strong><small>signal monitor</small></div>
-        <span class="satellite sat-one">CAPITAL</span>
-        <span class="satellite sat-two">TALENT</span>
-        <span class="satellite sat-three">DEPLOYMENT</span>
-      </div>
+  <main class="news-main">
+    <section class="front-page" id="brief">
+      <div class="edition-line"><span>THE DAILY BRIEF</span><label for="report-select">Edition</label><select id="report-select"></select></div>
+      <article id="report" class="report lead-report"><p>Loading the latest report…</p></article>
+      <aside class="front-page-rail" aria-label="Edition at a glance">
+        <h2>At a glance</h2>
+        <dl class="news-figures">
+          <div><dt id="company-count">—</dt><dd>tracked companies</dd></div>
+          <div><dt id="humanoid-count">—</dt><dd>humanoid programs</dd></div>
+          <div><dt id="opening-count">—</dt><dd>verified technical openings</dd></div>
+          <div><dt id="early-count">—</dt><dd>early-career roles</dd></div>
+        </dl>
+        <div class="editor-note"><span>EDITOR’S NOTE</span><p>Funding, completed private valuation, proposed transaction value, acquisition basis, and public-parent market capitalization are deliberately separated. Undisclosed values are never estimated.</p></div>
+      </aside>
     </section>
 
-    <section class="metrics" aria-label="Current intelligence metrics">
-      <article><span id="company-count">—</span><p>tracked companies</p></article>
-      <article><span id="humanoid-count">—</span><p>humanoid programs</p></article>
-      <article><span id="opening-count">—</span><p>technical openings</p></article>
-      <article><span id="early-count">—</span><p>early-career roles</p></article>
-    </section>
-
-    <section class="section" id="companies">
-      <div class="section-heading">
-        <div><p class="eyebrow">01 · COMPANY MAP</p><h2>From lab lineage to production pressure</h2></div>
-        <p>Founding dates explain origin. Current stage and dated capital observations show how far each organization has moved toward deployment.</p>
-      </div>
-      <div class="callout warning"><b>Read valuation correctly.</b> Funding, completed private valuation, proposed transaction value, acquisition basis, and public-parent market capitalization are deliberately separated. “Undisclosed” is not estimated.</div>
+    <section class="news-desk" id="companies">
+      <header class="desk-heading"><p>Company desk</p><div><h2>From laboratory lineage<br>to production pressure</h2><span>Founding dates explain origin. Current stage and dated capital observations show movement toward deployment.</span></div></header>
       <div id="timeline" class="timeline" aria-label="Company founding timeline"></div>
-      <div class="toolbar">
-        <label class="search"><span>⌕</span><input id="company-search" type="search" placeholder="Search company, focus, city…"></label>
+      <div class="toolbar desk-toolbar">
+        <label class="search"><span aria-hidden="true">⌕</span><input id="company-search" type="search" placeholder="Search company, focus, city…" aria-label="Search companies"></label>
         <select id="company-filter" aria-label="Filter companies by category"><option value="all">All categories</option></select>
       </div>
       <div id="company-grid" class="company-grid"></div>
     </section>
 
-    <section class="section split-section" id="geography">
-      <div class="section-heading">
-        <div><p class="eyebrow">02 · GEOGRAPHY</p><h2>Robotics is clustered,<br>but not centralized.</h2></div>
-        <p>AI talent and venture capital pull toward the Bay Area. Full-stack robotics institutions remain deep in Boston and Pittsburgh. Manufacturing and field operations spread toward customers.</p>
-      </div>
+    <section class="news-desk geography-desk" id="geography">
+      <header class="desk-heading"><p>Geography desk</p><div><h2>Robotics is clustered,<br>but not centralized.</h2><span>AI capital pulls toward the Bay Area. Full-stack institutions remain deep in Boston and Pittsburgh. Field operations spread toward customers.</span></div></header>
       <div class="map-layout">
-        <div class="map-stage" id="map-stage" aria-label="Geographic cluster map">
-          <div class="map-label west">PACIFIC</div><div class="map-label east">ATLANTIC</div>
-          <div class="map-grid-lines"></div>
-        </div>
+        <div class="map-stage" id="map-stage" aria-label="Geographic cluster map"><img class="us-outline" src="assets/us-outline.svg" alt=""><div class="map-label west">PACIFIC</div><div class="map-label east">ATLANTIC</div><div class="map-grid-lines"></div></div>
         <div id="hub-detail" class="hub-detail"><p>Select a cluster to inspect its concentration thesis.</p></div>
       </div>
+      <p class="map-source">Boundary geometry: <a href="https://github.com/PublicaMundi/MappingAPI/blob/master/data/geojson/us-states.json">PublicaMundi US States GeoJSON</a>. Cluster markers represent tracked company bases and institutional hubs, not market size.</p>
       <div class="evolution" id="evolution-thesis"></div>
     </section>
 
-    <section class="section" id="jobs">
-      <div class="section-heading">
-        <div><p class="eyebrow">03 · TALENT SIGNALS</p><h2>Job descriptions are technical roadmaps</h2></div>
-        <p>Only official company pages or named applicant-tracking systems are published. Access failures are scanner blind spots—not evidence of zero hiring.</p>
-      </div>
-      <div class="subheading-row"><h3>Early-career openings</h3><span id="jobs-checked" class="mono"></span></div>
+    <section class="news-desk hiring-desk" id="jobs">
+      <header class="desk-heading"><p>Hiring desk</p><div><h2>Job descriptions are<br>technical roadmaps.</h2><span>Only official company pages or named applicant-tracking systems are published. Scanner blind spots are disclosed rather than interpreted as zero hiring.</span></div></header>
+      <div class="subheading-row"><h3>Early-career notices</h3><span id="jobs-checked" class="mono"></span></div>
       <div id="early-jobs" class="early-grid"></div>
       <div class="signals-layout">
-        <div><div class="subheading-row"><h3>Recurring requirements</h3><span class="mono">cross-company evidence</span></div><div id="signals" class="signals"></div></div>
-        <aside class="action-card"><p class="eyebrow">PORTFOLIO RESPONSE</p><h3>Build for repeated evidence</h3><p>Promote a skill into project work only after it recurs across companies or over time. One posting is a clue, not a curriculum.</p><div id="portfolio-actions"></div></aside>
+        <div><div class="subheading-row"><h3>Recurring requirements</h3><span class="mono">Cross-company evidence</span></div><div id="signals" class="signals"></div></div>
+        <aside class="action-card"><p class="eyebrow">ANALYSIS</p><h3>Build for repeated evidence</h3><p>Promote a skill into project work only after it recurs across companies or over time. One posting is a clue, not a curriculum.</p><div id="portfolio-actions"></div></aside>
       </div>
-      <details class="all-jobs"><summary>Browse all verified technical openings <span id="all-job-count"></span></summary><label class="search"><span>⌕</span><input id="job-search" type="search" placeholder="Search role, company, location…"></label><div id="job-list" class="job-list"></div></details>
-    </section>
-
-    <section class="section report-section" id="brief">
-      <div class="section-heading">
-        <div><p class="eyebrow">04 · DAILY BRIEF</p><h2>The morning robotics read</h2></div>
-        <div><label for="report-select" class="mono">REPORT DATE</label><select id="report-select"></select></div>
-      </div>
-      <article id="report" class="report"><p>Loading the latest report…</p></article>
+      <details class="all-jobs"><summary>Browse the complete verified jobs ledger <span id="all-job-count"></span></summary><label class="search"><span aria-hidden="true">⌕</span><input id="job-search" type="search" placeholder="Search role, company, location…" aria-label="Search jobs"></label><div id="job-list" class="job-list"></div></details>
     </section>
   </main>
 
-  <footer><div><strong>US Robotics Intelligence</strong><p>Built from dated public evidence. Facts, company claims, and projections should remain distinguishable.</p></div><div class="footer-links"><a href="curriculum.html">AI curriculum</a><a href="https://github.com/Chippy1520/ai-research-lab">Source repository</a><a href="#overview">Back to top ↑</a></div></footer>
-
-  <div id="error-banner" class="error-banner" hidden></div>
+  <footer class="news-footer"><div><strong>Robotics Intelligence</strong><p>A dated public-evidence desk. Facts, company claims, market observations, and projections remain distinguishable.</p></div><div class="footer-links"><a href="curriculum.html">AI curriculum</a><a href="https://github.com/Chippy1520/ai-research-lab">Source repository</a><a href="#overview">Back to front page ↑</a></div></footer>
+  <div id="error-banner" class="error-banner" role="alert" hidden></div>
 </body>
 </html>

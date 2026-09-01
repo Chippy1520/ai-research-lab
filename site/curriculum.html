@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="An open-ended technical curriculum spanning machine learning, computer vision, and embodied AI.">
-  <meta name="theme-color" content="#07130f">
+  <meta name="description" content="A rigorous, open-ended technical curriculum spanning machine learning, computer vision, and embodied AI.">
+  <meta name="theme-color" content="#f3f0e8">
   <title>AI Research Lab · Curriculum</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/styles.css">
   <link rel="stylesheet" href="assets/curriculum.css">
   <script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]]},svg:{fontCache:"global"}};</script>
@@ -16,94 +16,87 @@
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
   <script defer src="assets/curriculum.js"></script>
 </head>
-<body>
-  <div class="noise" aria-hidden="true"></div>
-  <header class="topbar">
+<body class="editorial">
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
+  <header class="topbar editorial-nav">
     <a class="brand" href="curriculum.html"><span class="brand-mark">∇</span><span>AI Research Lab</span></a>
     <nav aria-label="Primary navigation">
-      <a href="#today">Current module</a>
-      <a href="#roadmap">Roadmap</a>
-      <a href="#research">Research ledger</a>
-      <a href="index.html">Robotics intelligence</a>
+      <a href="#article">Read</a>
+      <a href="#code">Code</a>
+      <a href="#roadmap">Curriculum index</a>
+      <a href="#provenance">Sources</a>
+      <a href="index.html">Robotics intelligence ↗</a>
     </nav>
-    <div class="status-pill"><span></span><b id="curriculum-updated">Loading</b></div>
+    <span id="curriculum-updated" class="issue-date">Loading</span>
   </header>
 
   <main>
-    <section class="hero curriculum-hero" id="overview">
-      <div class="hero-copy reveal">
-        <p class="eyebrow">MACHINE LEARNING → COMPUTER VISION → EMBODIED AI</p>
-        <h1>A curriculum designed<br><em>never to be finished.</em></h1>
-        <p class="lede">One rigorous module at a time. Foundations spiral into systems and frontier research without prewriting lessons that will be stale when they are studied.</p>
-        <div class="hero-actions"><a class="button primary" href="#today">Enter current module</a><a class="button ghost" href="#roadmap">Inspect the horizon</a></div>
+    <header class="publication-header" id="overview">
+      <div class="journal-masthead"><span>AI Research Lab</span><span>Open technical curriculum · Living edition</span></div>
+      <p class="publication-label">Current study</p>
+      <h1 id="module-title">Loading current research module…</h1>
+      <div class="abstract"><span>Abstract</span><p class="publication-deck">Optimization is not a switch that makes loss decrease. It is a discrete-time dynamical system whose geometry, memory, noise, and regularization determine the trajectory.</p></div>
+      <div class="byline-row">
+        <div><span>DOMAIN</span><b id="module-domain">—</b></div>
+        <div><span>READING SESSION</span><b id="module-duration">—</b></div>
+        <div><span>CURRICULUM</span><b id="current-day">Day — of an open horizon</b></div>
+        <div><span>RESEARCHED</span><b id="module-researched">—</b></div>
       </div>
-      <div class="rotation-system reveal" aria-label="Three-domain curriculum rotation">
-        <div class="rotation-ring"></div>
-        <div class="domain-node ml"><span>01</span><b>Machine<br>Learning</b></div>
-        <div class="domain-node cv"><span>02</span><b>Computer<br>Vision</b></div>
-        <div class="domain-node eai"><span>03</span><b>Embodied AI<br>& Robotics</b></div>
-        <div class="rotation-core"><small>STRICT</small><strong>→</strong><small>ROTATION</small></div>
-      </div>
-    </section>
+    </header>
 
-    <section class="metrics" aria-label="Curriculum metrics">
-      <article><span id="current-day">—</span><p>current research day</p></article>
-      <article><span id="mapped-lessons">—</span><p>mapped-ahead lessons</p></article>
-      <article><span id="generated-modules">—</span><p>generated modules</p></article>
-      <article><span id="research-sources">—</span><p>verified sources used</p></article>
-    </section>
-
-    <section class="section current-section" id="today">
-      <div class="section-heading">
-        <div><p class="eyebrow">01 · CURRENT MODULE</p><h2 id="module-title">Loading current research module…</h2></div>
-        <div class="module-stamp"><span id="module-domain">—</span><b id="module-duration">—</b></div>
-      </div>
-      <div class="learning-clock" aria-label="One-hour learning architecture">
-        <div style="--share:8"><b>05</b><span>motivation</span></div>
-        <div style="--share:34"><b>20</b><span>theory</span></div>
-        <div style="--share:25"><b>15</b><span>simulator</span></div>
-        <div style="--share:25"><b>15</b><span>experiment</span></div>
-        <div style="--share:8"><b>05</b><span>synthesis</span></div>
-      </div>
-      <div class="module-shell">
-        <div class="module-tabs" role="tablist">
-          <button class="module-tab active" data-panel="article-panel">Article</button>
-          <button class="module-tab" data-panel="code-panel">Exact code</button>
-          <button class="module-tab" data-panel="sources-panel">Source ledger</button>
+    <div class="article-frame" id="article">
+      <aside class="article-rail" aria-label="Article navigation">
+        <div class="rail-inner">
+          <p class="rail-label">In this article</p>
+          <ol id="article-toc" class="article-toc"></ol>
+          <div class="session-note">
+            <span>60-minute route</span>
+            <p><b>05</b> motivation</p><p><b>20</b> theory</p><p><b>15</b> simulator</p><p><b>15</b> experiment</p><p><b>05</b> synthesis</p>
+          </div>
         </div>
-        <div id="article-panel" class="module-panel active"><article id="module-article" class="technical-article"><p>Loading the complete article…</p></article></div>
-        <div id="code-panel" class="module-panel"><div class="static-notice"><b>Simulator boundary.</b> GitHub Pages cannot execute the Python/Streamlit simulator. This is the exact experiment source used by the module; run the local dashboard for interactive controls.</div><div class="code-heading"><div><p class="eyebrow">EXECUTABLE REFERENCE</p><h3 id="experiment-path">Experiment source</h3></div><button id="copy-code" class="copy-button">Copy code</button></div><pre class="source-code"><code id="experiment-source"></code></pre></div>
-        <div id="sources-panel" class="module-panel"><div id="source-ledger" class="source-ledger"></div></div>
-      </div>
+      </aside>
+      <article id="module-article" class="technical-article"><p>Loading the complete article…</p></article>
+      <span id="current-foundations" hidden></span><span id="reading-status" hidden></span>
+    </div>
+
+    <section class="article-backmatter" id="code">
+      <header class="backmatter-heading"><p>Technical appendix A</p><h2>The exact executable experiment</h2><span>Not a rewritten snippet. This is the source displayed and executed by the local module.</span></header>
+      <div class="simulator-boundary"><b>About interactivity</b><p>GitHub Pages cannot execute the Python/Streamlit simulator. Run the local dashboard for live parameter controls; use this source for reproducible experiments.</p></div>
+      <details class="code-disclosure">
+        <summary><span id="experiment-path">Experiment source</span><small>View complete Python source</small></summary>
+        <div class="code-toolbar"><button id="copy-code" class="text-button">Copy source</button><a id="module-source-link" href="#">View module on GitHub ↗</a></div>
+        <pre class="source-code"><code id="experiment-source"></code></pre>
+      </details>
     </section>
 
-    <section class="section" id="roadmap">
-      <div class="section-heading">
-        <div><p class="eyebrow">02 · PERPETUAL HORIZON</p><h2>A map, not a pile of prewritten lessons</h2></div>
-        <p>The queue preserves prerequisites and strict domain rotation. Content is researched only when a lesson becomes current.</p>
-      </div>
-      <div class="horizon-rule" id="horizon-rule"></div>
+    <section class="article-backmatter bibliography-section" id="provenance">
+      <header class="backmatter-heading"><p>Technical appendix B</p><h2>Primary-source ledger</h2><span>Paper metadata, official documentation, and lecture IDs checked against original sources on generation day.</span></header>
+      <ol id="source-ledger" class="source-ledger"></ol>
+    </section>
+
+    <section class="curriculum-index" id="roadmap">
+      <header class="index-heading"><p>Curriculum index</p><h2>The mapped horizon is a queue,<br>not an ending.</h2><span id="horizon-rule"></span></header>
+      <p class="index-summary"><span><strong id="mapped-lessons">—</strong> mapped lessons</span><i>·</i><span><strong id="generated-modules">—</strong> generated just in time</span><i>·</i><span><strong id="research-sources">—</strong> verified sources used</span></p>
       <div class="toolbar roadmap-toolbar">
-        <label class="search"><span>⌕</span><input id="lesson-search" type="search" placeholder="Search topic or foundation thread…"></label>
+        <label class="search"><span>⌕</span><input id="lesson-search" type="search" placeholder="Search the curriculum index…"></label>
         <select id="domain-filter"><option value="all">All domains</option><option>Machine Learning</option><option>Computer Vision</option><option>Embodied AI & RL Robotics</option></select>
         <select id="stage-filter"><option value="all">All stages</option></select>
       </div>
-      <div class="roadmap-key"><span class="key-dot generated"></span>Generated <span class="key-dot current"></span>Current <span class="key-dot planned"></span>Mapped ahead</div>
-      <div id="roadmap-grid" class="roadmap-grid"></div>
+      <div id="roadmap-grid" class="roadmap-list"></div>
     </section>
 
-    <section class="section foundations-section">
-      <div class="section-heading"><div><p class="eyebrow">03 · SUPPORTING FOUNDATIONS</p><h2>Depth requires the systems underneath</h2></div><p>No topic is isolated from the mathematical, computational, control, and evaluation foundations it genuinely needs.</p></div>
-      <div id="foundation-threads" class="foundation-grid"></div>
+    <section class="foundations-index">
+      <header><p>Supporting foundations</p><h2>The disciplines underneath the disciplines</h2></header>
+      <ol id="foundation-threads" class="foundation-list"></ol>
     </section>
 
-    <section class="section" id="research">
-      <div class="section-heading"><div><p class="eyebrow">04 · PROVENANCE</p><h2>Every module leaves an evidence trail</h2></div><p>Primary papers and official documentation are checked on generation day. Corrections append to history rather than silently changing the learner’s past context.</p></div>
+    <section class="research-history" id="research">
+      <header class="index-heading"><p>Research history</p><h2>Provenance is part of the lesson.</h2><span>Corrections append to history; the learner’s past context is never silently rewritten.</span></header>
       <div id="research-ledger" class="research-ledger"></div>
     </section>
   </main>
 
-  <footer><div><strong>AI Research Lab</strong><p>Open-ended technical learning with just-in-time literature review and immutable module history.</p></div><div class="footer-links"><a href="index.html">Robotics intelligence</a><a href="https://github.com/Chippy1520/ai-research-lab">Source repository</a><a href="#overview">Back to top ↑</a></div></footer>
+  <footer class="editorial-footer"><div><strong>AI Research Lab</strong><p>An open-ended technical publication generated one researched module at a time.</p></div><div class="footer-links"><a href="index.html">Robotics intelligence</a><a href="https://github.com/Chippy1520/ai-research-lab">Source repository</a><a href="#overview">Back to top ↑</a></div></footer>
   <div id="curriculum-error" class="error-banner" hidden></div>
 </body>
 </html>

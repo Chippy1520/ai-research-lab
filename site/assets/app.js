@@ -145,11 +145,11 @@ async function renderReport(path) {
   $("#report").innerHTML = window.marked ? window.marked.parse(markdown) : `<pre>${escapeHtml(markdown)}</pre>`;
 }
 
-function prepareReports() {
+async function prepareReports() {
   const reports = state.manifest.reports;
   $("#report-select").innerHTML = reports.map((report) => `<option value="${escapeHtml(report.path)}">${escapeHtml(report.date)}</option>`).join("");
   $("#report-select").addEventListener("change", (event) => renderReport(event.target.value).catch(showError));
-  if (reports.length) renderReport(reports[0].path).catch(showError);
+  if (reports.length) await renderReport(reports[0].path);
 }
 
 function showError(error) {
@@ -176,7 +176,10 @@ async function initialize() {
   renderSignals();
   renderAllJobs();
   $("#job-search").addEventListener("input", renderAllJobs);
-  prepareReports();
+  await prepareReports();
+  if (window.location.hash) {
+    document.querySelector(window.location.hash)?.scrollIntoView();
+  }
 }
 
 initialize().catch(showError);
