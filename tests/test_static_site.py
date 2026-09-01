@@ -37,15 +37,38 @@ def test_static_site_builds_from_current_intelligence() -> None:
     assert manifest["opening_count"] >= 100
     assert manifest["early_career_count"] >= 6
     assert manifest["reports"][0]["date"] == "2026-09-01"
+    assert manifest["curriculum"] == {
+        "current_day": 1,
+        "mapped_lessons": 72,
+        "generated_modules": 1,
+        "research_sources": 8,
+    }
+
+
+def test_curriculum_export_preserves_article_code_and_rotation() -> None:
+    payload = json.loads(
+        (SITE / "data" / "curriculum.json").read_text(encoding="utf-8")
+    )
+    module = payload["modules"][0]
+    block_types = {block["type"] for block in module["article"]}
+    assert {"markdown", "latex", "table", "code", "video"} <= block_types
+    assert module["experiment_source"] == (
+        ROOT / "experiments" / "adamw_reference.py"
+    ).read_text(encoding="utf-8")
+    domains = [lesson["domain"] for lesson in payload["plan"]["lessons"]]
+    assert all(
+        domain == payload["plan"]["policy"]["rotation"][index % 3]
+        for index, domain in enumerate(domains)
+    )
 
 
 def test_static_entrypoint_references_existing_local_assets() -> None:
-    parser = _AssetParser()
-    parser.feed((SITE / "index.html").read_text(encoding="utf-8"))
-    assert "assets/styles.css" in parser.local_assets
-    assert "assets/app.js" in parser.local_assets
-    for asset in parser.local_assets:
-        assert (SITE / asset).is_file(), asset
+    for entrypoint in ("index.html", "curriculum.html"):
+        parser = _AssetParser()
+        parser.feed((SITE / entrypoint).read_text(encoding="utf-8"))
+        assert "assets/styles.css" in parser.local_assets
+        for asset in parser.local_assets:
+            assert (SITE / asset).is_file(), (entrypoint, asset)
 
 
 def test_pages_workflow_has_daily_sri_lanka_schedule() -> None:

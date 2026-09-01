@@ -63,14 +63,18 @@ python experiments\adamw_reference.py
 
 The device-independent static dashboard is published at:
 
-**https://chippy1520.github.io/ai-research-lab/**
+- **Robotics intelligence:** https://chippy1520.github.io/ai-research-lab/
+- **AI research curriculum:** https://chippy1520.github.io/ai-research-lab/curriculum.html
 
-It preserves company search and filtering, the founding timeline, geographic clusters,
-official openings, early-career qualification excerpts, recurring hiring signals, and the
-dated report archive. GitHub Actions rebuilds it on relevant pushes and at **08:00
-Asia/Colombo daily** after refreshing accessible official ATS boards. The static mirror uses
-the committed ecosystem and report archive; Fabric remains responsible for synthesizing new
-news briefs.
+The public site preserves company search and filtering, the founding timeline, geographic
+clusters, official openings, early-career qualification excerpts, recurring hiring signals,
+and the dated robotics report archive. Its curriculum view publishes the current technical
+article with MathJax equations, exact executable experiment source, verified citation ledger,
+learning architecture, supporting foundations, and the complete rolling roadmap. Python-only
+simulator controls remain in the local Streamlit dashboard rather than being misrepresented as
+browser execution. GitHub Actions rebuilds the site on relevant pushes and at **08:00
+Asia/Colombo daily** after refreshing accessible official ATS boards. Fabric remains
+responsible for synthesizing new news briefs.
 
 ## Daily US robotics intelligence
 

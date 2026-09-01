@@ -1,5 +1,5 @@
 {
-  "site_title": "US Robotics Intelligence",
+  "site_title": "AI Research Lab",
   "ecosystem_as_of": "2026-09-01",
   "jobs_last_checked": "2026-09-01T21:34:54+05:30",
   "company_count": 12,
@@ -11,5 +11,11 @@
       "date": "2026-09-01",
       "path": "data/reports/2026-09-01.md"
     }
-  ]
+  ],
+  "curriculum": {
+    "current_day": 1,
+    "mapped_lessons": 72,
+    "generated_modules": 1,
+    "research_sources": 8
+  }
 }

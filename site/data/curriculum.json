@@ -1,0 +1,1926 @@
+{
+  "plan": {
+    "version": 2,
+    "updated_on": "2026-08-29",
+    "horizon_policy": {
+      "mode": "rolling_open_ended",
+      "terminal_day": null,
+      "minimum_mapped_ahead_days": 18,
+      "extension_batch_cycles": 6,
+      "extension_rule": "Before the mapped queue drops below 18 future days, research and append six new ML→CV→EAI cycles. Add roadmap spines only; author lesson content just in time."
+    },
+    "policy": {
+      "rotation": [
+        "Machine Learning",
+        "Computer Vision",
+        "Embodied AI & RL Robotics"
+      ],
+      "generation": "Just in time: exactly one current-day module is researched and authored per generate-next request.",
+      "frontier_refresh": "Before authoring every module, review current literature and revise its emphasis without silently rewriting archived modules.",
+      "archive": "Generated modules remain immutable learning artifacts; corrections are appended to their research log.",
+      "coverage": "Spiral indefinitely through mathematical foundations, modern methods, systems, evaluation, interdisciplinary connections, and changing frontiers. There is no terminal lesson or completeness claim."
+    },
+    "supporting_cs_threads": [
+      "Algorithms and data structures",
+      "Probability and statistics",
+      "Numerical linear algebra",
+      "Optimization and control",
+      "Computer systems and accelerators",
+      "Distributed computing",
+      "Software engineering and reproducibility",
+      "Data engineering and evaluation",
+      "Safety and security"
+    ],
+    "lessons": [
+      {
+        "day": 1,
+        "cycle": 1,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "Optimization Dynamics & AdamW",
+        "stage": "Foundations",
+        "status": "generated",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 2,
+        "cycle": 1,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "Image Formation, Sampling & Color",
+        "stage": "Foundations",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 3,
+        "cycle": 1,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "MDPs, Returns & Occupancy Measures",
+        "stage": "Foundations",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 4,
+        "cycle": 2,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "Probability, Estimation & Statistical Learning",
+        "stage": "Foundations",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 5,
+        "cycle": 2,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "2D Fourier Analysis & Phase",
+        "stage": "Foundations",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 6,
+        "cycle": 2,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "Bellman Operators & Contraction Proofs",
+        "stage": "Foundations",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 7,
+        "cycle": 3,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "Information Theory & Representation",
+        "stage": "Foundations",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 8,
+        "cycle": 3,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "Spatial Derivatives, Scale Space & Features",
+        "stage": "Foundations",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 9,
+        "cycle": 3,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "Dynamic Programming: Policy/Value Iteration",
+        "stage": "Foundations",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 10,
+        "cycle": 4,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "Linear Models, Kernels & Generalization",
+        "stage": "Foundations",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 11,
+        "cycle": 4,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "Projective Geometry & Camera Calibration",
+        "stage": "Foundations",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 12,
+        "cycle": 4,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "Monte Carlo and Temporal-Difference Learning",
+        "stage": "Foundations",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 13,
+        "cycle": 5,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "Backpropagation, Initialization & Normalization",
+        "stage": "Foundations",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 14,
+        "cycle": 5,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "Multi-View Geometry, Epipolar Constraints & SfM",
+        "stage": "Foundations",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 15,
+        "cycle": 5,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "Q-Learning, Function Approximation & DQN",
+        "stage": "Foundations",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 16,
+        "cycle": 6,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "CNN Inductive Biases & Modern ConvNets",
+        "stage": "Core",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 17,
+        "cycle": 6,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "CNN Backbones, FPN & Detection",
+        "stage": "Core",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 18,
+        "cycle": 6,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "Policy Gradients and Variance Reduction",
+        "stage": "Core",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 19,
+        "cycle": 7,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "Variational Inference, ELBO & VAEs",
+        "stage": "Core",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 20,
+        "cycle": 7,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "Semantic, Instance & Panoptic Segmentation",
+        "stage": "Core",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 21,
+        "cycle": 7,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "Actor-Critic Methods & Generalized Advantage Estimation",
+        "stage": "Core",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 22,
+        "cycle": 8,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "Normalizing Flows & Change of Variables",
+        "stage": "Core",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 23,
+        "cycle": 8,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "Vision Transformers & Patch Geometry",
+        "stage": "Core",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 24,
+        "cycle": 8,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "PPO: Clipping, Trust Regions & Diagnostics",
+        "stage": "Core",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 25,
+        "cycle": 9,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "Attention, RoPE & KV-Caching",
+        "stage": "Modern",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 26,
+        "cycle": 9,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "Self-Supervised Visual Representation Learning",
+        "stage": "Modern",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 27,
+        "cycle": 9,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "Maximum-Entropy RL & Soft Actor-Critic",
+        "stage": "Modern",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 28,
+        "cycle": 10,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "Diffusion, Score Matching & SDEs",
+        "stage": "Modern",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 29,
+        "cycle": 10,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "NeRF Volume Rendering & Positional Encoding",
+        "stage": "Modern",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 30,
+        "cycle": 10,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "Model-Based RL and Uncertainty-Aware Planning",
+        "stage": "Modern",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 31,
+        "cycle": 11,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "Flow Matching & Optimal-Transport Paths",
+        "stage": "Modern",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 32,
+        "cycle": 11,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "3D Gaussian Splatting & Differentiable Rasterization",
+        "stage": "Modern",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 33,
+        "cycle": 11,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "POMDPs, Belief State & Recurrent Policies",
+        "stage": "Modern",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 34,
+        "cycle": 12,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "Sequence Models: RNNs, S4 & Mamba",
+        "stage": "Modern",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 35,
+        "cycle": 12,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "Video Motion: Optical Flow, Tracking & Temporal Models",
+        "stage": "Modern",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 36,
+        "cycle": 12,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "Offline RL, Behavior Regularization & Dataset Shift",
+        "stage": "Modern",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 37,
+        "cycle": 13,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "Graph Neural Networks & Geometric Deep Learning",
+        "stage": "Modern",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 38,
+        "cycle": 13,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "Open-Vocabulary Detection & Foundation Segmentation",
+        "stage": "Modern",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 39,
+        "cycle": 13,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "Imitation Learning, DAgger & Inverse RL",
+        "stage": "Modern",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 40,
+        "cycle": 14,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "Self-Supervised, Contrastive & Multimodal Learning",
+        "stage": "Modern",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 41,
+        "cycle": 14,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "Generative Vision: Latent Diffusion & Controllable Synthesis",
+        "stage": "Modern",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 42,
+        "cycle": 14,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "World Models & Latent Imagination",
+        "stage": "Modern",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 43,
+        "cycle": 15,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "Uncertainty, Calibration & Bayesian Deep Learning",
+        "stage": "Integration",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 44,
+        "cycle": 15,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "3D Scene Understanding and Point/Implicit Representations",
+        "stage": "Integration",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 45,
+        "cycle": 15,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "Robot Kinematics, Dynamics & Operational-Space Control",
+        "stage": "Integration",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 46,
+        "cycle": 16,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "Causal Representation Learning & Invariance",
+        "stage": "Integration",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 47,
+        "cycle": 16,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "4D Dynamic Reconstruction & Neural Scene Flow",
+        "stage": "Integration",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 48,
+        "cycle": 16,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "Motion Planning, Trajectory Optimization & MPC",
+        "stage": "Integration",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 49,
+        "cycle": 17,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "Meta-Learning, Continual Learning & Adaptation",
+        "stage": "Frontier",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 50,
+        "cycle": 17,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "Domain Adaptation, Test-Time Adaptation & Robustness",
+        "stage": "Frontier",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 51,
+        "cycle": 17,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "Diffusion Policy for Visuomotor Control",
+        "stage": "Frontier",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 52,
+        "cycle": 18,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "Scaling Laws, Data Mixtures & Test-Time Compute",
+        "stage": "Frontier",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 53,
+        "cycle": 18,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "Vision-Language Models and Visual Reasoning",
+        "stage": "Frontier",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 54,
+        "cycle": 18,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "Sim-to-Real, System Identification & Domain Randomization",
+        "stage": "Frontier",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 55,
+        "cycle": 19,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "ML Systems: Accelerators, Mixed Precision & Distributed Training",
+        "stage": "Systems",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 56,
+        "cycle": 19,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "Efficient Vision: Quantization, Distillation & Edge Deployment",
+        "stage": "Systems",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 57,
+        "cycle": 19,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "ROS 2, Real-Time Robot Software & Hardware Interfaces",
+        "stage": "Systems",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 58,
+        "cycle": 20,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "Data-Centric ML, Evaluation & Reproducibility",
+        "stage": "Systems",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 59,
+        "cycle": 20,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "Dataset Design, Long-Tail Metrics & Failure Analysis",
+        "stage": "Systems",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 60,
+        "cycle": 20,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "Robot Evaluation, Safety Cases & Reproducible Benchmarks",
+        "stage": "Systems",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 61,
+        "cycle": 21,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "Interpretability, Mechanistic Analysis & Alignment",
+        "stage": "Frontier",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 62,
+        "cycle": 21,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "Adversarial Robustness, OOD Detection & Model Editing",
+        "stage": "Frontier",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 63,
+        "cycle": 21,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "Safe RL, Constraints, Shielding & Human Oversight",
+        "stage": "Frontier",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 64,
+        "cycle": 22,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "Neural Operators, Scientific ML & Differentiable Simulation",
+        "stage": "Frontier",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 65,
+        "cycle": 22,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "Event Cameras, Active Vision & Computational Imaging",
+        "stage": "Frontier",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 66,
+        "cycle": 22,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "Active Perception and Information-Gathering Control",
+        "stage": "Frontier",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 67,
+        "cycle": 23,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "Foundation-Model Agents, Tool Use & Memory",
+        "stage": "Frontier",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 68,
+        "cycle": 23,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "Video Foundation Models & World-Centric Perception",
+        "stage": "Frontier",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 69,
+        "cycle": 23,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "VLA Models, Cross-Embodiment Transfer & Action Tokenization",
+        "stage": "Frontier",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      },
+      {
+        "day": 70,
+        "cycle": 24,
+        "domain": "Machine Learning",
+        "domain_index": 0,
+        "topic": "Frontier ML Review — Selected on Generation Day",
+        "stage": "Live review",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "probability & statistics",
+          "linear algebra",
+          "optimization",
+          "algorithms",
+          "information theory",
+          "systems"
+        ]
+      },
+      {
+        "day": 71,
+        "cycle": 24,
+        "domain": "Computer Vision",
+        "domain_index": 1,
+        "topic": "Frontier Vision Review — Selected on Generation Day",
+        "stage": "Live review",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "signal processing",
+          "geometry",
+          "numerical methods",
+          "graphics",
+          "algorithms",
+          "hardware"
+        ]
+      },
+      {
+        "day": 72,
+        "cycle": 24,
+        "domain": "Embodied AI & RL Robotics",
+        "domain_index": 2,
+        "topic": "Frontier Embodied AI Review — Selected on Generation Day",
+        "stage": "Live review",
+        "status": "planned",
+        "content_policy": "Research and write only when this day becomes current.",
+        "foundation_threads": [
+          "control",
+          "dynamics",
+          "probability",
+          "planning",
+          "real-time systems",
+          "safety"
+        ]
+      }
+    ],
+    "live_frontier_anchors": [
+      {
+        "domain": "Machine Learning",
+        "reviewed_on": "2026-08-29",
+        "signal": "Recent work spans temporal knowledge evaluation, graph recommendation at scale, and structured model knowledge.",
+        "source": "https://export.arxiv.org/list/cs.LG/recent"
+      },
+      {
+        "domain": "Computer Vision",
+        "reviewed_on": "2026-08-29",
+        "signal": "Current signals include spatial agency, VLM retrieval mechanisms, large reconstruction models, and efficient video pretraining.",
+        "source": "https://export.arxiv.org/list/cs.CV/recent"
+      },
+      {
+        "domain": "Embodied AI & RL Robotics",
+        "reviewed_on": "2026-08-29",
+        "signal": "Current signals include cross-embodiment video world models, asynchronous VLA decoding, and scene rearrangement planning.",
+        "source": "https://export.arxiv.org/list/cs.RO/recent"
+      }
+    ]
+  },
+  "state": {
+    "current_day": 1,
+    "completed_modules": [],
+    "current_domain_index": 0,
+    "last_updated": "2026-08-29"
+  },
+  "learning_log": {
+    "version": 1,
+    "entries": [
+      {
+        "day": 1,
+        "module_slug": "module_01",
+        "title": "Optimization Dynamics & AdamW",
+        "domain": "Machine Learning",
+        "status": "ready",
+        "generated_on": "2026-08-29",
+        "studied_on": null,
+        "minutes_spent": 0,
+        "confidence": null,
+        "notes": "",
+        "revisit": false
+      }
+    ]
+  },
+  "research_log": {
+    "version": 1,
+    "entries": [
+      {
+        "day": 1,
+        "module_slug": "module_01",
+        "researched_on": "2026-08-29",
+        "scope_note": "Expanded after learner review to cover stochastic-risk formulation, conditioning, momentum, AdaGrad, RMSProp, Adam/AMSGrad convergence, AdamW implementation semantics, schedules, diagnostics, and optimizer selection. Paper metadata, teaching-video IDs, and official implementation documentation were checked at their original sources.",
+        "sources": [
+          {
+            "kind": "primary paper",
+            "title": "Adaptive Subgradient Methods for Online Learning and Stochastic Optimization",
+            "authors": "John Duchi, Elad Hazan, and Yoram Singer",
+            "year": 2011,
+            "url": "https://jmlr.org/papers/v12/duchi11a.html"
+          },
+          {
+            "kind": "primary paper",
+            "title": "On the Importance of Initialization and Momentum in Deep Learning",
+            "authors": "Ilya Sutskever, James Martens, George Dahl, and Geoffrey Hinton",
+            "year": 2013,
+            "url": "https://proceedings.mlr.press/v28/sutskever13.html"
+          },
+          {
+            "kind": "primary paper",
+            "title": "Adam: A Method for Stochastic Optimization",
+            "authors": "Diederik P. Kingma and Jimmy Ba",
+            "year": 2014,
+            "url": "https://arxiv.org/abs/1412.6980"
+          },
+          {
+            "kind": "primary paper",
+            "title": "Decoupled Weight Decay Regularization",
+            "authors": "Ilya Loshchilov and Frank Hutter",
+            "year": 2017,
+            "url": "https://arxiv.org/abs/1711.05101"
+          },
+          {
+            "kind": "primary paper",
+            "title": "On the Convergence of Adam and Beyond",
+            "authors": "Sashank J. Reddi, Satyen Kale, and Sanjiv Kumar",
+            "year": 2019,
+            "url": "https://arxiv.org/abs/1904.09237"
+          },
+          {
+            "kind": "official implementation documentation",
+            "title": "torch.optim.AdamW",
+            "authors": "PyTorch contributors",
+            "year": null,
+            "accessed_on": "2026-08-29",
+            "url": "https://docs.pytorch.org/docs/stable/generated/torch.optim.AdamW.html"
+          },
+          {
+            "kind": "video masterclass",
+            "title": "Adam Optimization Algorithm (C2W2L08)",
+            "authors": "DeepLearning.AI",
+            "year": null,
+            "accessed_on": "2026-08-29",
+            "url": "https://www.youtube.com/watch?v=JXQT_vxqwIs"
+          },
+          {
+            "kind": "video lecture",
+            "title": "Optimization for Deep Learning (Momentum, RMSProp, AdaGrad, Adam)",
+            "authors": "DeepBean",
+            "year": null,
+            "accessed_on": "2026-08-29",
+            "url": "https://www.youtube.com/watch?v=NE88eqLngkg"
+          }
+        ],
+        "corrections": [
+          {
+            "date": "2026-08-29",
+            "note": "Expanded the initial AdamW-centered chapter into a comparative optimizer treatment after learner feedback that background and coverage were insufficient."
+          }
+        ]
+      }
+    ]
+  },
+  "modules": [
+    {
+      "slug": "module_01",
+      "metadata": {
+        "day": 1,
+        "title": "Optimization Dynamics & AdamW",
+        "domain": "Machine Learning",
+        "duration_minutes": 60
+      },
+      "article": [
+        {
+          "type": "header",
+          "content": "Optimization as a discrete-time dynamical system"
+        },
+        {
+          "type": "markdown",
+          "content": "<div class=\"research-note\"><b>Research objective.</b> Derive how curvature,\n        momentum, adaptive preconditioning, finite-time moment bias, and decoupled\n        regularization determine an optimizer's trajectory—not merely its final loss.</div>"
+        },
+        {
+          "type": "subheader",
+          "content": "1 · Executive summary and engineering motivation"
+        },
+        {
+          "type": "markdown",
+          "content": "Training a foundation model is a controlled dynamical process in a parameter\n        space with millions or billions of dimensions. The optimizer receives a noisy\n        local measurement $g_t$ and must select a stable, computationally affordable\n        update. In transformers, coordinates associated with embeddings, normalization\n        gains, attention projections, and sparse tokens can exhibit radically different\n        gradient scales. A single scalar learning rate therefore moves some coordinates\n        too slowly while destabilizing others.\n\n        Adam combines a low-pass estimate of the gradient with a diagonal estimate of\n        its second raw moment. AdamW then separates this data-dependent preconditioning\n        from parameter-norm control. This distinction is operationally important in\n        large language models, vision transformers, diffusion models, and robot policies:\n        coupling an $L_2$ penalty into Adam makes the effective regularization strength\n        depend on each coordinate's gradient history. Decoupled decay instead applies a\n        predictable contraction in parameter space."
+        },
+        {
+          "type": "subheader",
+          "content": "2 · Local quadratic model and why naive descent fails"
+        },
+        {
+          "type": "markdown",
+          "content": "Around a strict local minimizer $\\theta^\\star$, a twice-differentiable objective\n        admits the second-order approximation"
+        },
+        {
+          "type": "latex",
+          "content": "\\mathcal L(\\theta) \\approx \\mathcal L(\\theta^\\star) + \\frac{1}{2}(\\theta-\\theta^\\star)^\\top H(\\theta-\\theta^\\star), \\qquad H=H^\\top\\succ 0."
+        },
+        {
+          "type": "markdown",
+          "content": "Define the error $e_t=\\theta_t-\\theta^\\star$. Then"
+        },
+        {
+          "type": "latex",
+          "content": "\\nabla_\\theta \\mathcal L(\\theta_t)=He_t,"
+        },
+        {
+          "type": "latex",
+          "content": "\\theta_{t+1}=\\theta_t-\\alpha H e_t \\quad\\Longrightarrow\\quad e_{t+1}=(I-\\alpha H)e_t."
+        },
+        {
+          "type": "markdown",
+          "content": "Since $H$ is real symmetric, write $H=Q\\Lambda Q^\\top$, where\n        $Q^\\top Q=I$ and $\\Lambda=\\operatorname{diag}(\\lambda_1,\\ldots,\\lambda_d)$.\n        Rotating into the eigenbasis with $z_t=Q^\\top e_t$ gives"
+        },
+        {
+          "type": "latex",
+          "content": "z_{t+1}=Q^\\top(I-\\alpha Q\\Lambda Q^\\top)Qz_t=(I-\\alpha\\Lambda)z_t."
+        },
+        {
+          "type": "latex",
+          "content": "z_{t+1,i}=(1-\\alpha\\lambda_i)z_{t,i}=(1-\\alpha\\lambda_i)^{t+1}z_{0,i}."
+        },
+        {
+          "type": "markdown",
+          "content": "Convergence for every eigendirection requires\n        $|1-\\alpha\\lambda_i|<1$. Unrolling both inequalities,"
+        },
+        {
+          "type": "latex",
+          "content": "-1<1-\\alpha\\lambda_i<1\\Longrightarrow -2<-\\alpha\\lambda_i<0\\Longrightarrow 0<\\alpha\\lambda_i<2."
+        },
+        {
+          "type": "latex",
+          "content": "\\boxed{0<\\alpha<\\frac{2}{\\lambda_{\\max}(H)}}"
+        },
+        {
+          "type": "markdown",
+          "content": "A high condition number $\\kappa(H)=\\lambda_{\\max}/\\lambda_{\\min}$ creates a\n        narrow valley. Stability is dictated by $\\lambda_{\\max}$, while progress along\n        the shallow direction scales with $\\lambda_{\\min}$. Thus stable SGD zig-zags\n        across the steep axis and crawls along the shallow axis."
+        },
+        {
+          "type": "subheader",
+          "content": "3 · Momentum as a second-order recurrence"
+        },
+        {
+          "type": "latex",
+          "content": "v_t=\\mu v_{t-1}+g_t,\\qquad \\theta_{t+1}=\\theta_t-\\alpha v_t."
+        },
+        {
+          "type": "markdown",
+          "content": "For one Hessian eigendirection with curvature $\\lambda$, $g_t=\\lambda e_t$ and $\\alpha v_{t-1}=e_{t-1}-e_t$. Substitution gives"
+        },
+        {
+          "type": "latex",
+          "content": "e_{t+1}=e_t-\\alpha(\\mu v_{t-1}+\\lambda e_t)=(1-\\alpha\\lambda)e_t-\\mu(e_{t-1}-e_t)=(1+\\mu-\\alpha\\lambda)e_t-\\mu e_{t-1}."
+        },
+        {
+          "type": "latex",
+          "content": "r^2-(1+\\mu-\\alpha\\lambda)r+\\mu=0."
+        },
+        {
+          "type": "markdown",
+          "content": "The characteristic roots determine damping. Real roots inside the unit circle\n        give monotone or over-damped convergence; complex roots produce oscillation with\n        envelope approximately controlled by $\\sqrt{\\mu}$. Momentum accumulates\n        persistent low-curvature gradients while rapidly alternating steep-direction\n        gradients partially cancel."
+        },
+        {
+          "type": "subheader",
+          "content": "4 · Adam: moment estimation and diagonal preconditioning"
+        },
+        {
+          "type": "markdown",
+          "content": "For stochastic gradient $g_t=\\nabla_\\theta\\ell(\\theta_{t-1};\\xi_t)$,"
+        },
+        {
+          "type": "latex",
+          "content": "m_t=\\beta_1m_{t-1}+(1-\\beta_1)g_t,"
+        },
+        {
+          "type": "latex",
+          "content": "v_t=\\beta_2v_{t-1}+(1-\\beta_2)(g_t\\odot g_t)."
+        },
+        {
+          "type": "markdown",
+          "content": "Here $m_t$ estimates the first moment and $v_t$ estimates the uncentered second\n        moment coordinate-wise. Expanding the first recurrence from $m_0=0$ yields"
+        },
+        {
+          "type": "latex",
+          "content": "m_t=(1-\\beta_1)\\sum_{i=1}^{t}\\beta_1^{t-i}g_i."
+        },
+        {
+          "type": "markdown",
+          "content": "If $\\mathbb E[g_i]=\\mu_g$ is locally stationary, then the expected value is"
+        },
+        {
+          "type": "latex",
+          "content": "\\mathbb E[m_t]=(1-\\beta_1)\\sum_{i=1}^{t}\\beta_1^{t-i}\\mu_g=(1-\\beta_1)\\mu_g\\sum_{k=0}^{t-1}\\beta_1^k."
+        },
+        {
+          "type": "latex",
+          "content": "\\sum_{k=0}^{t-1}\\beta_1^k=\\frac{1-\\beta_1^t}{1-\\beta_1}\\quad\\Longrightarrow\\quad\\mathbb E[m_t]=(1-\\beta_1^t)\\mu_g."
+        },
+        {
+          "type": "markdown",
+          "content": "The zero initialization therefore attenuates early moments. Dividing by the known attenuation gives the bias-corrected estimators"
+        },
+        {
+          "type": "latex",
+          "content": "\\widehat m_t=\\frac{m_t}{1-\\beta_1^t},\\qquad\\widehat v_t=\\frac{v_t}{1-\\beta_2^t}."
+        },
+        {
+          "type": "latex",
+          "content": "\\theta_t=\\theta_{t-1}-\\alpha\\frac{\\widehat m_t}{\\sqrt{\\widehat v_t}+\\varepsilon}."
+        },
+        {
+          "type": "markdown",
+          "content": "The denominator is an online diagonal preconditioner. A coordinate with\n        repeatedly large squared gradients receives a smaller effective step, while a\n        coordinate with small or sparse gradients receives a relatively larger one.\n        The $\\varepsilon$ term is not only a divide-by-zero guard: when\n        $\\sqrt{\\widehat v_{t,i}}\\ll\\varepsilon$, it sets the coordinate's effective\n        learning-rate ceiling."
+        },
+        {
+          "type": "subheader",
+          "content": "5 · Why $L_2$ inside Adam is not weight decay"
+        },
+        {
+          "type": "markdown",
+          "content": "For plain SGD, adding $\\frac{\\lambda}{2}\\|\\theta\\|_2^2$ to the loss produces\n        $g_t+\\lambda\\theta_t$ and therefore"
+        },
+        {
+          "type": "latex",
+          "content": "\\theta_{t+1}=\\theta_t-\\alpha(g_t+\\lambda\\theta_t)=(1-\\alpha\\lambda)\\theta_t-\\alpha g_t."
+        },
+        {
+          "type": "markdown",
+          "content": "This is exactly multiplicative weight decay. For an adaptive optimizer with\n        diagonal preconditioner $D_t=\\operatorname{diag}\n        (1/(\\sqrt{\\widehat v_t}+\\varepsilon))$, placing the penalty in the gradient gives"
+        },
+        {
+          "type": "latex",
+          "content": "\\theta_{t+1}=\\theta_t-\\alpha D_t(g_t+\\lambda\\theta_t)=(I-\\alpha\\lambda D_t)\\theta_t-\\alpha D_tg_t."
+        },
+        {
+          "type": "markdown",
+          "content": "The shrinkage matrix $I-\\alpha\\lambda D_t$ now varies by coordinate and time.\n        Parameters with large historical gradients are regularized less. Hence the\n        claimed weight decay has become entangled with the optimizer state.\n        AdamW restores a uniform contraction by separating the operations:"
+        },
+        {
+          "type": "latex",
+          "content": "\\boxed{\\theta_t=(1-\\alpha\\lambda)\\theta_{t-1}-\\alpha\\frac{\\widehat m_t}{\\sqrt{\\widehat v_t}+\\varepsilon}}"
+        },
+        {
+          "type": "markdown",
+          "content": "Decoupling also makes learning-rate and regularization tuning more nearly\n        orthogonal. In production, parameter groups commonly exclude biases and\n        normalization scale/shift parameters from decay because their norms do not play\n        the same capacity-control role as weight matrices."
+        },
+        {
+          "type": "subheader",
+          "content": "6 · Failure modes and research practice"
+        },
+        {
+          "type": "markdown",
+          "content": "- **Unstable base rate:** adaptive scaling does not remove the need for warm-up,\n          clipping, or curvature-aware tuning.\n        - **Stale moments:** abrupt distribution changes can make long-memory second\n          moments suppress useful adaptation.\n        - **Small-batch noise:** the optimizer trajectory may exploit noise but can also\n          become dominated by outliers; inspect gradient and update norms separately.\n        - **Silent regularization errors:** verify whether a framework's optimizer truly\n          decouples decay and which parameter groups receive it.\n        - **Metric myopia:** training loss alone cannot reveal whether decay improves\n          held-out performance or merely slows fitting."
+        },
+        {
+          "type": "subheader",
+          "content": "7 · What problem are we actually optimizing?"
+        },
+        {
+          "type": "markdown",
+          "content": "Supervised learning usually minimizes empirical risk plus an explicit\n        regularizer. For parameters $\\theta\\in\\mathbb R^d$, data\n        $\\mathcal D=\\{(x_i,y_i)\\}_{i=1}^{N}$, per-example loss $\\ell_i$, and\n        regularizer $R$, the finite-sum problem is"
+        },
+        {
+          "type": "latex",
+          "content": "F(\\theta)=\\frac{1}{N}\\sum_{i=1}^{N}\\ell_i(\\theta)+\\lambda R(\\theta)."
+        },
+        {
+          "type": "markdown",
+          "content": "A minibatch $B_t$ of size $b$ replaces the full gradient with\n        $g_t=\\frac1b\\sum_{i\\in B_t}\\nabla\\ell_i(\\theta_t)$. Under uniform sampling,\n        $\\mathbb E[g_t\\mid\\theta_t]=\\nabla F_{\\mathrm{data}}(\\theta_t)$: the estimator is\n        conditionally unbiased, but not noiseless. Writing\n        $g_t=\\nabla F_{\\mathrm{data}}(\\theta_t)+\\xi_t$ isolates gradient noise with\n        conditional covariance $\\Sigma_t=\\mathbb E[\\xi_t\\xi_t^\\top\\mid\\theta_t]$.\n        Approximately, independent examples make the variance shrink as $1/b$, although\n        correlated or heavy-tailed examples violate the clean textbook picture.\n\n        Optimization and generalization are therefore not identical objectives. A method\n        may minimize training loss rapidly yet reach a solution with worse validation\n        behavior. Batch size, data order, augmentation, schedules, clipping, and decay all\n        change the stochastic trajectory. The optimizer is one part of a coupled training\n        system—not a detachable ranking of algorithms."
+        },
+        {
+          "type": "subheader",
+          "content": "8 · Conditioning, optimal scalar steps, and preconditioning"
+        },
+        {
+          "type": "markdown",
+          "content": "For a positive-definite quadratic with eigenvalues in $[\\mu,L]$, the worst one-step contraction under scalar-step gradient descent is"
+        },
+        {
+          "type": "latex",
+          "content": "\\rho(\\alpha)=\\max_{\\lambda\\in[\\mu,L]}|1-\\alpha\\lambda|."
+        },
+        {
+          "type": "markdown",
+          "content": "The minimax choice balances the endpoint magnitudes: $1-\\alpha\\mu=-(1-\\alpha L)$. Solving explicitly,"
+        },
+        {
+          "type": "latex",
+          "content": "1-\\alpha\\mu=-1+\\alpha L\\Longrightarrow 2=\\alpha(L+\\mu)\\Longrightarrow \\alpha^\\star=\\frac{2}{L+\\mu}."
+        },
+        {
+          "type": "latex",
+          "content": "\\rho^\\star=1-\\alpha^\\star\\mu=1-\\frac{2\\mu}{L+\\mu}=\\frac{L-\\mu}{L+\\mu}=\\frac{\\kappa-1}{\\kappa+1}."
+        },
+        {
+          "type": "markdown",
+          "content": "As $\\kappa=L/\\mu$ grows, $\\rho^\\star\\to1$ and progress slows. A positive-definite\n        preconditioner $P_t$ changes the update to\n        $\\theta_{t+1}=\\theta_t-\\alpha P_tg_t$. Newton's method uses\n        $P_t=H_t^{-1}$ and natural gradient uses an inverse information geometry, but\n        storing or solving with dense $d\\times d$ matrices is usually prohibitive.\n        AdaGrad, RMSProp, and Adam are inexpensive diagonal approximations: they cannot\n        remove rotated cross-coordinate curvature, but they can normalize unequal\n        coordinate scales."
+        },
+        {
+          "type": "subheader",
+          "content": "9 · The optimizer family: what each method adds"
+        },
+        {
+          "type": "markdown",
+          "content": "**SGD** uses the current gradient and has no optimizer memory.\n        **Heavy-ball momentum** low-pass filters directions that persist across steps.\n        **Nesterov momentum** evaluates the gradient after a look-ahead displacement,\n        coupling prediction and correction. **AdaGrad** accumulates every squared\n        gradient, making its effective learning rate monotonically decrease. **RMSProp**\n        replaces that unbounded accumulator with an exponential window. **Adam** combines\n        an exponential first moment with RMSProp-like second-moment scaling and finite-time\n        bias correction. **AdamW** changes regularization, not the moment estimator."
+        },
+        {
+          "type": "latex",
+          "content": "\\text{AdaGrad:}\\quad G_t=G_{t-1}+g_t\\odot g_t,\\qquad\\theta_t=\\theta_{t-1}-\\alpha\\frac{g_t}{\\sqrt{G_t}+\\varepsilon}."
+        },
+        {
+          "type": "latex",
+          "content": "\\text{RMSProp:}\\quad v_t=\\beta_2v_{t-1}+(1-\\beta_2)g_t\\odot g_t,\\qquad\\theta_t=\\theta_{t-1}-\\alpha\\frac{g_t}{\\sqrt{v_t}+\\varepsilon}."
+        },
+        {
+          "type": "latex",
+          "content": "\\text{Nesterov:}\\quad \\widetilde\\theta_t=\\theta_t-\\alpha\\mu v_t,\\quadv_{t+1}=\\mu v_t+\\nabla F(\\widetilde\\theta_t),\\quad\\theta_{t+1}=\\theta_t-\\alpha v_{t+1}."
+        },
+        {
+          "type": "table",
+          "content": [
+            {
+              "Method": "SGD",
+              "State/parameter": "0",
+              "Adaptation": "none",
+              "Strength": "simple; low memory",
+              "Typical weakness": "conditioning; noisy zig-zag"
+            },
+            {
+              "Method": "Momentum",
+              "State/parameter": "1",
+              "Adaptation": "temporal direction",
+              "Strength": "accelerates persistent gradients",
+              "Typical weakness": "oscillation; coupled tuning"
+            },
+            {
+              "Method": "AdaGrad",
+              "State/parameter": "1",
+              "Adaptation": "cumulative coordinate scale",
+              "Strength": "sparse features; convex regret",
+              "Typical weakness": "learning rate can vanish"
+            },
+            {
+              "Method": "RMSProp",
+              "State/parameter": "1",
+              "Adaptation": "recent coordinate scale",
+              "Strength": "nonstationary scaling",
+              "Typical weakness": "no first-moment smoothing"
+            },
+            {
+              "Method": "Adam",
+              "State/parameter": "2",
+              "Adaptation": "direction + coordinate scale",
+              "Strength": "fast robust defaults",
+              "Typical weakness": "coupled L2; convergence edge cases"
+            },
+            {
+              "Method": "AdamW",
+              "State/parameter": "2",
+              "Adaptation": "Adam + uniform decay",
+              "Strength": "predictable norm control",
+              "Typical weakness": "extra memory; decay/schedule interaction"
+            }
+          ]
+        },
+        {
+          "type": "caption",
+          "content": "State/parameter counts optimizer tensors, excluding the parameter and gradient. Mixed-precision training may also keep full-precision master weights."
+        },
+        {
+          "type": "subheader",
+          "content": "10 · A worked Adam step: why bias correction matters"
+        },
+        {
+          "type": "markdown",
+          "content": "Let $g_1=[4,\\,0.5]^\\top$, $\\beta_1=0.9$, $\\beta_2=0.999$, and initialize\n        $m_0=v_0=0$. Before correction,"
+        },
+        {
+          "type": "latex",
+          "content": "m_1=0.1g_1=[0.4,\\,0.05]^\\top,"
+        },
+        {
+          "type": "latex",
+          "content": "v_1=0.001(g_1\\odot g_1)=[0.016,\\,0.00025]^\\top."
+        },
+        {
+          "type": "markdown",
+          "content": "Applying the exact first-step corrections,"
+        },
+        {
+          "type": "latex",
+          "content": "\\widehat m_1=\\frac{m_1}{1-0.9}=g_1,\\qquad\\widehat v_1=\\frac{v_1}{1-0.999}=g_1\\odot g_1."
+        },
+        {
+          "type": "latex",
+          "content": "\\Delta\\theta_1=-\\alpha\\frac{g_1}{|g_1|+\\varepsilon}\\approx-\\alpha[1,\\,1]^\\top."
+        },
+        {
+          "type": "markdown",
+          "content": "Thus the first Adam step is nearly sign descent: magnitude information is\n        normalized away coordinate-wise. Later, $m_t/\\sqrt{v_t}$ encodes the ratio of\n        persistent signed direction to recent root-mean-square magnitude. This explains\n        both Adam's resilience to scale disparities and its inability to represent a\n        rotated dense inverse Hessian."
+        },
+        {
+          "type": "subheader",
+          "content": "11 · Convergence caveats and important variants"
+        },
+        {
+          "type": "markdown",
+          "content": "Adam's intuitive moving averages do not guarantee convergence for every online\n        convex sequence. A problematic coordinate can receive an increasing effective\n        step because $v_t$ forgets old large gradients. AMSGrad prevents this particular\n        failure by maintaining a coordinate-wise nondecreasing denominator:"
+        },
+        {
+          "type": "latex",
+          "content": "v_t=\\beta_2v_{t-1}+(1-\\beta_2)g_t^2,\\qquad\\widetilde v_t=\\max(\\widetilde v_{t-1},v_t),\\qquad\\theta_t=\\theta_{t-1}-\\alpha_t\\frac{m_t}{\\sqrt{\\widetilde v_t}+\\varepsilon}."
+        },
+        {
+          "type": "markdown",
+          "content": "The result is not “Adam always fails”; it is that implementation details,\n        assumptions, and schedules matter. Other variants target different mechanisms:\n        RAdam adjusts early adaptive variance, AdaBelief tracks squared prediction error\n        $(g_t-m_t)^2$, LAMB/LARS use layer-wise trust ratios for very large batches, and\n        Adafactor factorizes second moments to reduce memory. These are not universally\n        superior replacements. Ask which failure mechanism is present before changing the\n        optimizer."
+        },
+        {
+          "type": "subheader",
+          "content": "12 · Hyperparameters as time scales, not magic constants"
+        },
+        {
+          "type": "markdown",
+          "content": "An exponential average gives observation $g_{t-k}$ weight $(1-\\beta)\\beta^k$. Its characteristic memory is approximately"
+        },
+        {
+          "type": "latex",
+          "content": "\\tau\\approx\\frac{1}{1-\\beta}."
+        },
+        {
+          "type": "markdown",
+          "content": "Therefore $\\beta_1=0.9$ remembers roughly 10 steps and $\\beta_2=0.999$ roughly\n        1000 steps. Raising $\\beta_2$ smooths noisy curvature estimates but reacts slowly\n        after distribution shifts. Lowering it adapts faster but makes the denominator\n        noisier. $\\varepsilon$ controls the transition between normalized and effectively\n        unnormalized coordinates; changing it can matter in low precision.\n\n        A schedule makes the actual update scale $\\alpha_t$, not a constant $\\alpha$.\n        Warm-up limits early movement while activations, moments, and normalization\n        statistics settle. Cosine decay, inverse-square-root decay, or step decay then\n        lower the noise floor. Gradient clipping changes $g_t$ before moment estimation;\n        clipping by global norm preserves direction while capping magnitude:"
+        },
+        {
+          "type": "latex",
+          "content": "g_t^{\\mathrm{clip}}=g_t\\min\\left(1,\\frac{c}{\\|g_t\\|_2+\\delta}\\right)."
+        },
+        {
+          "type": "subheader",
+          "content": "13 · AdamW in a real training system"
+        },
+        {
+          "type": "markdown",
+          "content": "A defensible baseline separates parameter groups:\n\n        - **Decay:** dense weight matrices in attention, MLPs, convolutions, and embeddings\n          when norm control is intended.\n        - **Usually no decay:** biases and normalization scale/shift parameters.\n        - **Explicit decision required:** token/position embeddings, output heads, scalar\n          temperatures, and physically meaningful robot parameters.\n        - **Order matters:** confirm whether the framework applies decay before or after\n          the adaptive step and whether schedulers report the pre- or post-update rate.\n        - **Mixed precision:** unscale gradients before clipping; check overflow skips so\n          moment and schedule counters do not advance inconsistently.\n        - **Distributed training:** global clipping and gradient averaging semantics must\n          match the intended effective batch size."
+        },
+        {
+          "type": "code",
+          "content": "decay, no_decay = [], []\nfor name, parameter in model.named_parameters():\n    if not parameter.requires_grad:\n        continue\n    if parameter.ndim < 2 or name.endswith(\"bias\"):\n        no_decay.append(parameter)\n    else:\n        decay.append(parameter)\n\noptimizer = torch.optim.AdamW(\n    [\n        {\"params\": decay, \"weight_decay\": 0.01},\n        {\"params\": no_decay, \"weight_decay\": 0.0},\n    ],\n    lr=3e-4,\n    betas=(0.9, 0.999),\n    eps=1e-8,\n)",
+          "language": "python"
+        },
+        {
+          "type": "caption",
+          "content": "This grouping is a baseline, not a theorem. Match exclusions to architecture and regularization intent."
+        },
+        {
+          "type": "subheader",
+          "content": "14 · Diagnostics, selection guide, and mastery checks"
+        },
+        {
+          "type": "markdown",
+          "content": "Log more than loss. At minimum inspect **gradient norm**, **update norm**,\n        **parameter norm**, **update-to-weight ratio**, learning rate, clipping fraction,\n        overflow/skip count, training–validation gap, and per-group statistics. A falling\n        loss with exploding parameter norm suggests weak regularization; tiny update ratios\n        with nonzero gradients suggest stale second moments or an exhausted schedule;\n        repeated clipping suggests the nominal learning rate or data scale is wrong."
+        },
+        {
+          "type": "table",
+          "content": [
+            {
+              "Observed regime": "Well-scaled dense supervised problem",
+              "Start with": "SGD + momentum",
+              "Reason": "low memory; often strong final generalization"
+            },
+            {
+              "Observed regime": "Sparse or highly unequal feature frequencies",
+              "Start with": "AdaGrad or AdamW",
+              "Reason": "coordinate adaptation"
+            },
+            {
+              "Observed regime": "Transformer/diffusion baseline",
+              "Start with": "AdamW + warm-up + decay schedule",
+              "Reason": "established robust recipe"
+            },
+            {
+              "Observed regime": "Very large batch",
+              "Start with": "AdamW, LAMB/LARS only if needed",
+              "Reason": "trust ratios target layer-scale mismatch"
+            },
+            {
+              "Observed regime": "Memory-limited large model",
+              "Start with": "Adafactor or optimizer-state sharding",
+              "Reason": "reduce two-state-tensor cost"
+            },
+            {
+              "Observed regime": "Nonstationary online objective",
+              "Start with": "RMSProp/AdamW with shorter second-moment memory",
+              "Reason": "faster scale adaptation"
+            }
+          ]
+        },
+        {
+          "type": "markdown",
+          "content": "**Mastery checks**\n\n        1. Re-derive the SGD stability interval and minimax scalar step for a quadratic.\n        2. Explain why Adam is invariant to a positive coordinate-wise rescaling of a\n           stationary gradient at the first step, and where $\\varepsilon$ breaks it.\n        3. Derive why $L_2$ and weight decay coincide for scalar-step SGD but not for Adam.\n        4. Predict which trajectory changes when $\\beta_2$ moves from $0.999$ to $0.9$.\n        5. Design an ablation separating optimizer, schedule, clipping, and decay effects.\n        6. Given a training run, use logged update-to-weight ratios to identify frozen,\n           unstable, or over-regularized parameter groups."
+        },
+        {
+          "type": "subheader",
+          "content": "15 · Video masterclasses and source ledger"
+        },
+        {
+          "type": "video",
+          "content": "https://www.youtube.com/watch?v=JXQT_vxqwIs"
+        },
+        {
+          "type": "caption",
+          "content": "DeepLearning.AI · Adam Optimization Algorithm"
+        },
+        {
+          "type": "video",
+          "content": "https://www.youtube.com/watch?v=NE88eqLngkg"
+        },
+        {
+          "type": "caption",
+          "content": "DeepBean · Momentum, RMSProp, AdaGrad, and Adam"
+        },
+        {
+          "type": "markdown",
+          "content": "<div class=\"citation\">\n        <b>Primary and implementation sources</b><br>\n        [1] J. Duchi, E. Hazan, and Y. Singer, “Adaptive Subgradient Methods for\n        Online Learning and Stochastic Optimization,”\n        <a href=\"https://jmlr.org/papers/v12/duchi11a.html\">JMLR 12</a>, 2011.<br>\n        [2] I. Sutskever, J. Martens, G. Dahl, and G. Hinton, “On the Importance of\n        Initialization and Momentum in Deep Learning,”\n        <a href=\"https://proceedings.mlr.press/v28/sutskever13.html\">ICML/PMLR 28</a>, 2013.<br>\n        [3] D. P. Kingma and J. Ba, “Adam: A Method for Stochastic Optimization,”\n        <a href=\"https://arxiv.org/abs/1412.6980\">arXiv:1412.6980</a>, 2014.<br>\n        [4] I. Loshchilov and F. Hutter, “Decoupled Weight Decay Regularization,”\n        <a href=\"https://arxiv.org/abs/1711.05101\">arXiv:1711.05101</a>, 2017.<br>\n        [5] S. J. Reddi, S. Kale, and S. Kumar, “On the Convergence of Adam and Beyond,”\n        <a href=\"https://arxiv.org/abs/1904.09237\">arXiv:1904.09237</a>, 2019.<br>\n        [6] PyTorch contributors, <a href=\"https://docs.pytorch.org/docs/stable/generated/torch.optim.AdamW.html\">\n        torch.optim.AdamW reference</a>, accessed 2026-08-29.\n        </div>"
+        }
+      ],
+      "module_source_url": "https://github.com/Chippy1520/ai-research-lab/blob/main/modules/module_01.py",
+      "experiment_path": "experiments/adamw_reference.py",
+      "experiment_source": "\"\"\"From-scratch AdamW reference implementation and deterministic demonstration.\"\"\"\n\nfrom __future__ import annotations\n\nfrom collections.abc import Iterable\nfrom typing import Any\n\nimport torch\nfrom torch import Tensor\n\n\nclass AdamW:\n    \"\"\"Optimize tensors using bias-corrected Adam and decoupled weight decay.\n\n    Parameters\n    ----------\n    parameters:\n        Iterable of leaf tensors whose ``.grad`` fields are populated.\n    learning_rate:\n        Positive step size :math:`\\\\alpha`.\n    betas:\n        Exponential decay rates :math:`(\\\\beta_1, \\\\beta_2)` in ``[0, 1)``.\n    epsilon:\n        Positive numerical-stability constant.\n    weight_decay:\n        Non-negative decoupled shrinkage coefficient :math:`\\\\lambda`.\n    \"\"\"\n\n    def __init__(\n        self,\n        parameters: Iterable[Tensor],\n        learning_rate: float = 1e-3,\n        betas: tuple[float, float] = (0.9, 0.999),\n        epsilon: float = 1e-8,\n        weight_decay: float = 1e-2,\n    ) -> None:\n        self.parameters = list(parameters)\n        self._validate(learning_rate, betas, epsilon, weight_decay)\n        if not self.parameters:\n            raise ValueError(\"parameters must contain at least one tensor\")\n        if any(not parameter.is_leaf for parameter in self.parameters):\n            raise ValueError(\"AdamW can optimize only leaf tensors\")\n\n        self.learning_rate = float(learning_rate)\n        self.beta1, self.beta2 = map(float, betas)\n        self.epsilon = float(epsilon)\n        self.weight_decay = float(weight_decay)\n        self.step_index = 0\n        self.first_moments = [torch.zeros_like(p) for p in self.parameters]\n        self.second_moments = [torch.zeros_like(p) for p in self.parameters]\n\n    @staticmethod\n    def _validate(\n        learning_rate: float,\n        betas: tuple[float, float],\n        epsilon: float,\n        weight_decay: float,\n    ) -> None:\n        if learning_rate <= 0.0:\n            raise ValueError(\"learning_rate must be positive\")\n        if len(betas) != 2 or any(not 0.0 <= beta < 1.0 for beta in betas):\n            raise ValueError(\"both beta values must lie in [0, 1)\")\n        if epsilon <= 0.0:\n            raise ValueError(\"epsilon must be positive\")\n        if weight_decay < 0.0:\n            raise ValueError(\"weight_decay cannot be negative\")\n\n    @torch.no_grad()\n    def step(self) -> None:\n        \"\"\"Apply one AdamW update to every parameter with a gradient.\"\"\"\n        self.step_index += 1\n        correction1 = 1.0 - self.beta1**self.step_index\n        correction2 = 1.0 - self.beta2**self.step_index\n\n        for parameter, first, second in zip(\n            self.parameters, self.first_moments, self.second_moments, strict=True\n        ):\n            gradient = parameter.grad\n            if gradient is None:\n                continue\n            if gradient.is_sparse:\n                raise RuntimeError(\"This reference AdamW does not support sparse gradients\")\n\n            # Decay is a direct parameter-space contraction, not part of g_t.\n            parameter.mul_(1.0 - self.learning_rate * self.weight_decay)\n            first.mul_(self.beta1).add_(gradient, alpha=1.0 - self.beta1)\n            second.mul_(self.beta2).addcmul_(\n                gradient, gradient, value=1.0 - self.beta2\n            )\n            first_hat = first / correction1\n            second_hat = second / correction2\n            parameter.addcdiv_(\n                first_hat,\n                second_hat.sqrt().add_(self.epsilon),\n                value=-self.learning_rate,\n            )\n\n    def zero_grad(self) -> None:\n        \"\"\"Set existing gradients to ``None`` without allocating zero tensors.\"\"\"\n        for parameter in self.parameters:\n            parameter.grad = None\n\n    def state_dict(self) -> dict[str, Any]:\n        \"\"\"Return serializable optimizer state for checkpointing.\"\"\"\n        return {\n            \"step_index\": self.step_index,\n            \"learning_rate\": self.learning_rate,\n            \"betas\": (self.beta1, self.beta2),\n            \"epsilon\": self.epsilon,\n            \"weight_decay\": self.weight_decay,\n            \"first_moments\": [moment.clone() for moment in self.first_moments],\n            \"second_moments\": [moment.clone() for moment in self.second_moments],\n        }\n\n\ndef run_quadratic_demo(steps: int = 500) -> tuple[Tensor, float]:\n    \"\"\"Minimize an anisotropic quadratic and return parameters and final loss.\"\"\"\n    if steps < 1:\n        raise ValueError(\"steps must be at least one\")\n    torch.manual_seed(7)\n    parameter = torch.tensor([4.0, -3.0], dtype=torch.float64, requires_grad=True)\n    hessian = torch.tensor([[40.0, 0.0], [0.0, 1.0]], dtype=torch.float64)\n    target = torch.tensor([1.0, 1.0], dtype=torch.float64)\n    optimizer = AdamW([parameter], learning_rate=0.05, weight_decay=0.01)\n\n    loss = torch.tensor(float(\"inf\"), dtype=torch.float64)\n    for _ in range(steps):\n        displacement = parameter - target\n        loss = 0.5 * displacement @ hessian @ displacement\n        loss.backward()\n        optimizer.step()\n        optimizer.zero_grad()\n\n    displacement = parameter.detach() - target\n    final_loss = float(0.5 * displacement @ hessian @ displacement)\n    return parameter.detach(), final_loss\n\n\nif __name__ == \"__main__\":\n    solution, objective = run_quadratic_demo()\n    print(f\"solution={solution.tolist()}, loss={objective:.6e}\")\n"
+    }
+  ]
+}
