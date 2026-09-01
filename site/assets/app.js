@@ -98,6 +98,8 @@ function renderMap() {
     button.className = "hub-node";
     button.style.left = `${x}%`;
     button.style.top = `${y}%`;
+    if (x < 8) button.classList.add("edge-left");
+    if (x > 92) button.classList.add("edge-right");
     button.style.setProperty("--count", count);
     button.setAttribute("aria-label", `Inspect ${hub.name}`);
     button.innerHTML = `<i></i><span>${escapeHtml(hub.name)}</span>`;
