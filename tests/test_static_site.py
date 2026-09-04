@@ -37,7 +37,10 @@ def test_static_site_builds_from_current_intelligence() -> None:
     assert manifest["company_count"] >= 12
     assert manifest["opening_count"] >= 100
     assert manifest["early_career_count"] >= 6
-    assert manifest["reports"][0]["date"] == "2026-09-01"
+    ecosystem = json.loads(
+        (ROOT / "intelligence" / "ecosystem.json").read_text(encoding="utf-8")
+    )
+    assert manifest["reports"][0]["date"] == ecosystem["as_of"]
     assert manifest["curriculum"] == {
         "current_day": 1,
         "mapped_lessons": 72,

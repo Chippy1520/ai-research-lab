@@ -292,6 +292,26 @@ def _atomic_write(payload: dict[str, Any]) -> None:
         raise
 
 
+def _preserve_failed_company_openings(
+    previous: dict[str, dict[str, Any]],
+    company: str,
+    today: str,
+) -> list[dict[str, Any]]:
+    """Retain last verified roles when one official board is temporarily unavailable."""
+    retained = []
+    for prior in previous.values():
+        if str(prior.get("company")) != company:
+            continue
+        opening = dict(prior)
+        opening["status"] = "unverified"
+        opening["verification_note"] = (
+            f"Official board unavailable during the {today} scan; retained from the "
+            "last successful observation."
+        )
+        retained.append(opening)
+    return retained
+
+
 def refresh() -> dict[str, Any]:
     """Refresh accessible official boards, preserving local first-seen dates."""
     with JOBS_PATH.open("r", encoding="utf-8") as stream:
@@ -309,11 +329,17 @@ def refresh() -> dict[str, Any]:
             openings.extend(_greenhouse_openings(company, board))
         except Exception as error:  # network failures must not erase other boards
             failures.append({"company": company, "error": str(error)})
+            openings.extend(
+                _preserve_failed_company_openings(previous, company, today)
+            )
     for company, board in LEVER_BOARDS.items():
         try:
             openings.extend(_lever_openings(company, board))
         except Exception as error:  # network failures must not erase other boards
             failures.append({"company": company, "error": str(error)})
+            openings.extend(
+                _preserve_failed_company_openings(previous, company, today)
+            )
 
     for opening in openings:
         old = previous.get(str(opening["url"]))

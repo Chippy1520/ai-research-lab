@@ -5,14 +5,19 @@ from __future__ import annotations
 from pathlib import Path
 
 from robotics_intelligence import latest_report, load_ecosystem, load_jobs
-from scripts.update_robotics_jobs import _classify_seniority, _derive_signals
+from scripts.update_robotics_jobs import (
+    _classify_seniority,
+    _derive_signals,
+    _preserve_failed_company_openings,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_ecosystem_has_sourced_humanoid_and_adjacent_companies() -> None:
     metadata, companies = load_ecosystem(ROOT / "intelligence" / "ecosystem.json")
-    assert metadata["as_of"] == "2026-09-01"
+    report_date, _ = latest_report(ROOT / "intelligence" / "reports")
+    assert metadata["as_of"] == report_date
     assert len(companies) >= 12
     assert sum(company.category == "Humanoid platform" for company in companies) >= 7
     assert len(metadata["hubs"]) >= 7
@@ -60,8 +65,26 @@ def test_signal_derivation_counts_companies_not_repeated_roles() -> None:
     assert _classify_seniority("Firmware Intern [Fall 2026]") == "internship"
 
 
+def test_failed_board_preserves_previous_roles_without_advancing_last_seen() -> None:
+    previous = {
+        "https://example.com/job": {
+            "company": "Figure AI",
+            "title": "Robotics Intern",
+            "url": "https://example.com/job",
+            "first_seen": "2026-09-01",
+            "last_seen": "2026-09-03",
+            "status": "tracked",
+        }
+    }
+    retained = _preserve_failed_company_openings(previous, "Figure AI", "2026-09-04")
+    assert retained[0]["status"] == "unverified"
+    assert retained[0]["last_seen"] == "2026-09-03"
+    assert previous["https://example.com/job"]["status"] == "tracked"
+
+
 def test_daily_report_archive_has_a_dated_baseline() -> None:
     report_date, report = latest_report(ROOT / "intelligence" / "reports")
-    assert report_date == "2026-09-01"
+    metadata, _ = load_ecosystem(ROOT / "intelligence" / "ecosystem.json")
+    assert report_date == metadata["as_of"]
     assert "Verified early-career openings" in report
     assert "valuation" in report.lower()

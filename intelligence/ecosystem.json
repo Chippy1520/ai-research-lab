@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "as_of": "2026-09-01",
+  "as_of": "2026-09-04",
   "scope": "US-headquartered humanoid builders plus foreign companies with substantial US humanoid operations and adjacent US embodied-AI platform companies.",
   "funding_methodology": "Funding observations are the latest major disclosed raise or transaction capital, not necessarily cumulative capital raised. Read each source card before comparing companies.",
   "valuation_methodology": "Values are dated observations, not live appraisals. Private marks use the latest completed disclosed financing when available; proposed transactions and reported talks are labeled separately. Tesla is shown at whole-company public market capitalization, not an Optimus segment valuation. Boston Dynamics uses its 2020 acquisition basis because no current standalone mark is public. Undisclosed is more accurate than an inferred number.",
@@ -17,7 +17,7 @@
       "cluster": "Bay Area",
       "category": "Humanoid platform",
       "focus": "General-purpose humanoids, vertically integrated hardware, Helix vision-language-action models, and industrial/home task deployment.",
-      "stage": "Late-stage private; industrial deployments and production scale-up",
+      "stage": "Late-stage private; industrial deployments, production scale-up, and contracted AI-compute expansion",
       "funding_usd_millions": 1000,
       "valuation_usd_billions": 39,
       "valuation_label": "$39B post-money",
@@ -35,6 +35,16 @@
           "title": "Figure official careers",
           "url": "https://www.figure.ai/careers",
           "date": "accessed 2026-09-01"
+        },
+        {
+          "title": "Figure and Nscale sign strategic partnership for up to 100,000 GPUs",
+          "url": "https://www.figure.ai/news/figure-and-nscale-sign-strategic-partnership",
+          "date": "2026-09-03"
+        },
+        {
+          "title": "Nscale and Figure sign strategic partnership to power physical AI",
+          "url": "https://www.nscale.com/press-releases/nscale-and-figure",
+          "date": "2026-09-03"
         }
       ]
     },
