@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "last_checked": "2026-09-05T16:03:18+05:30",
+  "last_checked": "2026-09-06T00:27:59+05:30",
   "methodology": "Only roles resolved to an official company site or its named applicant-tracking system are published. The deterministic scanner covers accessible Greenhouse and Lever boards; the daily research agent checks Workday, Ashby, custom, and blocked pages separately. 'New' means newly observed by this local tracker, not necessarily newly posted by the employer. Qualifications are aggregated across companies before portfolio advice is promoted.",
   "openings": [
     {
@@ -11,7 +11,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/5985132004?gh_jid=5985132004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked",
       "qualification_excerpt": "REQUIREMENTS Foundational C++: Basic understanding of Modern C++ (e.g., classes, memory management, and OOP principles). Scripting: Proficiency in Python for data analysis, automation, or testing. Physics & Math Foundations: Solid understanding of Newtonian physics (forces, torques) and linear algebra (vectors, matrices, and coordinate systems). Robotics Basics: Familiarity with standard robot components like actuators, encoders, and IMUs. Development Tools: Experience with Git for version control and comfort working in a Linux environment. Collaborative Mindset: Strong communication skills and a desire to solve complex problems within a multidisciplinary team. EDUCATION and/or EXPERIENCE Cu…"
     },
@@ -23,7 +23,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4676467006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked",
       "qualification_excerpt": "Requirements: Undergraduate student (Senior) or recent graduate in Electrical Engineering or related field. Minimum 10 weeks internship, 1 to 2 terms preferred. Solid EE fundamentals with hands-on experience designing, building, and testing PCBAs. Experience with design automation (EDA) tools, preferably Altium in both schematics and layout. Experience with power electronics (motor driver, switch mode power supplies…), digital electronics (MCU, FPGA, Ethernet, USB, SPI, I2C…), and analog electronics (filters, ADC/DAC…) Strong verbal and written communication skills. Bonus Qualifications: Experience using LTspice, Python, and Matlab. Embedded programming of DSPs, microcontrollers, and FPGAs.…"
     },
@@ -35,7 +35,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4691070006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked",
       "qualification_excerpt": "Requirements: Undergraduate student (Senior) or recent graduate in Computer Engineering, Computer Science or related field Minimum 10 weeks internship, 1 to 2 terms preferred Fluent in C, C++, and Python Experience implementing low level software on bare-metal systems and RTOS Good knowledge of computer architecture Deep understanding of communication buses and protocols like Ethernet, Ethercat, Serial, CAN or USB Comfortable using lab instruments (oscilloscope, logic analyzer) and in-circuit debugging tools Bonus Qualifications: Experience with motor controllers or battery management systems Experience implementing CI/CD infrastructures Familiar with Agile and Test driven development The US…"
     },
@@ -47,7 +47,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4613067006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked",
       "qualification_excerpt": "requirements. Requirements: Portfolio or website showcasing relevant projects and your role Pursuing a degree in Mechanical, Robotics, Mechatronics, Electrical or a related engineering field, with at least two years completed by the start of the internship Demonstrated hands-on experience designing, building, and testing mechanical or electromechanical prototypes. Familiarity version control (Git) and programming (e.g., Python, C++, C, MATLAB) Strong hands-on hardware aptitude and a proven ability to take hardware projects from concept to reality. Excellent analytical and problem-solving skills with a keen attention to detail. Strong written and verbal communication skills for effective coll…"
     },
@@ -59,7 +59,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4702104006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked",
       "qualification_excerpt": "Requirements: Pursuing a Bachelor’s degree (Senior) or recent graduate in Computer/Electrical Engineering, Power Electronics, Robotics, or a related field. Minimum 10-week internship availability; 1–2 terms preferred. Strong understanding of Battery design and operation considerations. Strong proficiency with the Linux operating system. Strong electrical understanding of the system and components Bonus Qualifications: Understanding of motor control theory Experience with simulation of power systems, optimization of architectures. Proficient with Python. The US base salary range for this full-time position is between $40 - $45/hr. The pay offered for this position may vary based on several in…"
     },
@@ -71,7 +71,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=5986750004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -82,7 +82,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6138236004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -93,7 +93,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6014586004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -104,7 +104,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6132259004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -115,7 +115,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6032175004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -126,7 +126,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6127693004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -137,7 +137,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=5786075004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -148,7 +148,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6103178004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -159,7 +159,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6019178004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -170,7 +170,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6164697004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -181,7 +181,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6008696004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -192,7 +192,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6161662004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -203,7 +203,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6148969004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -214,7 +214,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=5850335004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -225,7 +225,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6138661004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-03",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -236,7 +236,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6127729004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -247,7 +247,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6164974004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -258,7 +258,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6127713004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -269,7 +269,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6007559004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -280,7 +280,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6083311004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -291,7 +291,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6180281004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-04",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -302,7 +302,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=5833390004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -313,7 +313,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=5973040004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -324,7 +324,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6098736004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -335,7 +335,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6026732004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -346,7 +346,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=5789714004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -357,7 +357,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6107280004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -368,7 +368,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=5994662004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -379,7 +379,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=5972788004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -390,7 +390,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6144405004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -401,7 +401,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=6146407004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -412,7 +412,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=5986772004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -423,7 +423,7 @@
       "url": "https://www.agilityrobotics.com/about/job-post?gh_jid=5833376004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -434,7 +434,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6119206004?gh_jid=6119206004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -445,7 +445,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6175618004?gh_jid=6175618004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -456,7 +456,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/5780398004?gh_jid=5780398004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -467,7 +467,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6107174004?gh_jid=6107174004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -478,7 +478,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6016652004?gh_jid=6016652004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -489,7 +489,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/5997414004?gh_jid=5997414004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -500,7 +500,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6142284004?gh_jid=6142284004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -511,7 +511,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/5825048004?gh_jid=5825048004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -522,7 +522,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/5809796004?gh_jid=5809796004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -533,7 +533,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6181005004?gh_jid=6181005004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-04",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -544,7 +544,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6135669004?gh_jid=6135669004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -555,7 +555,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/5988482004?gh_jid=5988482004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -566,7 +566,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/5780473004?gh_jid=5780473004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -577,7 +577,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6131831004?gh_jid=6131831004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -588,7 +588,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/5996176004?gh_jid=5996176004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -599,7 +599,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6150041004?gh_jid=6150041004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -610,7 +610,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6145685004?gh_jid=6145685004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -621,7 +621,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6144117004?gh_jid=6144117004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -632,7 +632,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6011922004?gh_jid=6011922004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -643,7 +643,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6015655004?gh_jid=6015655004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -654,7 +654,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/5800433004?gh_jid=5800433004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -665,7 +665,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6150237004?gh_jid=6150237004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -676,7 +676,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6013426004?gh_jid=6013426004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -687,7 +687,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/5766164004?gh_jid=5766164004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -698,7 +698,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6151537004?gh_jid=6151537004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -709,7 +709,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6145262004?gh_jid=6145262004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -720,7 +720,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/5678268004?gh_jid=5678268004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -731,7 +731,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6013277004?gh_jid=6013277004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -742,7 +742,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6017584004?gh_jid=6017584004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -753,7 +753,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6007496004?gh_jid=6007496004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -764,7 +764,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6134490004?gh_jid=6134490004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -775,7 +775,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6119223004?gh_jid=6119223004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -786,7 +786,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/5813673004?gh_jid=5813673004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -797,7 +797,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6142286004?gh_jid=6142286004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -808,7 +808,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6176116004?gh_jid=6176116004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -819,7 +819,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6135687004?gh_jid=6135687004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -830,7 +830,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/5977981004?gh_jid=5977981004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -841,7 +841,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6007624004?gh_jid=6007624004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -852,7 +852,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6105900004?gh_jid=6105900004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -863,7 +863,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/5780475004?gh_jid=5780475004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -874,7 +874,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6111745004?gh_jid=6111745004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -885,7 +885,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6111750004?gh_jid=6111750004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -896,7 +896,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6118867004?gh_jid=6118867004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -907,7 +907,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6145687004?gh_jid=6145687004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -918,7 +918,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6144140004?gh_jid=6144140004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -929,7 +929,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/5766166004?gh_jid=5766166004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -940,7 +940,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/5979028004?gh_jid=5979028004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -951,7 +951,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/5972803004?gh_jid=5972803004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -962,7 +962,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/5988546004?gh_jid=5988546004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -973,7 +973,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6164339004?gh_jid=6164339004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -984,7 +984,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6120107004?gh_jid=6120107004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -995,7 +995,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6179902004?gh_jid=6179902004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-03",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1006,7 +1006,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6142283004?gh_jid=6142283004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1017,7 +1017,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/6135714004?gh_jid=6135714004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1028,7 +1028,7 @@
       "url": "https://boards.greenhouse.io/apptronik/jobs/5572958004?gh_jid=5572958004",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1039,7 +1039,7 @@
       "url": "https://jobs.lever.co/dexterity/fc2356ec-35b9-470f-af00-a4286e275161",
       "source": "official Lever board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1050,7 +1050,7 @@
       "url": "https://jobs.lever.co/dexterity/f955e34a-5b7e-41ac-8ca9-117e554c4635",
       "source": "official Lever board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1061,7 +1061,7 @@
       "url": "https://jobs.lever.co/dexterity/c09a7805-2a30-4f94-aaf4-4547fb619047",
       "source": "official Lever board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1072,7 +1072,7 @@
       "url": "https://jobs.lever.co/dexterity/8f29ecd9-f9cc-458d-afb8-6c1a2e5781dd",
       "source": "official Lever board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1083,7 +1083,7 @@
       "url": "https://jobs.lever.co/dexterity/9c4bd592-9047-4bea-81d5-1e760af2d4b6",
       "source": "official Lever board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1094,7 +1094,7 @@
       "url": "https://jobs.lever.co/dexterity/fa93eb17-30a6-444e-b8de-2fe2a9e288bf",
       "source": "official Lever board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1105,7 +1105,7 @@
       "url": "https://jobs.lever.co/dexterity/0ef47e26-322e-4dd8-95e5-983f61c34edb",
       "source": "official Lever board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1116,7 +1116,7 @@
       "url": "https://jobs.lever.co/dexterity/be469284-f510-4679-a925-7f4011a138af",
       "source": "official Lever board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1127,7 +1127,7 @@
       "url": "https://jobs.lever.co/dexterity/6c8a6e37-c72a-4e93-92fe-04d3b6bcbc66",
       "source": "official Lever board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1138,7 +1138,7 @@
       "url": "https://jobs.lever.co/dexterity/ecdf1193-7946-4345-95be-3c1453d15a94",
       "source": "official Lever board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1149,7 +1149,7 @@
       "url": "https://jobs.lever.co/dexterity/c8a70b59-6dc2-4139-b3bf-758295777c98",
       "source": "official Lever board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1160,7 +1160,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4698164006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1171,7 +1171,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4674754006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1182,7 +1182,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4313470006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1193,7 +1193,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4688381006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1204,7 +1204,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4615252006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1215,7 +1215,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4698860006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1226,7 +1226,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4648134006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1237,7 +1237,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4660876006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1248,7 +1248,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4685172006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1259,7 +1259,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4345915006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1270,7 +1270,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4671699006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1281,7 +1281,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4696533006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1292,7 +1292,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4671712006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1303,7 +1303,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4007375006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1314,7 +1314,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4671704006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1325,7 +1325,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4671707006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1336,7 +1336,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4649851006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1347,7 +1347,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4705296006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1358,7 +1358,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4671703006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1369,7 +1369,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4699095006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1380,7 +1380,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4700899006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1391,7 +1391,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4644956006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1402,7 +1402,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4406268006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1413,7 +1413,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4644962006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1424,7 +1424,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4665205006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1435,7 +1435,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4674402006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1446,7 +1446,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4698238006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1457,7 +1457,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4369739006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1468,7 +1468,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4573670006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1479,7 +1479,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4414646006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1490,7 +1490,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4672013006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1501,7 +1501,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4596421006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1512,7 +1512,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4671442006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1523,7 +1523,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4392728006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1534,7 +1534,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4655837006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1545,7 +1545,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4692559006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1556,7 +1556,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4690871006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1567,7 +1567,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4692572006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1578,7 +1578,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4706280006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1589,7 +1589,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4626247006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     },
     {
@@ -1600,7 +1600,7 @@
       "url": "https://job-boards.greenhouse.io/figureai/jobs/4612612006",
       "source": "official Greenhouse board",
       "first_seen": "2026-09-01",
-      "last_seen": "2026-09-05",
+      "last_seen": "2026-09-06",
       "status": "tracked"
     }
   ],
