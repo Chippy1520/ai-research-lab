@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "as_of": "2026-09-07",
+  "as_of": "2026-09-10",
   "scope": "US-headquartered humanoid builders plus foreign companies with substantial US humanoid operations and adjacent US embodied-AI platform companies.",
   "funding_methodology": "Funding observations are the latest major disclosed raise or transaction capital, not necessarily cumulative capital raised. Read each source card before comparing companies.",
   "valuation_methodology": "Values are dated observations, not live appraisals. Private marks use the latest completed disclosed financing when available; proposed transactions and reported talks are labeled separately. Tesla is shown at whole-company public market capitalization, not an Optimus segment valuation. Boston Dynamics uses its 2020 acquisition basis because no current standalone mark is public. Undisclosed is more accurate than an inferred number.",
@@ -96,7 +96,7 @@
       "cluster": "Pacific Northwest",
       "category": "Humanoid platform",
       "focus": "Digit bipedal mobile manipulation for logistics and industrial material movement, with a dedicated robot factory in Oregon.",
-      "stage": "Commercial deployment; announced public-market transaction",
+      "stage": "Commercial deployment; announced public-market transaction with S-4 registration filed",
       "funding_usd_millions": 620,
       "valuation_usd_billions": 2.5,
       "valuation_label": "$2.5B proposed transaction value",
@@ -114,6 +114,11 @@
           "title": "Agility Robotics careers",
           "url": "https://www.agilityrobotics.com/careers",
           "date": "accessed 2026-09-01"
+        },
+        {
+          "title": "Churchill Capital Corp XI registration statement for the Agility Robotics business combination",
+          "url": "https://www.sec.gov/Archives/edgar/data/2074973/000121390026097764/ea0297114-04.htm",
+          "date": "2026-09-04"
         }
       ]
     },
