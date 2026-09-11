@@ -50,6 +50,7 @@
           <p class="rail-label">In this guide</p>
           <ol class="article-toc">
             <li><a href="#case">Human case study</a></li>
+            <li><a href="#walk">The paper, in order</a></li>
             <li><a href="#tension">The task that breaks BC</a></li>
             <li><a href="#prereqs">Prerequisites</a></li>
             <li><a href="#graph">Knowledge graph</a></li>
@@ -107,6 +108,45 @@
           </div>
           <p class="case-punch">Every later VLA that “predicts action chunks” is citing this case study, whether or not it names ACT. SmolVLA keeps 02 and replaces 03–04 with flow matching and an async queue.</p>
         </div>
+
+        <h2 id="walk">The paper, in order — every section</h2>
+        <p>Open <a href="https://arxiv.org/pdf/2304.13705">arXiv 2304.13705</a> (RSS 2023). Hardware paper + algorithm paper glued together. Read both; LeRobot only ships the algorithm.</p>
+
+        <h3>Abstract</h3>
+        <p>Fine tasks (cable ties, battery slotting) need precision, contact, closed-loop vision. Usually that means expensive robots and calibration. Question: can learning make cheap, imprecise hardware do them? They collect demos on a custom teleop rig and train end-to-end. Imitation has two diseases here: compounding error, and non-stationary humans. ACT is a generative model over action sequences. Six real tasks (open a translucent condiment cup, slot a battery) at 80–90% with ~10 minutes of demos. Site: tonyzhaozh.github.io/aloha.</p>
+
+        <h3>§I Introduction — the cup paragraph</h3>
+        <p>Do not skim this. Opening a condiment cup sitting upright: right gripper tips it, nudges it into the open left gripper; left closes gently and lifts; a right finger comes from below and pries the lid. Millimetres fail. That sequence is the definition of “fine” in this paper: pinch, pry, tear — not pick-and-place.</p>
+        <p>Prior fine systems used expensive robots and sensors. Cheap hardware is less precise, so sensing/planning get worse. Learning is the proposed compensation. Then: compounding error at 50 Hz, and humans who pause or take different styles.</p>
+
+        <h3>§III ALOHA (the five design rules)</h3>
+        <p>Low-cost (lab-budget, comparable to one industrial arm), versatile, user-friendly, repairable, high-performance teleop. Off-the-shelf ViperX-style arms + 3D-printed handles, joint-space leader–follower, no special encoders. Assemble in &lt;2 hours. Capabilities they brag about (zip-tie thread, RAM insert, ping-pong juggle) are teleop existence proofs, not ACT success rates — do not mix those.</p>
+        <p>Actions recorded are <em>leader</em> joint positions, not follower. The PID tracks the gap; force is implicit in that gap. Observations: follower joints + 4 cameras.</p>
+
+        <h3>§IV ACT pipeline</h3>
+        <p>Collect demos → train to predict future action sequence from current obs → at test, load lowest val-loss checkpoint. Main failure they name: compounding error, previous actions leave you off the demonstration manifold.</p>
+
+        <h3>§IV-A Chunking + temporal ensemble</h3>
+        <p>Neuroscience “action chunking”: grasp-the-wrapper is one unit, not 50 independent joint commands. Fix chunk size $k$: every $k$ steps, observe, emit $k$ actions, execute. Effective horizon of a $T$-step task becomes $T/k$. Policy is $\pi_\theta(a_{t:t+k}\mid s_t)$ not $\pi_\theta(a_t\mid s_t)$.</p>
+        <p>Chunking also models non-Markov human pauses: a single-step policy cannot condition on “we are in the middle of a hesitation.”</p>
+        <p>Naive chunk = open-loop for $k$ steps (jerky at boundaries). Fix: query every timestep, dump overlapping predictions into buffers $\mathcal{B}[t:t+k]$, apply $a_t=\sum_i w_i A_t[i]/\sum_i w_i$ with $w_i=\exp(-m\cdot i)$ (Algorithm 2). Newer predictions weigh more.</p>
+        <p>Ablation they want you to remember: $k=1$ ≈ 1% success on the simulated cube/insertion average with ensembling off; $k=100$ ≈ 44%. Chunk size is the paper.</p>
+
+        <h3>§IV-B CVAE</h3>
+        <p>Same observation, different human trajectories; humans are more stochastic where precision does not matter. So the policy is a CVAE over chunks. Encoder: $q(z\mid a_{t:t+k}, o_t)$ as a diagonal Gaussian — in practice they drop images and condition only on proprio + the action chunk (faster). Decoder/policy: $p(a_{t:t+k}\mid o_t,z)$. Train: reconstruction + $\beta$ KL to a Gaussian prior. Test: discard encoder, $z=\mathbf{0}$.</p>
+        <p>Higher $\beta$ ⇒ less information in $z$. They call the CVAE <em>essential</em> for precise tasks from human data (§VI-B).</p>
+
+        <h3>§IV-C Implementation</h3>
+        <p>Encoder: BERT-style transformer, inputs = current joints + $k$ actions + learned [CLS] ($k+2$ tokens); [CLS] predicts $(\mu,\sigma)$ of $z$. Decoder: ResNet-18 on four $480\times 640$ RGB → $15\times 20\times 512$ maps → 300 tokens + 2D sinusoidal PE; transformer encoder mixes cameras + 14-DoF joints + $z$; transformer decoder emits $k\times 14$ absolute joint targets. Dynamixel PID tracks those targets at high rate.</p>
+
+        <h3>§V Tasks (read every one)</h3>
+        <p>Sim: Transfer Cube, Bimanual Insertion. Real: Slide Ziploc, Slot Battery, Open Cup, Thread Velcro (3 mm × 25 mm loop), Prep Tape, Put On Shoe. Each paragraph in V-A is a contact story — mid-air second grasp, springy battery slot, tight shoe. Thread Velcro: millimetres at grasp 1 become &gt;10 mm at insertion.</p>
+
+        <h3>Tables I–II</h3>
+        <p>Sim: scripted vs human data, 3 seeds × 50 evals. Real: 1 seed × 25 evals. ACT crushes BeT and earlier BC. Open Cup: tip-over 100, grasp 96, open lid 84. Thread Velcro insert only 20 — the paper is honest about the hard step. Put On Shoe substeps stay ≥92 after the lift. Quote subtask columns, not a single headline %.</p>
+
+        <h3>What not to mix</h3>
+        <p>ALOHA teleop skill list ≠ ACT policy success. Leader joints ≠ follower joints. $z=0$ at eval is a choice, not “the model is deterministic by architecture.” SmolVLA keeps chunks and throws away this CVAE.</p>
 
         <h2 id="tension">The task that breaks ordinary behavior cloning</h2>
         <p>Opening a translucent condiment cup: tip it with the right gripper, nest it into the left, lift, pry the lid from below. Millimetres matter. Contact is rich. The object deforms. Modeling this well enough to plan is a research project by itself. Humans do not model it; they look and compensate. The paper’s hardware bet is that a <em>pixel-to-joint</em> policy on commodity webcams can do the same, if you can collect demonstrations on a robot that costs about as much as one industrial arm.</p>

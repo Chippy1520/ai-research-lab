@@ -50,6 +50,7 @@
           <p class="rail-label">In this guide</p>
           <ol class="article-toc">
             <li><a href="#case">Human case study</a></li>
+            <li><a href="#walk">The paper, in order</a></li>
             <li><a href="#tension">Why this paper exists</a></li>
             <li><a href="#prereqs">Prerequisites</a></li>
             <li><a href="#graph">Knowledge graph</a></li>
@@ -105,6 +106,42 @@
           </div>
           <p class="case-punch">COLMAP is the ruler-and-tripod version of the same job. VGGT is the glance. The rest of the guide is how the glance is implemented.</p>
         </div>
+
+        <h2 id="walk">The paper, in order — every section</h2>
+        <p>Open <a href="https://arxiv.org/pdf/2503.11651">arXiv 2503.11651</a>. CVPR 2025 Best Paper. Walk it in the authors’ order.</p>
+
+        <h3>Abstract</h3>
+        <p>VGGT is a feed-forward net that infers cameras, point maps, depth, and 3D tracks from one, a few, or hundreds of views. 3D vision has been specialized per task; this is one model for all of them. Reconstruction in under a second, still beating methods that post-process with geometry optimization. SOTA on camera pose, multi-view depth, dense clouds, point tracking. Pretrained VGGT as a backbone also helps non-rigid tracking and feed-forward novel-view synthesis. Code: facebookresearch/vggt.</p>
+
+        <h3>§1 Introduction</h3>
+        <p>Problem: 3D attributes of a scene from images, with a feed-forward net. Tradition is visual geometry + iterative BA (Hartley &amp; Zisserman). Learning used to be complementary (matching, monocular depth). VGGSfM then folded learning and differentiable BA into one loop — geometry still sits in the inner loop, which is slow and complex.</p>
+        <p>The question: can a net now skip almost all geometry post-processing? DUSt3R / MASt3R are the nearest yes — but they take <em>two</em> images and fuse pairs with extra optimization for $N&gt;2$.</p>
+        <p>VGGT’s bet: a large transformer, almost no 3D inductive bias, trained on a pile of 3D-annotated data, $N$ variable.</p>
+
+        <h3>§3.1 Problem (Eq. 1)</h3>
+        <p>Input $(I_i)_{i=1}^N$, $I_i\in\mathbb{R}^{3\times H\times W}$. Output, per frame: cameras $\mathbf{g}_i$, depth $D_i$, point map $P_i$, tracking features $T_i$. Equivariant to permuting frames $2\ldots N$; frame 1 is the world origin ($\mathbf{q}_1=[0,0,0,1]$, $\mathbf{t}_1=\mathbf{0}$).</p>
+        <p><strong>Over-complete predictions.</strong> $\mathbf{g}$ is recoverable from $P$ by PnP; depth from $P$ and $\mathbf{g}$. They still train all heads: extra supervision helps. At test, composing depth + cameras beats the dedicated point-map head. That sentence is the deployment default.</p>
+
+        <h3>§3.2 Backbone</h3>
+        <p>Minimal 3D bias. DINO-style patchify each image to $K$ tokens. Alternating-Attention (AA): frame-wise SA (within a view) then global SA (across views), $L=24$ pairs. No cross-attention — only self-attention. AA is the inductive bias they did keep: integrate across images, normalize within an image.</p>
+
+        <h3>§3.3 Heads</h3>
+        <p>Per image: camera token $\mathrm{t}^{\mathbf{g}}_i$ plus four register tokens (Darcet et al.). Frame 1 gets a <em>different</em> learned camera/register set so the net knows which view is the origin. After AA, discard registers; camera token → $\mathbf{g}=[q,t,f]$ (9-D); image tokens → DPT heads for depth, points, track features.</p>
+        <p>Tracker $\mathcal{T}$ is CoTracker2 on $T_i$. Query point in image $q$ (train: $q=1$), bilinear sample, correlate with other $T_i$, self-attend, emit 2D correspondences. No temporal order assumed — unordered photo sets, not just video.</p>
+
+        <h3>§3.4 Training</h3>
+        <p>$\mathcal{L}=\mathcal{L}_{\mathrm{camera}}+\mathcal{L}_{\mathrm{depth}}+\mathcal{L}_{\mathrm{pmap}}+\lambda\mathcal{L}_{\mathrm{track}}$, $\lambda=0.05$. Camera/depth/point losses sit on similar scales (unweighted). Data mix: Co3D, MegaDepth, ScanNet, Hypersim, BlendMVS, MVS-Synth, PointOdyssey, Virtual KITTI, Aria, Objaverse-like assets — real + synthetic, indoor + outdoor, SfM labels + renderer labels. Size comparable to MASt3R’s mix.</p>
+
+        <h3>§4 Experiments, table by table</h3>
+        <p><strong>§4.1 cameras (Table 1).</strong> CO3Dv2 + RealEstate10K, 10 images/scene, AUC@30 (min of relative rotation/translation accuracy). VGGT feed-forward beats COLMAP+SPSG, PixSfM, PoseDiff, DUSt3R, MASt3R, VGGSfM v2 — those last ones still run global alignment or BA (~7–20 s). VGGT: ~0.2 s. Optional BA on VGGT init still helps and is ~2 s because you skip triangulation.</p>
+        <p><strong>§4.2 depth (DTU).</strong> Accuracy / completeness / overall (Chamfer). Only DUSt3R and VGGT lack GT cameras. Overall 1.741 → 0.382 vs DUSt3R; comparable to methods that <em>are given</em> GT cameras (GeoMVSNet cost volumes, MASt3R with GT triangulation).</p>
+        <p><strong>§4.3 point maps (ETH3D).</strong> 10 frames, Umeyama align, official masks. Same three Chamfer numbers vs DUSt3R/MASt3R.</p>
+        <p><strong>§4.4 tracking / matching.</strong> Tracking head is not a two-view specialist, yet beats Roma on ScanNet-1500 AUC. Finetuned backbone also lifts dynamic CoTracker.</p>
+        <p><strong>Qualitative (Figs. 3–4).</strong> Oil painting geometry, two views with <em>no overlap</em>, repeated texture — DUSt3R fails or OOMs past 32 frames; VGGT does not.</p>
+        <p><strong>§4.5 over-complete ablation</strong> is the reason they predict redundant heads. Read it before you delete a loss “because PnP exists.”</p>
+
+        <h3>What not to claim</h3>
+        <p>Feed-forward already beats prior pipelines; BA on top can still add points. Pairwise DUSt3R is not the same model class — do not quote VGGT’s $N=100$ numbers against a 2-view method without saying so. Single-view 3D is an emergent trick, not the training task.</p>
 
         <h2 id="tension">Why this paper exists</h2>
         <p>Structure-from-Motion (SfM) estimates cameras and a sparse point cloud from overlapping images. The industrial implementation is COLMAP: keypoints, matching, geometric verification, triangulation, bundle adjustment (BA). Learning has been invading that pipeline for a decade — learned detectors, learned matchers, even differentiable BA (VGGSfM). Geometry, however, still sits in the loop, which is why reconstruction is slow and brittle on texture-poor or few-view scenes.</p>

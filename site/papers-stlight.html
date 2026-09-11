@@ -50,6 +50,7 @@
           <p class="rail-label">In this guide</p>
           <ol class="article-toc">
             <li><a href="#case">Human case study</a></li>
+            <li><a href="#walk">The paper, in order</a></li>
             <li><a href="#tension">Why RNNs dominate STL</a></li>
             <li><a href="#prereqs">Prerequisites</a></li>
             <li><a href="#graph">Knowledge graph</a></li>
@@ -99,6 +100,46 @@
           </div>
           <p class="case-punch">ConvLSTM is the person who narrates every past frame before answering. STLight is the person who just watches. The rest of the guide is kernels, shapes, and the FLOPs table that makes that claim quantitative.</p>
         </div>
+
+        <h2 id="walk">The paper, in order — every section</h2>
+        <p>Open <a href="https://arxiv.org/pdf/2411.10198">arXiv 2411.10198</a>. Code: github.com/AlfaranoAndrea/STLight.</p>
+
+        <h3>Abstract</h3>
+        <p>STL = self-supervised: past frames → future frames, discover space–time structure, no labels. RNN methods work and are expensive. Convolutions would be cheaper but (1) treat every past frame equally (bad Markov clock) and (2) have local receptive fields (miss distant correlations). STLight uses only channel-wise and depth-wise convolutions. Trick: rearrange space and time together, one conv into a spatio-temporal patch, then a conv mixer that sees near and far patches, then reconstruct. SOTA on STL benchmarks, fewer params and FLOPs. Full-CNN.</p>
+
+        <h3>Figure 1</h3>
+        <p>MSE vs parameters on Moving MNIST, same training recipe. RNN methods live up-right; SimVP/TAU sit mid; STLight traces a lower front from 5M to 54M. This figure is the paper’s poster. If a later table disagrees with your memory of this plot, trust the plot’s axes first.</p>
+
+        <h3>§1 + contributions</h3>
+        <p>Applications they name: driving (pedestrians/vehicles) and HRI — resource-constrained. Inherited template is Spatial–Temporal–Spatial: CNN per frame, RNN through time, deconv pixels. Sequential RNNs dominate cost.</p>
+        <p>Three claims: (1) first joint space–time processing in STL vs STS; (2) scale from low-resource to high-accuracy, with component ablations; (3) SOTA full-CNN on major STL sets, better or matched accuracy/params/FLOPs, faster convergence.</p>
+
+        <h3>§2.1 Problem (Eqs. 1–2)</h3>
+        <p>Past $T$ frames $\mathcal{X}\in\mathbb{R}^{T\times C\times H\times W}$ up to $t_0$. Predict next $T'$ frames $\mathcal{Y}$. Each $x_i\in\mathbb{R}^{C\times H\times W}$.</p>
+
+        <h3>§2.2 Related — two families</h3>
+        <p><strong>Recurrent:</strong> ConvLSTM, PredRNN / ++, MIM, MAU, E3D-LSTM, CrevNet, PredRNN-V2. Honest Markov, one-frame-at-a-time, expensive unroll. IAM4VP/DMVFN still recur even when the cell is convolutional.</p>
+        <p><strong>Recurrent-free:</strong> predict the whole future at once. SimVP = stacked conv encoder/decoder + IncepU translator. TAU adds temporal attention. Tan et al. swap the translator for ViT / MLP-Mixer / ConvMixer / ConvNeXt. STLight stays in this family but refuses the STS split.</p>
+
+        <h3>§3.1 Spatio-temporal patches</h3>
+        <p>Prior STS encodes each frame alone (time shoved into batch) — every frame treated equal. STLight interleaves frames on channels: $Z_T\in\mathbb{R}^{B\times(T\cdot C)\times H\times W}$, then one conv, stride $p$, optional overlap $O$ (kernel $p\cdot O$, padding $\lfloor(O-1)p/2\rfloor$). Output $Z'_T\in\mathbb{R}^{B\times d\times H/p\times W/p}$. Recipe they recommend: small $p$, large overlap, large hidden $d$ — compress little per patch, still get $p^2$ spatial reduction. Spatial size stays an integer divisor of $H,W$ so pixel-shuffle can invert it.</p>
+
+        <h3>§3.2 STLMixer</h3>
+        <p>Need near and far patch relations (small $p$ ⇒ more patches, larger distances). Mixer cycles among patches (space) and within a patch (time dim $d$). Each block: compact depth-wise $k_{T_1}$ (local), dilated larger $k_{T_2}$ (global), depth-wise mix along $d$ (time). Repeat <code>de</code> times; skip from <code>de/3</code> to <code>2de/3</code> (cheap U-Net ghost). No intra-patch attention: $d$ is large, attention would be $d^2$. This is an explicit disagreement with TAU’s “convolutions cannot do temporal dynamics.”</p>
+
+        <h3>§3.3 Decode (Eq. 3)</h3>
+        <p>No stack of transposed convs. PixelShuffle: $(B,d,H/p,W/p)\to(B,d/p^2,H,W)$, parameter-free. Then $1\times 1$ conv to $T'\cdot C$ channels, reshape to $(B,T',C,H,W)$.</p>
+
+        <h3>§4 Experiments — which table answers which claim</h3>
+        <p><strong>§4.2 standard STL:</strong> Moving MNIST, TaxiBJ, fixed $T'$. This is Figure 1 / Table 3 territory. STLight-XS beats prior recurrent-free SOTA on MMNIST with ~25% of its parameters. STLight-S beats the best recurrent model at ~14% FLOPs.</p>
+        <p><strong>§4.3 long horizon:</strong> KTH, 10 → 20 or 40. This is where RNN unrolls bleed. STLight-L matches PredRNN-V2 on KTH 10→20 at 61% params and <em>2%</em> FLOPs.</p>
+        <p><strong>§4.4 SSL / generalization:</strong> train KITTI, test Caltech, models from 0.1M to 15M, all above OpenSTL baselines ≤25M. The representation is not an MMNIST overfit.</p>
+        <p><strong>Sample efficiency:</strong> MSE 37.38 at epoch 50 on MMNIST; others need ≥19 more epochs. Cheaper inference and faster training.</p>
+        <p><strong>§4.6 mixer ablation:</strong> STLMixer vs ConvMixer vs TAU translator. Read this before you “just use ConvMixer.”</p>
+        <p>Qualitative: colliding Moving-MNIST digits (direction, speed, wall bounce); TaxiBJ inflow/outflow without flicker. SSIM alone will not tell you if a bounce is physical — watch the gif.</p>
+
+        <h3>What not to claim</h3>
+        <p>STL is not a VLA. Joint patches are the contribution, not “we deleted LSTMs.” FLOPs wins are largest at long $T'$. Memory can still grow with sequence length because the whole future is predicted at once.</p>
 
         <h2 id="tension">Why RNNs dominate spatio-temporal learning — and why that is expensive</h2>
         <p>Spatio-temporal predictive learning (STL): given the last $T$ frames, predict the next $T'$. No labels. The model has to discover motion, occlusion, bounce, inflow/outflow, gait. Applications the paper names explicitly: pedestrian and vehicle forecasting for driving; anticipating human motion for safe HRI. Those are resource-constrained. A model that needs 1000G FLOPs per clip does not ship.</p>
