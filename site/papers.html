@@ -1,15 +1,50 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><title>Paper Reading Guides · AI Research Lab</title>
-<link rel="stylesheet" href="assets/styles.css">
-<style>.card{border:1px solid #ddd;padding:12px;margin:8px 0;border-radius:6px}</style>
-</head><body>
-<h1>Paper Reading Guides</h1>
-<p>Consolidated companions for SmolVLA+LeRobot, VGGT, ACT, STLight (and more). Excludes CLIP-Meets-DINO and Fault Adapt Gym.</p>
-
-<div class="card"><h3>SmolVLA + LeRobot</h3><p>Compact VLA. <a href="../papers/smolvla-lerobot.md">Guide</a></p></div>
-<div class="card"><h3>VGGT</h3><p>Feed-forward 3D geometry (CVPR 2025). <a href="../papers/vggt.md">Guide</a></p></div>
-<div class="card"><h3>ACT</h3><p>Action Chunking Transformers. <a href="../papers/act.md">Guide</a></p></div>
-<div class="card"><h3>STLight</h3><p>Efficiency paper. <a href="../papers/stlight.md">Guide</a></p></div>
-
-<p><a href="index.html">Back to Intelligence</a> | <a href="curriculum.html">Curriculum</a></p>
-</body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paper Reading Guides · AI Research Lab</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/curriculum.css">
+  <style>
+    .paper-index { max-width: 1040px; margin: 0 auto; padding: 40px 34px; }
+    .paper-card { border: 1px solid var(--line); border-radius: 4px; padding: 22px 26px; margin-bottom: 18px; background: var(--paper); cursor: pointer; }
+    .paper-card:hover { border-color: var(--accent); }
+    .paper-card h3 { margin: 0 0 8px; font-size: 21px; }
+    .paper-meta { color: var(--faint); font-size: 12px; margin-bottom: 12px; }
+    .paper-section { display: none; max-width: 860px; margin: 40px auto; padding: 0 20px; }
+    .paper-section.active { display: block; }
+    .back-link { color: var(--accent); cursor: pointer; font-size: 13px; }
+  </style>
+</head>
+<body class="editorial">
+  <header class="topbar editorial-nav">
+    <a class="brand" href="curriculum.html"><span class="brand-mark">∇</span><span>AI Research Lab</span></a>
+    <nav><a href="curriculum.html">Curriculum</a> <a href="index.html">Robotics intelligence ↗</a></nav>
+  </header>
+  <main>
+    <div id="index">
+      <header class="publication-header">
+        <div class="journal-masthead"><span>AI Research Lab</span><span>Self-contained</span></div>
+        <p class="publication-label">PAPER GUIDES</p>
+        <h1 style="font-size: 42px;">Paper Reading Guides</h1>
+        <div class="abstract"><span>SCOPE</span><p class="publication-deck">All content is self-contained inside this repository.</p></div>
+      </header>
+      <div class="paper-index">
+        <div class="paper-card" onclick="show('smolvla')"><h3>SmolVLA + LeRobot</h3><div class="paper-meta">VLA • 2025</div><p>Compact efficient VLA with asynchronous execution.</p></div>
+        <div class="paper-card" onclick="show('vggt')"><h3>VGGT</h3><div class="paper-meta">CVPR 2025 Best Paper</div><p>Feed-forward 3D geometry from images.</p></div>
+        <div class="paper-card" onclick="show('act')"><h3>ACT</h3><div class="paper-meta">Imitation Learning</div><p>Action chunking for better behavior cloning.</p></div>
+        <div class="paper-card" onclick="show('stlight')"><h3>STLight</h3><div class="paper-meta">Efficiency</div><p>Lightweight models for deployment.</p></div>
+      </div>
+    </div>
+    <div id="smolvla" class="paper-section"><span class="back-link" onclick="back()">← Back</span><div class="technical-article"><h2>SmolVLA + LeRobot</h2><p>Compact VLA (~450M params) trained on community data. Key ideas: lightweight VLM + flow matching action expert + asynchronous inference. Strong real-world results on affordable robots. All content inside this repo.</p></div></div>
+    <div id="vggt" class="paper-section"><span class="back-link" onclick="back()">← Back</span><div class="technical-article"><h2>VGGT</h2><p>Feed-forward transformer for camera poses, depth, point maps and tracks from 1 to hundreds of views. CVPR 2025 Best Paper. Fast inference without optimization pipelines. Content self-contained in AI Research Lab.</p></div></div>
+    <div id="act" class="paper-section"><span class="back-link" onclick="back()">← Back</span><div class="technical-article"><h2>ACT</h2><p>Action Chunking with Transformers. Predicts sequences of actions to reduce compounding errors. Foundational for many modern imitation learning policies in LeRobot and similar frameworks. Self-contained guide.</p></div></div>
+    <div id="stlight" class="paper-section"><span class="back-link" onclick="back()">← Back</span><div class="technical-article"><h2>STLight</h2><p>Efficiency-focused techniques for lightweight models in CV and robotics. Important for practical deployment. All material maintained inside this repository.</p></div></div>
+  </main>
+  <script>
+    function show(id) { document.getElementById('index').style.display='none'; document.querySelectorAll('.paper-section').forEach(e=>e.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+    function back() { document.getElementById('index').style.display='block'; document.querySelectorAll('.paper-section').forEach(e=>e.classList.remove('active')); }
+  </script>
+</body>
+</html>
