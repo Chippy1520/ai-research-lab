@@ -1,6 +1,8 @@
 # Paper reading guides
 
-Canonical, self-contained companions live on GitHub Pages (curriculum editorial style):
+Canonical, self-contained companions live on GitHub Pages (curriculum editorial style).
+
+**Add a paper:** follow [`ADDING_A_PAPER.md`](ADDING_A_PAPER.md) and copy [`site/papers-_template.html`](../site/papers-_template.html).
 
 | Guide | Pages | Markdown notes |
 | --- | --- | --- |
@@ -11,6 +13,6 @@ Canonical, self-contained companions live on GitHub Pages (curriculum editorial 
 
 Index: [site/papers.html](../site/papers.html) → https://chippy1520.github.io/ai-research-lab/papers.html
 
-Each HTML guide includes prerequisite backspanning, a text knowledge graph, architecture with the paper’s notation, a worked example, caveats, BibTeX, and primary sources only (arXiv, official code, official blogs/docs, lectures). No third-party explainer repos.
+Each HTML guide: human case study → PDF-order walkthrough → diagrams / compare panes / lecture embeds → architecture in the paper’s notation → honest tables → BibTeX. Primary sources only (arXiv, official code, official blogs/docs, lectures). No third-party explainer repos.
 
 Excluded from this set: CLIP-Meets-DINO and FaultAdapt.

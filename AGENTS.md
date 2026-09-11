@@ -100,3 +100,10 @@ module.
 6. Start Streamlit and verify `/_stcore/health` before reporting success.
 
 Never replace a requested working artifact with a plan or an unexecuted scaffold.
+
+## Paper reading guides
+When the user asks to add or deepen a paper companion (not CLIP-Meets-DINO, not
+FaultAdapt), follow `papers/ADDING_A_PAPER.md` and copy `site/papers-_template.html`.
+Do not invent a new layout. Hub cards stay on `site/papers.html`; each paper is
+its own `site/papers-<slug>.html`. Pedagogy: human case study → map onto modules →
+PDF-order walkthrough → diagrams / lecture embeds. Primary sources only.

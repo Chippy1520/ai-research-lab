@@ -92,9 +92,9 @@ evaluation, and changing frontiers—not pretending that evolving knowledge can 
 
 ## Paper Reading Guides
 
-Self-contained companions in the same editorial style as the curriculum. Each guide
-backspans prerequisites, draws a knowledge graph, walks the architecture in the paper’s
-notation, works an example, and cites only primary sources.
+Self-contained companions in the same editorial style as the curriculum. Human
+case study first, then a PDF-order walkthrough, then diagrams. To add another
+paper, follow `papers/ADDING_A_PAPER.md` and copy `site/papers-_template.html`.
 
 | Paper | Live guide |
 | --- | --- |

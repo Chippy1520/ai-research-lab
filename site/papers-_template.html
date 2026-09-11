@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Complete reading guide for PAPER_TITLE (arXiv ARXIV_ID).">
+  <meta name="theme-color" content="#f3f0e8">
+  <title>PAPER_SHORT · Paper Guide · AI Research Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/curriculum.css">
+  <link rel="stylesheet" href="assets/papers.css">
+  <script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]]},svg:{fontCache:"global"}};</script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body class="editorial">
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
+  <header class="topbar editorial-nav">
+    <a class="brand" href="curriculum.html"><span class="brand-mark">∇</span><span>AI Research Lab</span></a>
+    <nav aria-label="Primary navigation">
+      <a href="papers.html">All guides</a>
+      <a href="curriculum.html">Curriculum</a>
+      <a href="index.html">Robotics intelligence ↗</a>
+    </nav>
+  </header>
+
+  <main>
+    <header class="publication-header" id="overview">
+      <div class="journal-masthead"><span>AI Research Lab</span><span>Paper reading companion</span></div>
+      <p class="publication-label">FIELD · VENUE_OR_DATE</p>
+      <h1>PAPER_SHORT: one-line claim in plain language</h1>
+      <div class="abstract">
+        <span>Lede</span>
+        <p class="publication-deck">Engineering tension in two sentences. What everyone else does, what this paper refuses, why that matters on the robot / in the scene.</p>
+      </div>
+      <div class="byline-row">
+        <div><span>Paper</span><b>arXiv ARXIV_ID</b></div>
+        <div><span>Authors</span><b>AUTHORS</b></div>
+        <div><span>Code</span><b>OFFICIAL_REPO</b></div>
+        <div><span>Reading</span><b>~90 minutes with backspanning</b></div>
+      </div>
+      <a class="guide-back" href="papers.html">← All paper guides</a>
+    </header>
+
+    <div class="article-frame" id="article">
+      <aside class="article-rail" aria-label="Article navigation">
+        <div class="rail-inner">
+          <p class="rail-label">In this guide</p>
+          <ol class="article-toc">
+            <li><a href="#case">Human case study</a></li>
+            <li><a href="#walk">The paper, in order</a></li>
+            <li><a href="#tension">The engineering tension</a></li>
+            <li><a href="#prereqs">Prerequisites</a></li>
+            <li><a href="#graph">Knowledge graph</a></li>
+            <li><a href="#arch">Architecture</a></li>
+            <li><a href="#results">Results, honestly</a></li>
+            <li><a href="#worked">Worked intuition</a></li>
+            <li><a href="#caveats">Caveats</a></li>
+            <li><a href="#study">Study plan</a></li>
+            <li><a href="#sources">Primary sources</a></li>
+          </ol>
+        </div>
+      </aside>
+
+      <article class="technical-article">
+        <h2 id="case">How a person would TASK</h2>
+        <div class="case-study">
+          <p class="case-lede">Concrete scene. No jargon. What the human is trying to do, with objects and hands.</p>
+          <div class="case-step">
+            <div class="n">01</div>
+            <div class="human"><h4>You</h4><p>Human action.</p></div>
+            <div class="model"><h4>The paper</h4><p>Module that implements it.</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">02</div>
+            <div class="human"><h4>You</h4><p></p></div>
+            <div class="model"><h4>The paper</h4><p></p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">03</div>
+            <div class="human"><h4>You</h4><p></p></div>
+            <div class="model"><h4>The paper</h4><p></p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">04</div>
+            <div class="human"><h4>You</h4><p></p></div>
+            <div class="model"><h4>The paper</h4><p></p></div>
+          </div>
+          <p class="case-punch">One sentence: the mapping <em>is</em> the architecture.</p>
+        </div>
+
+        <h2 id="walk">The paper, in order — every section</h2>
+        <p>Open <a href="https://arxiv.org/pdf/ARXIV_ID">arXiv ARXIV_ID</a> next to this. Follow the PDF’s own headings.</p>
+        <h3>Abstract</h3>
+        <p>Paragraph 1.</p>
+        <p>Paragraph 2 (the claim).</p>
+        <h3>Figure 1</h3>
+        <p>Redraw it. If you cannot, do not start the method.</p>
+        <h3>§1 Introduction</h3>
+        <p></p>
+        <h3>§ Method subsections, in order</h3>
+        <p></p>
+        <h3>§ Experiments — protocol, then tables</h3>
+        <p>Quote the protocol (seeds, metric definition, what is held out). Then the numbers.</p>
+        <h3>What the paper does <em>not</em> claim</h3>
+        <p></p>
+
+        <h2 id="tension">The engineering tension</h2>
+        <p></p>
+
+        <h2 id="prereqs">Prerequisites</h2>
+        <ol class="prereq-list">
+          <li>
+            <b>01</b>
+            <div>
+              <h4>Fundamental</h4>
+              <p>Why this paper needs it.</p>
+            </div>
+          </li>
+        </ol>
+        <figure class="video-embed">
+          <iframe class="video-frame" src="https://www.youtube.com/embed/VIDEO_ID" title="Lecture on the fundamental" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+          <figcaption class="article-caption">Why this video: it teaches the prerequisite, not this paper.</figcaption>
+        </figure>
+
+        <h2 id="graph">Knowledge graph</h2>
+        <div class="knowledge-graph">prior A
+   │
+   ▼
+this paper
+   ├─ module 1
+   └─ module 2</div>
+        <figure class="figure-block">
+          <div class="graph-stack">
+            <div class="graph-level"><span class="kg-node gold">prior</span></div>
+            <div class="graph-v">↓</div>
+            <div class="graph-level">
+              <span class="kg-node leaf">module 1</span>
+              <span class="kg-node sky">module 2</span>
+            </div>
+            <div class="graph-v">↓</div>
+            <div class="graph-level"><span class="kg-node ink">this paper</span></div>
+          </div>
+        </figure>
+        <figure class="figure-block">
+          <div class="compare">
+            <div class="pane bad"><h4>Naive</h4><p></p></div>
+            <div class="pane good"><h4>This paper</h4><p></p></div>
+          </div>
+        </figure>
+
+        <h2 id="arch">Architecture</h2>
+        <figure class="figure-block">
+          <div class="arch">
+            <div class="arch-row">
+              <div class="arch-box tone-sky">Input<small></small></div>
+            </div>
+            <div class="arch-down">↓</div>
+            <div class="arch-row">
+              <div class="arch-box tone-leaf">Backbone<small></small></div>
+              <div class="arch-box tone-gold">Head<small></small></div>
+            </div>
+            <div class="arch-down">↓</div>
+            <div class="arch-row">
+              <div class="arch-box tone-ink">Output<small></small></div>
+            </div>
+          </div>
+        </figure>
+
+        <h2 id="results">Results, honestly</h2>
+        <table class="article-table">
+          <thead><tr><th>Fact from the paper</th><th>What it means</th></tr></thead>
+          <tbody>
+            <tr><td></td><td></td></tr>
+          </tbody>
+        </table>
+
+        <h2 id="worked">Worked intuition</h2>
+        <p>One tensor-shape or numerical walk-through.</p>
+
+        <h2 id="caveats">Caveats</h2>
+        <ul>
+          <li></li>
+        </ul>
+
+        <h2 id="study">Study plan</h2>
+        <p>60–90 minutes: case + walk + one experiment table + caveats.</p>
+
+        <h2 id="sources">Primary sources</h2>
+        <ul>
+          <li>Paper: <a href="https://arxiv.org/abs/ARXIV_ID">arXiv:ARXIV_ID</a></li>
+          <li>Code: OFFICIAL_REPO</li>
+        </ul>
+        <div class="citation">
+          <strong>BibTeX</strong>
+          <pre>@article{KEY,
+  title={},
+  author={},
+  year={}
+}</pre>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="editorial-footer">
+    <div><strong>AI Research Lab</strong><p>Self-contained companion. Primary sources only.</p></div>
+    <div class="footer-links">
+      <a href="papers.html">All guides</a>
+      <a href="curriculum.html">Curriculum</a>
+    </div>
+  </footer>
+  <script>
+    window.addEventListener('scroll', () => {
+      const bar = document.getElementById('reading-progress-bar');
+      if (!bar) return;
+      const h = document.documentElement;
+      const p = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100 || 0;
+      bar.style.width = p + '%';
+    });
+  </script>
+</body>
+</html>
