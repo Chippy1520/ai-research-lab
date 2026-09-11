@@ -54,6 +54,7 @@
             <li><a href="#tension">Why RNNs dominate STL</a></li>
             <li><a href="#prereqs">Prerequisites</a></li>
             <li><a href="#graph">Knowledge graph</a></li>
+            <li><a href="#constellation">Constellation</a></li>
             <li><a href="#problem">Problem</a></li>
             <li><a href="#arch">Three-stage architecture</a></li>
             <li><a href="#mixer">STLMixer</a></li>
@@ -108,7 +109,15 @@
         <p>STL = self-supervised: past frames → future frames, discover space–time structure, no labels. RNN methods work and are expensive. Convolutions would be cheaper but (1) treat every past frame equally (bad Markov clock) and (2) have local receptive fields (miss distant correlations). STLight uses only channel-wise and depth-wise convolutions. Trick: rearrange space and time together, one conv into a spatio-temporal patch, then a conv mixer that sees near and far patches, then reconstruct. SOTA on STL benchmarks, fewer params and FLOPs. Full-CNN.</p>
 
         <h3>Figure 1</h3>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2411.10198/2411.10198v1/architectures4.png" alt="STLight architecture versus Spatial-Temporal-Spatial" loading="lazy">
+          <figcaption class="article-caption"><strong>Paper architecture figure.</strong> Top of the family: STS (CNN → RNN → decode). STLight: fold time into channels, one conv to space–time patches, STLMixer (local / dilated / temporal $d$), PixelShuffle out. This drawing is the paper.</figcaption>
+        </figure>
         <p>MSE vs parameters on Moving MNIST, same training recipe. RNN methods live up-right; SimVP/TAU sit mid; STLight traces a lower front from 5M to 54M. This figure is the paper’s poster. If a later table disagrees with your memory of this plot, trust the plot’s axes first.</p>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2411.10198/2411.10198v1/qualitative.png" alt="STLight qualitative future-frame predictions" loading="lazy">
+          <figcaption class="article-caption"><strong>Paper qualitative.</strong> Colliding digits, wall bounce, TaxiBJ flow. SSIM will not tell you if the bounce is physical — this gif-as-figure will.</figcaption>
+        </figure>
 
         <h3>§1 + contributions</h3>
         <p>Applications they name: driving (pedestrians/vehicles) and HRI — resource-constrained. Inherited template is Spatial–Temporal–Spatial: CNN per frame, RNN through time, deconv pixels. Sequential RNNs dominate cost.</p>
@@ -252,6 +261,23 @@
         </ol>
 
         <h3 id="graph">Knowledge graph</h3>
+        <p>Center is joint space–time patches. Left: the RNN tax and the SimVP family. Right: the three mixer ops.</p>
+        <div class="spoke-map">
+          <div class="spoke-col left">
+            <a class="kg-node rose" href="https://arxiv.org/abs/1506.04214">ConvLSTM</a>
+            <a class="kg-node gold" href="https://arxiv.org/abs/2103.09504">PredRNN</a>
+            <a class="kg-node sky" href="https://arxiv.org/abs/2211.12509">SimVP</a>
+            <a class="kg-node leaf" href="https://arxiv.org/abs/1609.05158">PixelShuffle</a>
+          </div>
+          <div class="spoke-core">STLight<small>fold T · mix · shuffle</small></div>
+          <div class="spoke-col right">
+            <span class="kg-node gold">T into channels</span>
+            <span class="kg-node lilac">k_T1 / k_T2 / d</span>
+            <span class="kg-node sky">no attention</span>
+            <span class="kg-node ink">2% FLOPs KTH</span>
+          </div>
+        </div>
+        <p class="kg-legend"><i style="background:#f1cfc4"></i>RNN family &nbsp;<i style="background:#f3ddb0"></i>recurrent-free cousins &nbsp;<i style="background:#cfe8d4"></i>decode trick</p>
         <div class="knowledge-graph">STL task: X ∈ R^{T×C×H×W}  →  Y ∈ R^{T'×C×H×W}
 
 recurrent family
@@ -404,6 +430,14 @@ eval: MMNIST, TaxiBJ, KTH (10→20/40), KITTI→Caltech generalization</div>
           <li>Run their MMNIST config if you have a GPU; if not, read Figure 1 until you can reconstruct the Pareto argument without the figure.</li>
           <li>Only then ask “could a wrist-camera STLight-XS be a collision prior for my SO-100?” That is a project, not a sentence in this guide.</li>
         </ol>
+
+        <h3 id="constellation">Constellation — read these next</h3>
+        <ul class="read-next">
+          <li><b>RNN</b><div><h4><a href="https://arxiv.org/abs/1506.04214">ConvLSTM · Shi et al.</a></h4><p>The cell STLight is priced against. Convolution on the LSTM gates — still an unroll.</p></div></li>
+          <li><b>SOTA-old</b><div><h4><a href="https://arxiv.org/abs/2103.09504">PredRNN · Wang et al.</a></h4><p>Zigzag spatiotemporal memory. Honest Markov, the FLOPs STLight’s 2% is 2% of.</p></div></li>
+          <li><b>free</b><div><h4><a href="https://arxiv.org/abs/2211.12509">SimVP · Gao et al.</a></h4><p>Recurrent-free STS with an IncepU translator. STLight’s family, not its architecture.</p></div></li>
+          <li><b>shuffle</b><div><h4><a href="https://arxiv.org/abs/1609.05158">Real-Time Single Image Super-Resolution · Shi et al.</a></h4><p>PixelShuffle. Why the decoder has almost no parameters.</p></div></li>
+        </ul>
 
         <h3 id="sources">Primary sources</h3>
         <ul>

@@ -54,6 +54,7 @@
             <li><a href="#tension">Why this paper exists</a></li>
             <li><a href="#prereqs">Prerequisites</a></li>
             <li><a href="#graph">Knowledge graph</a></li>
+            <li><a href="#constellation">Constellation</a></li>
             <li><a href="#problem">Problem statement</a></li>
             <li><a href="#arch">Architecture</a></li>
             <li><a href="#overcomplete">Over-complete predictions</a></li>
@@ -112,6 +113,18 @@
 
         <h3>Abstract</h3>
         <p>VGGT is a feed-forward net that infers cameras, point maps, depth, and 3D tracks from one, a few, or hundreds of views. 3D vision has been specialized per task; this is one model for all of them. Reconstruction in under a second, still beating methods that post-process with geometry optimization. SOTA on camera pose, multi-view depth, dense clouds, point tracking. Pretrained VGGT as a backbone also helps non-rigid tracking and feed-forward novel-view synthesis. Code: facebookresearch/vggt.</p>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2503.11651/2503.11651v1/teaser.png" alt="VGGT teaser: cameras, depth, points, tracks from many views" loading="lazy">
+          <figcaption class="article-caption"><strong>Paper Figure 1 (teaser).</strong> One forward pass, variable $N$. The frustums are predicted cameras, not COLMAP cameras. If this picture is not obvious, the method section will not be either.</figcaption>
+        </figure>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2503.11651/2503.11651v1/architecture_v4.png" alt="VGGT architecture: DINO tokens, alternating attention, heads" loading="lazy">
+          <figcaption class="article-caption"><strong>Paper architecture figure.</strong> Patchify with DINO, append camera + register tokens, alternate frame-wise and global self-attention, then camera head vs DPT heads. No cross-attention. Frame 1’s camera token is a different learned vector so the world frame is marked.</figcaption>
+        </figure>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2503.11651/2503.11651v1/comparison_vggt_dust3r.png" alt="VGGT vs DUSt3R qualitative 3D" loading="lazy">
+          <figcaption class="article-caption"><strong>Paper qualitative vs DUSt3R.</strong> Oil painting, non-overlapping pair, repeated texture. DUSt3R is a two-view method plus fusion; this figure is why “just run DUSt3R” is not the same paper.</figcaption>
+        </figure>
 
         <h3>§1 Introduction</h3>
         <p>Problem: 3D attributes of a scene from images, with a feed-forward net. Tradition is visual geometry + iterative BA (Hartley &amp; Zisserman). Learning used to be complementary (matching, monocular depth). VGGSfM then folded learning and differentiable BA into one loop — geometry still sits in the inner loop, which is slow and complex.</p>
@@ -291,6 +304,23 @@
         </ol>
 
         <h3 id="graph">Knowledge graph</h3>
+        <p>Center is the claim: one transformer, all 3D attributes, almost no BA. Everything else is a spoke.</p>
+        <div class="spoke-map">
+          <div class="spoke-col left">
+            <a class="kg-node rose" href="https://colmap.github.io/">COLMAP / SfM</a>
+            <a class="kg-node gold" href="https://arxiv.org/abs/2312.14132">DUSt3R pairs</a>
+            <a class="kg-node sky" href="https://arxiv.org/abs/2304.07193">DINOv2 tokens</a>
+            <a class="kg-node leaf" href="https://arxiv.org/abs/2307.07635">CoTracker</a>
+          </div>
+          <div class="spoke-core">VGGT<small>feed-forward 3D · CVPR 2025</small></div>
+          <div class="spoke-col right">
+            <span class="kg-node gold">alternating attn</span>
+            <span class="kg-node lilac">over-complete heads</span>
+            <span class="kg-node sky">frame-1 origin</span>
+            <span class="kg-node ink">D + g at test</span>
+          </div>
+        </div>
+        <p class="kg-legend"><i style="background:#f1cfc4"></i>pipelines it replaces &nbsp;<i style="background:#f3ddb0"></i>foundations &nbsp;<i style="background:#c9dff0"></i>backbones &nbsp;<i style="background:#cfe8d4"></i>tracking</p>
         <div class="knowledge-graph">classical SfM (COLMAP)
    match → triangulate → bundle adjust
             │
@@ -444,6 +474,14 @@ export: COLMAP files → gsplat / NeRF</div>
           <li>Run the official demo on 5 images. Compare fused depth+camera vs the point-map head on a textured object vs a blank wall.</li>
           <li>Read DUSt3R’s global alignment section (not the whole paper) so you know what VGGT deleted.</li>
         </ol>
+
+        <h3 id="constellation">Constellation — read these next</h3>
+        <ul class="read-next">
+          <li><b>pairs</b><div><h4><a href="https://arxiv.org/abs/2312.14132">DUSt3R · Wang et al.</a></h4><p>Two images → point maps, then global alignment for $N&gt;2$. VGGT’s nearest ancestor. Read it to see what “no post-process” is refusing.</p></div></li>
+          <li><b>tokens</b><div><h4><a href="https://arxiv.org/abs/2304.07193">DINOv2 · Oquab et al.</a></h4><p>The patch encoder. VGGT adds almost no 3D bias on top of this.</p></div></li>
+          <li><b>tracks</b><div><h4><a href="https://arxiv.org/abs/2307.07635">CoTracker · Karaev et al.</a></h4><p>The tracking head VGGT plugs its $T_i$ into. Geometry features, not a new tracker.</p></div></li>
+          <li><b>SfM+</b><div><h4><a href="https://arxiv.org/abs/2311.17033">VGGSfM · Wang et al.</a></h4><p>Learned SfM that still runs differentiable BA. The “geometry still in the loop” baseline of the intro.</p></div></li>
+        </ul>
 
         <h3 id="sources">Primary sources</h3>
         <ul>

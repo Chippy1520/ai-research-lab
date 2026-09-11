@@ -54,6 +54,7 @@
             <li><a href="#tension">The task that breaks BC</a></li>
             <li><a href="#prereqs">Prerequisites</a></li>
             <li><a href="#graph">Knowledge graph</a></li>
+            <li><a href="#constellation">Constellation</a></li>
             <li><a href="#aloha">ALOHA, briefly</a></li>
             <li><a href="#chunk">Chunking</a></li>
             <li><a href="#ensemble">Temporal ensembling</a></li>
@@ -114,6 +115,18 @@
 
         <h3>Abstract</h3>
         <p>Fine tasks (cable ties, battery slotting) need precision, contact, closed-loop vision. Usually that means expensive robots and calibration. Question: can learning make cheap, imprecise hardware do them? They collect demos on a custom teleop rig and train end-to-end. Imitation has two diseases here: compounding error, and non-stationary humans. ACT is a generative model over action sequences. Six real tasks (open a translucent condiment cup, slot a battery) at 80–90% with ~10 minutes of demos. Site: tonyzhaozh.github.io/aloha.</p>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2304.13705/2304.13705v1/figures/setup.jpg" alt="ALOHA bimanual teleoperation hardware" loading="lazy">
+          <figcaption class="article-caption"><strong>Paper hardware figure.</strong> Leader arms in the operator’s hands, followers on the table, four cameras. Joint-space mapping — no IK. This is the data engine; ACT is the learner.</figcaption>
+        </figure>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2304.13705/2304.13705v1/real_tasks.png" alt="ACT real-world fine manipulation tasks" loading="lazy">
+          <figcaption class="article-caption"><strong>Paper real tasks.</strong> Cup, battery, velcro, tape, shoe. Each frame is a contact story from §V-A. Quote subtask columns, not a single %.</figcaption>
+        </figure>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2304.13705/2304.13705v1/figures/obs.jpg" alt="Four camera observations used by ACT" loading="lazy">
+          <figcaption class="article-caption"><strong>Paper observations.</strong> Four RGB streams at 480×640. Wrist + workspace. This is why ResNet-18 × 4, not a single front camera.</figcaption>
+        </figure>
 
         <h3>§I Introduction — the cup paragraph</h3>
         <p>Do not skim this. Opening a condiment cup sitting upright: right gripper tips it, nudges it into the open left gripper; left closes gently and lifts; a right finger comes from below and pries the lid. Millimetres fail. That sequence is the definition of “fine” in this paper: pinch, pry, tear — not pick-and-place.</p>
@@ -269,6 +282,23 @@
         </ol>
 
         <h3 id="graph">Knowledge graph</h3>
+        <p>Center is cheap-arm fine manipulation. Spokes are the three diseases and the three modules.</p>
+        <div class="spoke-map">
+          <div class="spoke-col left">
+            <a class="kg-node rose" href="https://arxiv.org/abs/1011.0686">compounding error</a>
+            <a class="kg-node gold" href="https://arxiv.org/abs/1312.6114">VAE / CVAE</a>
+            <a class="kg-node sky" href="https://arxiv.org/abs/2303.04137">Diffusion Policy</a>
+            <span class="kg-node leaf">ALOHA teleop</span>
+          </div>
+          <div class="spoke-core">ACT<small>chunk · CVAE · ensemble</small></div>
+          <div class="spoke-col right">
+            <span class="kg-node gold">k-step chunk</span>
+            <span class="kg-node lilac">z=0 at test</span>
+            <span class="kg-node sky">exp weights</span>
+            <a class="kg-node ink" href="papers-smolvla.html">SmolVLA keeps k</a>
+          </div>
+        </div>
+        <p class="kg-legend"><i style="background:#f1cfc4"></i>problems &nbsp;<i style="background:#f3ddb0"></i>foundations &nbsp;<i style="background:#c9dff0"></i>cousins &nbsp;<i style="background:#243028"></i>descendants</p>
         <div class="knowledge-graph">teleop on cheap bimanual hardware (ALOHA)
    leader–follower ViperX, joint-space mapping, 3D-printed handles
         │
@@ -436,6 +466,14 @@ LeRobot ACT policy  ──►  SmolVLA chunks (flow, not CVAE)
           <li>Train LeRobot ACT on a public dataset. Change $k$. Do not tune anything else until you have seen that curve move.</li>
           <li>Then read SmolVLA §3.3 and note what they kept (chunks) and what they replaced (CVAE, ensembling).</li>
         </ol>
+
+        <h3 id="constellation">Constellation — read these next</h3>
+        <ul class="read-next">
+          <li><b>error</b><div><h4><a href="https://arxiv.org/abs/1011.0686">DAgger · Ross, Gordon, Bagnell</a></h4><p>The compounding-error diagnosis ACT answers with horizon reduction instead of interactive relabeling.</p></div></li>
+          <li><b>CVAE</b><div><h4><a href="https://arxiv.org/abs/1312.6114">Auto-Encoding Variational Bayes · Kingma &amp; Welling</a></h4><p>Plus Sohn et al. CVAE. Why $z=0$ at test is a prior sample, not “the encoder died.”</p></div></li>
+          <li><b>cousin</b><div><h4><a href="https://arxiv.org/abs/2303.04137">Diffusion Policy · Chi et al.</a></h4><p>Same chunking instinct, different generative head. LeRobot ships both.</p></div></li>
+          <li><b>next</b><div><h4><a href="papers-smolvla.html">SmolVLA</a></h4><p>Keeps the chunk, replaces CVAE+ensemble with flow matching and an async queue.</p></div></li>
+        </ul>
 
         <h3 id="sources">Primary sources</h3>
         <ul>

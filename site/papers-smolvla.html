@@ -54,6 +54,7 @@
             <li><a href="#tension">The engineering tension</a></li>
             <li><a href="#prereqs">Prerequisites</a></li>
             <li><a href="#graph">Knowledge graph</a></li>
+            <li><a href="#constellation">Constellation</a></li>
             <li><a href="#read">How to read the paper</a></li>
             <li><a href="#arch">Architecture</a></li>
             <li><a href="#flow">Flow matching</a></li>
@@ -119,6 +120,10 @@
         <div class="research-note">Read the abstract as three constraints, not a slogan: (1) size, (2) community data, (3) async inference. Every later section exists to defend one of those.</div>
 
         <h3>Figure 1 (do this before §1)</h3>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2506.01844/2506.01844v1/SmolVLA.png" alt="SmolVLA architecture: VLM with scissors, three inputs, action expert, action chunk" loading="lazy">
+          <figcaption class="article-caption"><strong>Paper Figure 1.</strong> Scissors = dropped late VLM layers. Gold blocks = cross-attention into the VLM; pale = causal self-attention inside the chunk. Flow matching sits in the expert, not in the VLM. Community data and cheap arms are in the caption on purpose — they are part of the claim, not decoration.</figcaption>
+        </figure>
         <p>The scissors icon is not decoration: the last $L-N$ VLM layers are discarded. Three inputs merge — language, RGB view(s), sensorimotor state — then an action expert of alternating cross-attention (gold) and self-attention (pale) blocks, trained with flow matching, emits a chunk $a_t,\dots,a_{t+n}$. Pretraining is public community data; evaluation is low-cost robots. If you cannot redraw this figure from memory, do not start §3.1.</p>
 
         <h3>§1 Introduction</h3>
@@ -186,6 +191,14 @@
         </figure>
 
         <h3>§3.3 Asynchronous inference</h3>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2506.01844/2506.01844v1/async_inference.png" alt="Asynchronous inference: RobotClient and PolicyServer" loading="lazy">
+          <figcaption class="article-caption"><strong>Paper Figure 2.</strong> Client pops actions at the control rate. Server infers on another machine/process. The arm does not wait for the forward pass.</figcaption>
+        </figure>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2506.01844/2506.01844v1/queues.png" alt="Action queue size versus threshold g, with and without joint-space filter" loading="lazy">
+          <figcaption class="article-caption"><strong>Paper Figure 3.</strong> Left: no filter, queue never empties because near-duplicate observations keep filling it. Right: joint-space filter, except the red arrow — empty queue forces an infer even on a duplicate, or the robot stalls.</figcaption>
+        </figure>
         <p>Modern policies output chunks $\pi(o_t)=\mathbf{A}_t=(a_t,\ldots,a_{t+n})$. The naive loop executes the whole chunk, then looks again — open-loop for $n$ steps, plus an idle gap while the next chunk is computed.</p>
         <p>The opposite extreme (ACT-style): predict a new chunk every timestep and ensemble overlaps. Adaptive, but you pay a forward pass every control tick — too expensive on the edge.</p>
         <p><strong>Sync</strong> = exhaust the chunk, then infer. Cheap average compute, blind lags.</p>
@@ -318,37 +331,27 @@
         </ol>
 
         <h3 id="graph">Knowledge graph</h3>
-        <p>Read top-down. Each arrow is a dependency the paper actually uses, not a generic ML taxonomy.</p>
-        <div class="knowledge-graph">supervised BC
-        │
-        ├─ compounding error ──► action chunking (ACT, 2023)
-        │                              │
-        │                              ├─ CVAE over chunks
-        │                              └─ temporal ensembling (sync, heavy)
-        │
-        VLMs (SigLIP + SmolLM2 = SmolVLM-2)
-        │
-        ├─ layer-wise features ≠ last layer
-        ├─ visual token budget (64 / frame, no tiling)
-        └─ skip last L−N decoder layers (N = L/2)
-                    │
-                    ▼
-        VLA = VLM features ──► action expert
-                    │
-                    ├─ OpenVLA: discrete tokens (slow)
-                    ├─ π₀: diffusion expert (heavy)
-                    └─ SmolVLA: flow matching + interleaved CA/SA
-                                    │
-                                    ▼
-        community LeRobot datasets (&lt;30k episodes)
-        camera-name hygiene (OBS_IMAGE_1/2/3)
-                    │
-                    ▼
-        async stack: RobotClient ⇄ PolicyServer
-        queue threshold g, joint-space duplicate filter
-                    │
-                    ▼
-        SO-100 / SO-101 real robot + LIBERO / Meta-World sim</div>
+        <p>Center is the claim. Left ring = ideas it consumes. Right ring = where those ideas live on the page and in the literature. Click a paper node.</p>
+        <div class="spoke-map">
+          <div class="spoke-col left">
+            <a class="kg-node gold" href="https://arxiv.org/abs/2304.13705">ACT chunks</a>
+            <a class="kg-node sky" href="https://arxiv.org/abs/2210.02747">flow matching</a>
+            <a class="kg-node leaf" href="papers-act.html">compounding error</a>
+            <a class="kg-node rose" href="https://arxiv.org/abs/2406.09246">OpenVLA 7B</a>
+          </div>
+          <div class="spoke-core">SmolVLA<small>450M · community data · async</small></div>
+          <div class="spoke-col right">
+            <span class="kg-node lilac">SmolVLM-2 · 64 tok</span>
+            <span class="kg-node gold">layer skip N=L/2</span>
+            <span class="kg-node sky">OBS_IMAGE remap</span>
+            <span class="kg-node ink">g=0.7 queue</span>
+          </div>
+        </div>
+        <p class="kg-legend"><i style="background:#f3ddb0"></i>foundations &nbsp;<i style="background:#c9dff0"></i>method pieces &nbsp;<i style="background:#cfe8d4"></i>problems it solves &nbsp;<i style="background:#f1cfc4"></i>heavier VLAs it refuses</p>
+        <div class="knowledge-graph">supervised BC → compounding error → ACT chunks
+VLM (SigLIP+SmolLM2) → skip L−N → features → flow expert
+community data + camera hygiene → async RobotClient/PolicyServer
+evaluate: SO-100/101, LIBERO, Meta-World</div>
 
         <div class="kg-visual" aria-hidden="true">
           <div class="graph-stack">
@@ -580,6 +583,16 @@
           <li>Run LeRobot’s SmolVLA path on a recorded dataset (no robot required) and dump one chunk. Confirm dimensionality $n \times a$.</li>
           <li>Only then read the experimental tables, with this guide’s comparison class in mind.</li>
         </ol>
+
+        <h3 id="constellation">Constellation — read these next</h3>
+        <p>These are the nodes the graph is standing on. Primary papers only. Our ACT guide covers the chunking node.</p>
+        <ul class="read-next">
+          <li><b>chunks</b><div><h4><a href="papers-act.html">ACT / ALOHA · arXiv 2304.13705</a></h4><p>Where action chunks, CVAE, and temporal ensembling come from. SmolVLA keeps the chunk, drops the CVAE.</p></div></li>
+          <li><b>flow</b><div><h4><a href="https://arxiv.org/abs/2210.02747">Flow Matching for Generative Modeling · Lipman et al.</a></h4><p>The velocity-field objective the action expert actually trains. Straighter paths than diffusion — why 0.75d is enough.</p></div></li>
+          <li><b>VLA</b><div><h4><a href="https://arxiv.org/abs/2406.09246">OpenVLA · Kim et al., 7B discrete tokens</a></h4><p>The heavy open baseline SmolVLA is sized against. Read the tokenization section to see what flow matching is refusing.</p></div></li>
+          <li><b>π₀</b><div><h4><a href="https://arxiv.org/abs/2410.24164">π₀ · Black et al.</a></h4><p>Diffusion action expert on a Paligemma VLM. Same VLA recipe, ~7× the parameters and a slower sampler.</p></div></li>
+          <li><b>VLM</b><div><h4><a href="https://arxiv.org/abs/2504.05259">SmolVLM · Marafioti et al.</a></h4><p>The perception backbone (SigLIP + SmolLM2). Layer skip only makes sense after you know this model.</p></div></li>
+        </ul>
 
         <h3 id="sources">Primary sources</h3>
         <p>Use these, not secondary explainers, as authority.</p>
