@@ -1,44 +1,74 @@
-# SmolVLA + LeRobot
+# SmolVLA + LeRobot — Comprehensive Paper Reading Guide
 
-**SmolVLA: A Vision-Language-Action Model for Affordable and Efficient Robotics**
-
-**Authors**: Mustafa Shukor et al. (Hugging Face + collaborators)  
+**SmolVLA: A Vision-Language-Action Model for Affordable and Efficient Robotics**  
+**Authors**: Mustafa Shukor et al.  
 **arXiv**: 2506.01844 (June 2025)
 
-## Core Contribution
+This guide is self-contained in the AI Research Lab. It provides deep reading support, prerequisite backspanning, architecture walkthroughs, and curated resources.
 
-SmolVLA challenges the "bigger is better" trend in robotics AI. It is a compact (~450M parameter) Vision-Language-Action model that achieves strong real-world performance while being trainable on a single GPU and runnable on consumer hardware.
+## Prerequisites & Knowledge Graph
 
-The model is trained entirely on a small curated set of public, community-contributed datasets (under 30k episodes / ~10M frames) via the LeRobot ecosystem.
+Before diving into SmolVLA, ensure you have solid grounding in these areas (in rough order):
 
-## Key Technical Ideas
+1. Feedback Control & Behavior Cloning Basics
+2. Vision-Language Models (VLMs)
+3. Transformers & Attention
+4. Generative Modeling for Actions (Flow matching)
+5. Robotics Systems (observations, actions, latency)
 
-- **Lightweight VLM backbone** with strategic layer skipping.
-- **Efficient action expert** using interleaved attention and flow matching for action generation.
-- **Asynchronous inference stack**: Decouples perception/prediction from action execution, enabling higher control rates and better responsiveness with chunked actions.
-- Strong results on manipulation tasks (pick, stack, sort) — outperforming larger models in real-world settings on affordable robot platforms (e.g., SO100).
+Simple Prerequisite Graph:
 
-## LeRobot Context
+Feedback Control
+      ↓
+Behavior Cloning
+      ↓
+VLMs
+      ↓
+Action Chunking + Flow Matching
+      ↓
+Asynchronous Execution
+      ↓
+SmolVLA + LeRobot
 
-LeRobot is the open-source PyTorch library and ecosystem that makes end-to-end robot learning accessible. It provides:
-- Standardized datasets (Dataset v3)
-- Policy implementations (including SmolVLA, ACT, Diffusion, etc.)
-- Training and evaluation scripts
-- Hardware support
+## Paper Structure & Detailed Reading Guide
 
-SmolVLA is designed to be fine-tuned easily on new LeRobot datasets.
+### 1. Motivation & Background
+Why "Smol" matters: single-GPU training, consumer hardware, community data.
 
-## Important Practical Notes
+### 2. Architecture Overview
+VLM Backbone + Action Expert using flow matching for action chunks.
 
-- Data quality and diversity matter more than sheer volume for these models.
-- Asynchronous execution significantly improves perceived speed.
-- The model supports multiple camera views + language instructions + proprioception.
+Six-Stage Mental Model:
+1. Multimodal encoding
+2. VLM feature extraction
+3. Cross-attention
+4. Flow matching
+5. Action chunk decoding
+6. Asynchronous dispatch
 
-## Reading Recommendations
+### 3. Flow Matching for Actions
+Learns straight path from noise to data. Faster inference than diffusion.
 
-1. Understand the shift from large proprietary VLAs to small community-driven ones.
-2. Study the architecture trade-offs (backbone + action expert).
-3. Pay attention to the asynchronous execution pattern — this is a key practical contribution.
-4. Look at how it compares to ACT and larger models like π0 in the paper.
+### 4. Asynchronous Execution
+Decouples perception from action execution. Major practical win.
 
-This guide is self-contained within the AI Research Lab.
+### 5. Data & Training
+<30k episodes from public LeRobot datasets.
+
+### 6. Evaluation
+Strong real-world results on affordable platforms.
+
+### 7. LeRobot Integration
+Full stack: datasets, training, hardware, evaluation.
+
+## Curated Resources
+
+- Paper: https://arxiv.org/abs/2506.01844
+- HF Blog: https://huggingface.co/blog/smolvla
+- LeRobot: https://github.com/huggingface/lerobot
+- Recommended: Flow matching tutorials on YouTube, LeRobot videos
+
+## BibTeX
+See full version in repo for complete BibTeX and more details.
+
+*All content self-contained inside AI Research Lab.*
