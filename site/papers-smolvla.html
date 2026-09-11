@@ -232,10 +232,32 @@
         SO-100 / SO-101 real robot + LIBERO / Meta-World sim</div>
 
         <div class="kg-visual" aria-hidden="true">
-          <div class="kg-row"><span class="kg-node gold">behavior cloning</span><span class="kg-arrow">→</span><span class="kg-node rose">compounding error</span><span class="kg-arrow">→</span><span class="kg-node sky">action chunks</span></div>
-          <div class="kg-row"><span class="kg-node leaf">SmolVLM-2</span><span class="kg-arrow">+</span><span class="kg-node lilac">flow expert</span><span class="kg-arrow">→</span><span class="kg-node ink">SmolVLA</span></div>
-          <div class="kg-row"><span class="kg-node gold">community data</span><span class="kg-arrow">+</span><span class="kg-node sky">async queue</span><span class="kg-arrow">→</span><span class="kg-node leaf">SO-100 / LIBERO</span></div>
+          <div class="graph-stack">
+            <div class="graph-level">
+              <span class="kg-node gold">behavior cloning</span>
+            </div>
+            <div class="graph-v">↓ compounding error</div>
+            <div class="graph-level">
+              <span class="kg-node rose">single-step BC</span>
+              <span class="kg-node sky">action chunks (ACT)</span>
+            </div>
+            <div class="graph-v">↓ + language + vision</div>
+            <div class="graph-level">
+              <span class="kg-node leaf">SmolVLM-2</span>
+              <span class="kg-node lilac">flow expert</span>
+              <span class="kg-node gold">community data</span>
+            </div>
+            <div class="graph-v">↓</div>
+            <div class="graph-level">
+              <span class="kg-node ink">SmolVLA + async queue</span>
+            </div>
+            <div class="graph-v">↓</div>
+            <div class="graph-level">
+              <span class="kg-node sky">SO-100 / LIBERO</span>
+            </div>
+          </div>
         </div>
+        <p class="article-caption">Directed graph of the paper. Each arrow is a dependency SmolVLA actually uses, not a generic ML taxonomy.</p>
 
         <h3 id="read">How to read the PDF (once)</h3>
         <ol>
@@ -280,6 +302,27 @@
         <div class="math-block">$$\mathcal{L}^{\tau}(\theta)=\mathbb{E}_{p(\mathbf{A}_t\mid\mathbf{o}_t),\,q(\mathbf{A}_t^{\tau}\mid\mathbf{A}_t)}\Big[\big\|\mathbf{v}_{\theta}(\mathbf{A}_t^{\tau},\mathbf{o}_t)-\mathbf{u}(\mathbf{A}_t^{\tau}\mid\mathbf{A}_t)\big\|^{2}\Big].$$</div>
         <p class="article-caption">Flow-matching regression. Compare to a diffusion denoising score-matching loss: same $L_2$ shape, different target, usually fewer ODE steps at sample time.</p>
         <p><strong>Why flow matching rather than diffusion or CVAE?</strong></p>
+        <figure class="figure-block">
+          <svg class="path-svg" viewBox="0 0 640 220" role="img" aria-label="Straight flow-matching path versus wiggly diffusion path">
+            <text x="20" y="28" class="muted">noise</text>
+            <text x="560" y="28" class="muted">action chunk</text>
+            <path d="M40 70 C 120 30, 200 140, 280 50 S 460 160, 600 70" fill="none" stroke="#a24c38" stroke-width="3"/>
+            <text x="250" y="42" fill="#a24c38">diffusion (curved score path)</text>
+            <line x1="40" y1="160" x2="600" y2="160" stroke="#2d6a45" stroke-width="4"/>
+            <circle cx="40" cy="160" r="7" fill="#2d6a45"/>
+            <circle cx="600" cy="160" r="7" fill="#2d6a45"/>
+            <text x="220" y="198" fill="#2d6a45">flow matching (almost-straight ODE)</text>
+          </svg>
+          <p class="article-caption">Same endpoints. Fewer function evaluations on the green path — what you need when a 50-step chunk has to land inside a control cycle.</p>
+        </figure>
+        <figure class="figure-block">
+          <div class="size-row">
+            <div class="size-col"><div class="blk" style="height:18px;background:#2d6a45"></div><span>SmolVLA<br>0.45B</span></div>
+            <div class="size-col"><div class="blk" style="height:70px;background:#b57a12"></div><span>π₀<br>~3.3B</span></div>
+            <div class="size-col"><div class="blk" style="height:110px;background:#a24c38"></div><span>OpenVLA<br>7B</span></div>
+          </div>
+          <p class="article-caption">Parameter count, not quality. The paper’s claim is that the short bar matches the tall ones on their suite.</p>
+        </figure>
         <ul>
           <li>Versus ACT’s CVAE: no style latent $z$ to set to zero at test time; multimodal demonstrations are absorbed into the flow. Chunks are still the output, so you keep ACT’s horizon reduction.</li>
           <li>Versus $\pi_0$ diffusion: straighter paths, fewer function evaluations, cheaper expert ($0.75d$).</li>
@@ -302,6 +345,29 @@
         <p>Algorithm 1: a <code>RobotClient</code> streams observations to a <code>PolicyServer</code> (possibly remote, possibly GPU). The client pops actions from a queue at the control rate $\Delta t$ (about 33&nbsp;ms at 30&nbsp;Hz). When the remaining fraction of the queue drops below threshold $g$, it fires a <em>non-blocking</em> infer. On return, overlapping prefixes are aggregated, $ \mathbf{A}_{t+1} \leftarrow f(\mathbf{A}_t, \tilde{\mathbf{A}}_{t+1}) $.</p>
         <p>Idle gaps vanish when $ g \ge (\mathbb{E}[\ell_S]/\Delta t)/n $, where $\ell_S$ is server-side latency and $n$ is chunk length. Communication time is treated as negligible next to $\ell_S$. Near-duplicate observations are dropped using a joint-space distance $\epsilon$, except when the queue is empty — then you always infer.</p>
         <p>Reported real-robot effect: similar success rate to sync, about <strong>30% shorter wall-clock task time</strong>, because the arm stops waiting. Do not read this as “the model is 30% more accurate.”</p>
+        <figure class="figure-block">
+          <div class="compare">
+            <div class="pane bad">
+              <h4>Synchronous chunk</h4>
+              <ol>
+                <li>Predict 50 steps</li>
+                <li>Arm idle while GPU thinks</li>
+                <li>Execute, then think again</li>
+              </ol>
+              <p>Cheap. Laggy. Blind every n steps.</p>
+            </div>
+            <div class="pane good">
+              <h4>Async (this paper)</h4>
+              <ol>
+                <li>Arm drains the queue</li>
+                <li>At g, fire a non-blocking infer</li>
+                <li>Blend the new chunk on arrival</li>
+              </ol>
+              <p>Same success, ~30% shorter task time.</p>
+            </div>
+          </div>
+          <p class="article-caption">Ensembling every tick (ACT) is a third pane: smooth, but the GPU must keep up.</p>
+        </figure>
         <div class="timeline">
           <div><b>t = 0</b><span>Observation sent to PolicyServer. Queue fills with a 50-step chunk.</span></div>
           <div><b>t ≈ 0.8 s (g = 0.5)</b><span>Non-blocking infer starts while the arm still drains the old queue.</span></div>

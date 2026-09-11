@@ -232,6 +232,52 @@ VGGT  (this paper)
 
 downstream: non-rigid tracking, feed-forward NVS
 export: COLMAP files → gsplat / NeRF</div>
+        <figure class="figure-block">
+          <div class="graph-stack">
+            <div class="graph-level">
+              <span class="kg-node gold">COLMAP SfM</span>
+              <span class="kg-node rose">DUSt3R pairs</span>
+              <span class="kg-node sky">DepthAnything / MoGe</span>
+            </div>
+            <div class="graph-v">↓ still a pipeline or a pair-fuse</div>
+            <div class="graph-level">
+              <span class="kg-node leaf">DINO tokens</span>
+              <span class="kg-node lilac">alternating attention</span>
+            </div>
+            <div class="graph-v">↓ one forward pass</div>
+            <div class="graph-level">
+              <span class="kg-node gold">cameras g</span>
+              <span class="kg-node sky">depth D</span>
+              <span class="kg-node rose">points P</span>
+              <span class="kg-node ink">tracks T</span>
+            </div>
+          </div>
+          <p class="article-caption">The graph the ASCII block is drawing. Specialists on top; VGGT is the merge.</p>
+        </figure>
+        <figure class="figure-block">
+          <div class="compare">
+            <div class="pane bad">
+              <h4>COLMAP / SfM</h4>
+              <ol>
+                <li>Detect &amp; match</li>
+                <li>Triangulate</li>
+                <li>Bundle adjust</li>
+                <li>Then dense stereo</li>
+              </ol>
+              <p>Slow. Breaks with little overlap.</p>
+            </div>
+            <div class="pane good">
+              <h4>VGGT glance</h4>
+              <ol>
+                <li>All images in</li>
+                <li>One transformer</li>
+                <li>Cameras, depth, points, tracks out</li>
+                <li>Optional BA afterwards</li>
+              </ol>
+              <p>Under a second. N from 1 to hundreds.</p>
+            </div>
+          </div>
+        </figure>
 
         <h3 id="problem">Problem statement, with the paper’s symbols</h3>
         <p>Input: $N$ RGB images $(I_i)_{i=1}^N$, $I_i\in\mathbb{R}^{3\times H\times W}$. Output:</p>
@@ -254,6 +300,19 @@ export: COLMAP files → gsplat / NeRF</div>
         <p>Cameras, depth, and point maps are algebraically redundant. Given $P$ you can PnP for $\mathbf{g}$; given $\mathbf{g}$ and $D$ you can back-project to $P$. So why predict all three?</p>
         <p><strong>During training</strong>, forcing the shared backbone to explain several related 3D views of the same scene improves every head. Redundancy is a feature: it is extra supervision on the same geometry.</p>
         <p><strong>During inference</strong>, the paper reports that <em>composing</em> the independently predicted depth and cameras yields more accurate 3D points than using the dedicated point-map head. That is the opposite of what a tidy architecture diagram suggests, and it is one of the most useful sentences in the paper. If you wrap VGGT in a library, default to depth+camera fusion, not $P_i$ verbatim.</p>
+        <figure class="figure-block">
+          <div class="arch">
+            <div class="arch-row">
+              <div class="arch-box tone-gold">Train all three<small>g, D, P — extra heads are extra supervision</small></div>
+            </div>
+            <div class="arch-down">↓ at test, don’t trust the named head</div>
+            <div class="arch-row">
+              <div class="arch-box tone-leaf">Use D + g<small>back-project → 3D</small></div>
+              <div class="arch-box tone-rose">Not raw P<small>dedicated point-map is weaker</small></div>
+            </div>
+          </div>
+          <p class="article-caption">Over-complete training, selective decoding. The head named after the quantity is not always the head you read.</p>
+        </figure>
         <div class="research-note">When a network is over-complete, train on the union of losses; decode with the empirically best combination. Do not assume the head named after the quantity you want is the head you should read.</div>
 
         <h3 id="train">Training picture</h3>

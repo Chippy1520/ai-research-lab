@@ -208,6 +208,49 @@ STLight (this paper) — still recurrent-free, but joint space–time
 
 train: MSE only
 eval: MMNIST, TaxiBJ, KTH (10→20/40), KITTI→Caltech generalization</div>
+        <figure class="figure-block">
+          <div class="graph-stack">
+            <div class="graph-level">
+              <span class="kg-node rose">ConvLSTM / PredRNN</span>
+              <span class="kg-node gold">SimVP / TAU</span>
+            </div>
+            <div class="graph-v">↓ RNN tax vs weak clocks</div>
+            <div class="graph-level">
+              <span class="kg-node sky">fold T into channels</span>
+              <span class="kg-node leaf">space–time patch</span>
+            </div>
+            <div class="graph-v">↓ STLMixer</div>
+            <div class="graph-level">
+              <span class="kg-node leaf">local</span>
+              <span class="kg-node lilac">dilated</span>
+              <span class="kg-node gold">temporal d</span>
+            </div>
+            <div class="graph-v">↓ pixel shuffle</div>
+            <div class="graph-level"><span class="kg-node ink">future T′ frames</span></div>
+          </div>
+        </figure>
+        <figure class="figure-block">
+          <div class="compare">
+            <div class="pane bad">
+              <h4>Spatial → Temporal → Spatial</h4>
+              <ol>
+                <li>CNN each frame alone</li>
+                <li>RNN steps through time</li>
+                <li>Decode pixels</li>
+              </ol>
+              <p>Honest Markov. Expensive unroll.</p>
+            </div>
+            <div class="pane good">
+              <h4>Joint space–time (STLight)</h4>
+              <ol>
+                <li>Time in the patch from layer 1</li>
+                <li>Mixer, no recurrence</li>
+                <li>Shuffle the future out in parallel</li>
+              </ol>
+              <p>SOTA, fraction of the FLOPs.</p>
+            </div>
+          </div>
+        </figure>
 
         <h3 id="problem">Problem definition</h3>
         <p>Past $T$ frames up to $t_0$:</p>
@@ -246,6 +289,13 @@ eval: MMNIST, TaxiBJ, KTH (10→20/40), KITTI→Caltech generalization</div>
             <tr><td>Sample efficiency: MSE 37.38 at epoch 50 on MMNIST; others need ≥19 more epochs</td><td>Faster training, not just cheaper inference</td></tr>
           </tbody>
         </table>
+        <figure class="figure-block">
+          <div class="size-row">
+            <div class="size-col"><div class="blk" style="height:8px;background:#2d6a45"></div><span>STLight-L<br>FLOPs ~2%</span></div>
+            <div class="size-col"><div class="blk" style="height:110px;background:#a24c38"></div><span>PredRNNv2<br>KTH 10→20</span></div>
+          </div>
+          <p class="article-caption">Schematic of the 2% FLOPs claim on KTH long-horizon, not a pixel-accurate plot of Table 3. Recurrent unrolls are where compute dies.</p>
+        </figure>
         <p>Figure 1 (MSE vs parameters on MMNIST) is the poster. Recurrent models live up and to the right; STLight traces a lower Pareto front from 5M to 54M.</p>
         <p>Qualitative (Figure 3): digits that collide and bounce — direction, speed, and wall reflection have to be right. TaxiBJ inflow/outflow grids — smoother spatial fields, less flicker. If you only look at SSIM on MMNIST you will miss whether collisions are physically plausible; always watch the gif.</p>
 

@@ -197,9 +197,65 @@
   font: 400 17px/1.55 var(--serif);
 }
 
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 8px 0 8px;
+}
+.compare .pane {
+  padding: 14px 16px 12px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+.compare .pane.bad { border-top: 5px solid #a24c38; }
+.compare .pane.good { border-top: 5px solid #2d6a45; }
+.compare .pane h4 {
+  margin: 0 0 8px;
+  font: 600 12px var(--sans);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.compare .pane p, .compare .pane li {
+  margin: 0;
+  color: #3e443f;
+  font: 400 14px/1.5 var(--serif);
+}
+.compare .pane ol, .compare .pane ul { margin: 0; padding-left: 18px; }
+
+.graph-stack { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+.graph-level { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; width: 100%; }
+.graph-level .kg-node { text-align: center; }
+.graph-v { color: var(--accent); font: 600 16px/1 var(--mono); }
+
+.path-svg { width: 100%; height: auto; display: block; }
+.path-svg text { font: 600 12px var(--sans); fill: #1b1f1c; }
+.path-svg .muted { fill: #606660; font-weight: 500; }
+
+.drift {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 6px;
+  align-items: end;
+  min-height: 88px;
+  margin: 8px 0 4px;
+}
+.drift i {
+  display: block;
+  background: #2d6a45;
+  border-radius: 2px 2px 0 0;
+}
+.drift.bad i { background: #a24c38; }
+
+.size-row { display: flex; align-items: end; gap: 10px; height: 110px; margin: 6px 0 8px; }
+.size-col { display: flex; flex-direction: column; align-items: center; justify-content: end; gap: 6px; flex: 1; }
+.size-col .blk { width: 100%; max-width: 72px; border-radius: 2px 2px 0 0; }
+.size-col span { font: 600 10px var(--sans); color: var(--muted); text-align: center; }
+
 @media (max-width: 720px) {
   .paper-index { padding: 32px 22px 70px; }
   .bar-row { grid-template-columns: 1fr; }
   .case-step { grid-template-columns: 28px 1fr; }
   .case-step .model { grid-column: 2; }
+  .compare { grid-template-columns: 1fr; }
 }

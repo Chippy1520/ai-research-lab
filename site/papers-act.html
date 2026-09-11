@@ -206,6 +206,47 @@ ACT (~80M): ResNet-18 × cameras + transformer encoder/decoder
 LeRobot ACT policy  ──►  SmolVLA chunks (flow, not CVAE)
                          Diffusion Policy chunks
                          async stacks (SmolVLA §3.3)</div>
+        <figure class="figure-block">
+          <div class="graph-stack">
+            <div class="graph-level"><span class="kg-node gold">ALOHA teleop</span></div>
+            <div class="graph-v">↓ 50 demos</div>
+            <div class="graph-level">
+              <span class="kg-node rose">compounding error</span>
+              <span class="kg-node lilac">human modes / pauses</span>
+              <span class="kg-node sky">jerky chunk edges</span>
+            </div>
+            <div class="graph-v">↓ three fixes</div>
+            <div class="graph-level">
+              <span class="kg-node leaf">chunk k</span>
+              <span class="kg-node gold">CVAE · z=0</span>
+              <span class="kg-node sky">temporal ensemble</span>
+            </div>
+            <div class="graph-v">↓</div>
+            <div class="graph-level"><span class="kg-node ink">ACT in LeRobot</span></div>
+          </div>
+          <p class="article-caption">Three problems, three modules. Later VLAs keep the chunk and swap the other two.</p>
+        </figure>
+        <figure class="figure-block">
+          <div class="compare">
+            <div class="pane bad">
+              <h4>Single-step BC (k=1)</h4>
+              <div class="drift bad">
+                <i style="height:12px"></i><i style="height:20px"></i><i style="height:32px"></i><i style="height:48px"></i>
+                <i style="height:64px"></i><i style="height:78px"></i><i style="height:88px"></i><i style="height:88px"></i>
+              </div>
+              <p>Error grows. 1% ablation success.</p>
+            </div>
+            <div class="pane good">
+              <h4>Chunked (k=100)</h4>
+              <div class="drift">
+                <i style="height:28px"></i><i style="height:30px"></i><i style="height:26px"></i><i style="height:32px"></i>
+                <i style="height:28px"></i><i style="height:34px"></i><i style="height:30px"></i><i style="height:28px"></i>
+              </div>
+              <p>Horizon ÷ k. 44% on the same ablation.</p>
+            </div>
+          </div>
+          <p class="article-caption">Bars are error magnitude over time, schematic. The numbers are the paper’s k-ablation, ensembling off.</p>
+        </figure>
 
         <h3 id="aloha">ALOHA, only as much as the algorithm needs</h3>
         <p>The paper is a <em>system</em> paper: hardware + algorithm. For the algorithm you need this much hardware context:</p>
@@ -244,6 +285,18 @@ LeRobot ACT policy  ──►  SmolVLA chunks (flow, not CVAE)
           <li><strong>Test:</strong> $z=\mathbf{0}$. Deterministic, but trained not to collapse modes in the same way a raw L1 decoder would.</li>
         </ul>
         <p>If your task is unimodal and low-precision, the CVAE is overhead. If your task is “pry a lid,” it is load-bearing. LeRobot still ships this as the default ACT.</p>
+        <figure class="figure-block">
+          <div class="compare">
+            <div class="pane">
+              <h4>Train</h4>
+              <p>Encoder sees the chunk + proprio, predicts $(\mu,\sigma)$ of $z$. Decoder reconstructs the chunk from images, joints, and $z$. L1 + $\beta$ KL.</p>
+            </div>
+            <div class="pane good">
+              <h4>Test</h4>
+              <p>Throw the encoder away. Set $z=\mathbf{0}$. One coherent style, not the average of two prying motions.</p>
+            </div>
+          </div>
+        </figure>
 
         <h3 id="arch">Architecture (Figure 2 of the paper)</h3>
         <ul>
