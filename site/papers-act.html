@@ -128,8 +128,43 @@
 
         <h3>§IV-A Chunking + temporal ensemble</h3>
         <p>Neuroscience “action chunking”: grasp-the-wrapper is one unit, not 50 independent joint commands. Fix chunk size $k$: every $k$ steps, observe, emit $k$ actions, execute. Effective horizon of a $T$-step task becomes $T/k$. Policy is $\pi_\theta(a_{t:t+k}\mid s_t)$ not $\pi_\theta(a_t\mid s_t)$.</p>
+        <figure class="figure-block">
+          <div class="compare">
+            <div class="pane bad">
+              <h4>π(a<sub>t</sub> | s<sub>t</sub>)</h4>
+              <div class="token-row">
+                <div class="token n-rose"><b>1</b>step</div>
+                <div class="token n-rose"><b>1</b></div>
+                <div class="token n-rose"><b>1</b></div>
+                <div class="token n-rose">× T</div>
+              </div>
+              <p>Horizon = T. 1% ablation.</p>
+            </div>
+            <div class="pane good">
+              <h4>π(a<sub>t:t+k</sub> | s<sub>t</sub>)</h4>
+              <div class="token-row">
+                <div class="token n-leaf"><b>k</b>chunk</div>
+                <div class="token n-leaf"><b>k</b></div>
+              </div>
+              <p>Horizon = T/k. 44% at k=100.</p>
+            </div>
+          </div>
+        </figure>
         <p>Chunking also models non-Markov human pauses: a single-step policy cannot condition on “we are in the middle of a hesitation.”</p>
         <p>Naive chunk = open-loop for $k$ steps (jerky at boundaries). Fix: query every timestep, dump overlapping predictions into buffers $\mathcal{B}[t:t+k]$, apply $a_t=\sum_i w_i A_t[i]/\sum_i w_i$ with $w_i=\exp(-m\cdot i)$ (Algorithm 2). Newer predictions weigh more.</p>
+        <figure class="figure-block">
+          <svg class="path-svg" viewBox="0 0 640 140" role="img" aria-label="Overlapping chunks with exponential weights">
+            <rect x="40" y="30" width="280" height="22" fill="#c9dff0"/>
+            <rect x="160" y="58" width="280" height="22" fill="#cfe8d4"/>
+            <rect x="280" y="86" width="280" height="22" fill="#f3ddb0"/>
+            <text x="48" y="46">chunk at t</text>
+            <text x="168" y="74">chunk at t+1 (heavier)</text>
+            <text x="288" y="102">chunk at t+2 (heaviest)</text>
+            <line x1="300" y1="20" x2="300" y2="120" stroke="#2d6a45" stroke-width="2" stroke-dasharray="4 3"/>
+            <text x="308" y="18" class="muted">now</text>
+          </svg>
+          <p class="article-caption">The dashed line is the action you actually send: weighted average of every chunk that covers “now.”</p>
+        </figure>
         <p>Ablation they want you to remember: $k=1$ ≈ 1% success on the simulated cube/insertion average with ensembling off; $k=100$ ≈ 44%. Chunk size is the paper.</p>
 
         <h3>§IV-B CVAE</h3>
@@ -138,6 +173,20 @@
 
         <h3>§IV-C Implementation</h3>
         <p>Encoder: BERT-style transformer, inputs = current joints + $k$ actions + learned [CLS] ($k+2$ tokens); [CLS] predicts $(\mu,\sigma)$ of $z$. Decoder: ResNet-18 on four $480\times 640$ RGB → $15\times 20\times 512$ maps → 300 tokens + 2D sinusoidal PE; transformer encoder mixes cameras + 14-DoF joints + $z$; transformer decoder emits $k\times 14$ absolute joint targets. Dynamixel PID tracks those targets at high rate.</p>
+        <figure class="figure-block">
+          <div class="strip">
+            <div class="token n-sky"><b>4</b>×480×640</div>
+            <span class="op">→</span>
+            <div class="token n-gold"><b>300</b>×4 tokens</div>
+            <span class="op">+</span>
+            <div class="token n-rose"><b>14</b>joints</div>
+            <span class="op">+</span>
+            <div class="token n-lilac"><b>z</b></div>
+            <span class="op">→</span>
+            <div class="token n-ink"><b>k×14</b></div>
+          </div>
+          <p class="article-caption">Decoder tensor path. Train $z$ from [CLS]; test $z=0$.</p>
+        </figure>
 
         <h3>§V Tasks (read every one)</h3>
         <p>Sim: Transfer Cube, Bimanual Insertion. Real: Slide Ziploc, Slot Battery, Open Cup, Thread Velcro (3 mm × 25 mm loop), Prep Tape, Put On Shoe. Each paragraph in V-A is a contact story — mid-air second grasp, springy battery slot, tight shoe. Thread Velcro: millimetres at grasp 1 become &gt;10 mm at insertion.</p>

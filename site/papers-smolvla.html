@@ -131,15 +131,59 @@
 
         <h3>§3.1 Architecture — VLM</h3>
         <p>Backbone is SmolVLM-2 (SigLIP vision + SmolLM2 decoder), chosen because it already handles multi-image/video. Images go through the vision encoder with token shuffling; they drop tiling and keep a global image plus pixel-shuffle, <strong>64 visual tokens per frame</strong>. Language is tokenized. Sensorimotor state is a linear projection to <strong>one token</strong>. Concatenate, run the language decoder, condition the expert on those features.</p>
+        <figure class="figure-block">
+          <div class="token-row">
+            <div class="token n-sky"><b>64</b>visual / camera</div>
+            <div class="token n-gold"><b>L</b>language</div>
+            <div class="token n-rose"><b>1</b>state</div>
+          </div>
+          <div class="arch-down">↓ concat → SmolLM2 decoder (first N layers)</div>
+          <div class="token-row">
+            <div class="token n-leaf">VLM features</div>
+            <span class="kg-arrow">→</span>
+            <div class="token n-lilac">action expert 0.75d</div>
+            <span class="kg-arrow">→</span>
+            <div class="token n-ink">chunk a<sub>t</sub>…a<sub>t+n</sub></div>
+          </div>
+          <p class="article-caption">Figure 1 as tokens. Count the 64. The state is one vector, not a sequence.</p>
+        </figure>
         <p><strong>Layer skipping.</strong> To cut latency they skip the last $L-N$ VLM layers (the scissors). Prior work showed pretrained transformers tolerate dropped late layers; here it is an inference budget, not a regularizer. Default $N = L/2$.</p>
+        <figure class="figure-block">
+          <div class="layers" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i><i></i>
+            <i class="off"></i><i class="off"></i><i class="off"></i><i class="off"></i><i class="off"></i><i class="off"></i>
+          </div>
+          <p class="article-caption">Scissors: keep the bottom half of the stack (green). Red layers are not run. $N=L/2$.</p>
+        </figure>
         <p><strong>Action expert + flow matching.</strong> The expert $v_\theta$ is thinner (width $0.75d$). It is trained to regress a velocity field that transports noise to an action chunk, not to denoise like $\pi_0$’s diffusion expert and not to decode a CVAE $z$ like ACT.</p>
         <p><strong>Interleaved CA and SA.</strong> Unlike $\pi_0$ (SA-only) or some CA-only VLAs, each expert block is <em>either</em> CA or SA, not both. CA: action tokens read VLM keys/values. SA: action tokens attend to each other with a <em>causal</em> mask so token $i$ cannot see future actions in the chunk. Empirically: higher success, faster inference; SA is what makes chunks smooth on the real robot.</p>
+        <figure class="figure-block">
+          <div class="arch-row">
+            <div class="arch-box tone-gold">CA block<small>actions read VLM K,V</small></div>
+            <div class="arch-box tone-sky">SA block<small>causal within the chunk</small></div>
+            <div class="arch-box tone-gold">CA</div>
+            <div class="arch-box tone-sky">SA</div>
+          </div>
+          <p class="article-caption">Not both in one block. Alternate. Causal SA = token $i$ cannot see $i+1$.</p>
+        </figure>
 
         <h3>§3.2 Community data</h3>
         <p>Robot pretraining data is still orders of magnitude smaller than language. Datasets are “islands”: different morphologies, sensors, frequencies, formats. Low-cost arms + LeRobot are the authors’ answer to that heterogeneity.</p>
         <p><strong>Table 1:</strong> 481 Hugging Face community datasets, 22.9k episodes, 10.6M frames — about an order of magnitude smaller than industrial VLA pretraining sets. Filtered by embodiment, episode count, quality, frame coverage.</p>
         <p><strong>Task annotation.</strong> Community labels are noisy: placeholders like “task desc”, “Hold”, “Up”, or empty. They sample frames, feed Qwen2.5-VL-3B-Instruct with the original string, and replace it with a short action-oriented sentence (prompt in Appendix A.1).</p>
         <p><strong>Camera names.</strong> <code>images.laptop</code> might be top, wrist, or side. They manually map views to <code>OBS_IMAGE_1/2/3</code> (top, wrist, side) and drop extras. Inconsistent camera order hurt this data regime; consistent order helped. They flag future VLM-based remapping or collection guidelines.</p>
+        <figure class="figure-block">
+          <div class="compare">
+            <div class="pane bad">
+              <h4>As uploaded</h4>
+              <p><code>images.laptop</code> / <code>phone</code> / <code>cam2</code> — same string, different viewpoint.</p>
+            </div>
+            <div class="pane good">
+              <h4>After remap</h4>
+              <p><code>OBS_IMAGE_1</code> top · <code>_2</code> wrist · <code>_3</code> side. Extras dropped.</p>
+            </div>
+          </div>
+        </figure>
 
         <h3>§3.3 Asynchronous inference</h3>
         <p>Modern policies output chunks $\pi(o_t)=\mathbf{A}_t=(a_t,\ldots,a_{t+n})$. The naive loop executes the whole chunk, then looks again — open-loop for $n$ steps, plus an idle gap while the next chunk is computed.</p>
@@ -147,6 +191,18 @@
         <p><strong>Sync</strong> = exhaust the chunk, then infer. Cheap average compute, blind lags.</p>
         <p><strong>Async (Algorithm 1):</strong> <code>RobotClient</code> pops actions at $\Delta t$; when remaining queue fraction drops below $g$, it sends $o_t$ to <code>PolicyServer</code> without blocking. Overlaps are aggregated. Near-duplicate observations are dropped via joint-space distance $\epsilon$, except when the queue is empty (red arrow in Figure 3B) — then you always infer, or the arm stalls.</p>
         <p>Figure 3: small $g$ → idle gaps; $g\approx 1$ → almost continuous infer. They use $g=0.7$ in the main real-robot async experiments (consume ~30% of the old chunk before requesting the next).</p>
+        <figure class="figure-block">
+          <p class="article-caption" style="margin-top:0">Queue at $g=0.7$: grey already executed, green still to run, gold = fire a new infer.</p>
+          <div class="queue" aria-hidden="true">
+            <i class="used"></i><i class="used"></i><i class="used"></i>
+            <i class="fire"></i>
+            <i></i><i></i><i></i>
+          </div>
+          <div class="bars">
+            <div class="bar-row"><span>sync pick-place</span><div class="bar-track"><div class="bar-fill rose" style="width:100%"></div></div><b>13.75s</b></div>
+            <div class="bar-row"><span>async pick-place</span><div class="bar-track"><div class="bar-fill leaf" style="width:70%"></div></div><b>9.7s</b></div>
+          </div>
+        </figure>
 
         <h3>§4 Experiments — protocol first</h3>
         <p>Sim: new Meta-World dataset, 50 demos × 50 tasks. Real: three SO-100 tasks + one SO-101, 10 trajectories × 5 start poses = 50 demos each. Default training is multi-task.</p>
@@ -158,6 +214,13 @@
         <p><strong>Table 3 (SO-100 real).</strong> Pick-place 75, stacking 90, sorting 70, average <strong>78.3%</strong> for 0.45B SmolVLA.</p>
         <p><strong>Table 4 (SO-101).</strong> In-distribution 90, OOD (novel Lego poses) 50. Beats ACT in both.</p>
         <p><strong>Table 5.</strong> Community pretraining is load-bearing: 51.7 → 78.3 average on the three SO-100 tasks. Multitask finetuning adds more. Do not cite 78.3 without this ablation.</p>
+        <figure class="figure-block">
+          <div class="bars">
+            <div class="bar-row"><span>no community pt</span><div class="bar-track"><div class="bar-fill rose" style="width:66%"></div></div><b>51.7</b></div>
+            <div class="bar-row"><span>with pretrain</span><div class="bar-track"><div class="bar-fill leaf" style="width:100%"></div></div><b>78.3</b></div>
+          </div>
+          <p class="article-caption">SO-100 average. The headline number is the green bar, not a from-scratch VLA.</p>
+        </figure>
         <p><strong>§4.6 async.</strong> Success roughly matches sync (async average 73.3 vs sync similar). Pick-place wall-clock 13.75 s → 9.7 s (~30% faster). Fixed 60 s budget: 9 successful cycles → 19. The speed claim is throughput, not accuracy.</p>
         <p><strong>§4.7 ablations</strong> are all on LIBERO, VLM frozen, expert from scratch, no robot pretraining. Attention mechanism (CA vs SA vs interleaved) is the first table — interleaved wins on success and speed. Read every ablation row as “which scissors / width / attention choice paid for itself.”</p>
 
