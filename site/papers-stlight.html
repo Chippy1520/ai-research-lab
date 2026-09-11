@@ -49,6 +49,7 @@
         <div class="rail-inner">
           <p class="rail-label">In this guide</p>
           <ol class="article-toc">
+            <li><a href="#case">Human case study</a></li>
             <li><a href="#tension">Why RNNs dominate STL</a></li>
             <li><a href="#prereqs">Prerequisites</a></li>
             <li><a href="#graph">Knowledge graph</a></li>
@@ -73,6 +74,32 @@
       </aside>
 
       <article class="technical-article">
+        <h2 id="case">How a person predicts the next second of a bouncing ball</h2>
+        <div class="case-study">
+          <p class="case-lede">A digit (or a pedestrian, or a taxi-flow cell) is bouncing around a frame. You have seen the last ten snapshots. You need the next ten. You will not narrate the entire history out loud, one sentence per frame, before guessing. You will see a moving blob, notice both the nearby edge and the far wall, and sketch the whole next second at once.</p>
+          <div class="case-step">
+            <div class="n">01</div>
+            <div class="human"><h4>You</h4><p>You do not recap frame 1, then 2, then 3 as a spoken story (that is an RNN). You see the last second as one motion picture.</p></div>
+            <div class="model"><h4>The paper</h4><p>Fold time into channels, $B\times(T\cdot C)\times H\times W$, then one convolution into space–time patches. Time is in the representation from layer one.</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">02</div>
+            <div class="human"><h4>You</h4><p>Nearby: the ball’s current edge. Far: it will hit the opposite wall. Both matter, at once.</p></div>
+            <div class="model"><h4>The paper</h4><p>STLMixer: compact kernel $k_{T_1}$ (local), dilated $k_{T_2}$ (distant), depth-wise mix along the temporal hidden dim $d$. No attention, no $d^2$ cost.</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">03</div>
+            <div class="human"><h4>You</h4><p>You sketch the entire next second in one go, not “frame 11, then 12, then 13” while waiting for yourself.</p></div>
+            <div class="model"><h4>The paper</h4><p>Recurrent-free: pixel-shuffle the patches back to $T'$ frames in parallel. That is why FLOPs collapse versus PredRNN unrolls.</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">04</div>
+            <div class="human"><h4>You</h4><p>If you learned bouncing in one city, you can still guess bouncing in another — the skill was the motion, not the wallpaper.</p></div>
+            <div class="model"><h4>The paper</h4><p>Train on KITTI, test on Caltech. The paper’s generalization plot is this transfer, at 0.1M–15M parameters.</p></div>
+          </div>
+          <p class="case-punch">ConvLSTM is the person who narrates every past frame before answering. STLight is the person who just watches. The rest of the guide is kernels, shapes, and the FLOPs table that makes that claim quantitative.</p>
+        </div>
+
         <h2 id="tension">Why RNNs dominate spatio-temporal learning — and why that is expensive</h2>
         <p>Spatio-temporal predictive learning (STL): given the last $T$ frames, predict the next $T'$. No labels. The model has to discover motion, occlusion, bounce, inflow/outflow, gait. Applications the paper names explicitly: pedestrian and vehicle forecasting for driving; anticipating human motion for safe HRI. Those are resource-constrained. A model that needs 1000G FLOPs per clip does not ship.</p>
         <p>The inherited template is Spatial–Temporal–Spatial:</p>
@@ -83,6 +110,39 @@
         </ol>
         <p>RNNs model the Markov chain honestly — each future frame conditions on the last prediction — and they pay for it with sequential compute, heavy memory, and painful BPTT. Recurrent-free CNNs (SimVP, TAU, ConvMixer-in-the-middle) predict the whole future in one shot, but vanilla convolutions (a) treat every past frame equally, so they are bad clocks, and (b) have local receptive fields, so they need depth to see a digit bounce off the opposite wall.</p>
         <p>STLight’s bet: those two CNN failures are <em>representation</em> failures, not proof that you need recurrence. Rearrange time into channels, embed space–time jointly, then mix near and far patches with depth-wise convolutions only.</p>
+
+        <div class="chip-row">
+          <span class="chip">fully convolutional</span>
+          <span class="chip">no attention</span>
+          <span class="chip">joint space–time</span>
+          <span class="chip">SOTA / fewer FLOPs</span>
+        </div>
+        <figure class="figure-block">
+          <div class="arch">
+            <div class="arch-row">
+              <div class="arch-box tone-sky">Past T frames<small>B × T × C × H × W</small></div>
+            </div>
+            <div class="arch-down">↓ fold time into channels</div>
+            <div class="arch-row">
+              <div class="arch-box tone-gold">One conv → patches<small>p×p, hidden d, optional overlap</small></div>
+            </div>
+            <div class="arch-down">↓ STLMixer × de</div>
+            <div class="arch-row">
+              <div class="arch-box tone-leaf">Local k<sub>T1</sub></div>
+              <div class="arch-box tone-lilac">Dilated k<sub>T2</sub></div>
+              <div class="arch-box tone-rose">Temporal mix in d</div>
+            </div>
+            <div class="arch-down">↓ pixel shuffle + 1×1</div>
+            <div class="arch-row">
+              <div class="arch-box tone-ink">Future T′ frames</div>
+            </div>
+          </div>
+          <p class="article-caption">Figure. STLight never unrolls an RNN. Time lives in the patch from layer one.</p>
+        </figure>
+        <figure class="video-embed">
+          <iframe class="video-frame" src="https://www.youtube.com/embed/aircAruvnKk" title="But what is a neural network?" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+          <figcaption class="article-caption">3Blue1Brown, “But what is a neural network?” If convolution-as-feature-extractor is fuzzy, start here before ConvLSTM vs mixer.</figcaption>
+        </figure>
 
         <h3 id="prereqs">Prerequisites</h3>
         <ol class="prereq-list">

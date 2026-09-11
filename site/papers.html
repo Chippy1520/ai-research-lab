@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Self-contained paper reading guides: SmolVLA, VGGT, ACT, STLight. Prerequisites, knowledge graphs, section-by-section walkthroughs.">
+  <meta name="description" content="Self-contained paper reading guides: SmolVLA, VGGT, ACT, STLight. Human case study first, then mapped onto the paper.">
   <meta name="theme-color" content="#f3f0e8">
   <title>Paper Reading Guides · AI Research Lab</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,45 +33,45 @@
       <h1>How to actually read these papers</h1>
       <div class="abstract">
         <span>Scope</span>
-        <p class="publication-deck">Four self-contained companions. Each one backspans the prerequisites, draws a knowledge graph, walks the architecture with the paper’s own notation, works a small example, and lists only primary sources. Nothing here is a stub: open a card and you get the full guide.</p>
+        <p class="publication-deck">Each guide starts the way a human would solve the problem — a concrete case study — then maps every step onto the paper’s modules. Diagrams, comparison charts, and embedded lectures sit next to the mapping. Jargon comes second.</p>
       </div>
       <div class="byline-row">
         <div><span>Papers</span><b>4</b></div>
         <div><span>Excluded</span><b>CLIP-Meets-DINO · FaultAdapt</b></div>
-        <div><span>Style</span><b>Curriculum editorial</b></div>
+        <div><span>Method</span><b>Human case → framework map</b></div>
         <div><span>Hosting</span><b>This repository only</b></div>
       </div>
     </header>
 
     <div class="paper-index">
-      <a class="paper-card" href="papers-smolvla.html">
+      <a class="paper-card tone-a" href="papers-smolvla.html">
         <h3>SmolVLA + LeRobot</h3>
         <div class="paper-meta">Vision-language-action · arXiv 2506.01844 · June 2025</div>
-        <p>A 450M-parameter VLA trained on community LeRobot data. Flow matching, layer skipping, 64 visual tokens, and an asynchronous inference stack that decouples chunk prediction from execution. The guide covers SmolVLM-2, the action expert, community-data hygiene, and how to read the real-world vs simulation numbers.</p>
+        <p>Case study: teaching an intern to put a cube in a bowl on a cheap arm — look, plan a short phrase of motion, keep moving while thinking ahead. Then the same steps as VLM, chunk, async stack.</p>
       </a>
 
-      <a class="paper-card" href="papers-vggt.html">
+      <a class="paper-card tone-b" href="papers-vggt.html">
         <h3>VGGT: Visual Geometry Grounded Transformer</h3>
         <div class="paper-meta">3D vision · CVPR 2025 Best Paper · arXiv 2503.11651</div>
-        <p>One feed-forward transformer that, from 1–hundreds of images, predicts cameras, depth, point maps, and tracks in under a second. Alternating frame/global attention, over-complete training, and why combining depth + cameras at inference beats the dedicated point-map head.</p>
+        <p>Case study: walking into a room with a phone camera and building a mental 3D model — glance, match corners, guess where you stood — then the same steps as tokens, alternating attention, and heads.</p>
       </a>
 
-      <a class="paper-card" href="papers-act.html">
+      <a class="paper-card tone-c" href="papers-act.html">
         <h3>ACT: Action Chunking with Transformers</h3>
         <div class="paper-meta">Imitation learning · RSS 2023 · arXiv 2304.13705</div>
-        <p>The paper that made chunked imitation the default. Compounding error as a horizon problem, CVAE style latents, temporal ensembling, ALOHA hardware, and why ACT is still the first policy you train in LeRobot.</p>
+        <p>Case study: opening a condiment cup the way a person does it — commit to a short motor phrase, pick one style, keep blending the plan — then chunking, CVAE, temporal ensembling.</p>
       </a>
 
-      <a class="paper-card" href="papers-stlight.html">
+      <a class="paper-card tone-d" href="papers-stlight.html">
         <h3>STLight</h3>
         <div class="paper-meta">Spatio-temporal prediction · arXiv 2411.10198 · November 2024</div>
-        <p>A fully convolutional replacement for ConvLSTM / PredRNN. Joint space–time patches, STLMixer (local + dilated), pixel-shuffle decode. SOTA on Moving MNIST / TaxiBJ / KTH with a fraction of the FLOPs — the efficiency paper that actually measures FLOPs.</p>
+        <p>Case study: watching a bouncing ball and predicting the next second without narrating every past frame — then joint space–time patches and a convolutional mixer instead of an RNN.</p>
       </a>
     </div>
   </main>
 
   <footer class="editorial-footer">
-    <div><strong>AI Research Lab</strong><p>Guides live entirely inside this repository. Primary papers, official code, and lectures are cited; no third-party explainer pages are required.</p></div>
+    <div><strong>AI Research Lab</strong><p>Guides live entirely inside this repository. Primary papers, official code, and lectures are cited.</p></div>
     <div class="footer-links">
       <a href="curriculum.html">Curriculum</a>
       <a href="index.html">Robotics intelligence</a>

@@ -49,6 +49,7 @@
         <div class="rail-inner">
           <p class="rail-label">In this guide</p>
           <ol class="article-toc">
+            <li><a href="#case">Human case study</a></li>
             <li><a href="#tension">The task that breaks BC</a></li>
             <li><a href="#prereqs">Prerequisites</a></li>
             <li><a href="#graph">Knowledge graph</a></li>
@@ -76,6 +77,37 @@
       </aside>
 
       <article class="technical-article">
+        <h2 id="case">How a person opens a condiment cup</h2>
+        <div class="case-study">
+          <p class="case-lede">The cup is on the table. You have two hands and you can see. You will not compute the next 20 milliseconds of joint torque from scratch, fifty times a second, independently. You will commit to a short motor phrase, pick a style, and keep blending the plan as your eyes update. That is ACT, before any transformer is named.</p>
+          <div class="case-step">
+            <div class="n">01</div>
+            <div class="human"><h4>You</h4><p>Look at the cup from a few angles, feel where your wrists are.</p></div>
+            <div class="model"><h4>The paper</h4><p>Four RGB cameras through ResNet-18, plus joint positions. Pixel-to-action, no object CAD.</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">02</div>
+            <div class="human"><h4>You</h4><p>Commit to a phrase: tip it, nest it in the other hand, pry the lid. You do not re-decide every millimetre. A 1% twitch, repeated, knocks the cup over — compounding error.</p></div>
+            <div class="model"><h4>The paper</h4><p>Predict $k$ future joint targets at once, $\pi(a_{t:t+k}\mid s_t)$. Effective horizon $\div k$. Ablation: 1% success at $k=1$, 44% at $k=100$.</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">03</div>
+            <div class="human"><h4>You</h4><p>There are two decent ways to pry. You pick one style and stick with it. Averaging both motions puts a finger through the lid.</p></div>
+            <div class="model"><h4>The paper</h4><p>CVAE over chunks. Train with a style latent $z$. At test, $z=0$ — one coherent trajectory, not the mushy mean of two.</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">04</div>
+            <div class="human"><h4>You</h4><p>As you move, you keep a running blend of “what I already committed to” and “what I see now,” instead of jerking to a brand-new plan every two seconds.</p></div>
+            <div class="model"><h4>The paper</h4><p>Temporal ensembling: query every tick, average overlapping forecasts of the <em>same</em> $a_t$ with $w_i=\exp(-m i)$.</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">05</div>
+            <div class="human"><h4>You</h4><p>You learned this from watching someone do it about fifty times, not from a warehouse of expert corrections (DAgger) that would ruin the teleop.</p></div>
+            <div class="model"><h4>The paper</h4><p>~50 demonstrations / ~10 minutes. Offline only. ALOHA is the cheap stage those demos were collected on.</p></div>
+          </div>
+          <p class="case-punch">Every later VLA that “predicts action chunks” is citing this case study, whether or not it names ACT. SmolVLA keeps 02 and replaces 03–04 with flow matching and an async queue.</p>
+        </div>
+
         <h2 id="tension">The task that breaks ordinary behavior cloning</h2>
         <p>Opening a translucent condiment cup: tip it with the right gripper, nest it into the left, lift, pry the lid from below. Millimetres matter. Contact is rich. The object deforms. Modeling this well enough to plan is a research project by itself. Humans do not model it; they look and compensate. The paper’s hardware bet is that a <em>pixel-to-joint</em> policy on commodity webcams can do the same, if you can collect demonstrations on a robot that costs about as much as one industrial arm.</p>
         <p>Imitation learning then fails in two textbook ways:</p>
@@ -84,6 +116,32 @@
           <li><strong>Non-stationary human demos.</strong> People pause. They take different trajectories for the same state. A deterministic Markov policy cannot represent “sometimes wait, sometimes commit,” and L2/L1 on a single next action averages those modes into a mushy middle that collides with the cup.</li>
         </ol>
         <p>ACT’s answers are, respectively: predict $k$ actions at once (horizon $\div k$), and train a CVAE over those chunks (multimodality). Smoothness is a third, separate trick: temporal ensembling.</p>
+
+        <div class="chip-row">
+          <span class="chip">~80M</span>
+          <span class="chip">chunk size k</span>
+          <span class="chip">CVAE · z=0 at test</span>
+          <span class="chip">50 demos</span>
+        </div>
+        <figure class="figure-block">
+          <div class="arch">
+            <div class="arch-row">
+              <div class="arch-box tone-sky">4 RGB cameras<small>ResNet-18 each</small></div>
+              <div class="arch-box tone-gold">Joints<small>14-DoF bimanual</small></div>
+              <div class="arch-box tone-rose">z<small>style latent · 0 at eval</small></div>
+            </div>
+            <div class="arch-down">↓ transformer encoder</div>
+            <div class="arch-row">
+              <div class="arch-box tone-leaf">Transformer decoder<small>emits k joint-target vectors</small></div>
+            </div>
+            <div class="arch-down">↓</div>
+            <div class="arch-row">
+              <div class="arch-box tone-lilac">Naive chunk<small>open-loop for k steps</small></div>
+              <div class="arch-box tone-ink">+ temporal ensemble<small>query every tick · exp weights</small></div>
+            </div>
+          </div>
+          <p class="article-caption">Figure. ACT datapath. Ensembling is inference-only; training still sees whole chunks.</p>
+        </figure>
 
         <h3 id="prereqs">Prerequisites</h3>
         <ol class="prereq-list">
@@ -113,6 +171,10 @@
             <div>
               <h4>Conditional VAE, one picture</h4>
               <p>Encoder $q(z\mid a_{t:t+k}, o_t)$ → Gaussian. Decoder $p(a_{t:t+k}\mid o_t, z)$. Loss = reconstruction + $\beta\,\mathrm{KL}(q\|p(z))$. At test time drop the encoder, set $z=0$ (prior mean). You get a deterministic policy that was trained as if it were generative — a useful hack when you want multimodality during learning and a single good trajectory at eval.</p>
+              <figure class="video-embed">
+                <iframe class="video-frame" src="https://www.youtube.com/embed/qJeaCHQ1k2w" title="Variational Autoencoders animated" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+                <figcaption class="article-caption">Deepia, “Variational Autoencoders | Generative AI Animated.” Map this onto ACT: encoder sees the chunk, decoder is the policy, z is clamped to 0 on the robot.</figcaption>
+              </figure>
             </div>
           </li>
         </ol>
@@ -158,6 +220,14 @@ LeRobot ACT policy  ──►  SmolVLA chunks (flow, not CVAE)
         <p>Psychology: humans group motor primitives and fire them as a unit. Implementation: every $k$ steps, observe once, emit $k$ target joint positions, execute open-loop inside the chunk.</p>
         <div class="math-block">$$\pi_\theta(a_{t:t+k}\mid s_t)\quad\text{instead of}\quad\pi_\theta(a_t\mid s_t).$$</div>
         <p>Effective horizon of a $T$-step task becomes $T/k$. Ablation (simulated cube transfer / bimanual insertion, averaged, ensembling off): <strong>1% success at $k=1$</strong>, <strong>44% at $k=100$</strong>, then a decline at $k=200$ and $400$ as the policy becomes too open-loop. Chunk size is a bias–variance dial, not a magic constant. Typical real-robot operating point in follow-on work: $k=50$–$100$ (about 1–2 seconds at 50&nbsp;Hz).</p>
+        <figure class="figure-block">
+          <div class="bars">
+            <div class="bar-row"><span>k = 1</span><div class="bar-track"><div class="bar-fill rose" style="width:2%"></div></div><b>1%</b></div>
+            <div class="bar-row"><span>k = 100</span><div class="bar-track"><div class="bar-fill leaf" style="width:44%"></div></div><b>44%</b></div>
+            <div class="bar-row"><span>k = 200+</span><div class="bar-track"><div class="bar-fill gold" style="width:28%"></div></div><b>drops</b></div>
+          </div>
+          <p class="article-caption">Paper ablation, ensembling off. Too small k → compounding error. Too large k → open-loop drift.</p>
+        </figure>
         <p>Chunking also swallows short non-Markovian confounders (a pause of length $<k$) without giving the policy a full history that would invite causal confusion (the “which past frame caused this wait?” problem).</p>
 
         <h3 id="ensemble">Temporal ensembling</h3>
@@ -195,6 +265,14 @@ LeRobot ACT policy  ──►  SmolVLA chunks (flow, not CVAE)
         <h3 id="lerobot">Where this sits in 2025–2026 stacks</h3>
         <p>LeRobot’s docs call ACT the first policy to train: fast, light, 50-demo territory. SmolVLA keeps chunks, replaces the CVAE decoder with a flow-matching expert, and replaces every-tick ensembling with async queues. Diffusion Policy is the other chunked baseline (iterative denoising instead of one transformer decode). When a new VLA paper says “we predict action chunks,” they are citing this paper whether or not they name it.</p>
         <p>Practical LeRobot notes (from the official ACT page, not folklore): ResNet-18 backbone, transformer over cameras + joints + latent, L1 + KL, $z=0$ at eval, temporal ensembling on. Watch the LeRobot team’s ACT tutorial before your first train run.</p>
+        <figure class="video-embed">
+          <iframe class="video-frame" src="https://www.youtube.com/embed/-tkEMLOLEwo" title="Train an ACT Policy for the SO-101 with LeRobot" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+          <figcaption class="article-caption">Trelis Research — train ACT on SO-101 with LeRobot (includes KL / style discussion). Pair with HF Tutorial #4 for recording.</figcaption>
+        </figure>
+        <figure class="video-embed">
+          <iframe class="video-frame" src="https://www.youtube.com/embed/eMlx5fFNoYc" title="Attention in transformers, step by step" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+          <figcaption class="article-caption">3Blue1Brown, attention step-by-step. This is the decoder that emits the chunk.</figcaption>
+        </figure>
 
         <h3 id="worked">Worked chunk at 50&nbsp;Hz, $k=100$</h3>
         <p>A 100-step chunk is 2 seconds. Observation at $t=0$: four RGB frames + 14 joint angles. Decoder emits $100\times 14$ targets. Without ensembling, the arm is open-loop until $t=100$. With ensembling, at $t=10$ you already have 11 overlapping forecasts of $a_{10}$; the exponential mix is what is written to the controller. If the cup tips unexpectedly at $t=30$, reactivity is governed by $m$ and by the fact that new images enter every 20&nbsp;ms — not by waiting for the chunk to end.</p>

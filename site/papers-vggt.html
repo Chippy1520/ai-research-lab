@@ -49,6 +49,7 @@
         <div class="rail-inner">
           <p class="rail-label">In this guide</p>
           <ol class="article-toc">
+            <li><a href="#case">Human case study</a></li>
             <li><a href="#tension">Why this paper exists</a></li>
             <li><a href="#prereqs">Prerequisites</a></li>
             <li><a href="#graph">Knowledge graph</a></li>
@@ -74,6 +75,37 @@
       </aside>
 
       <article class="technical-article">
+        <h2 id="case">How a person builds a room in their head</h2>
+        <div class="case-study">
+          <p class="case-lede">You walk into a messy office with a phone. You want a 3D sense of the desk — where the cameras were, how far the wall is, which pixels are the same mug. You will not run a surveying tripod in your head. You will glance, match, and guess. VGGT does those glances in one forward pass.</p>
+          <div class="case-step">
+            <div class="n">01</div>
+            <div class="human"><h4>You</h4><p>Look at each photo on its own: “this is a desk; that is a keyboard close-up.”</p></div>
+            <div class="model"><h4>The paper</h4><p>DINO patchifies each image. <em>Frame-wise</em> self-attention mixes tokens inside one view.</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">02</div>
+            <div class="human"><h4>You</h4><p>Relate photos: that desk corner in shot 1 is the same corner in shot 4, even if the zoom changed.</p></div>
+            <div class="model"><h4>The paper</h4><p><em>Global</em> self-attention across all views. Alternating with frame-wise attention, 24 layers. No essential-matrix layer.</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">03</div>
+            <div class="human"><h4>You</h4><p>Guess where you were standing, and treat the first photo as “here” — the origin of your mental map.</p></div>
+            <div class="model"><h4>The paper</h4><p>Camera token per frame predicts $\mathbf{g}=[\mathbf{q},\mathbf{t},\mathbf{f}]$. Frame 1 is the world origin (identity extrinsics, special tokens).</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">04</div>
+            <div class="human"><h4>You</h4><p>Guess how far the wall is, and where every pixel sits in the room. Point at the mug in photo 1 and find it in photo 3.</p></div>
+            <div class="model"><h4>The paper</h4><p>DPT heads emit depth, a viewpoint-invariant point map, and tracking features (CoTracker2). Train all of them; at inference, fused depth+cameras often beat the dedicated point-map head.</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">05</div>
+            <div class="human"><h4>You</h4><p>You do not bundle-adjust. You just <em>see</em> the room in under a second. Later you might tidy the sketch with a ruler.</p></div>
+            <div class="model"><h4>The paper</h4><p>Feed-forward VGGT is already competitive with methods that still run geometry optimization. VGGT+BA is the optional ruler.</p></div>
+          </div>
+          <p class="case-punch">COLMAP is the ruler-and-tripod version of the same job. VGGT is the glance. The rest of the guide is how the glance is implemented.</p>
+        </div>
+
         <h2 id="tension">Why this paper exists</h2>
         <p>Structure-from-Motion (SfM) estimates cameras and a sparse point cloud from overlapping images. The industrial implementation is COLMAP: keypoints, matching, geometric verification, triangulation, bundle adjustment (BA). Learning has been invading that pipeline for a decade — learned detectors, learned matchers, even differentiable BA (VGGSfM). Geometry, however, still sits in the loop, which is why reconstruction is slow and brittle on texture-poor or few-view scenes.</p>
         <p>DUSt3R and MASt3R made a different bet: a network that emits pairwise point maps, then a <em>global alignment</em> optimization to fuse pairs. VGGT asks whether that last optimization can go away. The network sees <em>all</em> images at once (one, a few, or hundreds), and directly predicts every 3D quantity you actually wanted from SfM+MVS+tracking.</p>
@@ -83,6 +115,42 @@
           <li><strong>VGGT + optional BA</strong> is the “we still win even if you give the other side their ritual” result.</li>
         </ol>
         <p>Best Paper at CVPR 2025 is about claim 1 changing what a 3D backbone looks like, not about shaving 0.3° off a pose table.</p>
+
+        <div class="chip-row">
+          <span class="chip">CVPR 2025 Best Paper</span>
+          <span class="chip">feed-forward</span>
+          <span class="chip">1–hundreds of views</span>
+          <span class="chip">&lt; 1 second</span>
+        </div>
+        <figure class="figure-block">
+          <div class="arch">
+            <div class="arch-row">
+              <div class="arch-box tone-sky">Images I<sub>1</sub>…I<sub>N</sub><small>one, a few, or hundreds</small></div>
+            </div>
+            <div class="arch-down">↓ DINO patchify</div>
+            <div class="arch-row">
+              <div class="arch-box tone-gold">Image tokens</div>
+              <div class="arch-box tone-rose">Camera token + 4 registers / frame</div>
+            </div>
+            <div class="arch-down">↓ alternating attention × 24</div>
+            <div class="arch-row">
+              <div class="arch-box tone-leaf">Frame-wise SA<small>within one view</small></div>
+              <div class="arch-box tone-lilac">Global SA<small>across views</small></div>
+            </div>
+            <div class="arch-down">↓ heads</div>
+            <div class="arch-row">
+              <div class="arch-box tone-gold">g = [q, t, f]</div>
+              <div class="arch-box tone-sky">DPT → depth</div>
+              <div class="arch-box tone-rose">point map P</div>
+              <div class="arch-box tone-ink">tracks T</div>
+            </div>
+          </div>
+          <p class="article-caption">Figure. VGGT is one transformer, four 3D outputs. First camera is the world origin.</p>
+        </figure>
+        <figure class="video-embed">
+          <iframe class="video-frame" src="https://www.youtube.com/embed/xZb_oEld5y4" title="VGGT in 3 minutes" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+          <figcaption class="article-caption">A 3-minute flyover of VGGT: DINO tokens, camera tokens, alternating attention, no test-time BA required.</figcaption>
+        </figure>
 
         <h3 id="prereqs">Prerequisites</h3>
         <ol class="prereq-list">
@@ -98,6 +166,14 @@
             <div>
               <h4>What bundle adjustment actually optimizes</h4>
               <p>BA jointly refines cameras and 3D points to minimize reprojection error. It is iterative, requires correspondences, and fails without overlap. VGGT’s bet is that a large transformer trained on 3D-annotated data can <em>amortize</em> that optimization.</p>
+              <figure class="video-embed">
+                <iframe class="video-frame" src="https://www.youtube.com/embed/zdKX7Xo3Cb8" title="UCF lecture: Structure from Motion" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+                <figcaption class="article-caption">UCF CRCV, Lecture 15 — Structure from Motion. The ritual VGGT is trying to skip.</figcaption>
+              </figure>
+              <figure class="video-embed">
+                <iframe class="video-frame" src="https://www.youtube.com/embed/xx85eyN1Xc0" title="COLMAP workflow" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+                <figcaption class="article-caption">Polyfjord — a practical COLMAP track. Watch 5 minutes so “export to COLMAP / gsplat” in the VGGT repo is not abstract.</figcaption>
+              </figure>
             </div>
           </li>
           <li>
@@ -112,6 +188,10 @@
             <div>
               <h4>DINOv2 tokens and DPT heads</h4>
               <p>Images are patchified by a frozen/pretrained DINO encoder into tokens $t^I$. Dense outputs (depth, points, tracking features) are decoded with a DPT (dense prediction transformer) head — the multi-scale ViT readout from Ranftl et al. 2021 — then a $3\times 3$ conv.</p>
+              <figure class="video-embed">
+                <iframe class="video-frame" src="https://www.youtube.com/embed/h3ij3F3cPIk" title="DINO explained" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+                <figcaption class="article-caption">Yannic Kilcher — DINO (self-supervised ViT). VGGT’s tokenizer is this family of features, not a 3D-specialized CNN.</figcaption>
+              </figure>
             </div>
           </li>
           <li>
