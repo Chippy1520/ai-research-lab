@@ -1,0 +1,43 @@
+/* Paper-guide extensions on top of curriculum.css */
+.paper-index { max-width: 1040px; margin: 0 auto; padding: 48px 34px 90px; }
+.paper-card {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  padding: 26px 28px;
+  margin-bottom: 16px;
+  background: var(--paper);
+  color: inherit;
+  text-decoration: none;
+}
+.paper-card:hover { border-color: var(--accent); }
+.paper-card h3 { margin: 0 0 8px; font: 500 24px/1.2 var(--serif); color: var(--ink); }
+.paper-card .paper-meta { color: var(--faint); font: 500 11px var(--mono); letter-spacing: .04em; margin-bottom: 12px; text-transform: uppercase; }
+.paper-card p { margin: 0; color: #3e443f; font: 400 17px/1.55 var(--serif); }
+.knowledge-graph {
+  background: var(--paper-alt);
+  border: 1px solid var(--line);
+  padding: 18px 20px;
+  margin: 8px 0 28px;
+  font: 400 12.5px/1.55 var(--mono);
+  white-space: pre;
+  overflow-x: auto;
+  color: #26342c;
+}
+.prereq-list { margin: 0 0 32px; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.prereq-list li {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+.prereq-list b { color: var(--faint); font: 500 9px var(--mono); }
+.prereq-list h4 { margin: 0 0 4px; font: 600 17px/1.3 var(--serif); color: var(--ink); }
+.prereq-list p { margin: 0; color: var(--muted); font: 400 15px/1.55 var(--serif); }
+.guide-back { display: inline-block; margin: 18px 0 0; color: var(--accent); font: 500 11px var(--mono); text-decoration: none; }
+.guide-back:hover { text-decoration: underline; }
+.article-table code { font-size: 10px; }
+@media (max-width: 720px) {
+  .paper-index { padding: 32px 22px 70px; }
+}

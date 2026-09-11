@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Complete reading guide for STLight (arXiv 2411.10198): fully convolutional spatio-temporal prediction, STLMixer, pixel shuffle, FLOPs vs ConvLSTM/PredRNN.">
+  <meta name="theme-color" content="#f3f0e8">
+  <title>STLight · Paper Guide · AI Research Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/curriculum.css">
+  <link rel="stylesheet" href="assets/papers.css">
+  <script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]]},svg:{fontCache:"global"}};</script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body class="editorial">
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
+  <header class="topbar editorial-nav">
+    <a class="brand" href="curriculum.html"><span class="brand-mark">∇</span><span>AI Research Lab</span></a>
+    <nav aria-label="Primary navigation">
+      <a href="papers.html">All guides</a>
+      <a href="curriculum.html">Curriculum</a>
+      <a href="index.html">Robotics intelligence ↗</a>
+    </nav>
+  </header>
+
+  <main>
+    <header class="publication-header" id="overview">
+      <div class="journal-masthead"><span>AI Research Lab</span><span>Paper reading companion</span></div>
+      <p class="publication-label">Spatio-temporal prediction · November 2024</p>
+      <h1>STLight: future frames without the RNN tax</h1>
+      <div class="abstract">
+        <span>Lede</span>
+        <p class="publication-deck">Predicting the next frames of a video is the self-supervised task behind a lot of world-modeling, pedestrian forecasting, and robot-safety work. The default architecture for a decade was “CNN encoder → ConvLSTM/PredRNN → decoder.” STLight deletes the recurrent core, jointly embeds space and time with one convolution, mixes local and dilated neighborhoods, and pixel-shuffles the future back out. The result is not a cute tiny model that almost works. It is SOTA on the standard STL benchmarks at a fraction of the FLOPs.</p>
+      </div>
+      <div class="byline-row">
+        <div><span>Paper</span><b>arXiv 2411.10198</b></div>
+        <div><span>Authors</span><b>Alfarano, Alfarano, Friso, Bacciu, Amerini, Silvestri</b></div>
+        <div><span>Code</span><b>github.com/AlfaranoAndrea/STLight</b></div>
+        <div><span>Task</span><b>STL: past $T$ frames → future $T'$ frames</b></div>
+      </div>
+      <a class="guide-back" href="papers.html">← All paper guides</a>
+    </header>
+
+    <div class="article-frame" id="article">
+      <aside class="article-rail" aria-label="Article navigation">
+        <div class="rail-inner">
+          <p class="rail-label">In this guide</p>
+          <ol class="article-toc">
+            <li><a href="#tension">Why RNNs dominate STL</a></li>
+            <li><a href="#prereqs">Prerequisites</a></li>
+            <li><a href="#graph">Knowledge graph</a></li>
+            <li><a href="#problem">Problem</a></li>
+            <li><a href="#arch">Three-stage architecture</a></li>
+            <li><a href="#mixer">STLMixer</a></li>
+            <li><a href="#results">Benchmarks</a></li>
+            <li><a href="#embodied">Why this is on a robotics reading list</a></li>
+            <li><a href="#worked">Worked tensor shapes</a></li>
+            <li><a href="#caveats">Caveats</a></li>
+            <li><a href="#study">Study plan</a></li>
+            <li><a href="#sources">Primary sources</a></li>
+          </ol>
+          <div class="session-note">
+            <span>70-minute route</span>
+            <p><b>10</b> STL landscape</p>
+            <p><b>25</b> patches + mixer</p>
+            <p><b>20</b> tables / FLOPs</p>
+            <p><b>15</b> embodied link + study</p>
+          </div>
+        </div>
+      </aside>
+
+      <article class="technical-article">
+        <h2 id="tension">Why RNNs dominate spatio-temporal learning — and why that is expensive</h2>
+        <p>Spatio-temporal predictive learning (STL): given the last $T$ frames, predict the next $T'$. No labels. The model has to discover motion, occlusion, bounce, inflow/outflow, gait. Applications the paper names explicitly: pedestrian and vehicle forecasting for driving; anticipating human motion for safe HRI. Those are resource-constrained. A model that needs 1000G FLOPs per clip does not ship.</p>
+        <p>The inherited template is Spatial–Temporal–Spatial:</p>
+        <ol>
+          <li>CNN encodes each frame independently (space).</li>
+          <li>RNN (ConvLSTM, PredRNN, PredRNN++, MIM, E3D-LSTM, MAU, …) steps through time.</li>
+          <li>Deconvolution reconstructs pixels (space again).</li>
+        </ol>
+        <p>RNNs model the Markov chain honestly — each future frame conditions on the last prediction — and they pay for it with sequential compute, heavy memory, and painful BPTT. Recurrent-free CNNs (SimVP, TAU, ConvMixer-in-the-middle) predict the whole future in one shot, but vanilla convolutions (a) treat every past frame equally, so they are bad clocks, and (b) have local receptive fields, so they need depth to see a digit bounce off the opposite wall.</p>
+        <p>STLight’s bet: those two CNN failures are <em>representation</em> failures, not proof that you need recurrence. Rearrange time into channels, embed space–time jointly, then mix near and far patches with depth-wise convolutions only.</p>
+
+        <h3 id="prereqs">Prerequisites</h3>
+        <ol class="prereq-list">
+          <li>
+            <b>01</b>
+            <div>
+              <h4>ConvLSTM in one paragraph</h4>
+              <p>Shi et al.: replace the LSTM’s dense multiplies with convolutions so hidden states are feature maps. This is the baseline every STL paper still reports. If you can draw an LSTM cell and then write $*$ instead of $\times$, you are done.</p>
+            </div>
+          </li>
+          <li>
+            <b>02</b>
+            <div>
+              <h4>Depth-wise and point-wise convolution</h4>
+              <p>Depth-wise: one filter per channel, no mixing across channels. Point-wise: $1\times 1$ mix across channels, no spatial mix. ConvMixer / MobileNet-style stacks alternate them. STLight’s learnable layers are only these (plus ordinary conv for the patch embed and a $1\times 1$ after shuffle). No attention. That is the efficiency thesis.</p>
+            </div>
+          </li>
+          <li>
+            <b>03</b>
+            <div>
+              <h4>Pixel shuffle (sub-pixel convolution)</h4>
+              <p>Shi et al. 2016: reshape $C\cdot r^2 \times H \times W$ into $C \times rH \times rW$ without a transposed conv. Parameter-free upsampling. STLight uses it to restore spatial resolution after patch embedding reduced it by $p$.</p>
+            </div>
+          </li>
+          <li>
+            <b>04</b>
+            <div>
+              <h4>SimVP / TAU as the CNN family</h4>
+              <p>SimVP: CNN encoder, Inception-UNet “translator,” CNN decoder, all frames at once. TAU adds static/dynamic attention on top. STLight is in this family but refuses the Spatial–Temporal–Spatial split: time is not a translator in the middle; it is in the patch from the first layer.</p>
+            </div>
+          </li>
+          <li>
+            <b>05</b>
+            <div>
+              <h4>The metrics</h4>
+              <p>MSE / MAE (pixel), SSIM (local structure), PSNR (reconstruction quality). FLOPs via <code>fvcore</code>. If a paper reports only SSIM, they are hiding compute. STLight’s figures are MSE-vs-parameters on purpose.</p>
+            </div>
+          </li>
+        </ol>
+
+        <h3 id="graph">Knowledge graph</h3>
+        <div class="knowledge-graph">STL task: X ∈ R^{T×C×H×W}  →  Y ∈ R^{T'×C×H×W}
+
+recurrent family
+  ConvLSTM → PredRNN → PredRNN++ → MIM → E3D-LSTM → MAU
+  honest Markov, expensive sequential unroll
+
+recurrent-free family
+  SimVP (IncepU translator)
+    ├─ TAU (temporal attention)
+    └─ SimVP + ViT / MLP-Mixer / ConvMixer / ConvNeXt
+
+STLight (this paper) — still recurrent-free, but joint space–time
+  (1) rearrange T into channels: B×(T·C)×H×W
+  (2) one conv → patches p×p with hidden time dim d
+  (3) STLMixer × de
+        (a) compact kernel k_T1   local intra-patch spatial
+        (b) dilated kernel k_T2   distant patches
+        (c) depth-wise mix        temporal dim inside the patch
+      skip from de/3 → 2de/3
+  (4) pixel shuffle restore H,W
+  (5) 1×1 conv + reshape to T'
+
+train: MSE only
+eval: MMNIST, TaxiBJ, KTH (10→20/40), KITTI→Caltech generalization</div>
+
+        <h3 id="problem">Problem definition</h3>
+        <p>Past $T$ frames up to $t_0$:</p>
+        <div class="math-block">$$\mathcal{X}=\{x_t\}_{t=t_0-T+1}^{t_0}\in\mathbb{R}^{T\times C\times H\times W}.$$</div>
+        <p>Predict $T'$ future frames $\mathcal{Y}\in\mathbb{R}^{T'\times C\times H\times W}$. Each $x_t$ is a $C$-channel $H\times W$ image (or a traffic-flow grid, for TaxiBJ).</p>
+
+        <h3 id="arch">Three stages (Figure 2)</h3>
+        <p><strong>1. Spatio-temporal patches.</strong> Prior CNN STL encodes frames one-by-one, stacking them on the batch axis. That treats $t=-3$ and $t=0$ as i.i.d. images. STLight interleaves frames on the channel axis, $Z_T\in\mathbb{R}^{B\times (T\cdot C)\times H\times W}$, then a single convolution with stride $p$ produces patches. Optional overlap $O\ge 2$ enlarges the kernel to $p\cdot O$ with matching padding. They recommend small $p$, large hidden $d$, and overlap: each patch holds little spatial content, so the mixer can specialize, while $p^2$ still buys resolution reduction.</p>
+        <p>Keeping spatial size an integer divisor of $H,W$ is load-bearing: pixel shuffle in the decoder, and their fine-tune recipe, both assume it.</p>
+        <p><strong>2. STLMixer, repeated $\texttt{de}$ times.</strong> See next section.</p>
+        <p><strong>3. Patch shuffle and reassemble.</strong> Pixel shuffle restores $H,W$. A $1\times 1$ convolution, then reshape, restores $T'\times C$. Written as</p>
+        <div class="math-block">$$Z'''_{T}=\mathrm{Conv}_{1\times 1}\big(\mathrm{PixelShuffle}(Z''_{t,T})\big).$$</div>
+        <p>No transposed-conv checkerboard, no heavy decoder CNN. Almost all capacity lives in the mixer.</p>
+
+        <h3 id="mixer">STLMixer — local, dilated, temporal</h3>
+        <p>After embedding, the sequence is a grid of patches, each already containing a temporal hidden vector of width $d$. Three mixings per block:</p>
+        <ol>
+          <li><strong>Near spatial:</strong> compact depth-wise kernel $k_{T_1}$. Fine structure (digit edges, pedestrian limbs).</li>
+          <li><strong>Far spatial:</strong> dilated convolution, larger $k_{T_2}$. Global context without attention’s $d^2$ cost. This is how a small patch sees a bounce on the other side of Moving MNIST.</li>
+          <li><strong>Temporal inside the patch:</strong> channel/depth-wise mixing along $d$. Because time was folded into the patch, “temporal attention” is just convolution on those channels.</li>
+        </ol>
+        <p>They deliberately avoid intra-patch attention: $d$ is large by design, and attention would be quadratic in $d$. A skip connection from block $\texttt{de}/3$ to $2\cdot\texttt{de}/3$ injects an earlier representation into the reconstruction half — a cheap U-Net ghost.</p>
+        <p>Ablations in §4.6 compare STLMixer to plain ConvMixer and to TAU’s attention translator. The paper’s claim is that TAU was wrong to treat convolution as incapable of temporal dynamics; the missing piece was the joint patch, not the mixer’s species.</p>
+
+        <h3 id="results">How to read the tables</h3>
+        <p>They reimplement inside OpenSTL so training recipes match the baselines. That is why Table 3 is the one to trust.</p>
+        <table class="article-table">
+          <thead>
+            <tr><th>Fact from the paper</th><th>What it means</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>STLight-XS beats the prior recurrent-free SOTA on MMNIST with ~25% of its parameters</td><td>The joint patch is doing more than “we stacked more ConvMixer”</td></tr>
+            <tr><td>STLight-S beats the best recurrent model with ~14% of its FLOPs</td><td>The RNN tax is real, not a measurement artifact</td></tr>
+            <tr><td>STLight-L matches PredRNNv2 on KTH 10→20 using 61% params and <em>2%</em> of the FLOPs</td><td>Long-horizon unrolls are where recurrence bleeds compute</td></tr>
+            <tr><td>KITTI-trained, Caltech-tested, 0.1M–15M variants all above OpenSTL baselines ≤25M</td><td>The representation generalizes, it is not an MMNIST overfit</td></tr>
+            <tr><td>Sample efficiency: MSE 37.38 at epoch 50 on MMNIST; others need ≥19 more epochs</td><td>Faster training, not just cheaper inference</td></tr>
+          </tbody>
+        </table>
+        <p>Figure 1 (MSE vs parameters on MMNIST) is the poster. Recurrent models live up and to the right; STLight traces a lower Pareto front from 5M to 54M.</p>
+        <p>Qualitative (Figure 3): digits that collide and bounce — direction, speed, and wall reflection have to be right. TaxiBJ inflow/outflow grids — smoother spatial fields, less flicker. If you only look at SSIM on MMNIST you will miss whether collisions are physically plausible; always watch the gif.</p>
+
+        <h3 id="embodied">Why this belongs next to SmolVLA and ACT</h3>
+        <p>STL is not a VLA. It is the video-dynamics cousin of the problems those papers have on the robot:</p>
+        <ul>
+          <li><strong>Anticipation for safety.</strong> A cheap convolutional forecaster on a wrist or overhead camera is a collision prior you can run at camera rate. PredRNN will not fit. STLight-XS might.</li>
+          <li><strong>Self-supervised pretraining.</strong> Future-frame prediction is a way to soak unlabeled robot video before you have 50 ACT demos.</li>
+          <li><strong>Efficiency culture.</strong> STLight reports FLOPs. VLA papers often report parameter counts and a laptop anecdote. Steal the measurement habit.</li>
+        </ul>
+        <p>Do not bolt STLight’s mixer into SmolVLA and expect a paper. Do use it as the “what does a serious efficiency ablation look like?” template when you shrink a policy.</p>
+
+        <h3 id="worked">Worked tensor shapes</h3>
+        <p>Take MMNIST-ish numbers: $B=16$, $T=10$, $T'=10$, $C=1$, $H=W=64$, $p=4$, hidden $d=128$, no extra overlap.</p>
+        <ol>
+          <li>Input $\mathcal{B}_T$: $16\times 10\times 1\times 64\times 64$.</li>
+          <li>Channel fold: $16\times 10\times 64\times 64$.</li>
+          <li>Stride-4 conv → $16\times 128\times 16\times 16$ patches (exactly $H/p$).</li>
+          <li>STLMixer stack, same spatial size, skip at $\texttt{de}/3$.</li>
+          <li>Pixel shuffle $r=4$: $16\times (128/16)\times 64\times 64$ after accounting for how they pack $T'$ into channels — then $1\times 1$ and reshape to $16\times 10\times 1\times 64\times 64$.</li>
+        </ol>
+        <p>If $H$ is not divisible by $p$, you cannot shuffle cleanly. That is why the paper nags about integer divisors. When you port this to 224×224 robot frames, pick $p\in\{4,7,8,16\}$ on purpose.</p>
+
+        <h3 id="caveats">Caveats</h3>
+        <ul>
+          <li>MSE as the only train loss under-penalizes blurry futures. STL papers all do this; it does not mean the predictions are calibrated physically.</li>
+          <li>Recurrent-free models eat GPU memory as $T'$ grows, even if FLOPs look pretty. KTH 10→40 is the stress test; read their memory notes, not just FLOPs.</li>
+          <li>TaxiBJ is not a camera image. Success there does not imply KITTI success. They test both; quote the right table.</li>
+          <li>No attention means long-range relations must fit in the dilated kernel. If your video’s relevant motion is 80 pixels away and $k_{T_2}$ cannot see it, you need more dilation or smaller $p$, not “just add a transformer.”</li>
+          <li>Code is OpenSTL-based. Reproducing Table 3 outside OpenSTL is how numbers mysteriously move.</li>
+        </ul>
+
+        <h3 id="study">Study plan</h3>
+        <ol>
+          <li>Write Spatial–Temporal–Spatial vs joint patch in two diagrams. If they look the same, you missed the channel fold.</li>
+          <li>Compute FLOPs of one ConvLSTM step vs one STLMixer block at $16\times 16\times 128$. Approximate is fine; the ratio should scare you.</li>
+          <li>Read SimVP’s translator section (not the whole paper), then STLight §3. You should be able to say what was deleted.</li>
+          <li>Run their MMNIST config if you have a GPU; if not, read Figure 1 until you can reconstruct the Pareto argument without the figure.</li>
+          <li>Only then ask “could a wrist-camera STLight-XS be a collision prior for my SO-100?” That is a project, not a sentence in this guide.</li>
+        </ol>
+
+        <h3 id="sources">Primary sources</h3>
+        <ul>
+          <li>Paper: <a href="https://arxiv.org/abs/2411.10198">arXiv:2411.10198</a>.</li>
+          <li>HTML: <a href="https://ar5iv.labs.arxiv.org/html/2411.10198">ar5iv HTML</a>.</li>
+          <li>Code: <a href="https://github.com/AlfaranoAndrea/STLight">github.com/AlfaranoAndrea/STLight</a>.</li>
+          <li>Benchmark harness they use: OpenSTL.</li>
+          <li>Backspan: Shi et al. ConvLSTM; Gao et al. SimVP; TAU; PredRNN; pixel-shuffle (Shi et al. ESPCN); ConvMixer.</li>
+        </ul>
+        <div class="citation">
+          <strong>BibTeX</strong>
+          <pre>@article{alfarano2024stlight,
+  title={STLight: a Fully Convolutional Approach for Efficient Predictive
+         Learning by Spatio-Temporal joint Processing},
+  author={Alfarano, Andrea and Alfarano, Alberto and Friso, Linda
+          and Bacciu, Andrea and Amerini, Irene and Silvestri, Fabrizio},
+  journal={arXiv preprint arXiv:2411.10198},
+  year={2024}
+}</pre>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="editorial-footer">
+    <div><strong>AI Research Lab</strong><p>Self-contained companion. Primary sources only.</p></div>
+    <div class="footer-links">
+      <a href="papers.html">All guides</a>
+      <a href="papers-act.html">← ACT</a>
+      <a href="papers-smolvla.html">SmolVLA</a>
+    </div>
+  </footer>
+  <script>
+    window.addEventListener('scroll', () => {
+      const bar = document.getElementById('reading-progress-bar');
+      if (!bar) return;
+      const h = document.documentElement;
+      const p = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100 || 0;
+      bar.style.width = p + '%';
+    });
+  </script>
+</body>
+</html>

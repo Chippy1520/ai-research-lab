@@ -3,49 +3,80 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Self-contained paper reading guides: SmolVLA, VGGT, ACT, STLight. Prerequisites, knowledge graphs, section-by-section walkthroughs.">
+  <meta name="theme-color" content="#f3f0e8">
   <title>Paper Reading Guides · AI Research Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/styles.css">
   <link rel="stylesheet" href="assets/curriculum.css">
-  <style>
-    .paper-index { max-width: 1040px; margin: 0 auto; padding: 40px 34px; }
-    .paper-card { border: 1px solid var(--line); border-radius: 4px; padding: 22px 26px; margin-bottom: 18px; background: var(--paper); cursor: pointer; }
-    .paper-card:hover { border-color: var(--accent); }
-    .paper-card h3 { margin: 0 0 8px; font-size: 21px; }
-    .paper-meta { color: var(--faint); font-size: 12px; margin-bottom: 12px; }
-    .paper-guide { display: none; max-width: 860px; margin: 40px auto; padding: 0 20px; }
-    .paper-guide.active { display: block; }
-    .back-link { color: var(--accent); cursor: pointer; font-size: 13px; }
-    .knowledge-graph { background: var(--paper-alt); border: 1px solid var(--line); padding: 14px; margin: 16px 0; font-family: var(--mono); font-size: 12px; white-space: pre; }
-  </style>
+  <link rel="stylesheet" href="assets/papers.css">
 </head>
 <body class="editorial">
   <header class="topbar editorial-nav">
     <a class="brand" href="curriculum.html"><span class="brand-mark">∇</span><span>AI Research Lab</span></a>
-    <nav><a href="curriculum.html">Curriculum</a> <a href="index.html">Robotics intelligence ↗</a></nav>
+    <nav aria-label="Primary navigation">
+      <a href="curriculum.html">Curriculum</a>
+      <a href="index.html">Robotics intelligence ↗</a>
+      <a href="papers.html">Paper Guides</a>
+    </nav>
   </header>
+
   <main>
-    <div id="index">
-      <header class="publication-header">
-        <div class="journal-masthead"><span>AI Research Lab</span><span>Comprehensive guides</span></div>
-        <p class="publication-label">PAPER GUIDES</p>
-        <h1>Paper Reading Guides</h1>
-        <div class="abstract"><span>SCOPE</span><p class="publication-deck">Detailed guides with knowledge graphs, prerequisites, breakdowns, and primary resources. All inside this repo.</p></div>
-      </header>
-      <div class="paper-index">
-        <div class="paper-card" onclick="show('smolvla')"><h3>SmolVLA + LeRobot</h3><div class="paper-meta">VLA • 2025</div><p>Full prerequisites, knowledge graph, architecture, LeRobot integration.</p></div>
-        <div class="paper-card" onclick="show('vggt')"><h3>VGGT</h3><div class="paper-meta">CVPR 2025 Best Paper</div><p>Feed-forward 3D, knowledge graph, detailed architecture.</p></div>
-        <div class="paper-card" onclick="show('act')"><h3>ACT</h3><div class="paper-meta">Imitation Learning</div><p>Action chunking, compounding errors, prerequisites.</p></div>
-        <div class="paper-card" onclick="show('stlight')"><h3>STLight</h3><div class="paper-meta">Efficiency</div><p>Lightweight models for deployment.</p></div>
+    <header class="publication-header">
+      <div class="journal-masthead">
+        <span>AI Research Lab</span>
+        <span>Paper reading companions · Living edition</span>
       </div>
+      <p class="publication-label">Paper guides</p>
+      <h1>How to actually read these papers</h1>
+      <div class="abstract">
+        <span>Scope</span>
+        <p class="publication-deck">Four self-contained companions. Each one backspans the prerequisites, draws a knowledge graph, walks the architecture with the paper’s own notation, works a small example, and lists only primary sources. Nothing here is a stub: open a card and you get the full guide.</p>
+      </div>
+      <div class="byline-row">
+        <div><span>Papers</span><b>4</b></div>
+        <div><span>Excluded</span><b>CLIP-Meets-DINO · FaultAdapt</b></div>
+        <div><span>Style</span><b>Curriculum editorial</b></div>
+        <div><span>Hosting</span><b>This repository only</b></div>
+      </div>
+    </header>
+
+    <div class="paper-index">
+      <a class="paper-card" href="papers-smolvla.html">
+        <h3>SmolVLA + LeRobot</h3>
+        <div class="paper-meta">Vision-language-action · arXiv 2506.01844 · June 2025</div>
+        <p>A 450M-parameter VLA trained on community LeRobot data. Flow matching, layer skipping, 64 visual tokens, and an asynchronous inference stack that decouples chunk prediction from execution. The guide covers SmolVLM-2, the action expert, community-data hygiene, and how to read the real-world vs simulation numbers.</p>
+      </a>
+
+      <a class="paper-card" href="papers-vggt.html">
+        <h3>VGGT: Visual Geometry Grounded Transformer</h3>
+        <div class="paper-meta">3D vision · CVPR 2025 Best Paper · arXiv 2503.11651</div>
+        <p>One feed-forward transformer that, from 1–hundreds of images, predicts cameras, depth, point maps, and tracks in under a second. Alternating frame/global attention, over-complete training, and why combining depth + cameras at inference beats the dedicated point-map head.</p>
+      </a>
+
+      <a class="paper-card" href="papers-act.html">
+        <h3>ACT: Action Chunking with Transformers</h3>
+        <div class="paper-meta">Imitation learning · RSS 2023 · arXiv 2304.13705</div>
+        <p>The paper that made chunked imitation the default. Compounding error as a horizon problem, CVAE style latents, temporal ensembling, ALOHA hardware, and why ACT is still the first policy you train in LeRobot.</p>
+      </a>
+
+      <a class="paper-card" href="papers-stlight.html">
+        <h3>STLight</h3>
+        <div class="paper-meta">Spatio-temporal prediction · arXiv 2411.10198 · November 2024</div>
+        <p>A fully convolutional replacement for ConvLSTM / PredRNN. Joint space–time patches, STLMixer (local + dilated), pixel-shuffle decode. SOTA on Moving MNIST / TaxiBJ / KTH with a fraction of the FLOPs — the efficiency paper that actually measures FLOPs.</p>
+      </a>
     </div>
-    <div id="smolvla" class="paper-guide"><span class="back-link" onclick="back()">← Back</span><div class="technical-article"><h2>SmolVLA + LeRobot</h2><p><strong>SmolVLA: A Vision-Language-Action Model for Affordable and Efficient Robotics</strong> arXiv:2506.01844</p><p>This guide is self-contained in the AI Research Lab.</p><h3>Prerequisites &amp; Knowledge Graph</h3><div class="knowledge-graph">Feedback Control → Behavior Cloning → VLMs → Flow Matching + Chunking → Asynchronous Execution → SmolVLA + LeRobot</div><h3>Core Idea</h3><p>Compact VLA (~450M params) trained on community data. Uses lightweight VLM + flow matching action expert + asynchronous inference.</p><h3>Detailed Sections</h3><ul><li>Motivation: Why small VLAs matter for accessible robotics</li><li>Architecture: VLM backbone (lightweight with layer skipping) + Action Expert (flow matching)</li><li>Flow Matching for fast action generation (straight path from noise to data)</li><li>Asynchronous execution for real-time control (decouples perception from action)</li><li>LeRobot full stack integration (datasets, training, hardware, evaluation)</li></ul><h3>Primary Resources</h3><ul><li>Paper: https://arxiv.org/abs/2506.01844</li><li>Blog: https://huggingface.co/blog/smolvla</li><li>Code: https://github.com/huggingface/lerobot</li></ul><h3>Caveats</h3><p>Simulation vs real metrics differ. Check versions. Asynchronous mainly helps task time.</p></div></div>
-    <div id="vggt" class="paper-guide"><span class="back-link" onclick="back()">← Back</span><div class="technical-article"><h2>VGGT</h2><p><strong>VGGT: Visual Geometry Grounded Transformer</strong> (CVPR 2025 Best Paper)</p><div class="knowledge-graph">Multi-view Geometry → Vision Transformers + DINO → Dense Prediction → VGGT</div><p>Feed-forward transformer for camera poses, depth, point maps and tracks from images in seconds.</p><h3>Primary Resources</h3><ul><li>arXiv: https://arxiv.org/abs/2503.11651</li><li>Code: https://github.com/facebookresearch/vggt</li></ul></div></div>
-    <div id="act" class="paper-guide"><span class="back-link" onclick="back()">← Back</span><div class="technical-article"><h2>ACT</h2><p>Action Chunking with Transformers for imitation learning.</p><div class="knowledge-graph">Behavior Cloning → Compounding Errors → Chunk Prediction</div><p>Predicts sequences of actions to reduce compounding errors.</p></div></div>
-    <div id="stlight" class="paper-guide"><span class="back-link" onclick="back()">← Back</span><div class="technical-article"><h2>STLight</h2><p>Efficiency and lightweight models for CV and embodied AI.</p></div></div>
   </main>
-  <script>
-    function show(id) { document.getElementById("index").style.display="none"; document.querySelectorAll(".paper-guide").forEach(e=>e.classList.remove("active")); document.getElementById(id).classList.add("active"); }
-    function back() { document.getElementById("index").style.display="block"; document.querySelectorAll(".paper-guide").forEach(e=>e.classList.remove("active")); }
-  </script>
+
+  <footer class="editorial-footer">
+    <div><strong>AI Research Lab</strong><p>Guides live entirely inside this repository. Primary papers, official code, and lectures are cited; no third-party explainer pages are required.</p></div>
+    <div class="footer-links">
+      <a href="curriculum.html">Curriculum</a>
+      <a href="index.html">Robotics intelligence</a>
+      <a href="https://github.com/Chippy1520/ai-research-lab">Source repository</a>
+    </div>
+  </footer>
 </body>
 </html>

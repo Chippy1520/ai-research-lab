@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Complete reading guide for SmolVLA (arXiv 2506.01844) and LeRobot: prerequisites, knowledge graph, architecture, flow matching, asynchronous inference.">
+  <meta name="theme-color" content="#f3f0e8">
+  <title>SmolVLA + LeRobot · Paper Guide · AI Research Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/curriculum.css">
+  <link rel="stylesheet" href="assets/papers.css">
+  <script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]]},svg:{fontCache:"global"}};</script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body class="editorial">
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
+  <header class="topbar editorial-nav">
+    <a class="brand" href="curriculum.html"><span class="brand-mark">∇</span><span>AI Research Lab</span></a>
+    <nav aria-label="Primary navigation">
+      <a href="papers.html">All guides</a>
+      <a href="curriculum.html">Curriculum</a>
+      <a href="index.html">Robotics intelligence ↗</a>
+    </nav>
+  </header>
+
+  <main>
+    <header class="publication-header" id="overview">
+      <div class="journal-masthead"><span>AI Research Lab</span><span>Paper reading companion</span></div>
+      <p class="publication-label">Vision-language-action · June 2025</p>
+      <h1>SmolVLA: a 450M-parameter VLA you can actually train</h1>
+      <div class="abstract">
+        <span>Lede</span>
+        <p class="publication-deck">The last two years of VLAs have been a race to billions of parameters and proprietary fleets. SmolVLA asks the opposite question: what if the bottleneck is not model size but data hygiene, inference latency, and whether a graduate student with one GPU can reproduce the result? This guide walks the paper in the order you should actually read it.</p>
+      </div>
+      <div class="byline-row">
+        <div><span>Paper</span><b>arXiv 2506.01844</b></div>
+        <div><span>Authors</span><b>Shukor, Aubakirova, Capuano, Cadene, Wolf et al.</b></div>
+        <div><span>Stack</span><b>LeRobot · SmolVLM-2 · flow matching</b></div>
+        <div><span>Reading</span><b>~90 minutes with backspanning</b></div>
+      </div>
+      <a class="guide-back" href="papers.html">← All paper guides</a>
+    </header>
+
+    <div class="article-frame" id="article">
+      <aside class="article-rail" aria-label="Article navigation">
+        <div class="rail-inner">
+          <p class="rail-label">In this guide</p>
+          <ol class="article-toc">
+            <li><a href="#tension">The engineering tension</a></li>
+            <li><a href="#prereqs">Prerequisites</a></li>
+            <li><a href="#graph">Knowledge graph</a></li>
+            <li><a href="#read">How to read the paper</a></li>
+            <li><a href="#arch">Architecture</a></li>
+            <li><a href="#flow">Flow matching</a></li>
+            <li><a href="#async">Asynchronous inference</a></li>
+            <li><a href="#data">Community data</a></li>
+            <li><a href="#results">Results, honestly</a></li>
+            <li><a href="#lerobot">LeRobot as the lab</a></li>
+            <li><a href="#worked">Worked intuition</a></li>
+            <li><a href="#caveats">Caveats</a></li>
+            <li><a href="#study">Study plan</a></li>
+            <li><a href="#sources">Primary sources</a></li>
+          </ol>
+          <div class="session-note">
+            <span>90-minute route</span>
+            <p><b>10</b> tension + graph</p>
+            <p><b>25</b> architecture</p>
+            <p><b>20</b> flow + async</p>
+            <p><b>20</b> data + numbers</p>
+            <p><b>15</b> LeRobot + study</p>
+          </div>
+        </div>
+      </aside>
+
+      <article class="technical-article">
+        <h2 id="tension">The engineering tension</h2>
+        <p>A vision-language-action model takes cameras, a language instruction, and proprioception, and emits robot actions. RT-2, OpenVLA (~7B), and $\pi_0$ (~3B) showed that grafting a pretrained VLM onto a robot policy transfers web-scale semantics into manipulation. They also showed something less advertised: you need industrial clusters to train them and industrial arms to run them.</p>
+        <p>SmolVLA’s claim is sharper than “we made a small model.” Three constraints are treated as first-class:</p>
+        <ol>
+          <li><strong>Train on one GPU.</strong> The architecture is cut until this is true: skip half the VLM layers, 64 visual tokens per frame, action expert hidden size $0.75d$.</li>
+          <li><strong>Deploy on consumer GPUs or CPUs</strong>, including MacBooks, not just A100s.</li>
+          <li><strong>Pretrain only on public community datasets</strong> from affordable robots (SO-100 / SO-101 class), fewer than 30k episodes, rather than Open-X-Embodiment-scale proprietary fleets.</li>
+        </ol>
+        <p>If those constraints hold and the model still matches VLAs that are $7$–$10\times$ larger, then “bigger is better” is not a law of robotics — it is an artifact of closed data and closed hardware. That is the paper you are reading.</p>
+        <div class="research-note">Do not confuse this SmolVLA (Hugging Face / LeRobot, arXiv 2506.01844, ~450M, community data) with an unrelated 2024 preprint that reused a similar name. Primary identifiers: authors Shukor, Aubakirova, Capuano, Cadène, Wolf; code in <code>huggingface/lerobot</code>; weights <code>lerobot/smolvla_base</code>.</div>
+
+        <h3 id="prereqs">Prerequisites you actually need</h3>
+        <p>Backspan only what the paper uses. You do not need a full VLM course before section 3; you need the five ideas below at the level where you could explain them on a whiteboard.</p>
+        <ol class="prereq-list">
+          <li>
+            <b>01</b>
+            <div>
+              <h4>Behavior cloning and compounding error</h4>
+              <p>Supervised map $o_t \mapsto a_t$ from demonstrations. A 1% action error, integrated at 30–50&nbsp;Hz over a 20-second episode, leaves the robot in states the dataset never showed. Ross &amp; Bagnell (DAgger, 2011) named this. ACT (the next guide) treats it as a <em>horizon</em> problem by predicting chunks. SmolVLA inherits chunks and then asks a systems question: who waits while the chunk is computed?</p>
+            </div>
+          </li>
+          <li>
+            <b>02</b>
+            <div>
+              <h4>Vision-language models, not “transformers in general”</h4>
+              <p>A VLM is a vision encoder (here SigLIP) whose tokens are consumed by a language decoder (here SmolLM2). SmolVLM-2 is already trained for multi-image / video. SmolVLA does not train a VLM from scratch; it <em>conditions an action expert on VLM features</em>. If you have never seen cross-attention from a decoder onto encoder keys/values, stop and draw that before §3.1.</p>
+            </div>
+          </li>
+          <li>
+            <b>03</b>
+            <div>
+              <h4>Continuous actions vs tokenized actions</h4>
+              <p>OpenVLA discretizes each action dimension into bins and emits tokens autoregressively. That is slow and coarse. $\pi_0$ and SmolVLA emit <em>continuous</em> action chunks. The generator is not a next-token LLM head; it is a flow-matching transformer (the “action expert”).</p>
+            </div>
+          </li>
+          <li>
+            <b>04</b>
+            <div>
+              <h4>Flow matching, one picture</h4>
+              <p>Diffusion learns a score $\nabla \log p_t$. Flow matching learns a velocity field $u_t$ that transports noise $x_0 \sim \mathcal{N}(0,I)$ to data $x_1$ along (approximately) straight paths $x_t = (1-t)x_0 + t x_1$. Training is an $L_2$ regression onto that velocity. Inference is an ODE. Fewer steps than diffusion, which matters when you must emit 50 actions inside a control cycle.</p>
+            </div>
+          </li>
+          <li>
+            <b>05</b>
+            <div>
+              <h4>Real-time control as a queue, not a function call</h4>
+              <p>A 50-step chunk at 30&nbsp;Hz is 1.7 seconds of motion. If you finish the chunk, then block on a forward pass, the arm pauses. If you re-query every timestep (temporal ensembling), you need a GPU on the robot. Asynchronous inference is the third option: predict the next chunk <em>while</em> the current queue drains. This is a systems paper as much as a modeling paper.</p>
+            </div>
+          </li>
+        </ol>
+
+        <h3 id="graph">Knowledge graph</h3>
+        <p>Read top-down. Each arrow is a dependency the paper actually uses, not a generic ML taxonomy.</p>
+        <div class="knowledge-graph">supervised BC
+        │
+        ├─ compounding error ──► action chunking (ACT, 2023)
+        │                              │
+        │                              ├─ CVAE over chunks
+        │                              └─ temporal ensembling (sync, heavy)
+        │
+        VLMs (SigLIP + SmolLM2 = SmolVLM-2)
+        │
+        ├─ layer-wise features ≠ last layer
+        ├─ visual token budget (64 / frame, no tiling)
+        └─ skip last L−N decoder layers (N = L/2)
+                    │
+                    ▼
+        VLA = VLM features ──► action expert
+                    │
+                    ├─ OpenVLA: discrete tokens (slow)
+                    ├─ π₀: diffusion expert (heavy)
+                    └─ SmolVLA: flow matching + interleaved CA/SA
+                                    │
+                                    ▼
+        community LeRobot datasets (&lt;30k episodes)
+        camera-name hygiene (OBS_IMAGE_1/2/3)
+                    │
+                    ▼
+        async stack: RobotClient ⇄ PolicyServer
+        queue threshold g, joint-space duplicate filter
+                    │
+                    ▼
+        SO-100 / SO-101 real robot + LIBERO / Meta-World sim</div>
+
+        <h3 id="read">How to read the PDF (once)</h3>
+        <ol>
+          <li><strong>Figure 1</strong> until you can redraw the scissors (layer skip), the three input streams, and the action expert without looking.</li>
+          <li><strong>§3.1 architecture</strong> with a pencil: token counts, projectors, $N=L/2$.</li>
+          <li><strong>Flow-matching loss</strong> (the displayed $\mathcal{L}^\tau$) and the Beta schedule for $\tau$. Compare mentally to $\pi_0$.</li>
+          <li><strong>§3.2 data</strong> — this is the underrated section. Camera renaming is not a footnote; it is why community data is usable.</li>
+          <li><strong>§3.3 + Algorithm 1</strong> async inference. Draw the queue vs wall clock.</li>
+          <li><strong>Experiments last.</strong> Separate simulation (binary success) from real-world (sometimes partial credit). Do not quote a single 78.3% without the baseline next to it.</li>
+        </ol>
+
+        <h3 id="arch">Architecture, token by token</h3>
+        <p>Two modules, tightly coupled. The VLM <em>perceives</em>; the action expert <em>acts</em>. Actions change the next observation, which changes the next VLM features. That loop is the robot.</p>
+
+        <h3>Inputs</h3>
+        <ul>
+          <li><strong>RGB image(s)</strong> from one or more cameras. SmolVLM-2 was trained with image tiling (multiple crops + global image). SmolVLA <em>drops tiling at inference</em> and keeps only the global image, then pixel-shuffles so each frame becomes <strong>64 visual tokens</strong>. That is the main visual-cost knob.</li>
+          <li><strong>Language instruction</strong>, tokenized as ordinary text tokens.</li>
+          <li><strong>Sensorimotor / proprioceptive state</strong>, linearly projected to <em>one</em> token at the language-model width.</li>
+        </ul>
+        <p>Visual, language, and state tokens are concatenated and consumed by the SmolLM2 decoder, but only through the first $N$ layers. Features from those layers condition the action expert. The remaining $L-N$ decoder layers are never run — the scissors in Figure 1.</p>
+
+        <h3>Why skip layers instead of distilling a smaller VLM?</h3>
+        <p>Two empirical facts from the VLM literature, used explicitly:</p>
+        <ol>
+          <li>You can drop later layers of a pretrained decoder with surprisingly small downstream damage.</li>
+          <li>The <em>best</em> features for a downstream head are often not the last layer. Intermediate features can be more linearly useful.</li>
+        </ol>
+        <p>Setting $N = L/2$ halves both VLM compute and, because the expert is conditioned on those features, a large fraction of expert compute. It is a free (almost) 2× on the language stack. The ablation you want in the paper is exactly this $N$ vs success-rate curve — if a number is reported only at $N=L/2$, treat the “halving is free” claim as a working hypothesis, not a theorem.</p>
+
+        <h3>Action expert</h3>
+        <p>A transformer $ \mathbf{v}_\theta $ that outputs a chunk $\mathbf{A}_t = (a_t,\ldots,a_{t+n})$. Hidden width is $0.75d$ relative to the VLM. Blocks <em>interleave</em> cross-attention and causal self-attention rather than stacking both in every block:</p>
+        <ul>
+          <li><strong>Cross-attention (CA)</strong> — action queries attend to VLM keys/values. This is how vision and language enter the motor command.</li>
+          <li><strong>Causal self-attention (SA)</strong> — action tokens attend only to earlier tokens in the same chunk. The paper finds SA is what makes chunks <em>smooth</em> on real robots; CA alone is twitchier.</li>
+        </ul>
+        <p>This interleaving is a deliberate departure from $\pi_0$ (mostly self-attention over a combined stream) and from some concurrent VLAs that are CA-only. Empirically they report both higher success and faster inference than either pure pattern.</p>
+        <p>Linear projectors appear in three places: state → VLM width, action → expert width, VLM features → expert width. They are not “details”; they are the only learned interfaces between two modules that were not trained together from scratch.</p>
+
+        <h3 id="flow">Flow matching, in the paper’s notation</h3>
+        <p>Let $\mathbf{A}_t$ be a ground-truth action chunk given observation $\mathbf{o}_t$. A noisy interpolant $\mathbf{A}_t^\tau$ is drawn from $q(\mathbf{A}_t^\tau \mid \mathbf{A}_t)$, with time $\tau$ sampled from a <strong>Beta distribution</strong> (same trick as $\pi_0$, concentrating samples where the path is most informative). The expert predicts a velocity; the target velocity is the closed-form $ \mathbf{u}(\mathbf{A}_t^\tau \mid \mathbf{A}_t) $ of the chosen interpolant. Training is</p>
+        <div class="math-block">$$\mathcal{L}^{\tau}(\theta)=\mathbb{E}_{p(\mathbf{A}_t\mid\mathbf{o}_t),\,q(\mathbf{A}_t^{\tau}\mid\mathbf{A}_t)}\Big[\big\|\mathbf{v}_{\theta}(\mathbf{A}_t^{\tau},\mathbf{o}_t)-\mathbf{u}(\mathbf{A}_t^{\tau}\mid\mathbf{A}_t)\big\|^{2}\Big].$$</div>
+        <p class="article-caption">Flow-matching regression. Compare to a diffusion denoising score-matching loss: same $L_2$ shape, different target, usually fewer ODE steps at sample time.</p>
+        <p><strong>Why flow matching rather than diffusion or CVAE?</strong></p>
+        <ul>
+          <li>Versus ACT’s CVAE: no style latent $z$ to set to zero at test time; multimodal demonstrations are absorbed into the flow. Chunks are still the output, so you keep ACT’s horizon reduction.</li>
+          <li>Versus $\pi_0$ diffusion: straighter paths, fewer function evaluations, cheaper expert ($0.75d$).</li>
+          <li>Versus OpenVLA tokens: one (or a handful of) ODE steps produce a <em>continuous</em> 50-step chunk instead of hundreds of autoregressive tokens.</li>
+        </ul>
+        <p>At control time you do not need a perfect ODE. You need a chunk that is good enough that the async stack can overlap the next forward pass. That is a different objective than image-generation FID.</p>
+
+        <h3 id="async">Asynchronous inference — the systems contribution</h3>
+        <p>Three regimes, only one of which SmolVLA ships as the point:</p>
+        <table class="article-table">
+          <thead>
+            <tr><th>Regime</th><th>When you query $\pi$</th><th>What the arm does during compute</th><th>Cost</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Synchronous chunk</td><td>After the queue is empty</td><td>Idle (blind lag)</td><td>Cheap, laggy</td></tr>
+            <tr><td>Every-timestep ensemble (ACT-style)</td><td>Every $\Delta t$</td><td>Moves, but GPU must keep up</td><td>Smooth, expensive</td></tr>
+            <tr><td>Async (this paper)</td><td>When remaining queue fraction hits $g$</td><td>Drains old queue; merges new chunk on arrival</td><td>Responsive without per-tick inference</td></tr>
+          </tbody>
+        </table>
+        <p>Algorithm 1: a <code>RobotClient</code> streams observations to a <code>PolicyServer</code> (possibly remote, possibly GPU). The client pops actions from a queue at the control rate $\Delta t$ (about 33&nbsp;ms at 30&nbsp;Hz). When the remaining fraction of the queue drops below threshold $g$, it fires a <em>non-blocking</em> infer. On return, overlapping prefixes are aggregated, $ \mathbf{A}_{t+1} \leftarrow f(\mathbf{A}_t, \tilde{\mathbf{A}}_{t+1}) $.</p>
+        <p>Idle gaps vanish when $ g \ge (\mathbb{E}[\ell_S]/\Delta t)/n $, where $\ell_S$ is server-side latency and $n$ is chunk length. Communication time is treated as negligible next to $\ell_S$. Near-duplicate observations are dropped using a joint-space distance $\epsilon$, except when the queue is empty — then you always infer.</p>
+        <p>Reported real-robot effect: similar success rate to sync, about <strong>30% shorter wall-clock task time</strong>, because the arm stops waiting. Do not read this as “the model is 30% more accurate.”</p>
+        <div class="research-note">If you only remember one systems sentence: chunking without async still leaves a pause every $n$ steps; ensembling without async still needs a GPU in the loop. Async is how a 450M flow model on a remote box drives a cheap arm at a useful rate.</div>
+
+        <h3 id="data">Community data is the dataset paper hiding inside the model paper</h3>
+        <p>Pretraining uses fewer than 30k episodes, on the order of 10 million frames, from hundreds of public LeRobot datasets (community SO-100 / SO-101 style arms), not OXE. That is an order of magnitude less than several foundation-VLA training sets, and it is noisier.</p>
+        <p>The operational problem is <strong>camera naming</strong>. <code>images.laptop</code> might be a top camera in one repo and a wrist camera in another. The authors manually mapped views onto a canonical order — top, wrist, side — renamed <code>OBS_IMAGE_1/2/3</code>, and dropped extras. They state that consistent ordering mattered in this data regime. Future work they flag: VLM-based remapping, or actual collection guidelines.</p>
+        <p>When you fine-tune SmolVLA on your own SO-100, you inherit this convention. If your cameras are in a different order than pretraining, you are not “using the base model”; you are silently domain-shifting the vision stream.</p>
+
+        <h3 id="results">Results, with the comparison class attached</h3>
+        <p>Numbers below are the ones the paper and the accompanying communications actually put next to named baselines. Always carry the baseline; never tweet a lone percentage.</p>
+        <table class="article-table">
+          <thead>
+            <tr><th>Setting</th><th>SmolVLA (~450M)</th><th>Named comparison</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>LIBERO (sim)</td><td>~87.3% success</td><td>Competitive with OpenVLA (7B) and $\pi_0$ (~3.3B)</td></tr>
+            <tr><td>Meta-World (sim)</td><td>~57.3%</td><td>Same comparison class</td></tr>
+            <tr><td>Real SO-100/101 (pick, stack, sort)</td><td>~78.3% average</td><td>ACT ~80M: 48.3%; $\pi_0$ 3.5B: 61.7%</td></tr>
+            <tr><td>Async vs sync (real)</td><td>Similar success, ~30% faster task time</td><td>Sync SmolVLA</td></tr>
+          </tbody>
+        </table>
+        <p>How to think about this table:</p>
+        <ul>
+          <li>Simulation success is typically binary completion. Real-world scores in this literature sometimes award partial credit. Do not average them.</li>
+          <li>Beating ACT on the same cheap hardware is the fair comparison. Beating $\pi_0$ is the provocative one, and it depends on the exact $\pi_0$ checkpoint and whether that run used the same tasks and scoring.</li>
+          <li>“Comparable to 10× larger VLAs” is a statement about <em>this evaluation suite</em>, not a universal dominance claim.</li>
+        </ul>
+
+        <h3 id="lerobot">LeRobot is not a citation — it is the runtime</h3>
+        <p>SmolVLA is a policy class inside Hugging Face LeRobot. The paper without the library is a PDF; the library without the paper is ACT/diffusion recipes. Together they are the thing you can run.</p>
+        <ul>
+          <li>Install extra: <code>pip install "lerobot[smolvla]"</code>.</li>
+          <li>Base weights: <code>lerobot/smolvla_base</code> (~450M, safetensors).</li>
+          <li>Inputs at the library boundary: multi-view images, proprio/state, optional language. Outputs: continuous actions. Objective: flow matching.</li>
+          <li>Intended use of the base model: <em>fine-tune on your task</em>, not zero-shot your custom kitchen.</li>
+          <li>Sibling policies in the same API: ACT, diffusion, etc. That is why this guide is “SmolVLA + LeRobot”: the comparisons are one training entrypoint away.</li>
+        </ul>
+        <p>When you read a LeRobot training log, map it back to the paper: chunk size $n$ (often 50 in secondary writeups), camera keys matching <code>OBS_IMAGE_*</code>, and whether async is on. Those three knobs change measured success more than most optimizer tweaks.</p>
+
+        <h3 id="worked">Worked intuition: one pick-and-place cycle</h3>
+        <p>Suppose a 50-step chunk, 30&nbsp;Hz, $g = 0.5$, server latency $\ell_S \approx 200$&nbsp;ms.</p>
+        <ol>
+          <li>Observation $o_0$: overhead + wrist images, joint vector, instruction “put the cube in the bowl.”</li>
+          <li>VLM: 64 tokens/image + text + 1 state token → first $N$ decoder layers → feature tensor.</li>
+          <li>Expert: flow-match from noise to a 50× action-dim trajectory (joint targets or deltas, depending on the LeRobot config).</li>
+          <li>Client enqueues 50 actions. After ~25 pops (0.8&nbsp;s), remaining fraction hits $g$. Non-blocking infer starts.</li>
+          <li>While infer runs (~200&nbsp;ms ≈ 6 control ticks), the arm continues the old chunk. New chunk arrives, overlap is blended, queue never hits zero.</li>
+          <li>If the cube slips, the next $o_t$ is <em>not</em> a near-duplicate (joint-space filter fails), so you infer even before $g$. That is closed-loop behavior without per-tick GPU.</li>
+        </ol>
+        <p>Contrast ACT: you would either execute 100 steps open-loop or ensemble every tick. Contrast OpenVLA: you would autoregress tokens for one action, then the next, and miss the 30&nbsp;Hz budget on a laptop.</p>
+
+        <h3 id="caveats">Caveats the paper is honest about, and a few it cannot be</h3>
+        <ul>
+          <li>Community data is heterogeneous. Camera mapping is manual. Reproducing pretraining without their map will not match the blog numbers.</li>
+          <li>Layer skip $N=L/2$ is a chosen operating point. Do not assume last-layer features are worse on <em>your</em> downstream task without checking.</li>
+          <li>Async helps wall-clock task time; it does not magically raise success if the chunk itself is wrong.</li>
+          <li>Real-world 78% is on their SO-100/101 task suite, not a guarantee for your gripper, lighting, or latency.</li>
+          <li>Frozen vs trained VLM pieces, exact LeRobot version, and whether language is used at eval time all move numbers. Read the checkpoint card.</li>
+        </ul>
+
+        <h3 id="study">Study plan (use this, then the PDF)</h3>
+        <ol>
+          <li>Redraw Figure 1 from memory. If the scissors or the CA/SA interleave is missing, you are not ready for experiments.</li>
+          <li>Write the flow-matching loss without looking. Name $\tau$’s distribution.</li>
+          <li>Derive the idle-avoidance inequality for $g$ with your own $\ell_S$, $\Delta t$, $n$.</li>
+          <li>Skim ACT (next guide) only through chunking + ensembling, then return here to see what async changes.</li>
+          <li>Run LeRobot’s SmolVLA path on a recorded dataset (no robot required) and dump one chunk. Confirm dimensionality $n \times a$.</li>
+          <li>Only then read the experimental tables, with this guide’s comparison class in mind.</li>
+        </ol>
+
+        <h3 id="sources">Primary sources</h3>
+        <p>Use these, not secondary explainers, as authority.</p>
+        <ul>
+          <li>Paper: <a href="https://arxiv.org/abs/2506.01844">arXiv:2506.01844</a> — Shukor et al., 2 Jun 2025.</li>
+          <li>HTML: <a href="https://ar5iv.labs.arxiv.org/html/2506.01844">ar5iv HTML</a>.</li>
+          <li>Official blog (authors): <a href="https://huggingface.co/blog/smolvla">huggingface.co/blog/smolvla</a>.</li>
+          <li>Code: <a href="https://github.com/huggingface/lerobot">github.com/huggingface/lerobot</a>.</li>
+          <li>Weights: <a href="https://huggingface.co/lerobot/smolvla_base">lerobot/smolvla_base</a>.</li>
+          <li>LeRobot ACT docs (for the chunking baseline): <a href="https://huggingface.co/docs/lerobot/act">huggingface.co/docs/lerobot/act</a>.</li>
+          <li>Backspan lectures: LeRobot team ACT tutorial (YouTube, search the exact title on the HF channel); Lipman et al. flow-matching talks; Berkeley/Stanford imitation-learning lectures on compounding error.</li>
+        </ul>
+        <div class="citation">
+          <strong>BibTeX</strong>
+          <pre>@article{shukor2025smolvla,
+  title={SmolVLA: A Vision-Language-Action Model for Affordable and Efficient Robotics},
+  author={Shukor, Mustafa and Aubakirova, Dana and Capuano, Francesco
+          and Kooijmans, Pepijn and Palma, Steven and Zouitine, Adil
+          and Aractingi, Michel and Pascal, Caroline and Russi, Martino
+          and Marafioti, Andres and Alibert, Simon and Cord, Matthieu
+          and Wolf, Thomas and Cadene, Remi},
+  journal={arXiv preprint arXiv:2506.01844},
+  year={2025}
+}</pre>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="editorial-footer">
+    <div><strong>AI Research Lab</strong><p>Self-contained companion. Primary sources only.</p></div>
+    <div class="footer-links">
+      <a href="papers.html">All guides</a>
+      <a href="papers-vggt.html">Next: VGGT →</a>
+      <a href="curriculum.html">Curriculum</a>
+    </div>
+  </footer>
+  <script>
+    window.addEventListener('scroll', () => {
+      const bar = document.getElementById('reading-progress-bar');
+      if (!bar) return;
+      const h = document.documentElement;
+      const p = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100 || 0;
+      bar.style.width = p + '%';
+    });
+  </script>
+</body>
+</html>

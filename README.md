@@ -65,6 +65,7 @@ The device-independent static dashboard is published at:
 
 - **Robotics intelligence:** https://chippy1520.github.io/ai-research-lab/
 - **AI research curriculum:** https://chippy1520.github.io/ai-research-lab/curriculum.html
+- **Paper reading guides:** https://chippy1520.github.io/ai-research-lab/papers.html
 
 The public site preserves company search and filtering, the founding timeline, geographic
 clusters, official openings, early-career qualification excerpts, recurring hiring signals,
@@ -91,21 +92,18 @@ evaluation, and changing frontiers—not pretending that evolving knowledge can 
 
 ## Paper Reading Guides
 
-New consolidated section for focused paper companions (in addition to tech news and the rotating curriculum).
+Self-contained companions in the same editorial style as the curriculum. Each guide
+backspans prerequisites, draws a knowledge graph, walks the architecture in the paper’s
+notation, works an example, and cites only primary sources.
 
-### Included Guides
-- **SmolVLA + LeRobot**: Architecture, flow matching, LeRobot integration, caveats.
-- **VGGT** (CVPR 2025 Best Paper): Feed-forward 3D geometry from images.
-- **ACT**: Action chunking with Transformers for imitation learning.
-- **STLight** and similar efficiency / modern backbone papers.
+| Paper | Live guide |
+| --- | --- |
+| SmolVLA + LeRobot (arXiv 2506.01844) | [papers-smolvla.html](https://chippy1520.github.io/ai-research-lab/papers-smolvla.html) |
+| VGGT, CVPR 2025 Best Paper (arXiv 2503.11651) | [papers-vggt.html](https://chippy1520.github.io/ai-research-lab/papers-vggt.html) |
+| ACT / ALOHA (arXiv 2304.13705) | [papers-act.html](https://chippy1520.github.io/ai-research-lab/papers-act.html) |
+| STLight (arXiv 2411.10198) | [papers-stlight.html](https://chippy1520.github.io/ai-research-lab/papers-stlight.html) |
 
-Full Markdown guides live in `papers/`.  
-Static hub page: `site/papers.html` (linked from both the intelligence desk and curriculum).
+Index: https://chippy1520.github.io/ai-research-lab/papers.html  
+Sources in-repo: `site/papers-*.html` (canonical) and `papers/` (notes).
 
-These replace the previous standalone repos (smolvla-explained, stlight-explained, etc.). Content has been migrated here.
-
-**Excluded** (remain separate):
-- CLIP-Meets-DINO-NoLA project
-- Fault Adapt Gym
-
-Add new papers by creating `papers/<slug>.md` and a card on the papers.html page.
+**Excluded** (remain separate): CLIP-Meets-DINO-NoLA, FaultAdapt.

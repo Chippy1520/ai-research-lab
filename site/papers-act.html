@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Complete reading guide for ACT / ALOHA (Zhao et al., RSS 2023, arXiv 2304.13705): compounding error, action chunking, CVAE, temporal ensembling.">
+  <meta name="theme-color" content="#f3f0e8">
+  <title>ACT · Paper Guide · AI Research Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/curriculum.css">
+  <link rel="stylesheet" href="assets/papers.css">
+  <script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]]},svg:{fontCache:"global"}};</script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body class="editorial">
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
+  <header class="topbar editorial-nav">
+    <a class="brand" href="curriculum.html"><span class="brand-mark">∇</span><span>AI Research Lab</span></a>
+    <nav aria-label="Primary navigation">
+      <a href="papers.html">All guides</a>
+      <a href="curriculum.html">Curriculum</a>
+      <a href="index.html">Robotics intelligence ↗</a>
+    </nav>
+  </header>
+
+  <main>
+    <header class="publication-header" id="overview">
+      <div class="journal-masthead"><span>AI Research Lab</span><span>Paper reading companion</span></div>
+      <p class="publication-label">Imitation learning · RSS 2023</p>
+      <h1>ACT: compounding error is a horizon problem</h1>
+      <div class="abstract">
+        <span>Lede</span>
+        <p class="publication-deck">Fine manipulation on cheap arms fails in a specific way: a slightly wrong joint command, integrated at 50&nbsp;Hz, leaves the cups and batteries in states no demonstration ever showed. Action Chunking with Transformers does not invent a new visual encoder. It shortens the effective horizon, models human multimodality with a CVAE, and averages overlapping chunks so the motion is smooth. Every VLA you will train in LeRobot still lives in this design space.</p>
+      </div>
+      <div class="byline-row">
+        <div><span>Paper</span><b>arXiv 2304.13705</b></div>
+        <div><span>Authors</span><b>Tony Z. Zhao, Vikash Kumar, Sergey Levine, Chelsea Finn</b></div>
+        <div><span>System</span><b>ALOHA · ~$20k bimanual</b></div>
+        <div><span>Also called</span><b>Learning Fine-Grained Bimanual Manipulation with Low-Cost Hardware</b></div>
+      </div>
+      <a class="guide-back" href="papers.html">← All paper guides</a>
+    </header>
+
+    <div class="article-frame" id="article">
+      <aside class="article-rail" aria-label="Article navigation">
+        <div class="rail-inner">
+          <p class="rail-label">In this guide</p>
+          <ol class="article-toc">
+            <li><a href="#tension">The task that breaks BC</a></li>
+            <li><a href="#prereqs">Prerequisites</a></li>
+            <li><a href="#graph">Knowledge graph</a></li>
+            <li><a href="#aloha">ALOHA, briefly</a></li>
+            <li><a href="#chunk">Chunking</a></li>
+            <li><a href="#ensemble">Temporal ensembling</a></li>
+            <li><a href="#cvae">CVAE policy</a></li>
+            <li><a href="#arch">Architecture</a></li>
+            <li><a href="#results">Results</a></li>
+            <li><a href="#lerobot">In LeRobot / SmolVLA</a></li>
+            <li><a href="#worked">Worked chunk</a></li>
+            <li><a href="#caveats">Caveats</a></li>
+            <li><a href="#study">Study plan</a></li>
+            <li><a href="#sources">Primary sources</a></li>
+          </ol>
+          <div class="session-note">
+            <span>75-minute route</span>
+            <p><b>10</b> compounding error</p>
+            <p><b>20</b> chunk + ensemble</p>
+            <p><b>20</b> CVAE architecture</p>
+            <p><b>15</b> results + LeRobot</p>
+            <p><b>10</b> study</p>
+          </div>
+        </div>
+      </aside>
+
+      <article class="technical-article">
+        <h2 id="tension">The task that breaks ordinary behavior cloning</h2>
+        <p>Opening a translucent condiment cup: tip it with the right gripper, nest it into the left, lift, pry the lid from below. Millimetres matter. Contact is rich. The object deforms. Modeling this well enough to plan is a research project by itself. Humans do not model it; they look and compensate. The paper’s hardware bet is that a <em>pixel-to-joint</em> policy on commodity webcams can do the same, if you can collect demonstrations on a robot that costs about as much as one industrial arm.</p>
+        <p>Imitation learning then fails in two textbook ways:</p>
+        <ol>
+          <li><strong>Compounding error.</strong> $\pi(a_t\mid o_t)$ is slightly wrong; $o_{t+1}$ is off-distribution; errors accelerate. DAgger would ask for expert corrections on-policy. That is miserable with a teleop interface, and noise injection during demos can make the fine task fail while you are trying to demonstrate it.</li>
+          <li><strong>Non-stationary human demos.</strong> People pause. They take different trajectories for the same state. A deterministic Markov policy cannot represent “sometimes wait, sometimes commit,” and L2/L1 on a single next action averages those modes into a mushy middle that collides with the cup.</li>
+        </ol>
+        <p>ACT’s answers are, respectively: predict $k$ actions at once (horizon $\div k$), and train a CVAE over those chunks (multimodality). Smoothness is a third, separate trick: temporal ensembling.</p>
+
+        <h3 id="prereqs">Prerequisites</h3>
+        <ol class="prereq-list">
+          <li>
+            <b>01</b>
+            <div>
+              <h4>Behavior cloning as supervised learning</h4>
+              <p>Dataset of $(o,a)$ from an expert. Minimize a regression loss. No environment interaction at train time. That is the feature (safe, off-policy) and the bug (covariate shift).</p>
+            </div>
+          </li>
+          <li>
+            <b>02</b>
+            <div>
+              <h4>Why DAgger exists, and why they refuse it</h4>
+              <p>Ross, Gordon, Bagnell 2011: mix expert actions on states visited by the current policy. For ALOHA, the expert is a human on leader arms. Stopping every few seconds for a correction destroys dexterity. ACT is the “offline-only” alternative.</p>
+            </div>
+          </li>
+          <li>
+            <b>03</b>
+            <div>
+              <h4>Transformers as sequence models</h4>
+              <p>Encoder over a set of visual tokens + joints; decoder over a target action sequence of length $k$. If you have written a tiny GPT, you have the decoder. Causal masking on actions is the same idea as next-token training, except the “tokens” are continuous joint vectors.</p>
+            </div>
+          </li>
+          <li>
+            <b>04</b>
+            <div>
+              <h4>Conditional VAE, one picture</h4>
+              <p>Encoder $q(z\mid a_{t:t+k}, o_t)$ → Gaussian. Decoder $p(a_{t:t+k}\mid o_t, z)$. Loss = reconstruction + $\beta\,\mathrm{KL}(q\|p(z))$. At test time drop the encoder, set $z=0$ (prior mean). You get a deterministic policy that was trained as if it were generative — a useful hack when you want multimodality during learning and a single good trajectory at eval.</p>
+            </div>
+          </li>
+        </ol>
+
+        <h3 id="graph">Knowledge graph</h3>
+        <div class="knowledge-graph">teleop on cheap bimanual hardware (ALOHA)
+   leader–follower ViperX, joint-space mapping, 3D-printed handles
+        │
+        ▼
+demonstrations: 50 trajectories / ~10 minutes per task
+        │
+        ▼
+behavior cloning
+        │
+        ├─ compounding error ──► reduce effective horizon
+        │                         π(a_{t:t+k} | o_t)   (chunk size k)
+        │
+        ├─ human pauses / modes ──► CVAE over chunks
+        │                            train z, test z = 0
+        │
+        └─ jerky chunk boundaries ──► temporal ensembling
+                                      query every step
+                                      w_i = exp(−m i) on overlapping predictions
+        │
+        ▼
+ACT (~80M): ResNet-18 × cameras + transformer encoder/decoder
+        │
+        ▼
+LeRobot ACT policy  ──►  SmolVLA chunks (flow, not CVAE)
+                         Diffusion Policy chunks
+                         async stacks (SmolVLA §3.3)</div>
+
+        <h3 id="aloha">ALOHA, only as much as the algorithm needs</h3>
+        <p>The paper is a <em>system</em> paper: hardware + algorithm. For the algorithm you need this much hardware context:</p>
+        <ul>
+          <li>Two ViperX 6-DoF follower arms + two smaller leader arms, joint-space mapping, ~$20k all-in, assemble in &lt;2 hours from off-the-shelf parts plus 3D print.</li>
+          <li>Four RGB cameras: front, top, two wrists. Actions are leader joint positions (14-DoF bimanual: 2×6 + grippers), recorded at high frequency (~50&nbsp;Hz in the usual telling).</li>
+          <li>Design principles they list: low-cost, versatile, user-friendly, repairable, easy-to-build. No special encoders, no machined parts.</li>
+        </ul>
+        <p>You can ignore ping-pong juggling teleop videos until after you understand chunking. They are capability ads for the teleop, not for ACT.</p>
+
+        <h3 id="chunk">Action chunking</h3>
+        <p>Psychology: humans group motor primitives and fire them as a unit. Implementation: every $k$ steps, observe once, emit $k$ target joint positions, execute open-loop inside the chunk.</p>
+        <div class="math-block">$$\pi_\theta(a_{t:t+k}\mid s_t)\quad\text{instead of}\quad\pi_\theta(a_t\mid s_t).$$</div>
+        <p>Effective horizon of a $T$-step task becomes $T/k$. Ablation (simulated cube transfer / bimanual insertion, averaged, ensembling off): <strong>1% success at $k=1$</strong>, <strong>44% at $k=100$</strong>, then a decline at $k=200$ and $400$ as the policy becomes too open-loop. Chunk size is a bias–variance dial, not a magic constant. Typical real-robot operating point in follow-on work: $k=50$–$100$ (about 1–2 seconds at 50&nbsp;Hz).</p>
+        <p>Chunking also swallows short non-Markovian confounders (a pause of length $<k$) without giving the policy a full history that would invite causal confusion (the “which past frame caused this wait?” problem).</p>
+
+        <h3 id="ensemble">Temporal ensembling</h3>
+        <p>Naïve chunking incorporates a new observation only every $k$ steps → abrupt switches, jerky motion. Fix: query the policy <em>every</em> timestep. Then timestep $t$ has overlapping predictions from chunks that started at $t, t-1, \ldots$. Average them with exponential weights</p>
+        <div class="math-block">$$w_i=\exp(-m\cdot i),\qquad i=0\text{ is the oldest prediction for this same $t$}.$$</div>
+        <p>Smaller $m$ incorporates new observations faster (more reactive, potentially noisier). This is <em>not</em> smoothing across adjacent times, which would bias the target. It averages different forecasts of the <em>same</em> $a_t$. Training cost unchanged; inference cost × roughly $k$ if you are naïve, or you keep a rolling buffer of recent decoder outputs.</p>
+        <p>SmolVLA’s async stack is a later, cheaper cousin: instead of inferring every tick, infer when the queue is half empty. Read that paper after this one.</p>
+
+        <h3 id="cvae">Why a CVAE, not plain L1 on chunks</h3>
+        <p>Humans are stochastic where precision does not matter and precise where it does. Averaging modes of $a_{t:t+k}$ produces an action that was never demonstrated (the gripper passing through the lid). A CVAE puts a latent $z$ on the chunk:</p>
+        <ul>
+          <li><strong>Encoder</strong> (train only): sees action chunk + proprioception (they drop images here for speed), predicts $(\mu,\sigma)$ of diagonal Gaussian $z$.</li>
+          <li><strong>Decoder / policy</strong>: sees images, joints, and $z$; transformer-decodes the chunk. Reconstruction is L1 on actions, plus KL toward the prior, weight $\beta$.</li>
+          <li><strong>Test:</strong> $z=\mathbf{0}$. Deterministic, but trained not to collapse modes in the same way a raw L1 decoder would.</li>
+        </ul>
+        <p>If your task is unimodal and low-precision, the CVAE is overhead. If your task is “pry a lid,” it is load-bearing. LeRobot still ships this as the default ACT.</p>
+
+        <h3 id="arch">Architecture (Figure 2 of the paper)</h3>
+        <ul>
+          <li><strong>Vision:</strong> ResNet-18 per camera. Four views in the ALOHA setup.</li>
+          <li><strong>Transformer encoder:</strong> synthesizes visual tokens, joint positions, and $z$.</li>
+          <li><strong>Transformer decoder:</strong> outputs $k$ action vectors (continuous joints).</li>
+          <li>~80 million parameters. Trains in a few hours on one GPU. Data-efficient: 50 demos is the headline.</li>
+        </ul>
+        <p>Actions at train time are <em>leader</em> joint positions, not follower. That is the teleop copy signal. At test time the policy’s outputs are sent to the followers.</p>
+
+        <h3 id="results">Results you should actually remember</h3>
+        <ul>
+          <li>Six real fine-manipulation tasks (condiment cup, battery slotting, etc.): <strong>80–90% success from ~50 demonstrations / ~10 minutes of teleop</strong>.</li>
+          <li>Beats prior imitation baselines on the same hardware by a wide margin; $k=1$ ablation collapses.</li>
+          <li>Simulation: chunk size curve cited above. Use it when someone asks “why not $k=1$ with a better vision encoder?”</li>
+        </ul>
+        <p>The paper’s contribution is the <em>product</em> of ALOHA and ACT. Algorithm papers that drop the hardware still keep chunking + ensembling; that is the intellectual core.</p>
+
+        <h3 id="lerobot">Where this sits in 2025–2026 stacks</h3>
+        <p>LeRobot’s docs call ACT the first policy to train: fast, light, 50-demo territory. SmolVLA keeps chunks, replaces the CVAE decoder with a flow-matching expert, and replaces every-tick ensembling with async queues. Diffusion Policy is the other chunked baseline (iterative denoising instead of one transformer decode). When a new VLA paper says “we predict action chunks,” they are citing this paper whether or not they name it.</p>
+        <p>Practical LeRobot notes (from the official ACT page, not folklore): ResNet-18 backbone, transformer over cameras + joints + latent, L1 + KL, $z=0$ at eval, temporal ensembling on. Watch the LeRobot team’s ACT tutorial before your first train run.</p>
+
+        <h3 id="worked">Worked chunk at 50&nbsp;Hz, $k=100$</h3>
+        <p>A 100-step chunk is 2 seconds. Observation at $t=0$: four RGB frames + 14 joint angles. Decoder emits $100\times 14$ targets. Without ensembling, the arm is open-loop until $t=100$. With ensembling, at $t=10$ you already have 11 overlapping forecasts of $a_{10}$; the exponential mix is what is written to the controller. If the cup tips unexpectedly at $t=30$, reactivity is governed by $m$ and by the fact that new images enter every 20&nbsp;ms — not by waiting for the chunk to end.</p>
+        <p>Failure mode of too-large $k$: the 2-second plan was built for a cup that is no longer there. Failure mode of too-small $k$: you are back to compounding error (the 1% ablation).</p>
+
+        <h3 id="caveats">Caveats</h3>
+        <ul>
+          <li>$z=0$ at test time throws away multimodality at eval. If you need diversity, sample $z$ — and accept variance in success.</li>
+          <li>Ensembling assumes you can afford one forward pass per control tick. On a CPU robot, you cannot; go read SmolVLA async.</li>
+          <li>50 demos is for their tasks and their teleop quality. Your noisy SO-100 dataset is not their ALOHA dataset.</li>
+          <li>ResNet-18 is 2023. Replacing it with a VLM does not make ACT a VLA; you also changed the objective and the language interface. That is SmolVLA / $\pi_0$.</li>
+        </ul>
+
+        <h3 id="study">Study plan</h3>
+        <ol>
+          <li>Derive $T/k$ effective horizon. Plot imagined success vs $k$ with a peak and a drop.</li>
+          <li>Write the CVAE loss (L1 + $\beta$ KL) and the test-time $z$.</li>
+          <li>Implement temporal ensembling in five lines of numpy on fake overlapping arrays. Check that you average the same $t$, not neighbors.</li>
+          <li>Train LeRobot ACT on a public dataset. Change $k$. Do not tune anything else until you have seen that curve move.</li>
+          <li>Then read SmolVLA §3.3 and note what they kept (chunks) and what they replaced (CVAE, ensembling).</li>
+        </ol>
+
+        <h3 id="sources">Primary sources</h3>
+        <ul>
+          <li>Paper: <a href="https://arxiv.org/abs/2304.13705">arXiv:2304.13705</a> — Zhao, Kumar, Levine, Finn.</li>
+          <li>Project: <a href="https://tonyzhaozh.github.io/aloha/">tonyzhaozh.github.io/aloha</a>.</li>
+          <li>Original code: <a href="https://github.com/tonyzhaozh/aloha">github.com/tonyzhaozh/aloha</a>.</li>
+          <li>LeRobot ACT: <a href="https://huggingface.co/docs/lerobot/act">huggingface.co/docs/lerobot/act</a>.</li>
+          <li>Backspan: Ross et al., DAgger (AISTATS 2011); Kingma &amp; Welling VAE; Vaswani et al. transformers; LeRobot ACT tutorial on YouTube (official team).</li>
+        </ul>
+        <div class="citation">
+          <strong>BibTeX</strong>
+          <pre>@inproceedings{zhao2023learning,
+  title={Learning Fine-Grained Bimanual Manipulation with Low-Cost Hardware},
+  author={Zhao, Tony Z. and Kumar, Vikash and Levine, Sergey and Finn, Chelsea},
+  booktitle={Robotics: Science and Systems (RSS)},
+  year={2023}
+}</pre>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="editorial-footer">
+    <div><strong>AI Research Lab</strong><p>Self-contained companion. Primary sources only.</p></div>
+    <div class="footer-links">
+      <a href="papers.html">All guides</a>
+      <a href="papers-vggt.html">← VGGT</a>
+      <a href="papers-stlight.html">STLight →</a>
+    </div>
+  </footer>
+  <script>
+    window.addEventListener('scroll', () => {
+      const bar = document.getElementById('reading-progress-bar');
+      if (!bar) return;
+      const h = document.documentElement;
+      const p = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100 || 0;
+      bar.style.width = p + '%';
+    });
+  </script>
+</body>
+</html>

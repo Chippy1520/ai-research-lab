@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Complete reading guide for VGGT (CVPR 2025 Best Paper, arXiv 2503.11651): SfM vs feed-forward, alternating attention, over-complete 3D heads.">
+  <meta name="theme-color" content="#f3f0e8">
+  <title>VGGT · Paper Guide · AI Research Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/curriculum.css">
+  <link rel="stylesheet" href="assets/papers.css">
+  <script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]]},svg:{fontCache:"global"}};</script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body class="editorial">
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
+  <header class="topbar editorial-nav">
+    <a class="brand" href="curriculum.html"><span class="brand-mark">∇</span><span>AI Research Lab</span></a>
+    <nav aria-label="Primary navigation">
+      <a href="papers.html">All guides</a>
+      <a href="curriculum.html">Curriculum</a>
+      <a href="index.html">Robotics intelligence ↗</a>
+    </nav>
+  </header>
+
+  <main>
+    <header class="publication-header" id="overview">
+      <div class="journal-masthead"><span>AI Research Lab</span><span>Paper reading companion</span></div>
+      <p class="publication-label">3D vision · CVPR 2025 Best Paper</p>
+      <h1>VGGT: 3D from images without the SfM ritual</h1>
+      <div class="abstract">
+        <span>Lede</span>
+        <p class="publication-deck">Classical 3D reconstruction is a pipeline: match, triangulate, bundle-adjust, then maybe dense stereo. VGGT is one transformer that, in a single forward pass, emits cameras, depth, point maps, and tracks for one image or hundreds. The surprising part is not the speed. It is that the raw network output often beats methods that still run geometry optimization afterwards.</p>
+      </div>
+      <div class="byline-row">
+        <div><span>Paper</span><b>arXiv 2503.11651</b></div>
+        <div><span>Authors</span><b>Wang, Chen, Karaev, Vedaldi, Rupprecht, Novotny</b></div>
+        <div><span>Labs</span><b>VGG Oxford · Meta AI</b></div>
+        <div><span>Venue</span><b>CVPR 2025 · pp. 5294–5306</b></div>
+      </div>
+      <a class="guide-back" href="papers.html">← All paper guides</a>
+    </header>
+
+    <div class="article-frame" id="article">
+      <aside class="article-rail" aria-label="Article navigation">
+        <div class="rail-inner">
+          <p class="rail-label">In this guide</p>
+          <ol class="article-toc">
+            <li><a href="#tension">Why this paper exists</a></li>
+            <li><a href="#prereqs">Prerequisites</a></li>
+            <li><a href="#graph">Knowledge graph</a></li>
+            <li><a href="#problem">Problem statement</a></li>
+            <li><a href="#arch">Architecture</a></li>
+            <li><a href="#overcomplete">Over-complete predictions</a></li>
+            <li><a href="#train">Training and losses</a></li>
+            <li><a href="#results">What “SOTA” means here</a></li>
+            <li><a href="#worked">Worked reconstruction</a></li>
+            <li><a href="#caveats">Failure modes</a></li>
+            <li><a href="#study">Study plan</a></li>
+            <li><a href="#sources">Primary sources</a></li>
+          </ol>
+          <div class="session-note">
+            <span>80-minute route</span>
+            <p><b>10</b> SfM contrast</p>
+            <p><b>25</b> architecture</p>
+            <p><b>15</b> over-complete trick</p>
+            <p><b>20</b> results + code</p>
+            <p><b>10</b> study questions</p>
+          </div>
+        </div>
+      </aside>
+
+      <article class="technical-article">
+        <h2 id="tension">Why this paper exists</h2>
+        <p>Structure-from-Motion (SfM) estimates cameras and a sparse point cloud from overlapping images. The industrial implementation is COLMAP: keypoints, matching, geometric verification, triangulation, bundle adjustment (BA). Learning has been invading that pipeline for a decade — learned detectors, learned matchers, even differentiable BA (VGGSfM). Geometry, however, still sits in the loop, which is why reconstruction is slow and brittle on texture-poor or few-view scenes.</p>
+        <p>DUSt3R and MASt3R made a different bet: a network that emits pairwise point maps, then a <em>global alignment</em> optimization to fuse pairs. VGGT asks whether that last optimization can go away. The network sees <em>all</em> images at once (one, a few, or hundreds), and directly predicts every 3D quantity you actually wanted from SfM+MVS+tracking.</p>
+        <p>Two claims to keep separate while you read:</p>
+        <ol>
+          <li><strong>Feed-forward VGGT</strong> is already competitive with, and often better than, methods that post-optimize.</li>
+          <li><strong>VGGT + optional BA</strong> is the “we still win even if you give the other side their ritual” result.</li>
+        </ol>
+        <p>Best Paper at CVPR 2025 is about claim 1 changing what a 3D backbone looks like, not about shaving 0.3° off a pose table.</p>
+
+        <h3 id="prereqs">Prerequisites</h3>
+        <ol class="prereq-list">
+          <li>
+            <b>01</b>
+            <div>
+              <h4>Pinhole camera, extrinsics, intrinsics</h4>
+              <p>A camera is a rotation $R$ (here a quaternion $\mathbf{q}\in\mathbb{R}^4$), translation $\mathbf{t}\in\mathbb{R}^3$, and a field of view $\mathbf{f}\in\mathbb{R}^2$. VGGT packs $\mathbf{g}=[\mathbf{q},\mathbf{t},\mathbf{f}]\in\mathbb{R}^9$ and assumes the principal point is the image center — the same simplification COLMAP-style pipelines often make. If you cannot project a 3D point into a pixel, you cannot audit a point map.</p>
+            </div>
+          </li>
+          <li>
+            <b>02</b>
+            <div>
+              <h4>What bundle adjustment actually optimizes</h4>
+              <p>BA jointly refines cameras and 3D points to minimize reprojection error. It is iterative, requires correspondences, and fails without overlap. VGGT’s bet is that a large transformer trained on 3D-annotated data can <em>amortize</em> that optimization.</p>
+            </div>
+          </li>
+          <li>
+            <b>03</b>
+            <div>
+              <h4>Point maps (DUSt3R’s key object)</h4>
+              <p>A point map $P_i\in\mathbb{R}^{3\times H\times W}$ stores, at each pixel, the 3D scene point observed there. Crucially in VGGT (and DUSt3R), point maps are <em>viewpoint-invariant</em>: every $P_i$ is expressed in the coordinate frame of the <strong>first camera</strong>. Depth $D_i$ is in that camera’s own view. Mixing those frames is the #1 implementation bug.</p>
+            </div>
+          </li>
+          <li>
+            <b>04</b>
+            <div>
+              <h4>DINOv2 tokens and DPT heads</h4>
+              <p>Images are patchified by a frozen/pretrained DINO encoder into tokens $t^I$. Dense outputs (depth, points, tracking features) are decoded with a DPT (dense prediction transformer) head — the multi-scale ViT readout from Ranftl et al. 2021 — then a $3\times 3$ conv.</p>
+            </div>
+          </li>
+          <li>
+            <b>05</b>
+            <div>
+              <h4>Tracking-any-point</h4>
+              <p>Given a query pixel in one frame, predict its 2D location in all others (TAP-Vid, CoTracker). VGGT does not invent a new tracker; it emits dense tracking features $T_i$ and plugs them into a CoTracker2 head. The result is that geometry features help correspondence, and correspondence is a first-class output rather than a SfM byproduct.</p>
+            </div>
+          </li>
+        </ol>
+
+        <h3 id="graph">Knowledge graph</h3>
+        <div class="knowledge-graph">classical SfM (COLMAP)
+   match → triangulate → bundle adjust
+            │
+            ▼
+learned SfM (VGGSfM) — differentiable BA still in the loop
+
+pairwise feed-forward
+   DUSt3R / MASt3R: 2 images → point maps
+            │
+            └── still need global alignment for N&gt;2
+
+monocular specialists
+   DepthAnything, MoGe, LRM  (one task each)
+
+            ▼
+VGGT  (this paper)
+   DINO patchify
+     + camera token + 4 register tokens / frame
+     + alternating frame-wise / global attention (L=24)
+     + camera head (g ∈ R^9)
+     + DPT → depth, point map, track features
+     + CoTracker2 head
+   train: over-complete (all heads), aleatoric uncertainties
+   infer: often fuse depth + cameras  &gt;  raw point-map head
+   optional: BA on top → extra SOTA
+
+downstream: non-rigid tracking, feed-forward NVS
+export: COLMAP files → gsplat / NeRF</div>
+
+        <h3 id="problem">Problem statement, with the paper’s symbols</h3>
+        <p>Input: $N$ RGB images $(I_i)_{i=1}^N$, $I_i\in\mathbb{R}^{3\times H\times W}$. Output:</p>
+        <div class="math-block">$$f\big((I_i)_{i=1}^{N}\big)=\big(\mathbf{g}_i,\, D_i,\, P_i,\, T_i\big)_{i=1}^{N}.$$</div>
+        <p>$\mathbf{g}_i$ cameras, $D_i$ depth, $P_i$ point map, $T_i$ tracking feature grid. The first camera is the world frame: $\mathbf{q}_1=[0,0,0,1]$, $\mathbf{t}_1=\mathbf{0}$. Special learned camera/register tokens on frame 1 tell the transformer which image is the origin.</p>
+
+        <h3 id="arch">Architecture — follow Figure 2</h3>
+        <p><strong>Tokenize.</strong> DINO turns each image into $K$ patch tokens. Concatenate a camera token $t_i^{\mathbf{g}}$ and four register tokens $t_i^{R}$ (Darcet et al. 2023 style). Frame 1 uses a <em>different</em> learned camera/register initialization than frames $2\ldots N$, which is how “I am the world origin” is encoded without writing $SE(3)$ into the architecture.</p>
+        <p><strong>Alternating-Attention (AA).</strong> A standard transformer would global-attend all tokens from all frames, which mixes poorly when $N$ is large (activations of one image drowned by others) or small (no cross-view). AA alternates:</p>
+        <ul>
+          <li><em>Frame-wise</em> self-attention: tokens of image $i$ only. Normalizes within a view.</li>
+          <li><em>Global</em> self-attention: all tokens from all images. Moves information across views.</li>
+        </ul>
+        <p>Default depth: $L=24$ pairs. The paper is explicit that this is almost the <em>only</em> 3D inductive bias. No essential matrix, no cost volume, no explicit epipolar mask. The 3D prior lives in the training sets, not in the layers.</p>
+        <p><strong>Camera head.</strong> Reads the output camera token and predicts $\mathbf{g}_i$.</p>
+        <p><strong>Dense head.</strong> DPT lifts image tokens to a feature map $F_i$, then $3\times 3$ convolutions produce $D_i$, $P_i$, and tracking features $T_i$, plus aleatoric uncertainty maps $\Sigma_i^D$, $\Sigma_i^P$. After training, those maps are usable as confidence.</p>
+        <p><strong>Tracking head.</strong> CoTracker2 consumes $\{T_i\}$ and query points (training queries always from image 1). Output: 2D correspondences in every frame.</p>
+
+        <h3 id="overcomplete">The over-complete prediction trick</h3>
+        <p>Cameras, depth, and point maps are algebraically redundant. Given $P$ you can PnP for $\mathbf{g}$; given $\mathbf{g}$ and $D$ you can back-project to $P$. So why predict all three?</p>
+        <p><strong>During training</strong>, forcing the shared backbone to explain several related 3D views of the same scene improves every head. Redundancy is a feature: it is extra supervision on the same geometry.</p>
+        <p><strong>During inference</strong>, the paper reports that <em>composing</em> the independently predicted depth and cameras yields more accurate 3D points than using the dedicated point-map head. That is the opposite of what a tidy architecture diagram suggests, and it is one of the most useful sentences in the paper. If you wrap VGGT in a library, default to depth+camera fusion, not $P_i$ verbatim.</p>
+        <div class="research-note">When a network is over-complete, train on the union of losses; decode with the empirically best combination. Do not assume the head named after the quantity you want is the head you should read.</div>
+
+        <h3 id="train">Training picture</h3>
+        <p>VGGT is trained on a large union of public 3D-annotated datasets (the paper’s §3.4). Losses hit cameras, depth, point maps, tracks, and uncertainties. Uncertainties reweight the dense losses (aleatoric: predict $\sigma$, penalize $(\hat y-y)^2/\sigma^2 + \log\sigma$). You should expect the usual multi-task tension: if one loss dominates, turn its weight down rather than deleting a head — the over-complete result says the extra heads are doing work even when you will not use them at test time.</p>
+        <p>Inference cost: “under one second” for typical sets; “hundreds of images in seconds.” DUSt3R pairwise fusion runs out of memory beyond ~32 frames in their comparison figure; VGGT is built for the $N\gg 2$ regime.</p>
+
+        <h3 id="results">How to read the experiments</h3>
+        <ul>
+          <li><strong>Camera pose</strong> on Co3D and similar: compare feed-forward VGGT vs DUSt3R/MASt3R vs COLMAP vs VGGSfM. Then look at VGGT+BA as a separate row.</li>
+          <li><strong>Multi-view depth and dense clouds:</strong> this is MVS without known cameras. The headline is beating pairwise methods that still globally align.</li>
+          <li><strong>Tracking:</strong> VGGT features + CoTracker vs specialist TAP methods. The claim is “geometry backbone helps correspondence,” not “we obsolete CoTracker.”</li>
+          <li><strong>Downstream:</strong> freeze VGGT, improve non-rigid tracking and feed-forward novel view synthesis. This is the GPT/DINO analogy: a general 3D backbone, not a one-task network.</li>
+          <li><strong>Qualitative landmines</strong> they highlight: oil-painting geometry (DUSt3R flattens), two images with <em>no overlap</em> (DUSt3R fails; VGGT can still hallucinate a plausible scene — treat that with respect and suspicion), repeated textures.</li>
+        </ul>
+        <p>Code release extras you should know: training/finetune scripts (July 2025), COLMAP export for gsplat/NeRF, Co3D pose eval branch, interactive viser/Gradio demos.</p>
+
+        <h3 id="worked">Worked reconstruction (mental)</h3>
+        <ol>
+          <li>Take 8 photos of a desk, any order, including a close-up of the keyboard.</li>
+          <li>Pick photo 1 as world origin (or let the implementation do it). Identity extrinsics for that camera.</li>
+          <li>Forward pass: 8× (patches + 1 camera token + 4 registers) through 24 AA layers.</li>
+          <li>Read $\mathbf{g}_{2:8}$ as poses relative to photo 1. Read depths. Fuse $D_i$ with $\mathbf{g}_i$ to a point cloud in frame 1.</li>
+          <li>Confidence-threshold $\Sigma^D$ before meshing. Export COLMAP, splat.</li>
+          <li>If a view is an outlier (motion blur), its uncertainty map should light up; drop it rather than BA-ing it in blindly.</li>
+        </ol>
+        <p>Single-image mode is the zero-shot surprise: the same weights produce a plausible depth/point map from one photo because training included monocular 3D datasets. It is not metric SfM. Do not use a one-image point map as a survey.</p>
+
+        <h3 id="caveats">Failure modes</h3>
+        <ul>
+          <li>Principal point is assumed centered. Heavy crop/letterbox breaks $\mathbf{f}$.</li>
+          <li>Dynamic scenes: trained mostly static. Tracking head helps, but this is not a 4D Gaussian method.</li>
+          <li>No-overlap views: the network will still emit a scene. That can be a hallucination. Check overlap before trusting metric structure.</li>
+          <li>Memory still scales with $N \times K$. “Hundreds of images” is not “tens of thousands.”</li>
+          <li>Downstream fine-tunes can destroy the over-complete balance; if you only supervise depth, pose may drift.</li>
+        </ul>
+
+        <h3 id="study">Study plan</h3>
+        <ol>
+          <li>Write $\mathbf{g}=[\mathbf{q},\mathbf{t},\mathbf{f}]$ and the world-frame convention from memory.</li>
+          <li>Explain AA in one sentence that a COLMAP user would accept.</li>
+          <li>Prove to yourself that $P$ and $(D,\mathbf{g})$ are redundant. Then explain why training predicts both.</li>
+          <li>Run the official demo on 5 images. Compare fused depth+camera vs the point-map head on a textured object vs a blank wall.</li>
+          <li>Read DUSt3R’s global alignment section (not the whole paper) so you know what VGGT deleted.</li>
+        </ol>
+
+        <h3 id="sources">Primary sources</h3>
+        <ul>
+          <li>Paper: <a href="https://arxiv.org/abs/2503.11651">arXiv:2503.11651</a>.</li>
+          <li>CVPR Open Access: <a href="https://openaccess.thecvf.com/content/CVPR2025/html/Wang_VGGT_Visual_Geometry_Grounded_Transformer_CVPR_2025_paper.html">Wang et al., CVPR 2025, pp. 5294–5306</a>.</li>
+          <li>Project: <a href="https://vgg-t.github.io/">vgg-t.github.io</a>.</li>
+          <li>Code: <a href="https://github.com/facebookresearch/vggt">github.com/facebookresearch/vggt</a>.</li>
+          <li>Backspan: Hartley &amp; Zisserman (chapters on cameras + BA); DUSt3R; DINOv2; DPT; CoTracker2; COLMAP tutorial until you can run it once.</li>
+        </ul>
+        <div class="citation">
+          <strong>BibTeX</strong>
+          <pre>@inproceedings{wang2025vggt,
+  title={VGGT: Visual Geometry Grounded Transformer},
+  author={Wang, Jianyuan and Chen, Minghao and Karaev, Nikita
+          and Vedaldi, Andrea and Rupprecht, Christian and Novotny, David},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision
+             and Pattern Recognition (CVPR)},
+  pages={5294--5306},
+  year={2025}
+}</pre>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="editorial-footer">
+    <div><strong>AI Research Lab</strong><p>Self-contained companion. Primary sources only.</p></div>
+    <div class="footer-links">
+      <a href="papers.html">All guides</a>
+      <a href="papers-smolvla.html">← SmolVLA</a>
+      <a href="papers-act.html">ACT →</a>
+    </div>
+  </footer>
+  <script>
+    window.addEventListener('scroll', () => {
+      const bar = document.getElementById('reading-progress-bar');
+      if (!bar) return;
+      const h = document.documentElement;
+      const p = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100 || 0;
+      bar.style.width = p + '%';
+    });
+  </script>
+</body>
+</html>
