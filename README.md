@@ -88,3 +88,24 @@ The roadmap has no final day. When fewer than 18 mapped lessons remain, six new 
 ML→CV→EAI cycles are researched and appended. “Coverage” means repeated, rigorous
 traversal of foundations, modern methods, systems, interdisciplinary connections,
 evaluation, and changing frontiers—not pretending that evolving knowledge can be finished.
+
+## Paper Reading Guides
+
+New consolidated section for focused paper companions (in addition to tech news and the rotating curriculum).
+
+### Included Guides
+- **SmolVLA + LeRobot**: Architecture, flow matching, LeRobot integration, caveats.
+- **VGGT** (CVPR 2025 Best Paper): Feed-forward 3D geometry from images.
+- **ACT**: Action chunking with Transformers for imitation learning.
+- **STLight** and similar efficiency / modern backbone papers.
+
+Full Markdown guides live in `papers/`.  
+Static hub page: `site/papers.html` (linked from both the intelligence desk and curriculum).
+
+These replace the previous standalone repos (smolvla-explained, stlight-explained, etc.). Content has been migrated here.
+
+**Excluded** (remain separate):
+- CLIP-Meets-DINO-NoLA project
+- Fault Adapt Gym
+
+Add new papers by creating `papers/<slug>.md` and a card on the papers.html page.
