@@ -6,14 +6,10 @@
 Large Models → Efficiency Techniques → Lightweight Architectures
 
 ## Focus
-Making strong models run on limited compute for robotics and CV.
-
-## Key Techniques
-Pruning, distillation, efficient architectures.
+Making strong models run on limited hardware for robotics/CV.
 
 ## Resources
 - Paper (add link)
-- Efficiency tutorials and TinyML videos
-- Related: MobileNet, EfficientNet, lightweight ViTs
+- Efficiency tutorials
 
 Full guide inside this repo.

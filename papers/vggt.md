@@ -17,16 +17,5 @@ Strong zero-shot single-view. Outputs usable with COLMAP and splatting.
 ## Resources
 - arXiv: https://arxiv.org/abs/2503.11651
 - Code: https://github.com/facebookresearch/vggt
-- Demos and COLMAP export in repo
-
-## BibTeX
-```bibtex
-@inproceedings{wang2025vggt,
-  title={VGGT: Visual Geometry Grounded Transformer},
-  author={Wang et al.},
-  booktitle={CVPR},
-  year={2025}
-}
-```
 
 Full guide inside this repo.

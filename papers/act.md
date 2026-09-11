@@ -8,15 +8,8 @@ Behavior Cloning → Compounding Errors → Sequence Modeling → Chunk Predicti
 ## Core Idea
 Predict chunks of future actions instead of single steps to reduce compounding errors.
 
-## Benefits
-Temporal consistency, better long-horizon performance.
-
-## Relation to LeRobot & SmolVLA
-Implemented in LeRobot. Used or compared in modern VLAs.
-
 ## Resources
 - Original paper on arXiv
-- LeRobot implementation: https://github.com/huggingface/lerobot
-- Imitation learning lectures on YouTube
+- LeRobot: https://github.com/huggingface/lerobot
 
 Full guide inside this repo.
