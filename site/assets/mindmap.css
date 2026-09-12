@@ -13,12 +13,81 @@
     radial-gradient(circle at 50% 46%, #fbf8f0 0%, #f3f0e8 62%);
   cursor: grab;
 }
+.mm-stage::before {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  background:
+    repeating-radial-gradient(circle at 50% 48%, transparent 0 46px, rgba(45,106,69,.045) 47px 48px);
+  animation: mm-breathe 22s ease-in-out infinite;
+  pointer-events: none;
+}
+.mm-stage::after {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: conic-gradient(from 0deg at 50% 48%, transparent 0 70%, rgba(42,111,151,.05) 85%, transparent 100%);
+  animation: mm-spin 90s linear infinite;
+  pointer-events: none;
+}
+@keyframes mm-breathe {
+  50% { transform: scale(1.06); opacity: .7; }
+}
+@keyframes mm-spin { to { transform: rotate(360deg); } }
 .mm-stage:active { cursor: grabbing; }
 .mm-stage svg { width: 100%; height: 100%; display: block; min-height: 640px; }
-.mm-edge { stroke: #c8c2b4; stroke-width: 1.4; fill: none; opacity: .85; }
-.mm-edge.on { stroke: #2d6a45; stroke-width: 2.2; opacity: 1; }
+.mm-edge {
+  stroke: #c8c2b4;
+  stroke-width: 1.35;
+  fill: none;
+  opacity: .72;
+  stroke-dasharray: 5 11;
+  stroke-linecap: round;
+  animation: mm-flow 22s linear infinite;
+}
+.mm-edge.on {
+  stroke: #2d6a45;
+  stroke-width: 2.3;
+  opacity: 1;
+  stroke-dasharray: 4 7;
+  animation: mm-flow 5.5s linear infinite;
+}
+@keyframes mm-flow { to { stroke-dashoffset: -220; } }
 .mm-node { cursor: pointer; }
+.mm-bob {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: mm-drift 5.6s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * -0.37s);
+}
+.mm-node.hub .mm-bob { animation-duration: 4.2s; }
+.mm-node.domain .mm-bob { animation-duration: 7.4s; }
+@keyframes mm-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40% { transform: translate(2px, -7px) scale(1.03); }
+  70% { transform: translate(-3px, 3px) scale(1); }
+}
+.mm-node:hover .mm-bob {
+  animation-play-state: paused;
+  transform: scale(1.18);
+  transition: transform .18s ease;
+}
 .mm-node circle { stroke-width: 2; }
+.mm-node.hub circle {
+  filter: drop-shadow(0 0 8px rgba(125,206,160,.55));
+  animation: mm-glow 3.4s ease-in-out infinite;
+}
+@keyframes mm-glow {
+  50% { filter: drop-shadow(0 0 16px rgba(125,206,160,.9)); }
+}
+.mm-node.near circle { filter: drop-shadow(0 0 6px rgba(45,106,69,.35)); }
+.mm-node.active .mm-bob { animation: none; transform: scale(1.2); }
+.mm-node.active circle { stroke-width: 3.5; filter: drop-shadow(0 0 10px #2d6a45); }
+@media (prefers-reduced-motion: reduce) {
+  .mm-stage::before, .mm-stage::after, .mm-bob, .mm-edge, .mm-node.hub circle {
+    animation: none !important;
+  }
+}
 .mm-node text {
   font: 600 12px/1.2 Manrope, system-ui, sans-serif;
   fill: #1b1f1c;
@@ -57,7 +126,6 @@
 .mm-legend .k-concept { background: #ddd4ee; }
 .mm-legend .k-framework { background: #f1cfc4; }
 .mm-legend .k-lab { background: #eceae2; }
-.mm-node.active circle { stroke-width: 3.5; filter: drop-shadow(0 0 0 3px #2d6a45); }
 .mm-toolbar {
   position: absolute;
   top: 14px;

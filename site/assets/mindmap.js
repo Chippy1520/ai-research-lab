@@ -6,7 +6,7 @@
   const hint = document.getElementById("mm-hint");
   if (!svg || !panel) return;
 
-  const view = { x: 0, y: 0, s: 1 };
+  const view = { x: 0, y: 0, s: 0.62 };
   let graph = { nodes: [], edges: [] };
   let jobs = { openings: [] };
   let active = null;
@@ -34,20 +34,22 @@
   }
 
   function layout() {
-    const W = svg.clientWidth || 900;
-    const H = svg.clientHeight || 700;
+    const W = svg.clientWidth || 1100;
+    const H = svg.clientHeight || 820;
     const cx = W / 2;
-    const cy = H / 2 - 10;
+    const cy = H / 2;
+    const S = Math.min(W, H);
     const byId = Object.fromEntries(graph.nodes.map((n) => [n.id, n]));
     const domains = graph.nodes.filter((n) => n.kind === "domain");
     positions = new Map();
     const hub = byId[graph.center] || graph.nodes[0];
     if (hub) positions.set(hub.id, { x: cx, y: cy, r: R.hub });
+    const domainR = Math.max(300, S * 0.36);
     domains.forEach((d, i) => {
       const a = -Math.PI / 2 + (i * 2 * Math.PI) / Math.max(domains.length, 1);
       positions.set(d.id, {
-        x: cx + Math.cos(a) * 240,
-        y: cy + Math.sin(a) * 240,
+        x: cx + Math.cos(a) * domainR,
+        y: cy + Math.sin(a) * domainR,
         r: R.domain,
         a,
       });
@@ -60,19 +62,27 @@
     domains.forEach((d) => {
       const kids = grouped[d.domain] || [];
       const base = positions.get(d.id);
+      const sector = (2 * Math.PI) / Math.max(domains.length, 1);
+      const spread = sector * 0.9;
+      const rings = Math.max(3, Math.ceil(kids.length / 5));
       kids.forEach((n, i) => {
-        const spread = Math.min(1.1, 0.22 * kids.length);
-        const a = base.a - spread / 2 + (kids.length === 1 ? 0 : (i * spread) / (kids.length - 1));
-        const ring = 400 + (i % 3) * 48;
+        const ring = i % rings;
+        const slot = Math.floor(i / rings);
+        const slots = Math.ceil(kids.length / rings);
+        const a =
+          base.a -
+          spread / 2 +
+          (slots === 1 ? spread / 2 : (slot * spread) / (slots - 1));
+        const rad = domainR + 150 + ring * 95 + (slot % 2) * 22;
         positions.set(n.id, {
-          x: cx + Math.cos(a) * ring,
-          y: cy + Math.sin(a) * ring,
+          x: cx + Math.cos(a) * rad,
+          y: cy + Math.sin(a) * rad,
           r: R.default,
         });
       });
     });
     for (const n of graph.nodes) {
-      if (!positions.has(n.id)) positions.set(n.id, { x: cx, y: cy + 80, r: R.default });
+      if (!positions.has(n.id)) positions.set(n.id, { x: cx, y: cy + 90, r: R.default });
     }
   }
 
@@ -95,15 +105,19 @@
     g.setAttribute("transform", `translate(${view.x} ${view.y}) scale(${view.s})`);
 
     const eg = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    eg.setAttribute("class", "mm-edges");
     for (const e of graph.edges) {
       if (!visId.has(e.from) || !visId.has(e.to)) continue;
       const a = positions.get(e.from);
       const b = positions.get(e.to);
-      const p = document.createElementNS("http://www.w3.org/2000/svg", "line");
-      p.setAttribute("x1", a.x);
-      p.setAttribute("y1", a.y);
-      p.setAttribute("x2", b.x);
-      p.setAttribute("y2", b.y);
+      const mx = (a.x + b.x) / 2;
+      const my = (a.y + b.y) / 2;
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const nx = (-dy / 8);
+      const ny = (dx / 8);
+      const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      p.setAttribute("d", `M ${a.x} ${a.y} Q ${mx + nx * 0.08} ${my + ny * 0.08} ${b.x} ${b.y}`);
       p.setAttribute("class", "mm-edge" + (active && (e.from === active || e.to === active) ? " on" : ""));
       eg.appendChild(p);
     }
@@ -111,23 +125,26 @@
 
     const ng = document.createElementNS("http://www.w3.org/2000/svg", "g");
     const order = [...graph.nodes].sort((a, b) => (a.id === active ? 1 : 0) - (b.id === active ? 1 : 0));
+    let idx = 0;
     for (const n of order) {
       if (!visId.has(n.id)) continue;
       const p = positions.get(n.id);
       const wrap = document.createElementNS("http://www.w3.org/2000/svg", "g");
-      wrap.setAttribute("class", `mm-node ${n.kind}${n.id === active ? " active" : ""}`);
+      wrap.setAttribute("class", `mm-node ${n.kind}${n.id === active ? " active" : ""}${nb.has(n.id) ? " near" : ""}`);
       wrap.dataset.id = n.id;
+      wrap.style.setProperty("--i", String(idx++));
+      wrap.setAttribute("transform", `translate(${p.x} ${p.y})`);
+      const bob = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      bob.setAttribute("class", "mm-bob");
       const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      c.setAttribute("cx", p.x);
-      c.setAttribute("cy", p.y);
       c.setAttribute("r", p.r + (n.id === active || nb.has(n.id) ? 3 : 0));
-      wrap.appendChild(c);
+      bob.appendChild(c);
       const t = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      t.setAttribute("x", p.x);
-      t.setAttribute("y", p.y + p.r + 14);
+      t.setAttribute("y", p.r + 14);
       t.setAttribute("text-anchor", "middle");
       t.textContent = n.label;
-      wrap.appendChild(t);
+      bob.appendChild(t);
+      wrap.appendChild(bob);
       wrap.addEventListener("click", (ev) => {
         ev.stopPropagation();
         openNode(n.id);
@@ -237,7 +254,7 @@
   });
   svg.addEventListener("wheel", (e) => {
     e.preventDefault();
-    const next = Math.min(2.2, Math.max(0.45, view.s * (e.deltaY > 0 ? 0.92 : 1.08)));
+    const next = Math.min(2.4, Math.max(0.28, view.s * (e.deltaY > 0 ? 0.92 : 1.08)));
     view.s = next;
     draw();
   }, { passive: false });
