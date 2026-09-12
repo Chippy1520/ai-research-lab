@@ -17,7 +17,7 @@ Paper ASCII trees (ACT chunks, SmolVLA flow, …) are local footnotes. This map 
 - At most 5 new nodes per day unless a landmark paper (CVPR best paper, GEN-1.x, π-family, new LeRobot policy).
 - First-party company numbers stay labeled first-party (GEN-1.5, Skild S1).
 - New lab nodes must have a `company_id` matching `ecosystem.json` when the company is on the intel desk, so jobs attach.
-- Every new node needs `brief`, `domain`, `kind`, and at least one primary `resources` URL.
+- Every new node needs `brief`, `domain`, `kind`, at least one primary `resources` URL, and a YouTube `type: video` when a decent lecture exists.
 - Append a `changelog` line with the date.
 - After editing, run `python scripts/build_robotics_site.py` so Pages payload includes the graph. Commit + push `main` if the graph actually changed.
 

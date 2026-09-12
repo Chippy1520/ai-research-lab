@@ -138,6 +138,11 @@
     svg.replaceChildren(g);
   }
 
+  function ytId(url) {
+    const m = String(url).match(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+    return m ? m[1] : null;
+  }
+
   function jobsFor(node) {
     if (!node.company_id && node.kind !== "lab") return [];
     const name = (node.label || "").toLowerCase();
@@ -162,6 +167,9 @@
     active = id;
     draw();
     const res = n.resources || [];
+    const vids = res.filter((r) => r.type === "video" || /youtu/.test(r.url || ""));
+    const rest = res.filter((r) => !vids.includes(r));
+    const firstYt = vids.map((v) => ytId(v.url)).find(Boolean);
     const dirs = n.research_directions || [];
     const nb = [...neighbors(id)]
       .map((i) => graph.nodes.find((x) => x.id === i))
@@ -172,11 +180,12 @@
       <div class="mm-kicker">${KIND[n.kind] || n.kind} · ${n.domain}</div>
       <h2>${n.label}</h2>
       <p>${n.brief || ""}</p>
+      ${firstYt ? `<h3>Watch</h3><div class="mm-yt"><iframe src="https://www.youtube-nocookie.com/embed/${firstYt}" title="Lecture" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>` : ""}
       ${n.why ? `<h3>Why it is on the map</h3><p>${n.why}</p>` : ""}
       <h3>Neighbors</h3>
       <ul class="mm-res">${nb.map((x) => `<li><a href="#" data-go="${x.id}">${x.label}</a> <small>${x.kind}</small></li>`).join("") || "<li class='mm-empty'>Isolated</li>"}</ul>
       <h3>Resources</h3>
-      <ul class="mm-res">${res.map((r) => `<li><a href="${r.url}">${r.title}</a></li>`).join("") || "<li class='mm-empty'>None yet</li>"}</ul>
+      <ul class="mm-res">${[...vids, ...rest].map((r) => `<li><a href="${r.url}">${r.title}</a></li>`).join("") || "<li class='mm-empty'>None yet</li>"}</ul>
       ${dirs.length ? `<h3>Research directions</h3><ul class="mm-res">${dirs.map((d) => `<li>${d}</li>`).join("")}</ul>` : ""}
       <h3>Jobs & internships</h3>
       ${
