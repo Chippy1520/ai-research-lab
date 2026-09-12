@@ -51,14 +51,22 @@ function neighbors(id) {
   return [...s].map(nodeById).filter(Boolean);
 }
 
-function leaf(n, expanded) {
+const FOLDERS = [
+  ["concept", "Ideas"],
+  ["method", "Algorithms"],
+  ["paper", "Papers"],
+  ["framework", "Code"],
+  ["lab", "Labs"],
+];
+
+function topic(id, label, kind, children, expanded) {
   return {
-    id: n.id,
-    topic: n.label,
-    tags: [n.kind],
-    style: STYLE[n.kind] || STYLE.concept,
-    expanded: expanded !== false,
-    children: [],
+    id,
+    topic: label,
+    tags: kind ? [kind] : [],
+    style: STYLE[kind] || STYLE.concept,
+    expanded: !!expanded,
+    children: children || [],
   };
 }
 
@@ -69,35 +77,80 @@ function toTree() {
     n.label.toLowerCase().includes(q) ||
     (n.brief || "").toLowerCase().includes(q) ||
     n.id.includes(q);
-
+  const searching = !!q;
   const hub = graph.nodes.find((n) => n.id === graph.center) || graph.nodes[0];
   const domains = graph.nodes.filter((n) => n.kind === "domain");
   const shownDomains =
     domainFilter === "all" ? domains : domains.filter((d) => d.domain === domainFilter || d.id === domainFilter);
+  const oneBranch = shownDomains.length === 1;
 
   const children = shownDomains.map((d) => {
     const kids = graph.nodes.filter(
       (n) => n.kind !== "hub" && n.kind !== "domain" && n.domain === d.domain && match(n)
     );
-    const groups = { method: [], concept: [], paper: [], framework: [], lab: [], other: [] };
-    for (const k of kids) (groups[k.kind] || groups.other).push(k);
-    const nested = [];
-    for (const kind of ["concept", "method", "paper", "framework", "lab", "other"]) {
-      for (const k of groups[kind]) nested.push(leaf(k, !q ? false : true));
+    const buckets = { method: [], concept: [], paper: [], framework: [], lab: [], other: [] };
+    for (const k of kids) (buckets[k.kind] || buckets.other).push(k);
+
+    const folders = [];
+    for (const [kind, name] of FOLDERS) {
+      const items = buckets[kind];
+      if (!items.length) continue;
+      folders.push(
+        topic(
+          `grp:${d.id}:${kind}`,
+          `${name} · ${items.length}`,
+          kind,
+          items.map((k) => topic(k.id, k.label, k.kind, [], false)),
+          searching
+        )
+      );
     }
-    if (q && !nested.length && !match(d)) return null;
-    return {
-      ...leaf(d, true),
-      children: nested,
-    };
+    if (buckets.other.length) {
+      folders.push(
+        topic(
+          `grp:${d.id}:other`,
+          `Other · ${buckets.other.length}`,
+          "concept",
+          buckets.other.map((k) => topic(k.id, k.label, k.kind, [], false)),
+          searching
+        )
+      );
+    }
+    if (searching && !folders.length && !match(d)) return null;
+    return topic(d.id, d.label, "domain", folders, searching || oneBranch);
   }).filter(Boolean);
 
-  return {
-    nodeData: {
-      ...leaf(hub, true),
-      children,
-    },
-  };
+  return { nodeData: topic(hub.id, hub.label, "hub", children, true) };
+}
+
+function walk(node, fn, parent = null) {
+  if (!node) return;
+  fn(node, parent);
+  for (const c of node.children || []) walk(c, fn, node);
+}
+
+function accordion(id) {
+  if (!mind) return;
+  const packed = mind.getData?.() || {};
+  const root = mind.nodeData || packed.nodeData;
+  if (!root) return;
+  let parent = null;
+  let target = null;
+  walk(root, (n, p) => {
+    if (n.id === id) {
+      target = n;
+      parent = p;
+    }
+  });
+  if (!target?.children?.length) return;
+  if (parent) {
+    for (const c of parent.children) {
+      if (c.id !== id && c.children?.length) c.expanded = false;
+    }
+  }
+  target.expanded = true;
+  if (mind.refresh) mind.refresh({ nodeData: root });
+  else if (mind.layout) mind.layout();
 }
 
 function ytId(url) {
@@ -124,6 +177,7 @@ function jobsFor(node) {
 }
 
 function openNode(id) {
+  if (!id || String(id).startsWith("grp:")) return;
   const n = nodeById(id);
   if (!n) return;
   active = id;
@@ -179,14 +233,16 @@ function mount() {
       editable: false,
       locale: "en",
       overflowHidden: false,
-      primaryNodeHorizontalGap: phone() ? 40 : 70,
-      primaryNodeVerticalGap: phone() ? 12 : 18,
+      primaryNodeHorizontalGap: phone() ? 28 : 48,
+      primaryNodeVerticalGap: phone() ? 4 : 6,
     });
     const bus = mind.bus;
     const onSelect = (arg) => {
       const node = Array.isArray(arg) ? arg[0] : arg?.node || arg;
       const id = node?.id || node?.nodeObj?.id;
-      if (id) openNode(id);
+      if (!id) return;
+      accordion(id);
+      openNode(id);
     };
     if (bus?.addListener) {
       bus.addListener("selectNodes", onSelect);
@@ -197,7 +253,9 @@ function mount() {
       const el = e.target.closest("[data-nodeid], me-tpc, .tpc, .map-topic");
       if (!el) return;
       const id = el.getAttribute("data-nodeid") || el.nodeObj?.id;
-      if (id) openNode(id);
+      if (!id) return;
+      accordion(id);
+      openNode(id);
     });
     mind.init(data);
   } else if (mind.refresh) {
