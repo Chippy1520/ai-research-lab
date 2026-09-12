@@ -33,7 +33,7 @@
       <h1>STLight: future frames without the RNN tax</h1>
       <div class="abstract">
         <span>Lede</span>
-        <p class="publication-deck">Predicting the next frames of a video is the self-supervised task behind a lot of world-modeling, pedestrian forecasting, and robot-safety work. The default architecture for a decade was “CNN encoder → ConvLSTM/PredRNN → decoder.” STLight deletes the recurrent core, jointly embeds space and time with one convolution, mixes local and dilated neighborhoods, and pixel-shuffles the future back out. The result is not a cute tiny model that almost works. It is SOTA on the standard STL benchmarks at a fraction of the FLOPs.</p>
+        <p class="publication-deck">Predicting the next frames of a video is the self-supervised task behind a lot of world-modeling, pedestrian forecasting, and robot-safety work. The default architecture for a decade was CNN encoder → ConvLSTM/PredRNN unroll → decoder. STLight removes the recurrent core: one convolution jointly embeds space and time, a mixer combines local and dilated neighborhoods, and a pixel-shuffle head emits the future frames. On the standard STL benchmarks that is SOTA at a fraction of the FLOPs.</p>
       </div>
       <div class="byline-row">
         <div><span>Paper</span><b>arXiv 2411.10198</b></div>
@@ -78,10 +78,10 @@
       <article class="technical-article">
         <h2 id="case">How a person predicts the next second of a bouncing ball</h2>
         <div class="case-study">
-          <p class="case-lede">A digit (or a pedestrian, or a taxi-flow cell) is bouncing around a frame. You have seen the last ten snapshots. You need the next ten. You will not narrate the entire history out loud, one sentence per frame, before guessing. You will see a moving blob, notice both the nearby edge and the far wall, and sketch the whole next second at once.</p>
+          <p class="case-lede">You have seen the last $T$ frames of a bouncing digit (or a pedestrian, or a taxi-flow cell) and must emit the next $T'$. A ConvLSTM answers by unrolling one hidden state per past frame. STLight folds time into channels, mixes space–time with convolutions (no recurrence), and pixel-shuffles the future frames in one shot.</p>
           <div class="case-step">
             <div class="n">01</div>
-            <div class="human"><h4>You</h4><p>You do not recap frame 1, then 2, then 3 as a spoken story (that is an RNN). You see the last second as one motion picture.</p></div>
+            <div class="human"><h4>You</h4><p>You do not recap frame 1, then 2, then 3 as a sequence of hidden states (that is an RNN). You treat the last second as one space–time volume.</p></div>
             <div class="model"><h4>The paper</h4><p>Fold time into channels, $B\times(T\cdot C)\times H\times W$, then one convolution into space–time patches. Time is in the representation from layer one.</p></div>
           </div>
           <div class="case-step">
@@ -99,7 +99,7 @@
             <div class="human"><h4>You</h4><p>If you learned bouncing in one city, you can still guess bouncing in another — the skill was the motion, not the wallpaper.</p></div>
             <div class="model"><h4>The paper</h4><p>Train on KITTI, test on Caltech. The paper’s generalization plot is this transfer, at 0.1M–15M parameters.</p></div>
           </div>
-          <p class="case-punch">ConvLSTM is the person who narrates every past frame before answering. STLight is the person who just watches. The rest of the guide is kernels, shapes, and the FLOPs table that makes that claim quantitative.</p>
+          <p class="case-punch">ConvLSTM unrolls one step per past frame. STLight is a feed-forward CNN over a space–time volume. The rest of the guide is kernels, tensor shapes, and the FLOPs table.</p>
         </div>
 
         <h2 id="walk">The paper, in order — every section</h2>

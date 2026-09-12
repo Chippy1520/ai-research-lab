@@ -30,10 +30,10 @@
     <header class="publication-header" id="overview">
       <div class="journal-masthead"><span>AI Research Lab</span><span>Paper reading companion</span></div>
       <p class="publication-label">Self-supervised vision · CVPR 2023</p>
-      <h1>I-JEPA: guess the hidden part in idea-space, not pixel-space</h1>
+      <h1>I-JEPA: predict embeddings of masked blocks, not their pixels</h1>
       <div class="abstract">
         <span>Lede</span>
-        <p class="publication-deck">SimCLR needs a handwritten list of “this crop is the same dog.” MAE reconstructs every fur pixel behind the mask. I-JEPA keeps MAE’s masking and throws away MAE’s decoder: from one context block, predict the <em>embeddings</em> of several large target blocks. No colour jitter, no multi-crop. A ViT-H/14 does this on ImageNet in under 72 hours on 16 A100s.</p>
+        <p class="publication-deck">SimCLR needs a handwritten list of invariances (“this crop is the same dog”). MAE keeps the mask but trains a decoder to reconstruct pixels of the hidden patches. I-JEPA keeps the mask and drops the decoder: a context ViT sees the visible block; a predictor, given positions $z$, must match the EMA target encoder’s tokens on several large hidden blocks. Loss is in $E(\cdot)$, not RGB. No colour jitter, no multi-crop. A ViT-H/14 does this on ImageNet in under 72 hours on 16 A100s.</p>
       </div>
       <div class="byline-row">
         <div><span>Paper</span><b>arXiv 2301.08243</b></div>
@@ -76,7 +76,7 @@
       <article class="technical-article">
         <h2 id="case">How a person fills in a dog whose head is covered</h2>
         <div class="case-study">
-          <p class="case-lede">Someone holds a notebook over a dog’s head in a photo. You are not asked to paint fur. You are asked what is behind the notebook. You already know: a dog head, facing left, ears up. That prediction is semantic. Reconstructing every hair would be a different, worse job.</p>
+          <p class="case-lede">A notebook covers a dog’s head in a photo. MAE would train a decoder to fill in those pixels. You do not need the fur. You need the fact “dog head, this pose.” I-JEPA trains a predictor to match the target encoder’s embeddings $E(y)$ on the covered blocks, not a reconstruction of $y$.</p>
           <div class="case-step">
             <div class="n">01</div>
             <div class="human"><h4>You</h4><p>You look at everything that is <em>not</em> covered: body, leash, grass, the way the neck is aimed.</p></div>
@@ -89,7 +89,7 @@
           </div>
           <div class="case-step">
             <div class="n">03</div>
-            <div class="human"><h4>You</h4><p>Your answer is “dog head, this pose,” not a PNG. Extra whiskers would not make you more right.</p></div>
+            <div class="human"><h4>You</h4><p>Your answer is the identity and pose of the hidden part, not an RGB crop of it.</p></div>
             <div class="model"><h4>The paper</h4><p>Loss is in <strong>representation space</strong>. Targets come from a <strong>target encoder</strong> (EMA of the context encoder) run on the full image; you read off the tokens in the target block.</p></div>
           </div>
           <div class="case-step">

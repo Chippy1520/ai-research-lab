@@ -30,10 +30,10 @@
     <header class="publication-header" id="overview">
       <div class="journal-masthead"><span>AI Research Lab</span><span>Paper reading companion</span></div>
       <p class="publication-label">World models · OpenReview 2022 · not an experiment paper</p>
-      <h1>JEPA: predict the idea of the next second, not the pixels</h1>
+      <h1>JEPA: train the world model to predict $E(y)$, not $y$</h1>
       <div class="abstract">
         <span>Lede</span>
-        <p class="publication-deck">A video generator is trained to invent the next <em>picture</em>: every wisp of steam, every wood grain. You do not do that when you reach for a mug. You only need facts that affect the reach — the mug is still there, the counter is solid, the handle is on the left. LeCun’s 2022 position paper says a world model should work the same way: predict a compact embedding of the future, not the pixels. He calls that a Joint Embedding Predictive Architecture. I-JEPA, V-JEPA, and V-JEPA&nbsp;2 are the later papers that train it.</p>
+        <p class="publication-deck">A generative world model is trained to reconstruct the next observation $y$ itself — if $y$ is an image, that means pixels. Most of those pixels are useless for a grasp (texture, specular noise). LeCun’s 2022 position paper says the world model should instead encode $x$ and $y$ and train a predictor so $P(E(x), z) \approx E(y)$. The loss never sees pixels of $y$. He calls that a Joint Embedding Predictive Architecture. I-JEPA, V-JEPA, and V-JEPA&nbsp;2 are the papers that later train it.</p>
       </div>
       <div class="byline-row">
         <div><span>Paper</span><b>OpenReview BZ5a1r-kVsf</b></div>
@@ -73,12 +73,12 @@
       </aside>
 
       <article class="technical-article">
-        <h2 id="case">How a person walks into a kitchen they have never seen</h2>
+        <h2 id="case">Reach for a mug: what you predict, and what a generative model predicts</h2>
         <div class="case-study">
-          <p class="case-lede">You walk into a kitchen you have never seen and decide to pick up a mug. A pixel-generating model would try to imagine the next camera frame in full — steam, highlights, the cat’s fur. You do not. You only keep the facts the grasp needs: where the mug is, that the counter will still be there, that the handle is on the left. That difference is the whole paper: predict a small vector that means “what happens next,” not a picture of what happens next.</p>
+          <p class="case-lede">You decide to pick up a mug. The facts that matter are pose and contact: the mug stays put, the handle is on the left, the counter is solid. A video generator / MAE is trained to output the next RGB frame (or its pixels). You are not. A JEPA is trained to output a vector $E(y)$ from which those facts can still be read, and from which unpredictable texture can be dropped. That is the claim of this position paper.</p>
           <div class="case-step">
             <div class="n">01</div>
-            <div class="human"><h4>You</h4><p>You glance: counter, mug, kettle. You do not count wood grains or steam wisps. Those details will not change how you reach.</p></div>
+            <div class="human"><h4>You</h4><p>You encode the scene as a handful of facts (counter, mug, kettle pose). You do not store a pixel buffer.</p></div>
             <div class="model"><h4>The paper</h4><p><strong>Perception module.</strong> Embed the sensory stream into a representation $s_t$ that already threw away unpredictable clutter.</p></div>
           </div>
           <div class="case-step">
@@ -88,7 +88,7 @@
           </div>
           <div class="case-step">
             <div class="n">03</div>
-            <div class="human"><h4>You</h4><p>You predict only what the grasp uses: the mug stays put. You do not predict the next photograph.</p></div>
+            <div class="human"><h4>You</h4><p>You predict the next state of the mug, not a new photograph of the kitchen.</p></div>
             <div class="model"><h4>The paper</h4><p><strong>World model = JEPA.</strong> Encode the scene as $E(x)$, encode a later or hidden part as $E(y)$, train a predictor so $P(E(x), z) \approx E(y)$. The loss never looks at pixels of $y$. $z$ says which hidden part / which future you are asking about.</p></div>
           </div>
           <div class="case-step">
@@ -101,7 +101,7 @@
             <div class="human"><h4>You</h4><p>You pick an action by mentally trying a few reaches until the predicted cost is low, then you move.</p></div>
             <div class="model"><h4>The paper</h4><p><strong>Actor</strong> proposes actions; planning is search in latent space through the world model. <strong>Configurator</strong> sets which level of the hierarchy is running (grasp vs walk-to-counter).</p></div>
           </div>
-          <p class="case-punch">The mapping <em>is</em> the architecture: perception → memory → JEPA world model → cost → actor, with a configurator on top. I-JEPA later trains only the “glance + predict the hidden part” piece on still images. V-JEPA trains it on video. V-JEPA&nbsp;2 adds the actor’s planning loop on a Franka.</p>
+          <p class="case-punch">The mapping <em>is</em> the architecture: perception → memory → JEPA world model ($P(E(x),z)\approx E(y)$) → cost → actor. I-JEPA trains that predictor on still images. V-JEPA trains it on video. V-JEPA&nbsp;2 adds the actor’s planning loop on a Franka.</p>
         </div>
 
         <h2 id="walk">The paper, in order — every section</h2>

@@ -48,49 +48,49 @@
       <a class="paper-card tone-a" href="papers-smolvla.html">
         <h3>SmolVLA + LeRobot</h3>
         <div class="paper-meta">Vision-language-action · arXiv 2506.01844 · June 2025</div>
-        <p>Case study: teaching an intern to put a cube in a bowl on a cheap arm — look, plan a short phrase of motion, keep moving while thinking ahead. Then the same steps as VLM, chunk, async stack.</p>
+        <p>Case study: cube-in-bowl on a cheap arm — VLM tokens, flow-matched action chunk, async client so the arm does not stall.</p>
       </a>
 
       <a class="paper-card tone-b" href="papers-vggt.html">
         <h3>VGGT: Visual Geometry Grounded Transformer</h3>
         <div class="paper-meta">3D vision · CVPR 2025 Best Paper · arXiv 2503.11651</div>
-        <p>Case study: walking into a room with a phone camera and building a mental 3D model — glance, match corners, guess where you stood — then the same steps as tokens, alternating attention, and heads.</p>
+        <p>Case study: cameras, depth, and tracks from phone photos in one transformer pass — not match / triangulate / bundle-adjust.</p>
       </a>
 
       <a class="paper-card tone-c" href="papers-act.html">
         <h3>ACT: Action Chunking with Transformers</h3>
         <div class="paper-meta">Imitation learning · RSS 2023 · arXiv 2304.13705</div>
-        <p>Case study: opening a condiment cup the way a person does it — commit to a short motor phrase, pick one style, keep blending the plan — then chunking, CVAE, temporal ensembling.</p>
+        <p>Case study: opening a condiment cup — predict a chunk of $k$ joints, one CVAE mode, temporal ensemble — not one command per 20&nbsp;ms.</p>
       </a>
 
       <a class="paper-card tone-d" href="papers-stlight.html">
         <h3>STLight</h3>
         <div class="paper-meta">Spatio-temporal prediction · arXiv 2411.10198 · November 2024</div>
-        <p>Case study: watching a bouncing ball and predicting the next second without narrating every past frame — then joint space–time patches and a convolutional mixer instead of an RNN.</p>
+        <p>Case study: past $T$ frames → future $T'$ without unrolling a ConvLSTM — joint space–time convolution and a pixel-shuffle head.</p>
       </a>
 
       <a class="paper-card tone-a" href="papers-jepa.html">
         <h3>JEPA · LeCun 2022</h3>
         <div class="paper-meta">World models · OpenReview BZ5a1r-kVsf · June 2022</div>
-        <p>Case study: you reach for a mug without first imagining the next photograph of the kitchen — then a six-module agent whose world model predicts embeddings, not pixels.</p>
+        <p>Case study: reach for a mug. A generative model would reconstruct the next RGB frame $y$. A JEPA trains $P(E(x),z)\approx E(y)$ and plans in that latent.</p>
       </a>
 
       <a class="paper-card tone-b" href="papers-ijepa.html">
         <h3>I-JEPA</h3>
         <div class="paper-meta">Self-supervised images · CVPR 2023 · arXiv 2301.08243</div>
-        <p>Case study: a notebook covering a dog’s head — you guess “dog head, this pose,” not fur pixels. Then context ViT, EMA targets, multi-block masking, no SimCLR jitter.</p>
+        <p>Case study: a notebook covering a dog’s head — predict $E(y)$ on the hidden blocks, not MAE pixels. Context ViT, EMA targets, multi-block masking, no SimCLR jitter.</p>
       </a>
 
       <a class="paper-card tone-c" href="papers-vjepa.html">
         <h3>V-JEPA</h3>
         <div class="paper-meta">Self-supervised video · arXiv 2404.08471 · February 2024</div>
-        <p>Case study: a sleeve covering a coffee pour — you still know the pour continues. Then tube masking, L1 in feature space, one frozen backbone for Kinetics and Something-Something.</p>
+        <p>Case study: a sleeve occludes a pour — mask a space–time tube, predict $E(y)$, freeze the backbone for Kinetics and Something-Something.</p>
       </a>
 
       <a class="paper-card tone-d" href="papers-vjepa2.html">
         <h3>V-JEPA 2</h3>
         <div class="paper-meta">World model + planning · arXiv 2506.09985 · June 2025</div>
-        <p>Case study: years of watching, a weekend of moving your arms, then picking up a new mug from a photo goal. Then 1M-hour pretrain, 62 h Droid, zero-shot Franka MPC in latent space.</p>
+        <p>Case study: 1M-hour action-free JEPA, then 62 h Droid to learn $P(s_t,a_t)\approx s_{t+1}$, then zero-shot Franka MPC toward an image goal.</p>
       </a>
     </div>
 

@@ -33,7 +33,7 @@
       <h1>SmolVLA: a 450M-parameter VLA you can actually train</h1>
       <div class="abstract">
         <span>Lede</span>
-        <p class="publication-deck">The last two years of VLAs have been a race to billions of parameters and proprietary fleets. SmolVLA asks the opposite question: what if the bottleneck is not model size but data hygiene, inference latency, and whether a graduate student with one GPU can reproduce the result? This guide walks the paper in the order you should actually read it.</p>
+        <p class="publication-deck">OpenVLA-scale models are billions of parameters and need proprietary fleets. SmolVLA is 450M, trained on public LeRobot community datasets, with an action expert that flow-matches a chunk and an async client/server so the arm keeps moving while the next chunk is computed. The claim is that data hygiene and inference overlap, not size, are the bottleneck for a one-GPU reproduction.</p>
       </div>
       <div class="byline-row">
         <div><span>Paper</span><b>arXiv 2506.01844</b></div>
@@ -81,7 +81,7 @@
       <article class="technical-article">
         <h2 id="case">How a person would put the cube in the bowl</h2>
         <div class="case-study">
-          <p class="case-lede">Forget VLAs for a minute. You are standing next to a cheap tabletop arm. The instruction is “put the red cube in the bowl.” You have two webcams and you can feel the joint angles. This is how you would actually do it — and then what SmolVLA does in the same order.</p>
+          <p class="case-lede">A cheap tabletop arm, two webcams, joint angles, instruction “put the red cube in the bowl.” SmolVLA fuses those streams in a VLM, flow-matches a chunk of future actions, and runs the policy asynchronously so the arm does not stall while the next chunk is computed.</p>
           <div class="case-step">
             <div class="n">01</div>
             <div class="human"><h4>You</h4><p>Look at the overhead camera, glance at the wrist camera, hear the sentence, notice where the arm currently is.</p></div>
@@ -89,13 +89,13 @@
           </div>
           <div class="case-step">
             <div class="n">02</div>
-            <div class="human"><h4>You</h4><p>You do not plan the next 20 milliseconds. You plan a short phrase: reach, pinch, lift, move, open. Then you will look again.</p></div>
+            <div class="human"><h4>You</h4><p>You do not plan the next 20 milliseconds. You plan a short sequence: reach, pinch, lift, move, open. Then you look again.</p></div>
             <div class="model"><h4>The paper</h4><p>The action expert emits a <em>chunk</em> $A_t=(a_t,\ldots,a_{t+n})$, not a single joint command. Same idea as ACT, generated with flow matching.</p></div>
           </div>
           <div class="case-step">
             <div class="n">03</div>
             <div class="human"><h4>You</h4><p>You do not freeze mid-reach while composing the next phrase. Your hand keeps moving; the next plan forms in parallel.</p></div>
-            <div class="model"><h4>The paper</h4><p>Asynchronous inference: RobotClient drains the queue while PolicyServer computes the next chunk. Threshold $g$ is “start thinking when the current phrase is half done.”</p></div>
+            <div class="model"><h4>The paper</h4><p>Asynchronous inference: RobotClient drains the queue while PolicyServer computes the next chunk. Threshold $g$ is “start computing the next chunk when the current one is half executed.”</p></div>
           </div>
           <div class="case-step">
             <div class="n">04</div>

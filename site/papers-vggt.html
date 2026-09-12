@@ -79,7 +79,7 @@
       <article class="technical-article">
         <h2 id="case">How a person builds a room in their head</h2>
         <div class="case-study">
-          <p class="case-lede">You walk into a messy office with a phone. You want a 3D sense of the desk — where the cameras were, how far the wall is, which pixels are the same mug. You will not run a surveying tripod in your head. You will glance, match, and guess. VGGT does those glances in one forward pass.</p>
+          <p class="case-lede">You walk into a messy office with a phone and want cameras, depth, and correspondences for the desk. Classical SfM does that as a pipeline: match, triangulate, bundle-adjust, then maybe dense stereo. VGGT is one transformer: one forward pass emits cameras, depth, point maps, and tracks. No essential-matrix layer in the middle.</p>
           <div class="case-step">
             <div class="n">01</div>
             <div class="human"><h4>You</h4><p>Look at each photo on its own: “this is a desk; that is a keyboard close-up.”</p></div>
@@ -102,10 +102,10 @@
           </div>
           <div class="case-step">
             <div class="n">05</div>
-            <div class="human"><h4>You</h4><p>You do not bundle-adjust. You just <em>see</em> the room in under a second. Later you might tidy the sketch with a ruler.</p></div>
-            <div class="model"><h4>The paper</h4><p>Feed-forward VGGT is already competitive with methods that still run geometry optimization. VGGT+BA is the optional ruler.</p></div>
+            <div class="human"><h4>You</h4><p>You do not run bundle adjustment in your head. You form a 3D sketch in one look. Later you might refine it with geometry.</p></div>
+            <div class="model"><h4>The paper</h4><p>Feed-forward VGGT is already competitive with methods that still run geometry optimization. VGGT+BA is the optional refinement.</p></div>
           </div>
-          <p class="case-punch">COLMAP is the ruler-and-tripod version of the same job. VGGT is the glance. The rest of the guide is how the glance is implemented.</p>
+          <p class="case-punch">COLMAP is match → triangulate → bundle-adjust. VGGT is the same outputs from one transformer pass; VGGT+BA is the optional refinement. The rest of the guide is how those heads are trained.</p>
         </div>
 
         <h2 id="walk">The paper, in order — every section</h2>

@@ -75,7 +75,7 @@
       <article class="technical-article">
         <h2 id="case">How a person watches someone pour coffee with a hand in the way</h2>
         <div class="case-study">
-          <p class="case-lede">A clip: kettle, mug, arm. For a few frames a sleeve covers the mug. You are not asked to paint the missing steam. You are asked whether the pour continues. That is motion understanding. A model that only recognised “kitchen” from a still would fail Something-Something-v2 (“pushing” vs “pulling”).</p>
+          <p class="case-lede">A clip: kettle, mug, arm. For a few frames a sleeve occludes the mug. A video MAE would reconstruct those pixels. The question that matters on Something-Something-v2 is whether the pour continues (push vs pull), which lives in the motion of $E(y)$. V-JEPA masks a space–time tube and predicts those embeddings; it never decodes RGB.</p>
           <div class="case-step">
             <div class="n">01</div>
             <div class="human"><h4>You</h4><p>You watch the visible parts of the clip as one moving picture, not 16 unrelated JPEGs.</p></div>
@@ -88,7 +88,7 @@
           </div>
           <div class="case-step">
             <div class="n">03</div>
-            <div class="human"><h4>You</h4><p>Your prediction is “liquid still going into a mug,” not a RGB inpainting of every droplet.</p></div>
+            <div class="human"><h4>You</h4><p>Your prediction is that liquid is still going into the mug, not an inpainted RGB of the hidden frames.</p></div>
             <div class="model"><h4>The paper</h4><p>L1 in feature space against an EMA teacher $\bar{E}_\theta(y)$ with stop-gradient. Eq. (1) in the PDF. L1, not I-JEPA’s L2 — they say L1 was more stable on video.</p></div>
           </div>
           <div class="case-step">
@@ -96,7 +96,7 @@
             <div class="human"><h4>You</h4><p>Later, without retraining your eyes, you can both name the action (Kinetics) and tell pushing from pulling (SSv2), and even recognise a still (ImageNet).</p></div>
             <div class="model"><h4>The paper</h4><p><strong>Frozen backbone</strong> + attentive probe. Figure 1’s whole point: one encoder, motion <em>and</em> appearance, no end-to-end fine-tune required to make the claim.</p></div>
           </div>
-          <p class="case-punch">The mapping <em>is</em> the method: mask a tube, predict $E(y)$, evaluate frozen. Pixel-reconstruction video MAEs can look sharp and still lose SSv2, because they spent capacity on droplets.</p>
+          <p class="case-punch">The mapping <em>is</em> the method: mask a tube, predict $E(y)$, evaluate the frozen encoder. A video MAE can look sharp and still lose SSv2, because the loss rewarded pixel texture instead of motion in $E(\cdot)$.</p>
         </div>
 
         <h2 id="walk">The paper, in order — every section</h2>

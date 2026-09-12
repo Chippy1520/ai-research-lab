@@ -81,7 +81,7 @@
       <article class="technical-article">
         <h2 id="case">How a person opens a condiment cup</h2>
         <div class="case-study">
-          <p class="case-lede">The cup is on the table. You have two hands and you can see. You will not compute the next 20 milliseconds of joint torque from scratch, fifty times a second, independently. You will commit to a short motor phrase, pick a style, and keep blending the plan as your eyes update. That is ACT, before any transformer is named.</p>
+          <p class="case-lede">The cup is on the table. A policy that emits one joint command per 20&nbsp;ms, independently, compounds a 1% error into a state no demonstration ever showed. ACT instead predicts a chunk of $k$ future joint targets from one observation, samples one mode of that chunk with a CVAE, and averages overlapping forecasts of the same $a_t$ (temporal ensembling).</p>
           <div class="case-step">
             <div class="n">01</div>
             <div class="human"><h4>You</h4><p>Look at the cup from a few angles, feel where your wrists are.</p></div>
@@ -89,7 +89,7 @@
           </div>
           <div class="case-step">
             <div class="n">02</div>
-            <div class="human"><h4>You</h4><p>Commit to a phrase: tip it, nest it in the other hand, pry the lid. You do not re-decide every millimetre. A 1% twitch, repeated, knocks the cup over — compounding error.</p></div>
+            <div class="human"><h4>You</h4><p>Commit to a short sequence: tip it, nest it, pry the lid. You do not re-choose every millimetre. A 1% twitch, repeated, knocks the cup over — compounding error.</p></div>
             <div class="model"><h4>The paper</h4><p>Predict $k$ future joint targets at once, $\pi(a_{t:t+k}\mid s_t)$. Effective horizon $\div k$. Ablation: 1% success at $k=1$, 44% at $k=100$.</p></div>
           </div>
           <div class="case-step">

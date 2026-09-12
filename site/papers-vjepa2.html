@@ -76,7 +76,7 @@
       <article class="technical-article">
         <h2 id="case">How a person picks up a mug they have never seen, in a kitchen they have never been in</h2>
         <div class="case-study">
-          <p class="case-lede">You have watched years of other people handling objects (YouTube). You have maybe a weekend of actually moving your own arms in a lab. Someone shows you a photo of “mug on the right, please.” You do not re-learn vision. You imagine a few reaches until the imagined scene matches the photo, then you move. That is V-JEPA 2-AC.</p>
+          <p class="case-lede">Stage 1: action-free JEPA on &gt;1 million hours of internet video — the encoder $E$ learns $P(E(x),z)\approx E(y)$ with no robot. Stage 2: freeze $E$, train a 300M action-conditioned predictor on &lt;62 hours of unlabeled Droid. At test: image goal $g$, sample action chunks, roll the latents, pick the chunk whose predicted embedding is closest to $E(g)$, execute $a_0$ (MPC). No task reward, no data from the test Franka.</p>
           <div class="case-step">
             <div class="n">01</div>
             <div class="human"><h4>You</h4><p>Years of watching: objects persist, hands grasp, liquids pour. You were not labelled.</p></div>
