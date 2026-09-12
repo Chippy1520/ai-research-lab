@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="Living mind map of embodied AI, VLAs, perception, learning, frameworks, and robotics labs — click a concept for resources and jobs.">
   <meta name="theme-color" content="#f3f0e8">
   <title>Embodied AI mind map · AI Research Lab</title>
@@ -28,25 +28,32 @@
   <div class="mm-shell">
     <div class="mm-stage" id="mm-stage">
       <div class="mm-toolbar">
-        <input id="mm-search" type="search" placeholder="Search concepts, papers, labs…" aria-label="Search the mind map">
-        <div id="mm-filters"></div>
+        <input id="mm-search" type="search" placeholder="Search concepts…" enterkeyhint="search" aria-label="Search the mind map">
+        <button type="button" class="mm-chip" id="mm-fit" title="Fit all">Fit</button>
+        <div id="mm-filters" class="mm-filters"></div>
       </div>
-      <svg id="mm-svg" role="img" aria-label="Embodied AI concept graph"></svg>
-      <div class="mm-legend" aria-label="Color key">
-        <span><i class="k-hub"></i>hub — the field</span>
-        <span><i class="k-domain"></i>green — a branch of the field</span>
-        <span><i class="k-concept"></i>lilac — an idea</span>
-        <span><i class="k-method"></i>gold — an algorithm you implement</span>
-        <span><i class="k-paper"></i>blue — a specific paper</span>
-        <span><i class="k-framework"></i>terracotta — code you run</span>
-        <span><i class="k-lab"></i>grey — a lab or company</span>
+      <div id="mm-cy" role="img" aria-label="Embodied AI concept graph"></div>
+      <div class="mm-legend" id="mm-legend" aria-label="Color key">
+        <span><i class="k-hub"></i>hub</span>
+        <span><i class="k-domain"></i>branch</span>
+        <span><i class="k-concept"></i>idea</span>
+        <span><i class="k-method"></i>algorithm</span>
+        <span><i class="k-paper"></i>paper</span>
+        <span><i class="k-framework"></i>code</span>
+        <span><i class="k-lab"></i>lab</span>
       </div>
-      <div class="mm-hint" id="mm-hint">Loading graph…</div>
+      <div class="mm-hint" id="mm-hint">Pinch to zoom · tap a node</div>
     </div>
-    <aside class="mm-panel" id="mm-panel">
-      <p class="mm-empty">Click a node. The hub is Embodied AI — perception, learning, policies, systems, labs. Jobs on lab nodes come from the intelligence desk.</p>
+    <aside class="mm-panel" id="mm-panel" aria-live="polite">
+      <button type="button" class="mm-sheet-bar" id="mm-sheet-toggle" aria-label="Expand or collapse details">
+        <span class="mm-grip"></span>
+      </button>
+      <div class="mm-panel-body" id="mm-panel-body">
+        <p class="mm-empty">Tap Embodied AI in the centre. Green nodes are branches; gold is an algorithm; blue is a paper; grey labs carry jobs.</p>
+      </div>
     </aside>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.30.4/dist/cytoscape.min.js"></script>
   <script src="assets/mindmap.js"></script>
 </body>
 </html>

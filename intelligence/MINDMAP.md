@@ -2,6 +2,7 @@
 
 Canonical data: `intelligence/mindmap.json`  
 Live page: `site/mindmap.html` → https://chippy1520.github.io/ai-research-lab/mindmap.html  
+Renderer: **Cytoscape.js** (canvas, pinch-zoom, tap). Data is still `intelligence/mindmap.json`. Do not swap libraries without keeping that JSON shape.  
 Build copies the JSON into `site/data/mindmap.json`.
 
 ## What it is
