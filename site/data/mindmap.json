@@ -7,6 +7,10 @@
   "changelog": [
     {
       "date": "2026-09-12",
+      "note": "Abstraction layers: parent + layer on every node; area clusters under each domain. View is a skill-tree drill-down, not a flat list."
+    },
+    {
+      "date": "2026-09-12",
       "note": "YouTube links re-checked via oEmbed. Dead/unavailable IDs removed; replacements only if the live video covers the node."
     },
     {
@@ -56,7 +60,9 @@
           "title": "Robotics intelligence desk",
           "url": "index.html"
         }
-      ]
+      ],
+      "parent": null,
+      "layer": 0
     },
     {
       "id": "perception",
@@ -75,7 +81,9 @@
           "title": "Shree Nayar — Image formation / pinhole",
           "url": "https://www.youtube.com/watch?v=_QjxbQKY4ds"
         }
-      ]
+      ],
+      "parent": "embodied-ai",
+      "layer": 1
     },
     {
       "id": "learning",
@@ -95,7 +103,9 @@
           "title": "Abbeel — L1 MDPs (Deep RL overview)",
           "url": "https://www.youtube.com/watch?v=2GwBez0D20A"
         }
-      ]
+      ],
+      "parent": "embodied-ai",
+      "layer": 1
     },
     {
       "id": "policy",
@@ -109,7 +119,9 @@
         "Layer skip / token prune",
         "Async chunk queues"
       ],
-      "resources": []
+      "resources": [],
+      "parent": "embodied-ai",
+      "layer": 1
     },
     {
       "id": "systems",
@@ -129,7 +141,9 @@
           "title": "DigiKey — What is ROS / ROS 2?",
           "url": "https://www.youtube.com/watch?v=mjrxf8EFSb8"
         }
-      ]
+      ],
+      "parent": "embodied-ai",
+      "layer": 1
     },
     {
       "id": "labs",
@@ -148,7 +162,9 @@
           "title": "Figure — Introducing Helix",
           "url": "https://www.youtube.com/watch?v=Z3yQHYNXPws"
         }
-      ]
+      ],
+      "parent": "embodied-ai",
+      "layer": 1
     },
     {
       "id": "behavior-cloning",
@@ -168,7 +184,9 @@
           "title": "DAgger",
           "url": "https://arxiv.org/abs/1011.0686"
         }
-      ]
+      ],
+      "parent": "imit",
+      "layer": 3
     },
     {
       "id": "compounding-error",
@@ -193,7 +211,9 @@
           "title": "ACT guide",
           "url": "papers-act.html"
         }
-      ]
+      ],
+      "parent": "imit",
+      "layer": 3
     },
     {
       "id": "action-chunking",
@@ -213,7 +233,9 @@
           "title": "ACT",
           "url": "papers-act.html"
         }
-      ]
+      ],
+      "parent": "imit",
+      "layer": 3
     },
     {
       "id": "cvae",
@@ -238,7 +260,9 @@
           "title": "ACT",
           "url": "papers-act.html"
         }
-      ]
+      ],
+      "parent": "imit",
+      "layer": 3
     },
     {
       "id": "temporal-ensembling",
@@ -258,7 +282,9 @@
           "title": "ACT",
           "url": "papers-act.html"
         }
-      ]
+      ],
+      "parent": "chunked-pi",
+      "layer": 3
     },
     {
       "id": "flow-matching",
@@ -278,7 +304,9 @@
           "title": "Flow Matching for Generative Modeling",
           "url": "https://arxiv.org/abs/2210.02747"
         }
-      ]
+      ],
+      "parent": "gen-world",
+      "layer": 3
     },
     {
       "id": "diffusion-policy",
@@ -298,7 +326,9 @@
           "title": "arXiv 2303.04137",
           "url": "https://arxiv.org/abs/2303.04137"
         }
-      ]
+      ],
+      "parent": "chunked-pi",
+      "layer": 3
     },
     {
       "id": "act",
@@ -328,7 +358,9 @@
           "title": "LeRobot ACT",
           "url": "https://huggingface.co/docs/lerobot/act"
         }
-      ]
+      ],
+      "parent": "chunked-pi",
+      "layer": 3
     },
     {
       "id": "smolvla",
@@ -358,7 +390,9 @@
           "title": "LeRobot",
           "url": "https://github.com/huggingface/lerobot"
         }
-      ]
+      ],
+      "parent": "vla-family",
+      "layer": 3
     },
     {
       "id": "openvla",
@@ -373,7 +407,9 @@
           "title": "arXiv 2406.09246",
           "url": "https://arxiv.org/abs/2406.09246"
         }
-      ]
+      ],
+      "parent": "vla-family",
+      "layer": 3
     },
     {
       "id": "pi0",
@@ -388,7 +424,9 @@
           "title": "arXiv 2410.24164",
           "url": "https://arxiv.org/abs/2410.24164"
         }
-      ]
+      ],
+      "parent": "vla-family",
+      "layer": 3
     },
     {
       "id": "gen15",
@@ -414,7 +452,9 @@
           "url": "https://generalistai.com/blog/gen-1.5"
         }
       ],
-      "company_id": "generalist-ai"
+      "company_id": "generalist-ai",
+      "parent": "robot-fm",
+      "layer": 3
     },
     {
       "id": "skild-s1",
@@ -430,7 +470,9 @@
           "url": "https://iottechnews.com/news/skild-trains-s1-robot-physical-ai-model-on-nvidia-infrastructure/"
         }
       ],
-      "company_id": "skild-ai"
+      "company_id": "skild-ai",
+      "parent": "robot-fm",
+      "layer": 3
     },
     {
       "id": "vggt",
@@ -455,7 +497,9 @@
           "title": "facebookresearch/vggt",
           "url": "https://github.com/facebookresearch/vggt"
         }
-      ]
+      ],
+      "parent": "geom-3d",
+      "layer": 3
     },
     {
       "id": "dinov2",
@@ -475,7 +519,9 @@
           "title": "arXiv 2304.07193",
           "url": "https://arxiv.org/abs/2304.07193"
         }
-      ]
+      ],
+      "parent": "recog",
+      "layer": 3
     },
     {
       "id": "dust3r",
@@ -495,7 +541,9 @@
           "title": "arXiv 2312.14132",
           "url": "https://arxiv.org/abs/2312.14132"
         }
-      ]
+      ],
+      "parent": "geom-3d",
+      "layer": 3
     },
     {
       "id": "stlight",
@@ -515,7 +563,9 @@
           "title": "arXiv 2411.10198",
           "url": "https://arxiv.org/abs/2411.10198"
         }
-      ]
+      ],
+      "parent": "geom-3d",
+      "layer": 3
     },
     {
       "id": "world-models",
@@ -534,7 +584,9 @@
           "title": "World Models explained (Ha & Schmidhuber lineage)",
           "url": "https://www.youtube.com/watch?v=b1roEd6liWI"
         }
-      ]
+      ],
+      "parent": "gen-world",
+      "layer": 3
     },
     {
       "id": "rl",
@@ -558,7 +610,9 @@
           "title": "Isaac Lab",
           "url": "https://developer.nvidia.com/isaac/lab"
         }
-      ]
+      ],
+      "parent": "rl-family",
+      "layer": 3
     },
     {
       "id": "lerobot",
@@ -578,7 +632,9 @@
           "title": "LeRobot docs",
           "url": "https://huggingface.co/docs/lerobot"
         }
-      ]
+      ],
+      "parent": "stacks",
+      "layer": 3
     },
     {
       "id": "isaac",
@@ -593,7 +649,9 @@
           "title": "Isaac Lab",
           "url": "https://developer.nvidia.com/isaac/lab"
         }
-      ]
+      ],
+      "parent": "sim-stack",
+      "layer": 3
     },
     {
       "id": "ros2",
@@ -613,7 +671,9 @@
           "title": "ROS 2 docs",
           "url": "https://docs.ros.org/en/humble/"
         }
-      ]
+      ],
+      "parent": "stacks",
+      "layer": 3
     },
     {
       "id": "async-infer",
@@ -628,7 +688,9 @@
           "title": "SmolVLA §3.3",
           "url": "papers-smolvla.html#walk"
         }
-      ]
+      ],
+      "parent": "stacks",
+      "layer": 3
     },
     {
       "id": "aloha",
@@ -653,7 +715,9 @@
           "title": "SO-ARM100",
           "url": "https://github.com/TheRobotStudio/SO-ARM100"
         }
-      ]
+      ],
+      "parent": "data-hw",
+      "layer": 3
     },
     {
       "id": "one-shot",
@@ -672,7 +736,9 @@
           "title": "Generalist — Introducing GEN-1.5",
           "url": "https://www.youtube.com/watch?v=1cllCVK-9lo"
         }
-      ]
+      ],
+      "parent": "xfer",
+      "layer": 3
     },
     {
       "id": "figure-ai",
@@ -698,7 +764,9 @@
           "title": "Careers",
           "url": "https://www.figure.ai/careers"
         }
-      ]
+      ],
+      "parent": "humanoids",
+      "layer": 3
     },
     {
       "id": "apptronik",
@@ -713,7 +781,9 @@
           "title": "Job listings",
           "url": "https://apptronik.com/careers/job-listings"
         }
-      ]
+      ],
+      "parent": "humanoids",
+      "layer": 3
     },
     {
       "id": "agility",
@@ -728,7 +798,9 @@
           "title": "agilityrobotics.com",
           "url": "https://www.agilityrobotics.com/"
         }
-      ]
+      ],
+      "parent": "humanoids",
+      "layer": 3
     },
     {
       "id": "physical-intelligence",
@@ -743,7 +815,9 @@
           "title": "physicalintelligence.company",
           "url": "https://www.physicalintelligence.company/"
         }
-      ]
+      ],
+      "parent": "fm-labs",
+      "layer": 3
     },
     {
       "id": "generalist-ai",
@@ -763,7 +837,9 @@
           "title": "GEN-1.5",
           "url": "https://generalistai.com/blog/gen-1.5"
         }
-      ]
+      ],
+      "parent": "fm-labs",
+      "layer": 3
     },
     {
       "id": "skild-ai",
@@ -778,7 +854,9 @@
           "title": "skild.ai",
           "url": "https://www.skild.ai/"
         }
-      ]
+      ],
+      "parent": "fm-labs",
+      "layer": 3
     },
     {
       "id": "huggingface",
@@ -792,7 +870,9 @@
           "title": "LeRobot",
           "url": "https://github.com/huggingface/lerobot"
         }
-      ]
+      ],
+      "parent": "plat-labs",
+      "layer": 3
     },
     {
       "id": "tesla-optimus",
@@ -801,7 +881,9 @@
       "domain": "labs",
       "brief": "Humanoid program inside a public company. End-to-end video-to-action claims; numbers are not independently benchmarked here. Valuation on the intel desk is whole-company market cap, not Optimus.",
       "company_id": "tesla-optimus",
-      "resources": []
+      "resources": [],
+      "parent": "humanoids",
+      "layer": 3
     },
     {
       "id": "boston-dynamics",
@@ -816,7 +898,9 @@
           "title": "Boston Dynamics Atlas — Partners in Parkour",
           "url": "https://www.youtube.com/watch?v=tF4DML7FIWk"
         }
-      ]
+      ],
+      "parent": "humanoids",
+      "layer": 3
     },
     {
       "id": "1x",
@@ -825,7 +909,9 @@
       "domain": "labs",
       "brief": "NEO home humanoid, embodied-AI data collection. Norwegian-founded, US operations on the desk.",
       "company_id": "1x-technologies",
-      "resources": []
+      "resources": [],
+      "parent": "humanoids",
+      "layer": 3
     },
     {
       "id": "rt2",
@@ -840,7 +926,9 @@
           "title": "RT-2 · Brohan et al.",
           "url": "https://arxiv.org/abs/2307.15818"
         }
-      ]
+      ],
+      "parent": "vla-family",
+      "layer": 3
     },
     {
       "id": "rt1",
@@ -855,7 +943,9 @@
           "title": "RT-1",
           "url": "https://arxiv.org/abs/2212.06817"
         }
-      ]
+      ],
+      "parent": "vla-family",
+      "layer": 3
     },
     {
       "id": "oxe",
@@ -873,7 +963,9 @@
       ],
       "research_directions": [
         "How much OXE vs community SO-100 a 450M VLA actually needs"
-      ]
+      ],
+      "parent": "data-hw",
+      "layer": 3
     },
     {
       "id": "octo",
@@ -888,7 +980,9 @@
           "title": "Octo",
           "url": "https://arxiv.org/abs/2405.12213"
         }
-      ]
+      ],
+      "parent": "vla-family",
+      "layer": 3
     },
     {
       "id": "gr00t",
@@ -912,7 +1006,9 @@
       "research_directions": [
         "Fine-tune N1.5 on SO-100 vs SmolVLA",
         "WBC + VLA split vs Helix System 0"
-      ]
+      ],
+      "parent": "robot-fm",
+      "layer": 3
     },
     {
       "id": "wbc",
@@ -927,7 +1023,9 @@
           "title": "GR00T-WholeBodyControl",
           "url": "https://github.com/NVlabs/GR00T-WholeBodyControl"
         }
-      ]
+      ],
+      "parent": "embodiment",
+      "layer": 3
     },
     {
       "id": "gemini-robotics",
@@ -942,7 +1040,9 @@
           "title": "Gemini Robotics 2",
           "url": "https://deepmind.google/blog/gemini-robotics-2-brings-whole-body-intelligence-to-robots/"
         }
-      ]
+      ],
+      "parent": "vla-family",
+      "layer": 3
     },
     {
       "id": "helix",
@@ -963,7 +1063,9 @@
           "title": "Helix",
           "url": "https://www.figure.ai/news/helix"
         }
-      ]
+      ],
+      "parent": "vla-family",
+      "layer": 3
     },
     {
       "id": "cotracker",
@@ -983,7 +1085,9 @@
           "title": "CoTracker",
           "url": "https://arxiv.org/abs/2307.07635"
         }
-      ]
+      ],
+      "parent": "track-motion",
+      "layer": 3
     },
     {
       "id": "mast3r",
@@ -998,7 +1102,9 @@
           "title": "MASt3R",
           "url": "https://arxiv.org/abs/2406.09756"
         }
-      ]
+      ],
+      "parent": "geom-3d",
+      "layer": 3
     },
     {
       "id": "depth-anything",
@@ -1013,7 +1119,9 @@
           "title": "Depth Anything",
           "url": "https://arxiv.org/abs/2401.10891"
         }
-      ]
+      ],
+      "parent": "geom-3d",
+      "layer": 3
     },
     {
       "id": "sim2real",
@@ -1026,7 +1134,9 @@
         "GEN-1.5 sim-prompt replication on SO-100",
         "Isaac locomotion + LeRobot manipulation"
       ],
-      "resources": []
+      "resources": [],
+      "parent": "xfer",
+      "layer": 3
     },
     {
       "id": "offline-rl",
@@ -1041,7 +1151,9 @@
           "title": "IQL · Kostrikov et al.",
           "url": "https://arxiv.org/abs/2110.06169"
         }
-      ]
+      ],
+      "parent": "rl-family",
+      "layer": 3
     },
     {
       "id": "ppo-sac",
@@ -1056,7 +1168,9 @@
           "title": "Abbeel — L4 TRPO and PPO",
           "url": "https://www.youtube.com/watch?v=KjWF8VIMGiY"
         }
-      ]
+      ],
+      "parent": "rl-family",
+      "layer": 3
     },
     {
       "id": "cross-embod",
@@ -1068,7 +1182,9 @@
       "research_directions": [
         "How much of SmolVLA community data is same-embodiment"
       ],
-      "resources": []
+      "resources": [],
+      "parent": "embodiment",
+      "layer": 3
     },
     {
       "id": "libero",
@@ -1077,7 +1193,9 @@
       "domain": "systems",
       "brief": "Sim suite SmolVLA quotes (Spatial/Object/Goal/Long). Binary success, 10 trials/task. Not a real robot.",
       "why": "Every VLA percentage you will cite. Know the protocol first.",
-      "resources": []
+      "resources": [],
+      "parent": "data-hw",
+      "layer": 3
     },
     {
       "id": "cosmos",
@@ -1092,7 +1210,9 @@
           "title": "NVIDIA Cosmos",
           "url": "https://www.nvidia.com/en-us/ai/cosmos/"
         }
-      ]
+      ],
+      "parent": "sim-stack",
+      "layer": 3
     },
     {
       "id": "mujoco",
@@ -1101,7 +1221,9 @@
       "domain": "systems",
       "brief": "Contact-rich sim. ACT cube/insertion lives here. GPU MJX is the academic Isaac cousin.",
       "why": "If you ablate k on ACT, you are in MuJoCo.",
-      "resources": []
+      "resources": [],
+      "parent": "sim-stack",
+      "layer": 3
     },
     {
       "id": "nvidia-gear",
@@ -1115,7 +1237,9 @@
           "title": "GEAR GR00T N1.5",
           "url": "https://research.nvidia.com/labs/gear/gr00t-n1_5/"
         }
-      ]
+      ],
+      "parent": "fm-labs",
+      "layer": 3
     },
     {
       "id": "deepmind-robotics",
@@ -1129,7 +1253,9 @@
           "title": "Gemini Robotics",
           "url": "https://deepmind.google/models/gemini-robotics/"
         }
-      ]
+      ],
+      "parent": "fm-labs",
+      "layer": 3
     },
     {
       "id": "dexterity",
@@ -1144,7 +1270,9 @@
           "title": "dexterity.ai",
           "url": "https://www.dexterity.ai/"
         }
-      ]
+      ],
+      "parent": "plat-labs",
+      "layer": 3
     },
     {
       "id": "persona-ai",
@@ -1153,7 +1281,9 @@
       "domain": "labs",
       "brief": "Rugged humanoids for shipyards / heavy industry. On the ecosystem desk; learning stack not public.",
       "company_id": "persona-ai",
-      "resources": []
+      "resources": [],
+      "parent": "plat-labs",
+      "layer": 3
     },
     {
       "id": "foundation-lab",
@@ -1162,7 +1292,9 @@
       "domain": "labs",
       "brief": "General-purpose humanoid hardware + autonomy. On the desk; learning stack not public.",
       "company_id": "foundation",
-      "resources": []
+      "resources": [],
+      "parent": "plat-labs",
+      "layer": 3
     },
     {
       "id": "eagle",
@@ -1171,7 +1303,9 @@
       "domain": "perception",
       "brief": "VLM NVIDIA starts from for GR00T N1.5 grounding. Neighbor of SigLIP/SmolVLM, not a policy.",
       "why": "If you swap SmolVLM for a robot-flavored VLM, this is the open humanoid option.",
-      "resources": []
+      "resources": [],
+      "parent": "recog",
+      "layer": 3
     },
     {
       "id": "rdt",
@@ -1185,7 +1319,9 @@
           "title": "RDT-1B",
           "url": "https://arxiv.org/abs/2410.07864"
         }
-      ]
+      ],
+      "parent": "robot-fm",
+      "layer": 3
     },
     {
       "id": "vqbet",
@@ -1200,7 +1336,9 @@
           "title": "VQ-BeT",
           "url": "https://arxiv.org/abs/2403.03954"
         }
-      ]
+      ],
+      "parent": "chunked-pi",
+      "layer": 3
     },
     {
       "id": "foundations",
@@ -1215,7 +1353,9 @@
           "title": "3Blue1Brown — But what is a neural network?",
           "url": "https://www.youtube.com/watch?v=aircAruvnKk"
         }
-      ]
+      ],
+      "parent": "embodied-ai",
+      "layer": 1
     },
     {
       "id": "supervised",
@@ -1230,7 +1370,9 @@
           "title": "StatQuest — A gentle introduction to machine learning",
           "url": "https://www.youtube.com/watch?v=Gv9_4yMHFhI"
         }
-      ]
+      ],
+      "parent": "opt-basics",
+      "layer": 3
     },
     {
       "id": "neural-nets",
@@ -1245,7 +1387,9 @@
           "title": "3Blue1Brown — But what is a neural network?",
           "url": "https://www.youtube.com/watch?v=aircAruvnKk"
         }
-      ]
+      ],
+      "parent": "rep-found",
+      "layer": 3
     },
     {
       "id": "backprop",
@@ -1260,7 +1404,9 @@
           "title": "3Blue1Brown — Gradient descent, how nets learn",
           "url": "https://www.youtube.com/watch?v=IHZwWFHWa-w"
         }
-      ]
+      ],
+      "parent": "opt-basics",
+      "layer": 3
     },
     {
       "id": "cnn",
@@ -1280,7 +1426,9 @@
           "title": "ResNet",
           "url": "https://arxiv.org/abs/1512.03385"
         }
-      ]
+      ],
+      "parent": "rep-found",
+      "layer": 3
     },
     {
       "id": "transformers",
@@ -1300,7 +1448,9 @@
           "title": "Attention Is All You Need",
           "url": "https://arxiv.org/abs/1706.03762"
         }
-      ]
+      ],
+      "parent": "rep-found",
+      "layer": 3
     },
     {
       "id": "attention",
@@ -1315,7 +1465,9 @@
           "title": "3Blue1Brown — Attention in transformers, step-by-step",
           "url": "https://www.youtube.com/watch?v=eMlx5fFNoYc"
         }
-      ]
+      ],
+      "parent": "opt-basics",
+      "layer": 3
     },
     {
       "id": "generative",
@@ -1330,7 +1482,9 @@
           "title": "Outlier — Diffusion models, math explained",
           "url": "https://www.youtube.com/watch?v=HoKDTa5jHvg"
         }
-      ]
+      ],
+      "parent": "rep-found",
+      "layer": 3
     },
     {
       "id": "camera-model",
@@ -1345,7 +1499,9 @@
           "title": "Shree Nayar — Image formation / pinhole",
           "url": "https://www.youtube.com/watch?v=_QjxbQKY4ds"
         }
-      ]
+      ],
+      "parent": "sense-found",
+      "layer": 3
     },
     {
       "id": "stereo",
@@ -1360,7 +1516,9 @@
           "title": "Shree Nayar — Simple stereo",
           "url": "https://www.youtube.com/watch?v=hUVyDabn1Mg"
         }
-      ]
+      ],
+      "parent": "geom-3d",
+      "layer": 3
     },
     {
       "id": "optical-flow",
@@ -1369,7 +1527,9 @@
       "domain": "perception",
       "brief": "Dense 2D motion between frames. Ancestor of CoTracker and of video prediction (STLight).",
       "why": "Tracking and STL both secretly start as flow.",
-      "resources": []
+      "resources": [],
+      "parent": "track-motion",
+      "layer": 3
     },
     {
       "id": "detection",
@@ -1384,7 +1544,9 @@
           "title": "YOLO object detection explained",
           "url": "https://www.youtube.com/watch?v=ag3DLKsl2vk"
         }
-      ]
+      ],
+      "parent": "recog",
+      "layer": 3
     },
     {
       "id": "segmentation",
@@ -1399,7 +1561,9 @@
           "title": "Explaining Segment Anything (SAM)",
           "url": "https://www.youtube.com/watch?v=OhxJkqD1vuE"
         }
-      ]
+      ],
+      "parent": "recog",
+      "layer": 3
     },
     {
       "id": "mdp",
@@ -1414,7 +1578,9 @@
           "title": "Abbeel — L1 MDPs",
           "url": "https://www.youtube.com/watch?v=2GwBez0D20A"
         }
-      ]
+      ],
+      "parent": "decide-found",
+      "layer": 3
     },
     {
       "id": "q-learning",
@@ -1429,7 +1595,9 @@
           "title": "Abbeel — L2 Deep Q-Learning",
           "url": "https://www.youtube.com/watch?v=Psrhxy88zww"
         }
-      ]
+      ],
+      "parent": "rl-family",
+      "layer": 3
     },
     {
       "id": "policy-gradient",
@@ -1444,7 +1612,9 @@
           "title": "Abbeel — L3 Policy gradients",
           "url": "https://www.youtube.com/watch?v=AKbX1Zvo7r8"
         }
-      ]
+      ],
+      "parent": "rl-family",
+      "layer": 3
     },
     {
       "id": "pid",
@@ -1459,7 +1629,9 @@
           "title": "Brian Douglas — PID control, a brief introduction",
           "url": "https://www.youtube.com/watch?v=UR0hOmjaHp0"
         }
-      ]
+      ],
+      "parent": "decide-found",
+      "layer": 3
     },
     {
       "id": "kinematics",
@@ -1474,7 +1646,9 @@
           "title": "Modern Robotics Ch. 4 — forward kinematics",
           "url": "https://www.youtube.com/watch?v=cKHsil0V6Qk"
         }
-      ]
+      ],
+      "parent": "data-hw",
+      "layer": 3
     },
     {
       "id": "state-est",
@@ -1489,7 +1663,9 @@
           "title": "Kalman filter — what is a Kalman filter?",
           "url": "https://www.youtube.com/watch?v=CaCcOwJPytQ"
         }
-      ]
+      ],
+      "parent": "data-hw",
+      "layer": 3
     },
     {
       "id": "teleop",
@@ -1504,7 +1680,9 @@
           "title": "Mobile ALOHA teleoperation",
           "url": "https://www.youtube.com/watch?v=HaaZ8ss-HP4"
         }
-      ]
+      ],
+      "parent": "data-hw",
+      "layer": 3
     },
     {
       "id": "proprio",
@@ -1513,7 +1691,9 @@
       "domain": "systems",
       "brief": "The robot’s own joint angles, currents, tactile. The non-camera observation. ACT concatenates it; VLAs often tokenize it.",
       "why": "Language + pixels without proprio is a puppet with no muscle sense.",
-      "resources": []
+      "resources": [],
+      "parent": "data-hw",
+      "layer": 3
     },
     {
       "id": "il",
@@ -1528,7 +1708,9 @@
           "title": "MEGA-DAgger — imitation learning",
           "url": "https://www.youtube.com/watch?v=oC5vs51reVI"
         }
-      ]
+      ],
+      "parent": "decide-found",
+      "layer": 3
     },
     {
       "id": "representation",
@@ -1543,7 +1725,9 @@
           "title": "DINOv2 from Meta AI",
           "url": "https://www.youtube.com/watch?v=csEgtSh7jV4"
         }
-      ]
+      ],
+      "parent": "recog",
+      "layer": 3
     },
     {
       "id": "seq-models",
@@ -1558,7 +1742,261 @@
           "title": "Karpathy — RNNs, seq2seq, attention (CS231n)",
           "url": "https://www.youtube.com/watch?v=yCC09vCHzF8"
         }
-      ]
+      ],
+      "parent": "opt-basics",
+      "layer": 3
+    },
+    {
+      "id": "geom-3d",
+      "label": "Geometry & 3D",
+      "kind": "area",
+      "domain": "perception",
+      "parent": "perception",
+      "layer": 2,
+      "brief": "Multi-view geometry, depth, and feed-forward 3D — what a policy uses instead of guessing in pixels.",
+      "why": "VGGT, DUSt3R, MASt3R, and depth sit here, not as a flat list under Perception.",
+      "research_directions": [],
+      "resources": []
+    },
+    {
+      "id": "track-motion",
+      "label": "Tracking & motion",
+      "kind": "area",
+      "domain": "perception",
+      "parent": "perception",
+      "layer": 2,
+      "brief": "Correspondences over time: flow, point tracks, video motion.",
+      "why": "A manipulator that loses the object between frames cannot close the loop.",
+      "research_directions": [],
+      "resources": []
+    },
+    {
+      "id": "recog",
+      "label": "Recognition",
+      "kind": "area",
+      "domain": "perception",
+      "parent": "perception",
+      "layer": 2,
+      "brief": "What is in the image: detection, segmentation, self-supervised features.",
+      "why": "DINOv2 / SAM-class features are the usual frozen backbone under VLAs.",
+      "research_directions": [],
+      "resources": []
+    },
+    {
+      "id": "imit",
+      "label": "Imitation",
+      "kind": "area",
+      "domain": "learning",
+      "parent": "learning",
+      "layer": 2,
+      "brief": "Copy a demonstrator. The tax is compounding error; chunks and DAgger are the usual taxes paid.",
+      "why": "ACT, BC, and action chunking are one family, not three unrelated nodes.",
+      "research_directions": [],
+      "resources": []
+    },
+    {
+      "id": "rl-family",
+      "label": "Reinforcement learning",
+      "kind": "area",
+      "domain": "learning",
+      "parent": "learning",
+      "layer": 2,
+      "brief": "Learn from reward or offline logs: Q, policy gradients, PPO/SAC.",
+      "why": "Keeps MDPs, Q-learning, and PPO on one branch instead of a tall list.",
+      "research_directions": [],
+      "resources": []
+    },
+    {
+      "id": "gen-world",
+      "label": "World models & generation",
+      "kind": "area",
+      "domain": "learning",
+      "parent": "learning",
+      "layer": 2,
+      "brief": "Predict the next state or the next action chunk in latent space (flow, diffusion, JEPA-class).",
+      "why": "Flow matching and world models are the same abstraction: predict, don't classify.",
+      "research_directions": [],
+      "resources": []
+    },
+    {
+      "id": "xfer",
+      "label": "Transfer",
+      "kind": "area",
+      "domain": "learning",
+      "parent": "learning",
+      "layer": 2,
+      "brief": "Move a skill across sim, robots, and one-shot prompts.",
+      "why": "Sim-to-real and in-context physical prompting share a generalization problem.",
+      "research_directions": [],
+      "resources": []
+    },
+    {
+      "id": "opt-basics",
+      "label": "Training machinery",
+      "kind": "area",
+      "domain": "learning",
+      "parent": "learning",
+      "layer": 2,
+      "brief": "Supervised learning, backprop, attention, sequence models — the optimizer stack.",
+      "why": "These are how you train, not what the robot is doing.",
+      "research_directions": [],
+      "resources": []
+    },
+    {
+      "id": "chunked-pi",
+      "label": "Chunked policies",
+      "kind": "area",
+      "domain": "policy",
+      "parent": "policy",
+      "layer": 2,
+      "brief": "Predict a horizon of actions, then ensemble or denoise. ACT, diffusion, VQ-BeT.",
+      "why": "Temporal ensembling only makes sense next to the policies that emit chunks.",
+      "research_directions": [],
+      "resources": []
+    },
+    {
+      "id": "vla-family",
+      "label": "Vision-language-action",
+      "kind": "area",
+      "domain": "policy",
+      "parent": "policy",
+      "layer": 2,
+      "brief": "Condition a policy on language and cameras. RT, OpenVLA, SmolVLA, π₀, Helix.",
+      "why": "The VLA cluster is one layer, the individual papers are the next.",
+      "research_directions": [],
+      "resources": []
+    },
+    {
+      "id": "robot-fm",
+      "label": "Robot foundation models",
+      "kind": "area",
+      "domain": "policy",
+      "parent": "policy",
+      "layer": 2,
+      "brief": "Large cross-embodiment models: GR00T, RDT, GEN-1.5, Skild S1.",
+      "why": "These are labs' bets on one model, many bodies — not another ACT variant.",
+      "research_directions": [],
+      "resources": []
+    },
+    {
+      "id": "embodiment",
+      "label": "Embodiment & WBC",
+      "kind": "area",
+      "domain": "policy",
+      "parent": "policy",
+      "layer": 2,
+      "brief": "The same skill on different bodies; whole-body control when the base moves.",
+      "why": "Cross-embodiment and WBC are why a VLA trained on a Franka fails on a humanoid.",
+      "research_directions": [],
+      "resources": []
+    },
+    {
+      "id": "stacks",
+      "label": "Software stacks",
+      "kind": "area",
+      "domain": "systems",
+      "parent": "systems",
+      "layer": 2,
+      "brief": "LeRobot, ROS 2, async inference — the client/server the policy actually runs in.",
+      "why": "A paper without a stack is not a robot.",
+      "research_directions": [],
+      "resources": []
+    },
+    {
+      "id": "sim-stack",
+      "label": "Simulation",
+      "kind": "area",
+      "domain": "systems",
+      "parent": "systems",
+      "layer": 2,
+      "brief": "Isaac, MuJoCo/MJX, Cosmos — where you cheaply break things.",
+      "why": "Sim is a systems choice, not a learning algorithm.",
+      "research_directions": [],
+      "resources": []
+    },
+    {
+      "id": "data-hw",
+      "label": "Data & bodies",
+      "kind": "area",
+      "domain": "systems",
+      "parent": "systems",
+      "layer": 2,
+      "brief": "Datasets, teleop hardware, kinematics, proprioception.",
+      "why": "OXE, ALOHA, and LIBERO are how data enters the tree.",
+      "research_directions": [],
+      "resources": []
+    },
+    {
+      "id": "humanoids",
+      "label": "Humanoids",
+      "kind": "area",
+      "domain": "labs",
+      "parent": "labs",
+      "layer": 2,
+      "brief": "Companies shipping or demoing bipeds.",
+      "why": "Jobs and product videos attach here, not on the VLA paper.",
+      "research_directions": [],
+      "resources": []
+    },
+    {
+      "id": "fm-labs",
+      "label": "Foundation-model labs",
+      "kind": "area",
+      "domain": "labs",
+      "parent": "labs",
+      "layer": 2,
+      "brief": "Labs whose bet is a generalist policy, not a single form factor.",
+      "why": "π-family, Skild, DeepMind Robotics, NVIDIA GEAR.",
+      "research_directions": [],
+      "resources": []
+    },
+    {
+      "id": "plat-labs",
+      "label": "Platforms",
+      "kind": "area",
+      "domain": "labs",
+      "parent": "labs",
+      "layer": 2,
+      "brief": "Open stacks and smaller product labs (Hugging Face, Dexterity, Persona, Foundation).",
+      "why": "LeRobot lives here as an institution, and as code under Systems.",
+      "research_directions": [],
+      "resources": []
+    },
+    {
+      "id": "rep-found",
+      "label": "Representations",
+      "kind": "area",
+      "domain": "foundations",
+      "parent": "foundations",
+      "layer": 2,
+      "brief": "Nets, conv, transformers, generative models — the first layer of the field.",
+      "why": "Foundations stay frozen; this is how they nest without splitting them.",
+      "research_directions": [],
+      "resources": []
+    },
+    {
+      "id": "sense-found",
+      "label": "Sensing",
+      "kind": "area",
+      "domain": "foundations",
+      "parent": "foundations",
+      "layer": 2,
+      "brief": "The camera model. Everything in Perception assumes this.",
+      "why": "One node, one layer, not mixed with VGGT.",
+      "research_directions": [],
+      "resources": []
+    },
+    {
+      "id": "decide-found",
+      "label": "Decide & control",
+      "kind": "area",
+      "domain": "foundations",
+      "parent": "foundations",
+      "layer": 2,
+      "brief": "MDPs, PID, imitation as a problem statement.",
+      "why": "The three primitive ways a body chooses an action.",
+      "research_directions": [],
+      "resources": []
     }
   ],
   "edges": [
@@ -2801,6 +3239,531 @@
       "from": "skild-ai",
       "to": "skild-s1",
       "rel": "ships"
+    },
+    {
+      "from": "imit",
+      "to": "behavior-cloning",
+      "rel": "contains"
+    },
+    {
+      "from": "imit",
+      "to": "compounding-error",
+      "rel": "contains"
+    },
+    {
+      "from": "imit",
+      "to": "action-chunking",
+      "rel": "contains"
+    },
+    {
+      "from": "imit",
+      "to": "cvae",
+      "rel": "contains"
+    },
+    {
+      "from": "chunked-pi",
+      "to": "temporal-ensembling",
+      "rel": "contains"
+    },
+    {
+      "from": "gen-world",
+      "to": "flow-matching",
+      "rel": "contains"
+    },
+    {
+      "from": "chunked-pi",
+      "to": "diffusion-policy",
+      "rel": "contains"
+    },
+    {
+      "from": "chunked-pi",
+      "to": "act",
+      "rel": "contains"
+    },
+    {
+      "from": "vla-family",
+      "to": "smolvla",
+      "rel": "contains"
+    },
+    {
+      "from": "vla-family",
+      "to": "openvla",
+      "rel": "contains"
+    },
+    {
+      "from": "vla-family",
+      "to": "pi0",
+      "rel": "contains"
+    },
+    {
+      "from": "robot-fm",
+      "to": "gen15",
+      "rel": "contains"
+    },
+    {
+      "from": "robot-fm",
+      "to": "skild-s1",
+      "rel": "contains"
+    },
+    {
+      "from": "geom-3d",
+      "to": "vggt",
+      "rel": "contains"
+    },
+    {
+      "from": "recog",
+      "to": "dinov2",
+      "rel": "contains"
+    },
+    {
+      "from": "geom-3d",
+      "to": "dust3r",
+      "rel": "contains"
+    },
+    {
+      "from": "geom-3d",
+      "to": "stlight",
+      "rel": "contains"
+    },
+    {
+      "from": "gen-world",
+      "to": "world-models",
+      "rel": "contains"
+    },
+    {
+      "from": "rl-family",
+      "to": "rl",
+      "rel": "contains"
+    },
+    {
+      "from": "stacks",
+      "to": "lerobot",
+      "rel": "contains"
+    },
+    {
+      "from": "sim-stack",
+      "to": "isaac",
+      "rel": "contains"
+    },
+    {
+      "from": "stacks",
+      "to": "ros2",
+      "rel": "contains"
+    },
+    {
+      "from": "stacks",
+      "to": "async-infer",
+      "rel": "contains"
+    },
+    {
+      "from": "data-hw",
+      "to": "aloha",
+      "rel": "contains"
+    },
+    {
+      "from": "xfer",
+      "to": "one-shot",
+      "rel": "contains"
+    },
+    {
+      "from": "humanoids",
+      "to": "figure-ai",
+      "rel": "contains"
+    },
+    {
+      "from": "humanoids",
+      "to": "apptronik",
+      "rel": "contains"
+    },
+    {
+      "from": "humanoids",
+      "to": "agility",
+      "rel": "contains"
+    },
+    {
+      "from": "fm-labs",
+      "to": "physical-intelligence",
+      "rel": "contains"
+    },
+    {
+      "from": "fm-labs",
+      "to": "generalist-ai",
+      "rel": "contains"
+    },
+    {
+      "from": "fm-labs",
+      "to": "skild-ai",
+      "rel": "contains"
+    },
+    {
+      "from": "plat-labs",
+      "to": "huggingface",
+      "rel": "contains"
+    },
+    {
+      "from": "humanoids",
+      "to": "tesla-optimus",
+      "rel": "contains"
+    },
+    {
+      "from": "humanoids",
+      "to": "boston-dynamics",
+      "rel": "contains"
+    },
+    {
+      "from": "humanoids",
+      "to": "1x",
+      "rel": "contains"
+    },
+    {
+      "from": "vla-family",
+      "to": "rt2",
+      "rel": "contains"
+    },
+    {
+      "from": "vla-family",
+      "to": "rt1",
+      "rel": "contains"
+    },
+    {
+      "from": "data-hw",
+      "to": "oxe",
+      "rel": "contains"
+    },
+    {
+      "from": "vla-family",
+      "to": "octo",
+      "rel": "contains"
+    },
+    {
+      "from": "robot-fm",
+      "to": "gr00t",
+      "rel": "contains"
+    },
+    {
+      "from": "embodiment",
+      "to": "wbc",
+      "rel": "contains"
+    },
+    {
+      "from": "vla-family",
+      "to": "gemini-robotics",
+      "rel": "contains"
+    },
+    {
+      "from": "vla-family",
+      "to": "helix",
+      "rel": "contains"
+    },
+    {
+      "from": "track-motion",
+      "to": "cotracker",
+      "rel": "contains"
+    },
+    {
+      "from": "geom-3d",
+      "to": "mast3r",
+      "rel": "contains"
+    },
+    {
+      "from": "geom-3d",
+      "to": "depth-anything",
+      "rel": "contains"
+    },
+    {
+      "from": "xfer",
+      "to": "sim2real",
+      "rel": "contains"
+    },
+    {
+      "from": "rl-family",
+      "to": "offline-rl",
+      "rel": "contains"
+    },
+    {
+      "from": "rl-family",
+      "to": "ppo-sac",
+      "rel": "contains"
+    },
+    {
+      "from": "embodiment",
+      "to": "cross-embod",
+      "rel": "contains"
+    },
+    {
+      "from": "data-hw",
+      "to": "libero",
+      "rel": "contains"
+    },
+    {
+      "from": "sim-stack",
+      "to": "cosmos",
+      "rel": "contains"
+    },
+    {
+      "from": "sim-stack",
+      "to": "mujoco",
+      "rel": "contains"
+    },
+    {
+      "from": "fm-labs",
+      "to": "nvidia-gear",
+      "rel": "contains"
+    },
+    {
+      "from": "fm-labs",
+      "to": "deepmind-robotics",
+      "rel": "contains"
+    },
+    {
+      "from": "plat-labs",
+      "to": "dexterity",
+      "rel": "contains"
+    },
+    {
+      "from": "plat-labs",
+      "to": "persona-ai",
+      "rel": "contains"
+    },
+    {
+      "from": "plat-labs",
+      "to": "foundation-lab",
+      "rel": "contains"
+    },
+    {
+      "from": "recog",
+      "to": "eagle",
+      "rel": "contains"
+    },
+    {
+      "from": "robot-fm",
+      "to": "rdt",
+      "rel": "contains"
+    },
+    {
+      "from": "chunked-pi",
+      "to": "vqbet",
+      "rel": "contains"
+    },
+    {
+      "from": "opt-basics",
+      "to": "supervised",
+      "rel": "contains"
+    },
+    {
+      "from": "rep-found",
+      "to": "neural-nets",
+      "rel": "contains"
+    },
+    {
+      "from": "opt-basics",
+      "to": "backprop",
+      "rel": "contains"
+    },
+    {
+      "from": "rep-found",
+      "to": "cnn",
+      "rel": "contains"
+    },
+    {
+      "from": "rep-found",
+      "to": "transformers",
+      "rel": "contains"
+    },
+    {
+      "from": "opt-basics",
+      "to": "attention",
+      "rel": "contains"
+    },
+    {
+      "from": "rep-found",
+      "to": "generative",
+      "rel": "contains"
+    },
+    {
+      "from": "sense-found",
+      "to": "camera-model",
+      "rel": "contains"
+    },
+    {
+      "from": "geom-3d",
+      "to": "stereo",
+      "rel": "contains"
+    },
+    {
+      "from": "track-motion",
+      "to": "optical-flow",
+      "rel": "contains"
+    },
+    {
+      "from": "recog",
+      "to": "detection",
+      "rel": "contains"
+    },
+    {
+      "from": "recog",
+      "to": "segmentation",
+      "rel": "contains"
+    },
+    {
+      "from": "decide-found",
+      "to": "mdp",
+      "rel": "contains"
+    },
+    {
+      "from": "rl-family",
+      "to": "q-learning",
+      "rel": "contains"
+    },
+    {
+      "from": "rl-family",
+      "to": "policy-gradient",
+      "rel": "contains"
+    },
+    {
+      "from": "decide-found",
+      "to": "pid",
+      "rel": "contains"
+    },
+    {
+      "from": "data-hw",
+      "to": "kinematics",
+      "rel": "contains"
+    },
+    {
+      "from": "data-hw",
+      "to": "state-est",
+      "rel": "contains"
+    },
+    {
+      "from": "data-hw",
+      "to": "teleop",
+      "rel": "contains"
+    },
+    {
+      "from": "data-hw",
+      "to": "proprio",
+      "rel": "contains"
+    },
+    {
+      "from": "decide-found",
+      "to": "il",
+      "rel": "contains"
+    },
+    {
+      "from": "recog",
+      "to": "representation",
+      "rel": "contains"
+    },
+    {
+      "from": "opt-basics",
+      "to": "seq-models",
+      "rel": "contains"
+    },
+    {
+      "from": "perception",
+      "to": "geom-3d",
+      "rel": "contains"
+    },
+    {
+      "from": "perception",
+      "to": "track-motion",
+      "rel": "contains"
+    },
+    {
+      "from": "perception",
+      "to": "recog",
+      "rel": "contains"
+    },
+    {
+      "from": "learning",
+      "to": "imit",
+      "rel": "contains"
+    },
+    {
+      "from": "learning",
+      "to": "rl-family",
+      "rel": "contains"
+    },
+    {
+      "from": "learning",
+      "to": "gen-world",
+      "rel": "contains"
+    },
+    {
+      "from": "learning",
+      "to": "xfer",
+      "rel": "contains"
+    },
+    {
+      "from": "learning",
+      "to": "opt-basics",
+      "rel": "contains"
+    },
+    {
+      "from": "policy",
+      "to": "chunked-pi",
+      "rel": "contains"
+    },
+    {
+      "from": "policy",
+      "to": "vla-family",
+      "rel": "contains"
+    },
+    {
+      "from": "policy",
+      "to": "robot-fm",
+      "rel": "contains"
+    },
+    {
+      "from": "policy",
+      "to": "embodiment",
+      "rel": "contains"
+    },
+    {
+      "from": "systems",
+      "to": "stacks",
+      "rel": "contains"
+    },
+    {
+      "from": "systems",
+      "to": "sim-stack",
+      "rel": "contains"
+    },
+    {
+      "from": "systems",
+      "to": "data-hw",
+      "rel": "contains"
+    },
+    {
+      "from": "labs",
+      "to": "humanoids",
+      "rel": "contains"
+    },
+    {
+      "from": "labs",
+      "to": "fm-labs",
+      "rel": "contains"
+    },
+    {
+      "from": "labs",
+      "to": "plat-labs",
+      "rel": "contains"
+    },
+    {
+      "from": "foundations",
+      "to": "rep-found",
+      "rel": "contains"
+    },
+    {
+      "from": "foundations",
+      "to": "sense-found",
+      "rel": "contains"
+    },
+    {
+      "from": "foundations",
+      "to": "decide-found",
+      "rel": "contains"
     }
   ]
 }

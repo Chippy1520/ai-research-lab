@@ -2,7 +2,8 @@
 
 Canonical data: `intelligence/mindmap.json`  
 Live page: `site/mindmap.html` → https://chippy1520.github.io/ai-research-lab/mindmap.html  
-Renderer: **Mind Elixir** (real mind-map tree: hub → domain branches → notes). Canonical data is still `intelligence/mindmap.json`; convert to a tree, do not show a force hairball.  
+Renderer: **skill tree** (vanilla SVG). One layer on screen: focus orb in the centre, children on a ring, breadcrumb to go up. Not Mind Elixir, not a force graph, not a starfield.  
+Storage: every node has `parent` + `layer` (0 hub → 1 domain → 2 area/cluster → 3+ notes). New nodes attach under an existing **area**, never as a 20th sibling of a domain.  
 Build copies the JSON into `site/data/mindmap.json`.
 
 ## What it is
@@ -31,6 +32,7 @@ The graph is **living**. Prefer upgrading an existing node over adding a sibling
 - dark — hub (the field)
 - green — domain (a branch)
 - lilac — concept (an idea)
+- olive — area (a cluster / subfield)
 - gold — method (an algorithm you implement)
 - blue — paper (one publication)
 - terracotta — framework (code you run)
@@ -38,6 +40,6 @@ The graph is **living**. Prefer upgrading an existing node over adding a sibling
 
 Do not recode colors for “importance.” Filter chips are domains; fill is kind.
 
-`id, label, kind (hub|domain|concept|method|paper|framework|lab), domain, brief, why?, research_directions[], resources[{type,title,url}], company_id?`
+`id, label, kind (hub|domain|area|concept|method|paper|framework|lab), domain, parent, layer, brief, why?, research_directions[], resources[{type,title,url}], company_id?`
 
 Edges: `{from, to, rel}`.

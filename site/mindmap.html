@@ -3,13 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="Living mind map of embodied AI — branches you can open, not a hairball.">
-  <meta name="theme-color" content="#f3f0e8">
+  <meta name="description" content="Embodied AI skill tree — drill into one layer at a time.">
+  <meta name="theme-color" content="#161411">
   <title>Embodied AI mind map · AI Research Lab</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mind-elixir@5.13.0/dist/MindElixir.css">
   <link rel="stylesheet" href="assets/styles.css">
   <link rel="stylesheet" href="assets/curriculum.css">
   <link rel="stylesheet" href="assets/papers.css">
@@ -29,30 +28,31 @@
   <div class="mm-shell">
     <div class="mm-stage" id="mm-stage">
       <div class="mm-toolbar">
-        <input id="mm-search" type="search" placeholder="Filter branches…" enterkeyhint="search" aria-label="Filter the mind map">
-        <button type="button" class="mm-chip" id="mm-fit">Center</button>
-        <div id="mm-filters" class="mm-filters"></div>
+        <nav class="mm-crumb" id="mm-crumb" aria-label="Layer path"></nav>
+        <input id="mm-search" type="search" placeholder="Find a node…" enterkeyhint="search" aria-label="Find a node">
       </div>
-      <div id="mm-map"></div>
+      <svg id="mm-svg" role="img" aria-label="Skill tree"></svg>
       <div class="mm-legend" aria-label="Color key">
-        <span><i class="k-hub"></i>hub</span>
-        <span><i class="k-domain"></i>branch</span>
+        <span><i class="k-hub"></i>field</span>
+        <span><i class="k-domain"></i>domain</span>
+        <span><i class="k-area"></i>cluster</span>
         <span><i class="k-concept"></i>idea</span>
         <span><i class="k-method"></i>algorithm</span>
         <span><i class="k-paper"></i>paper</span>
         <span><i class="k-framework"></i>code</span>
         <span><i class="k-lab"></i>lab</span>
       </div>
+      <p class="mm-hint">Click an orb to go one layer deeper. The bar is the path back.</p>
     </div>
     <aside class="mm-panel" id="mm-panel" aria-live="polite">
       <button type="button" class="mm-sheet-bar" id="mm-sheet-toggle" aria-label="Expand or collapse details">
         <span class="mm-grip"></span>
       </button>
       <div class="mm-panel-body" id="mm-panel-body">
-        <p class="mm-empty">Start at Embodied AI. Click a branch to open it; click again down the tree. Only one branch stays open, so the map stays short.</p>
+        <p class="mm-empty">A skill tree: only this layer is on screen. Click a cluster to open the next abstraction.</p>
       </div>
     </aside>
   </div>
-  <script type="module" src="assets/mindmap.js"></script>
+  <script src="assets/mindmap.js"></script>
 </body>
 </html>
