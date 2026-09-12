@@ -21,7 +21,7 @@ The graph is **living**. Prefer upgrading an existing node over adding a sibling
 - At most 3 **new** nodes per day unless a landmark (CVPR best paper, GEN-1.x, new π-family, new LeRobot policy). Unlimited in-place upgrades.
 - First-party company numbers stay labeled first-party (GEN-1.5, Skild S1).
 - New lab nodes must have a `company_id` matching `ecosystem.json` when the company is on the intel desk, so jobs attach.
-- Every new node needs `brief`, `domain`, `kind`, at least one primary `resources` URL, and a YouTube `type: video` when a decent lecture exists.
+- Videos must **cover the node**. Hub/domain/foundations get overview lectures. Edge papers get that paper’s talk or official demo. If you have not confirmed the recording, omit the video — a paper URL is better than a title-matched lecture.
 - Append a `changelog` line with the date.
 - After editing, run `python scripts/build_robotics_site.py` so Pages payload includes the graph. Commit + push `main` if the graph actually changed.
 
