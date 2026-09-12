@@ -97,6 +97,9 @@
 .mm-edge { fill: none; stroke: #c8c2b4; stroke-width: 1.5; }
 .mm-edge.on { stroke: #2d6a45; stroke-width: 2; }
 .mm-edge.spine { stroke: #243028; stroke-width: 2; }
+.mm-edge.ghost { stroke: #c4bfb4; stroke-width: 1; stroke-dasharray: 4 4; opacity: .7; }
+.mm-node.ghost { pointer-events: none; }
+.mm-node.ghost text { fill: #9aa39a; font-weight: 500; }
 .mm-node { cursor: pointer; }
 .mm-node.ancestor { opacity: .85; }
 .mm-node text {

@@ -145,7 +145,21 @@
       const bow = Math.sin((t - 0.5) * Math.PI) * (mobile ? 18 : 36);
       pos.set(c.id, { x: colX + bow, y, r: R[c.kind] || R.default });
     });
-    return pos;
+
+    const parentId = f?.parent;
+    const ghosts = parentId
+      ? (kids[parentId] || []).filter((s) => s.id !== focus)
+      : [];
+    const pp = parentId ? pos.get(parentId) : null;
+    if (pp && ghosts.length) {
+      const gGap = Math.min(40, Math.max(28, (H * 0.42) / ghosts.length));
+      const gSpan = gGap * Math.max(ghosts.length - 1, 0);
+      ghosts.forEach((s, i) => {
+        const y = ghosts.length === 1 ? pp.y + 56 : pp.y + 48 + i * gGap - gSpan / 4;
+        pos.set(s.id, { x: pp.x + (mobile ? 8 : 12), y, r: 11, ghost: true });
+      });
+    }
+    return { pos, ghosts };
   }
 
   function el(name, attrs) {
@@ -155,12 +169,14 @@
   }
 
   function draw() {
-    const pos = layout();
+    const { pos, ghosts } = layout();
     world = el("g");
     applyView();
     const children = kids[focus] || [];
     const path = pathTo(focus);
     const fp = pos.get(focus);
+    const f = byId[focus];
+    const pp = f?.parent ? pos.get(f.parent) : null;
 
     for (let i = 1; i < path.length; i++) {
       const a = pos.get(path[i - 1].id);
@@ -169,6 +185,14 @@
       world.appendChild(el("path", {
         class: "mm-edge spine",
         d: `M ${a.x} ${a.y} L ${b.x} ${b.y}`,
+      }));
+    }
+    for (const g of ghosts) {
+      const p = pos.get(g.id);
+      if (!pp || !p) continue;
+      world.appendChild(el("path", {
+        class: "mm-edge ghost",
+        d: `M ${pp.x} ${pp.y} L ${p.x} ${p.y}`,
       }));
     }
     for (const c of children) {
@@ -183,7 +207,7 @@
 
     const drawNode = (n, p) => {
       const g = el("g", {
-        class: `mm-node ${n.kind}${n.id === active || p.focus ? " active" : ""}${p.spine && !p.focus ? " ancestor" : ""}`,
+        class: `mm-node ${n.kind}${n.id === active || p.focus ? " active" : ""}${p.spine && !p.focus ? " ancestor" : ""}${p.ghost ? " ghost" : ""}`,
         transform: `translate(${p.x} ${p.y})`,
       });
       g.dataset.id = n.id;
@@ -197,23 +221,27 @@
       }
       g.appendChild(el("circle", {
         r: p.r,
-        fill: FILL[n.kind] || FILL.lab,
-        stroke: STROKE[n.kind] || STROKE.lab,
-        "stroke-width": p.focus ? 2.2 : 1.6,
+        fill: p.ghost ? "none" : (FILL[n.kind] || FILL.lab),
+        stroke: p.ghost ? "#9aa39a" : (STROKE[n.kind] || STROKE.lab),
+        "stroke-width": p.ghost ? 1.2 : p.focus ? 2.2 : 1.6,
+        "stroke-dasharray": p.ghost ? "3 3" : "",
       }));
       const t = el("text", { y: p.r + 16 });
       t.textContent = n.label;
       g.appendChild(t);
-      g.addEventListener("click", (ev) => {
-        ev.stopPropagation();
-        onOrb(n.id);
-      });
+      if (!p.ghost) {
+        g.addEventListener("click", (ev) => {
+          ev.stopPropagation();
+          onOrb(n.id);
+        });
+      }
       world.appendChild(g);
     };
 
     path.forEach((n) => {
       if (pos.has(n.id)) drawNode(n, pos.get(n.id));
     });
+    for (const g of ghosts) drawNode(g, pos.get(g.id));
     for (const c of children) drawNode(c, pos.get(c.id));
 
     svg.replaceChildren(world);
