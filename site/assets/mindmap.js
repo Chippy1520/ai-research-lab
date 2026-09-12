@@ -152,11 +152,13 @@
       : [];
     const pp = parentId ? pos.get(parentId) : null;
     if (pp && ghosts.length) {
-      const gGap = Math.min(40, Math.max(28, (H * 0.42) / ghosts.length));
+      const gGap = Math.max(mobile ? 48 : 62, Math.min(96, (H - 80) / Math.max(ghosts.length, 1)));
       const gSpan = gGap * Math.max(ghosts.length - 1, 0);
       ghosts.forEach((s, i) => {
-        const y = ghosts.length === 1 ? pp.y + 56 : pp.y + 48 + i * gGap - gSpan / 4;
-        pos.set(s.id, { x: pp.x + (mobile ? 8 : 12), y, r: 11, ghost: true });
+        const t = ghosts.length === 1 ? 0.5 : i / (ghosts.length - 1);
+        const y = cy - gSpan / 2 + i * gGap;
+        const out = (mobile ? 36 : 72) + Math.sin(Math.abs(t - 0.5) * Math.PI) * (mobile ? 28 : 56);
+        pos.set(s.id, { x: pp.x - out, y, r: 12, ghost: true });
       });
     }
     return { pos, ghosts };
