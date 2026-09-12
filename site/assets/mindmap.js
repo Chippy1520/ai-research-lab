@@ -18,7 +18,27 @@
     framework: "code",
     lab: "lab",
   };
-  const R = { hub: 36, domain: 26, area: 22, default: 14 };
+  const FILL = {
+    hub: "#c9a227",
+    domain: "#5d9a6e",
+    area: "#7aa35c",
+    concept: "#7b68a6",
+    method: "#c9a227",
+    paper: "#4a90b8",
+    framework: "#c46a54",
+    lab: "#8a847a",
+  };
+  const STROKE = {
+    hub: "#f0d78c",
+    domain: "#8fd4a8",
+    area: "#c5e09a",
+    concept: "#c4b5fd",
+    method: "#f0d78c",
+    paper: "#7ec8f0",
+    framework: "#e07a5f",
+    lab: "#d0ccc4",
+  };
+  const R = { hub: 36, domain: 26, area: 22, default: 16 };
 
   let graph = { nodes: [], edges: [], center: "embodied-ai" };
   let jobs = { openings: [] };
@@ -94,8 +114,8 @@
   }
 
   function layout() {
-    const W = svg.clientWidth || 900;
-    const H = svg.clientHeight || 640;
+    const W = Math.max(svg.clientWidth, 320);
+    const H = Math.max(svg.clientHeight, 320);
     const cx = W / 2;
     const cy = H / 2 + (phone() ? 10 : 20);
     const f = byId[focus];
@@ -157,7 +177,12 @@
         transform: `translate(${p.x} ${p.y})`,
       });
       g.dataset.id = n.id;
-      const c = el("circle", { r: p.r });
+      const c = el("circle", {
+        r: p.r,
+        fill: FILL[n.kind] || FILL.lab,
+        stroke: STROKE[n.kind] || STROKE.lab,
+        "stroke-width": n.id === active ? 3 : 2,
+      });
       g.appendChild(c);
       const t = el("text", { y: p.r + 14 });
       t.textContent = p.up ? "← back" : n.label;
@@ -357,8 +382,15 @@
     graph = g;
     jobs = j;
     index();
-    setFocus(g.center || "embodied-ai");
-    document.body.classList.remove("mm-sheet-open");
+    const start = () => {
+      if (svg.clientWidth < 40) {
+        requestAnimationFrame(start);
+        return;
+      }
+      setFocus(g.center || "embodied-ai");
+      document.body.classList.remove("mm-sheet-open");
+    };
+    start();
   }).catch((err) => {
     body.innerHTML = `<p>Failed to load mind map: ${err}</p>`;
   });

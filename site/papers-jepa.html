@@ -33,7 +33,7 @@
       <h1>JEPA: predict the idea of the next second, not the pixels</h1>
       <div class="abstract">
         <span>Lede</span>
-        <p class="publication-deck">Animals do not generate a photorealistic movie of the kitchen before they reach for a mug. They run a cheap internal model of what is predictable (the mug stays, the floor is solid) and ignore what is not (steam swirls). LeCun’s 2022 position paper names that model a Joint Embedding Predictive Architecture and puts it at the centre of a six-module agent. I-JEPA, V-JEPA, and V-JEPA&nbsp;2 are the later engineering papers that actually train it. This guide is the blueprint they cite as [48] / [LeCun 2022].</p>
+        <p class="publication-deck">A video generator is trained to invent the next <em>picture</em>: every wisp of steam, every wood grain. You do not do that when you reach for a mug. You only need facts that affect the reach — the mug is still there, the counter is solid, the handle is on the left. LeCun’s 2022 position paper says a world model should work the same way: predict a compact embedding of the future, not the pixels. He calls that a Joint Embedding Predictive Architecture. I-JEPA, V-JEPA, and V-JEPA&nbsp;2 are the later papers that train it.</p>
       </div>
       <div class="byline-row">
         <div><span>Paper</span><b>OpenReview BZ5a1r-kVsf</b></div>
@@ -75,10 +75,10 @@
       <article class="technical-article">
         <h2 id="case">How a person walks into a kitchen they have never seen</h2>
         <div class="case-study">
-          <p class="case-lede">You enter a stranger’s kitchen. Steam, a mug on the counter, a cat somewhere. You are going to pick up the mug. You do not render a 4K movie of the next two seconds in your head. You also do not need a labelled dataset of “mug-grasp, kitchen #4821.” You already have a cheap model of what will stay true.</p>
+          <p class="case-lede">You walk into a kitchen you have never seen and decide to pick up a mug. A pixel-generating model would try to imagine the next camera frame in full — steam, highlights, the cat’s fur. You do not. You only keep the facts the grasp needs: where the mug is, that the counter will still be there, that the handle is on the left. That difference is the whole paper: predict a small vector that means “what happens next,” not a picture of what happens next.</p>
           <div class="case-step">
             <div class="n">01</div>
-            <div class="human"><h4>You</h4><p>You glance: counter, mug, steam, cat-shaped blur. You do not inventory every specular highlight.</p></div>
+            <div class="human"><h4>You</h4><p>You glance: counter, mug, kettle. You do not count wood grains or steam wisps. Those details will not change how you reach.</p></div>
             <div class="model"><h4>The paper</h4><p><strong>Perception module.</strong> Embed the sensory stream into a representation $s_t$ that already threw away unpredictable clutter.</p></div>
           </div>
           <div class="case-step">
@@ -88,8 +88,8 @@
           </div>
           <div class="case-step">
             <div class="n">03</div>
-            <div class="human"><h4>You</h4><p>You predict: if I reach, the mug will still be there; steam will do whatever steam does and I do not care.</p></div>
-            <div class="model"><h4>The paper</h4><p><strong>World model = JEPA.</strong> Predict the embedding of the future (or of the occluded part), conditioned on a latent $z$ that says <em>which</em> future. Do not decode pixels.</p></div>
+            <div class="human"><h4>You</h4><p>You predict only what the grasp uses: the mug stays put. You do not predict the next photograph.</p></div>
+            <div class="model"><h4>The paper</h4><p><strong>World model = JEPA.</strong> Encode the scene as $E(x)$, encode a later or hidden part as $E(y)$, train a predictor so $P(E(x), z) \approx E(y)$. The loss never looks at pixels of $y$. $z$ says which hidden part / which future you are asking about.</p></div>
           </div>
           <div class="case-step">
             <div class="n">04</div>
@@ -123,7 +123,7 @@
         </ol>
 
         <h3>Why not generative models / LLMs as the world model</h3>
-        <p>A generative model that reconstructs $y$ from $x$ in observation space must spend capacity on unpredictable details (leaves, steam, exact finger wrinkles). Animals do not. A JEPA predicts in embedding space, so the encoder is free to throw those details away. That is the entire technical claim of the position paper; I-JEPA §2 will draw it as three energy-based cartoons.</p>
+        <p>A <em>generative</em> world model (MAE on images, a video generator, an LLM that emits tokens) is trained to reconstruct the observation $y$ itself. If $y$ is an image, that means pixels. Most of those pixels are unpredictable — leaves in wind, steam, sensor noise — so the model spends capacity on texture it cannot use for planning. LeCun’s claim is that animals (and a useful robot) do not do that. A JEPA predicts $E(y)$, a vector that is allowed to drop anything the encoder decides is noise. Planning then searches in that vector space, not in image space. That is the technical content of the position paper; I-JEPA §2 draws it as three energy-based diagrams.</p>
         <p>LLMs, in this document, are useful but are not a world model of the physical world: they predict tokens, not latent states of a kitchen. Do not over-read a 2022 position paper as a 2026 LLM takedown. The engineering content is “predict $E(y)$ from $E(x)$, conditioned on $z$.”</p>
 
         <h3>Energy-based models (the maths he actually uses)</h3>
@@ -142,7 +142,7 @@
         <p>No new ImageNet number. No trained weights. No proof that JEPA beats MAE. No robot demo. Those arrive in 2023–2025. If you only need the trained image model, skip to <a href="papers-ijepa.html">I-JEPA</a>.</p>
 
         <h2 id="tension">The engineering tension</h2>
-        <p>SSL in vision in 2022 is a fork: (A) invariance methods that need a hand-written list of “this crop is the same image,” which do not travel to video or audio cleanly; (B) MAE-style pixel reconstruction, which travels but learns a lot of texture. JEPA is the bet that you can keep MAE’s masking (so no SimCLR recipe) and still get semantic features by moving the loss into embedding space. The kitchen case is why: you want the mug-ness, not the steam.</p>
+        <p>SSL in vision in 2022 is a fork: (A) invariance methods that need a hand-written list of “this crop is the same image,” which do not travel to video or audio cleanly; (B) MAE-style pixel reconstruction, which travels but learns a lot of texture. JEPA is the bet that you can keep MAE’s masking (so no SimCLR recipe) and still get semantic features by moving the loss into embedding space. In the kitchen: you want a vector that still says “mug on the left,” not a reconstruction of the steam.</p>
         <figure class="figure-block">
           <div class="compare">
             <div class="pane bad"><h4>Naive world model</h4><p>Decode the next RGB frame. Capacity goes into leaves and specularities. Planning a grasp means generating a video. Expensive, and most of the video is irrelevant.</p></div>

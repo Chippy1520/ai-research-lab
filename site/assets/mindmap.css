@@ -22,18 +22,27 @@
 .mm-shell {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  grid-template-rows: 1fr;
   height: calc(100dvh - 56px);
 }
 .mm-stage {
   position: relative;
   min-height: 0;
+  height: 100%;
   overflow: hidden;
   background:
     radial-gradient(ellipse at 50% 46%, #2a241c 0%, #161411 62%);
   cursor: grab;
 }
 .mm-stage:active { cursor: grabbing; }
-#mm-svg { width: 100%; height: 100%; display: block; touch-action: none; }
+#mm-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
 
 .mm-toolbar {
   position: absolute;
@@ -107,14 +116,14 @@
   text-anchor: middle;
   pointer-events: none;
 }
-.mm-node.hub circle { fill: #2a2420; stroke: #c9a227; }
-.mm-node.domain circle { fill: #3d6b4f; stroke: #8fd4a8; }
-.mm-node.area circle { fill: #4a6741; stroke: #b7d59a; }
-.mm-node.concept circle { fill: #5c4d78; stroke: #c4b5fd; }
-.mm-node.method circle { fill: #7a5c12; stroke: #e6b422; }
-.mm-node.paper circle { fill: #2d5a78; stroke: #7ec8f0; }
-.mm-node.framework circle { fill: #7a4336; stroke: #e07a5f; }
-.mm-node.lab circle { fill: #4a4742; stroke: #b0aaa0; }
+.mm-node.hub circle { fill: #c9a227; stroke: #f0d78c; }
+.mm-node.domain circle { fill: #5d9a6e; stroke: #8fd4a8; }
+.mm-node.area circle { fill: #7aa35c; stroke: #c5e09a; }
+.mm-node.concept circle { fill: #7b68a6; stroke: #c4b5fd; }
+.mm-node.method circle { fill: #c9a227; stroke: #f0d78c; }
+.mm-node.paper circle { fill: #4a90b8; stroke: #7ec8f0; }
+.mm-node.framework circle { fill: #c46a54; stroke: #e07a5f; }
+.mm-node.lab circle { fill: #8a847a; stroke: #d0ccc4; }
 .mm-node.has-kids circle { filter: drop-shadow(0 0 6px rgba(201, 162, 39, .35)); }
 
 .mm-legend {
