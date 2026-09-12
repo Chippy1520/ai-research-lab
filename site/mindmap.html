@@ -3,12 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="Living mind map of embodied AI — Obsidian-style local graph.">
-  <meta name="theme-color" content="#191919">
+  <meta name="description" content="Living mind map of embodied AI — branches you can open, not a hairball.">
+  <meta name="theme-color" content="#f3f0e8">
   <title>Embodied AI mind map · AI Research Lab</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mind-elixir@5.13.0/dist/MindElixir.css">
   <link rel="stylesheet" href="assets/styles.css">
   <link rel="stylesheet" href="assets/curriculum.css">
   <link rel="stylesheet" href="assets/papers.css">
@@ -28,14 +29,12 @@
   <div class="mm-shell">
     <div class="mm-stage" id="mm-stage">
       <div class="mm-toolbar">
-        <input id="mm-search" type="search" placeholder="Filter…" enterkeyhint="search" aria-label="Filter the graph">
-        <button type="button" class="mm-chip on" id="mm-global" title="Whole vault">Global</button>
-        <button type="button" class="mm-chip" id="mm-local" title="Local graph of the selected note">Local</button>
-        <button type="button" class="mm-chip" id="mm-fit" title="Fit">Fit</button>
+        <input id="mm-search" type="search" placeholder="Filter branches…" enterkeyhint="search" aria-label="Filter the mind map">
+        <button type="button" class="mm-chip" id="mm-fit">Center</button>
         <div id="mm-filters" class="mm-filters"></div>
       </div>
-      <div id="mm-cy" role="img" aria-label="Embodied AI concept graph"></div>
-      <div class="mm-legend" id="mm-legend" aria-label="Color key">
+      <div id="mm-map"></div>
+      <div class="mm-legend" aria-label="Color key">
         <span><i class="k-hub"></i>hub</span>
         <span><i class="k-domain"></i>branch</span>
         <span><i class="k-concept"></i>idea</span>
@@ -44,18 +43,16 @@
         <span><i class="k-framework"></i>code</span>
         <span><i class="k-lab"></i>lab</span>
       </div>
-      <div class="mm-hint" id="mm-hint">Zoom in for names · click a node for its local graph</div>
     </div>
     <aside class="mm-panel" id="mm-panel" aria-live="polite">
       <button type="button" class="mm-sheet-bar" id="mm-sheet-toggle" aria-label="Expand or collapse details">
         <span class="mm-grip"></span>
       </button>
       <div class="mm-panel-body" id="mm-panel-body">
-        <p class="mm-empty">Like Obsidian’s graph: Global is the vault, Local is this note’s neighbors. Click a node.</p>
+        <p class="mm-empty">A real mind map: Embodied AI in the centre, one branch per domain. Tap a node for the note, links, and jobs.</p>
       </div>
     </aside>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.30.4/dist/cytoscape.min.js"></script>
-  <script src="assets/mindmap.js"></script>
+  <script type="module" src="assets/mindmap.js"></script>
 </body>
 </html>

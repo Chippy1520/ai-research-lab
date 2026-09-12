@@ -2,7 +2,7 @@
 
 Canonical data: `intelligence/mindmap.json`  
 Live page: `site/mindmap.html` → https://chippy1520.github.io/ai-research-lab/mindmap.html  
-Renderer: **Cytoscape.js** (canvas, pinch-zoom, tap). Data is still `intelligence/mindmap.json`. Do not swap libraries without keeping that JSON shape.  
+Renderer: **Mind Elixir** (real mind-map tree: hub → domain branches → notes). Canonical data is still `intelligence/mindmap.json`; convert to a tree, do not show a force hairball.  
 Build copies the JSON into `site/data/mindmap.json`.
 
 ## What it is
