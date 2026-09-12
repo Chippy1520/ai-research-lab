@@ -172,10 +172,60 @@
     applyView();
   }
 
-  function isOpen(id) {
-    if (id === focus) return true;
-    if (byId[id]?.parent === focus) return true;
-    return pathTo(focus).some((n) => n.id === id);
+  function seats() {
+    const map = new Map(home);
+    const origin = home.get(focus);
+    const ch = kids[focus] || [];
+    if (!origin || ch.length < 2) return map;
+    const n = ch.length;
+    const gap = 92;
+    const rad = Math.max(120, (n * gap) / Math.PI);
+    const sweep = Math.min(Math.PI * 1.8, ((n - 1) * gap) / rad);
+    const base = origin.a ?? 0;
+    ch.forEach((c, i) => {
+      const t = i / (n - 1);
+      const a = base - sweep / 2 + t * sweep;
+      map.set(c.id, {
+        x: origin.x + Math.cos(a) * rad,
+        y: origin.y + Math.sin(a) * rad,
+        r: R[c.kind] || R.default,
+        a,
+      });
+    });
+    return map;
+  }
+
+  function fitIds(map, ids) {
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    for (const id of ids) {
+      const p = map.get(id);
+      if (!p) continue;
+      x0 = Math.min(x0, p.x - 56);
+      y0 = Math.min(y0, p.y - 56);
+      x1 = Math.max(x1, p.x + 56);
+      y1 = Math.max(y1, p.y + 64);
+    }
+    if (!Number.isFinite(x0)) return;
+    const W = svg.clientWidth || 900;
+    const H = svg.clientHeight || 640;
+    const s = Math.min(W / Math.max(x1 - x0, 1), H / Math.max(y1 - y0, 1)) * 0.82;
+    view.s = Math.min(1.8, Math.max(0.35, s));
+    view.x = W / 2 - ((x0 + x1) / 2) * view.s;
+    view.y = H / 2 - ((y0 + y1) / 2) * view.s;
+    applyView();
+  }
+
+  function camera() {
+    const map = seats();
+    if (!focus || focus === (graph.center || "embodied-ai")) {
+      fitHome();
+      return map;
+    }
+    const ids = [focus, ...(kids[focus] || []).map((c) => c.id)];
+    const p = byId[focus]?.parent;
+    if (p) ids.push(p);
+    fitIds(map, ids);
+    return map;
   }
 
   function el(name, attrs) {
@@ -185,6 +235,7 @@
   }
 
   function draw() {
+    const seat = seats();
     world = el("g");
     applyView();
     const open = new Set();
@@ -193,9 +244,9 @@
 
     for (const n of graph.nodes) {
       const p = n.parent;
-      if (!p || !home.has(n.id) || !home.has(p)) continue;
-      const a = home.get(p);
-      const b = home.get(n.id);
+      if (!p || !seat.has(n.id) || !seat.has(p)) continue;
+      const a = seat.get(p);
+      const b = seat.get(n.id);
       const live = open.has(n.id) && open.has(p);
       world.appendChild(el("path", {
         class: "mm-edge" + (live ? (n.id === active ? " on" : " spine") : " ghost"),
@@ -204,7 +255,7 @@
     }
 
     const drawNode = (n) => {
-      const p = home.get(n.id);
+      const p = seat.get(n.id);
       if (!p) return;
       const ghost = !open.has(n.id);
       const g = el("g", {
@@ -338,6 +389,7 @@
     if (!byId[id]) return;
     focus = id;
     draw();
+    camera();
     syncNav();
     if (open) openPanel(id);
   }
@@ -424,8 +476,8 @@
 
   window.addEventListener("resize", () => {
     layoutHome();
-    fitHome();
     draw();
+    camera();
   });
 
   Promise.all([
