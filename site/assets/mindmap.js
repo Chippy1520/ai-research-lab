@@ -1,4 +1,4 @@
-import MindElixir from "https://cdn.jsdelivr.net/npm/mind-elixir@5.13.0/+esm";
+import MindElixir, { SIDE } from "https://cdn.jsdelivr.net/npm/mind-elixir@5.13.0/dist/MindElixir.js";
 
 const KIND = {
   hub: "hub — the field",
@@ -166,7 +166,7 @@ function openNode(id) {
 function mount() {
   if (!host) return;
   const data = toTree();
-  const side = MindElixir.SIDE ?? MindElixir.BOTH ?? 2;
+  const side = SIDE ?? MindElixir.SIDE ?? 2;
   if (!mind) {
     mind = new MindElixir({
       el: host,
