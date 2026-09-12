@@ -31,7 +31,8 @@
   height: 100%;
   overflow: hidden;
   background:
-    radial-gradient(ellipse at 50% 46%, #2a241c 0%, #161411 62%);
+    radial-gradient(ellipse 70% 50% at 58% 50%, rgba(201, 162, 39, .12), transparent 58%),
+    radial-gradient(ellipse at 30% 48%, #2e2820 0%, #12100e 72%);
   cursor: grab;
 }
 .mm-stage:active { cursor: grabbing; }
@@ -105,29 +106,19 @@
   min-width: 0;
 }
 
-.mm-edge { fill: none; stroke: #6b5d4a; stroke-width: 1.8; opacity: .75; }
-.mm-edge.on { stroke: #e6c35a; opacity: 1; stroke-width: 2.4; }
-.mm-edge.spine { stroke: #c9a227; stroke-width: 3; opacity: .95; }
-.mm-node.ancestor { opacity: .88; }
-.mm-node.ancestor circle { filter: drop-shadow(0 0 8px rgba(201,162,39,.25)); }
+.mm-edge { fill: none; stroke: #8a7a62; stroke-width: 2; opacity: .55; }
+.mm-edge.on { stroke: #f0d78c; opacity: 1; stroke-width: 2.6; }
+.mm-edge.spine { stroke: #d4b24a; stroke-width: 4; opacity: .95; filter: url(#mm-soft); }
 .mm-node { cursor: pointer; }
-.mm-node circle { stroke-width: 2; }
-.mm-node.active circle { stroke: #f0d78c; stroke-width: 3; }
+.mm-node.ancestor { opacity: .9; }
+.mm-node:hover { opacity: 1; }
+.mm-node:hover .mm-core { filter: brightness(1.12); }
 .mm-node text {
-  font: 600 12px Manrope, system-ui, sans-serif;
-  fill: #e8e0d4;
+  font: 600 12px/1 Manrope, system-ui, sans-serif;
+  fill: #f3ead8;
   text-anchor: middle;
   pointer-events: none;
 }
-.mm-node.hub circle { fill: #c9a227; stroke: #f0d78c; }
-.mm-node.domain circle { fill: #5d9a6e; stroke: #8fd4a8; }
-.mm-node.area circle { fill: #7aa35c; stroke: #c5e09a; }
-.mm-node.concept circle { fill: #7b68a6; stroke: #c4b5fd; }
-.mm-node.method circle { fill: #c9a227; stroke: #f0d78c; }
-.mm-node.paper circle { fill: #4a90b8; stroke: #7ec8f0; }
-.mm-node.framework circle { fill: #c46a54; stroke: #e07a5f; }
-.mm-node.lab circle { fill: #8a847a; stroke: #d0ccc4; }
-.mm-node.has-kids circle { filter: drop-shadow(0 0 6px rgba(201, 162, 39, .35)); }
 
 .mm-legend {
   position: absolute;

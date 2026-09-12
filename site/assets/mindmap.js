@@ -136,12 +136,14 @@
     });
     const fp = pos.get(focus) || { x: W * 0.45, y: cy, r: 28 };
     const n = children.length;
-    const colX = fp.x + (mobile ? 110 : 170);
-    const gap = Math.min(58, Math.max(36, (H - 140) / Math.max(n, 1)));
+    const colX = fp.x + (mobile ? 118 : 188);
+    const gap = Math.min(64, Math.max(42, (H - 160) / Math.max(n, 1)));
     const span = gap * Math.max(n - 1, 0);
     children.forEach((c, i) => {
+      const t = n === 1 ? 0.5 : i / (n - 1);
       const y = n === 1 ? cy : cy - span / 2 + i * gap;
-      pos.set(c.id, { x: colX, y, r: R[c.kind] || R.default });
+      const bow = Math.sin((t - 0.5) * Math.PI) * (mobile ? 18 : 36);
+      pos.set(c.id, { x: colX + bow, y, r: R[c.kind] || R.default });
     });
     return pos;
   }
@@ -152,14 +154,52 @@
     return n;
   }
 
+  function defs() {
+    const d = el("defs");
+    const gstops = {
+      hub: ["#f8e7b0", "#c9a227", "#7a5810"],
+      domain: ["#c5ebcf", "#5d9a6e", "#2d5a3c"],
+      area: ["#d4efb8", "#7aa35c", "#3f5e2c"],
+      concept: ["#e0d4ff", "#7b68a6", "#3d2f5c"],
+      method: ["#f8e7b0", "#c9a227", "#7a5810"],
+      paper: ["#c5e8f7", "#4a90b8", "#1f4e6a"],
+      framework: ["#f3c4b8", "#c46a54", "#6e3228"],
+      lab: ["#ddd9d0", "#8a847a", "#4a4742"],
+    };
+    for (const [k, [a, b, c]] of Object.entries(gstops)) {
+      const g = el("radialGradient", { id: `mm-g-${k}`, cx: "32%", cy: "28%", r: "72%" });
+      g.appendChild(el("stop", { offset: "0%", "stop-color": a }));
+      g.appendChild(el("stop", { offset: "55%", "stop-color": b }));
+      g.appendChild(el("stop", { offset: "100%", "stop-color": c }));
+      d.appendChild(g);
+    }
+    const f = el("filter", { id: "mm-soft", x: "-40%", y: "-40%", width: "180%", height: "180%" });
+    f.appendChild(el("feGaussianBlur", { stdDeviation: "1.6", result: "b" }));
+    const m = el("feMerge");
+    m.appendChild(el("feMergeNode", { in: "b" }));
+    m.appendChild(el("feMergeNode", { in: "SourceGraphic" }));
+    f.appendChild(m);
+    d.appendChild(f);
+    return d;
+  }
+
   function draw() {
     const pos = layout();
-    const f = byId[focus];
     world = el("g");
     applyView();
     const children = kids[focus] || [];
     const path = pathTo(focus);
     const fp = pos.get(focus);
+
+    if (fp) {
+      world.appendChild(el("ellipse", {
+        cx: fp.x + 90,
+        cy: fp.y,
+        rx: 160,
+        ry: Math.max(90, (children.length || 1) * 28),
+        fill: "rgba(201,162,39,.06)",
+      }));
+    }
 
     for (let i = 1; i < path.length; i++) {
       const a = pos.get(path[i - 1].id);
@@ -188,30 +228,38 @@
       g.dataset.id = n.id;
       if (p.focus) {
         g.appendChild(el("circle", {
-          r: p.r + 12,
-          fill: "none",
-          stroke: "rgba(240,215,140,.4)",
-          "stroke-width": 2,
+          r: p.r + 14,
+          fill: "rgba(240,215,140,.08)",
+          stroke: "rgba(240,215,140,.45)",
+          "stroke-width": 1.5,
         }));
       }
       g.appendChild(el("circle", {
+        class: "mm-core",
         r: p.r,
-        fill: FILL[n.kind] || FILL.lab,
+        fill: `url(#mm-g-${n.kind})`,
         stroke: STROKE[n.kind] || STROKE.lab,
-        "stroke-width": p.focus || n.id === active ? 3 : 2,
+        "stroke-width": p.focus || n.id === active ? 2.6 : 1.6,
+        filter: p.focus ? "url(#mm-soft)" : "",
+      }));
+      g.appendChild(el("circle", {
+        r: p.r * 0.38,
+        cx: -p.r * 0.22,
+        cy: -p.r * 0.28,
+        fill: "rgba(255,255,255,.28)",
       }));
       const label = n.label;
-      const tw = Math.min(150, label.length * 7.1 + 14);
-      const ly = p.r + 16;
+      const tw = Math.min(168, label.length * 7.2 + 16);
+      const ly = p.r + 18;
       g.appendChild(el("rect", {
         x: -tw / 2,
-        y: ly - 12,
+        y: ly - 13,
         width: tw,
-        height: 18,
-        rx: 5,
-        fill: "rgba(18,15,13,.82)",
+        height: 20,
+        rx: 10,
+        fill: "rgba(12,10,8,.78)",
       }));
-      const t = el("text", { y: ly + 1 });
+      const t = el("text", { y: ly + 2 });
       t.textContent = label;
       g.appendChild(t);
       g.addEventListener("click", (ev) => {
@@ -226,7 +274,7 @@
     });
     for (const c of children) drawNode(c, pos.get(c.id));
 
-    svg.replaceChildren(world);
+    svg.replaceChildren(defs(), world);
     renderCrumb();
   }
 
