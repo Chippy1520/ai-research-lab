@@ -38,7 +38,7 @@
     framework: "#e07a5f",
     lab: "#d0ccc4",
   };
-  const R = { hub: 36, domain: 26, area: 22, default: 16 };
+  const R = { hub: 42, domain: 32, area: 26, default: 20 };
 
   let graph = { nodes: [], edges: [], center: "embodied-ai" };
   let jobs = { openings: [] };
@@ -129,7 +129,7 @@
       pos.set(n.id, {
         x: left + i * step,
         y: cy,
-        r: last ? (R[n.kind] || 22) + 6 : 15,
+        r: last ? (R[n.kind] || 28) + 10 : 20,
         spine: true,
         focus: last,
       });
@@ -293,6 +293,8 @@
       b.addEventListener("click", () => setFocus(n.id, false));
       crumb.appendChild(b);
     });
+    const title = document.getElementById("mm-title");
+    if (title) title.textContent = byId[focus]?.label || "";
   }
 
   function openPanel(id) {
