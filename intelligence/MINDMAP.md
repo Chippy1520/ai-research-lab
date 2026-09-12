@@ -12,9 +12,13 @@ Paper ASCII trees (ACT chunks, SmolVLA flow, …) are local footnotes. This map 
 
 ## Rules for daily updates
 
+The graph is **living**. Prefer upgrading an existing node over adding a sibling.
+
 - Direction: embodied AI, RL, CV, ML/DL, robot learning frameworks, VLAs, one-shot/in-context physical prompting, sim-to-real. Hardware/materials only if they change the learning problem.
+- **Keep fundamentals.** Nodes with `domain: foundations` keep their id and meaning. You may add a newer lecture/resource; never rename, split, or delete them.
+- **No redundancy.** Before adding a node, search ids, labels, and briefs for the same idea (Helix 02 → `helix`, GR00T N1.6 → `gr00t`, π₀.5 → `pi0`, a new flow-matching paper → `flow-matching`). If it matches, patch that node.
 - Never delete a node. Deprecate with `"status": "superseded"` if needed.
-- At most 5 new nodes per day unless a landmark paper (CVPR best paper, GEN-1.x, π-family, new LeRobot policy).
+- At most 3 **new** nodes per day unless a landmark (CVPR best paper, GEN-1.x, new π-family, new LeRobot policy). Unlimited in-place upgrades.
 - First-party company numbers stay labeled first-party (GEN-1.5, Skild S1).
 - New lab nodes must have a `company_id` matching `ecosystem.json` when the company is on the intel desk, so jobs attach.
 - Every new node needs `brief`, `domain`, `kind`, at least one primary `resources` URL, and a YouTube `type: video` when a decent lecture exists.
