@@ -105,8 +105,11 @@
   min-width: 0;
 }
 
-.mm-edge { fill: none; stroke: #6b5d4a; stroke-width: 1.6; opacity: .7; }
-.mm-edge.on { stroke: #c9a227; opacity: 1; stroke-width: 2.2; }
+.mm-edge { fill: none; stroke: #6b5d4a; stroke-width: 1.8; opacity: .75; }
+.mm-edge.on { stroke: #e6c35a; opacity: 1; stroke-width: 2.4; }
+.mm-edge.spine { stroke: #c9a227; stroke-width: 3; opacity: .95; }
+.mm-node.ancestor { opacity: .88; }
+.mm-node.ancestor circle { filter: drop-shadow(0 0 8px rgba(201,162,39,.25)); }
 .mm-node { cursor: pointer; }
 .mm-node circle { stroke-width: 2; }
 .mm-node.active circle { stroke: #f0d78c; stroke-width: 3; }

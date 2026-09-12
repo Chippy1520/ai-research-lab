@@ -116,27 +116,32 @@
   function layout() {
     const W = Math.max(svg.clientWidth, 320);
     const H = Math.max(svg.clientHeight, 320);
-    const cx = W / 2;
-    const cy = H / 2 + (phone() ? 10 : 20);
+    const mobile = phone();
+    const cy = H / 2 + 8;
     const f = byId[focus];
     const children = kids[focus] || [];
+    const path = pathTo(focus);
     const pos = new Map();
-    pos.set(focus, { x: cx, y: cy, r: R[f?.kind] || R.default });
-
-    if (f?.parent && byId[f.parent]) {
-      pos.set(f.parent, { x: cx, y: cy - Math.min(H * 0.28, 160), r: 16, up: true });
-    }
-
+    const left = mobile ? 56 : 88;
+    const step = Math.min(mobile ? 92 : 130, (W * 0.42) / Math.max(path.length, 1));
+    path.forEach((n, i) => {
+      const last = i === path.length - 1;
+      pos.set(n.id, {
+        x: left + i * step,
+        y: cy,
+        r: last ? (R[n.kind] || 22) + 6 : 15,
+        spine: true,
+        focus: last,
+      });
+    });
+    const fp = pos.get(focus) || { x: W * 0.45, y: cy, r: 28 };
     const n = children.length;
-    const ring0 = Math.max(phone() ? 110 : 150, Math.min(W, H) * 0.28);
-    const per = n > 10 ? Math.ceil(n / 2) : n;
+    const colX = fp.x + (mobile ? 110 : 170);
+    const gap = Math.min(58, Math.max(36, (H - 140) / Math.max(n, 1)));
+    const span = gap * Math.max(n - 1, 0);
     children.forEach((c, i) => {
-      const ring = n > 10 ? Math.floor(i / per) : 0;
-      const slot = n > 10 ? i % per : i;
-      const count = n > 10 ? (ring === 0 ? per : n - per) : n;
-      const a = -Math.PI / 2 + (slot * 2 * Math.PI) / Math.max(count, 1) + ring * 0.18;
-      const rad = ring0 + ring * (phone() ? 70 : 90);
-      pos.set(c.id, { x: cx + Math.cos(a) * rad, y: cy + Math.sin(a) * rad, r: R[c.kind] || R.default });
+      const y = n === 1 ? cy : cy - span / 2 + i * gap;
+      pos.set(c.id, { x: colX, y, r: R[c.kind] || R.default });
     });
     return pos;
   }
@@ -152,40 +157,62 @@
     const f = byId[focus];
     world = el("g");
     applyView();
-
     const children = kids[focus] || [];
+    const path = pathTo(focus);
     const fp = pos.get(focus);
+
+    for (let i = 1; i < path.length; i++) {
+      const a = pos.get(path[i - 1].id);
+      const b = pos.get(path[i].id);
+      if (!a || !b) continue;
+      world.appendChild(el("path", {
+        class: "mm-edge spine",
+        d: `M ${a.x} ${a.y} L ${b.x} ${b.y}`,
+      }));
+    }
     for (const c of children) {
       const p = pos.get(c.id);
-      const e = el("path", {
-        class: "mm-edge" + (c.id === active ? " on" : ""),
-        d: `M ${fp.x} ${fp.y} Q ${(fp.x + p.x) / 2} ${(fp.y + p.y) / 2 - 12} ${p.x} ${p.y}`,
-      });
-      world.appendChild(e);
-    }
-    if (f?.parent && pos.has(f.parent)) {
-      const u = pos.get(f.parent);
+      if (!fp || !p) continue;
+      const midX = (fp.x + p.x) / 2;
       world.appendChild(el("path", {
-        class: "mm-edge",
-        d: `M ${u.x} ${u.y} L ${fp.x} ${fp.y}`,
+        class: "mm-edge" + (c.id === active ? " on" : ""),
+        d: `M ${fp.x} ${fp.y} C ${midX} ${fp.y}, ${midX} ${p.y}, ${p.x} ${p.y}`,
       }));
     }
 
     const drawNode = (n, p) => {
       const g = el("g", {
-        class: `mm-node ${n.kind}${n.id === active ? " active" : ""}${(kids[n.id] || []).length ? " has-kids" : ""}`,
+        class: `mm-node ${n.kind}${n.id === active || p.focus ? " active" : ""}${(kids[n.id] || []).length ? " has-kids" : ""}${p.spine && !p.focus ? " ancestor" : ""}`,
         transform: `translate(${p.x} ${p.y})`,
       });
       g.dataset.id = n.id;
-      const c = el("circle", {
+      if (p.focus) {
+        g.appendChild(el("circle", {
+          r: p.r + 12,
+          fill: "none",
+          stroke: "rgba(240,215,140,.4)",
+          "stroke-width": 2,
+        }));
+      }
+      g.appendChild(el("circle", {
         r: p.r,
         fill: FILL[n.kind] || FILL.lab,
         stroke: STROKE[n.kind] || STROKE.lab,
-        "stroke-width": n.id === active ? 3 : 2,
-      });
-      g.appendChild(c);
-      const t = el("text", { y: p.r + 14 });
-      t.textContent = p.up ? "← back" : n.label;
+        "stroke-width": p.focus || n.id === active ? 3 : 2,
+      }));
+      const label = n.label;
+      const tw = Math.min(150, label.length * 7.1 + 14);
+      const ly = p.r + 16;
+      g.appendChild(el("rect", {
+        x: -tw / 2,
+        y: ly - 12,
+        width: tw,
+        height: 18,
+        rx: 5,
+        fill: "rgba(18,15,13,.82)",
+      }));
+      const t = el("text", { y: ly + 1 });
+      t.textContent = label;
       g.appendChild(t);
       g.addEventListener("click", (ev) => {
         ev.stopPropagation();
@@ -194,9 +221,10 @@
       world.appendChild(g);
     };
 
-    if (f?.parent && byId[f.parent] && pos.has(f.parent)) drawNode(byId[f.parent], pos.get(f.parent));
+    path.forEach((n) => {
+      if (pos.has(n.id)) drawNode(n, pos.get(n.id));
+    });
     for (const c of children) drawNode(c, pos.get(c.id));
-    if (f) drawNode(f, fp);
 
     svg.replaceChildren(world);
     renderCrumb();
@@ -296,8 +324,7 @@
     const n = byId[id];
     if (!n) return;
     if (id === focus) {
-      if (n.parent && byId[n.parent]) goBack();
-      else openPanel(id);
+      openPanel(id);
       return;
     }
     if (id === n.parent || (byId[focus] && id === byId[focus].parent)) {
