@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Complete reading guide for I-JEPA (Assran et al., CVPR 2023, arXiv 2301.08243): predict target-block embeddings from a context block, no SimCLR augmentations.">
+  <meta name="theme-color" content="#f3f0e8">
+  <title>I-JEPA · Paper Guide · AI Research Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/curriculum.css">
+  <link rel="stylesheet" href="assets/papers.css">
+  <script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]]},svg:{fontCache:"global"}};</script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body class="editorial">
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
+  <header class="topbar editorial-nav">
+    <a class="brand" href="curriculum.html"><span class="brand-mark">∇</span><span>AI Research Lab</span></a>
+    <nav aria-label="Primary navigation">
+      <a href="papers.html">All guides</a>
+      <a href="curriculum.html">Curriculum</a>
+      <a href="index.html">Robotics intelligence ↗</a>
+    </nav>
+  </header>
+
+  <main>
+    <header class="publication-header" id="overview">
+      <div class="journal-masthead"><span>AI Research Lab</span><span>Paper reading companion</span></div>
+      <p class="publication-label">Self-supervised vision · CVPR 2023</p>
+      <h1>I-JEPA: guess the hidden part in idea-space, not pixel-space</h1>
+      <div class="abstract">
+        <span>Lede</span>
+        <p class="publication-deck">SimCLR needs a handwritten list of “this crop is the same dog.” MAE reconstructs every fur pixel behind the mask. I-JEPA keeps MAE’s masking and throws away MAE’s decoder: from one context block, predict the <em>embeddings</em> of several large target blocks. No colour jitter, no multi-crop. A ViT-H/14 does this on ImageNet in under 72 hours on 16 A100s.</p>
+      </div>
+      <div class="byline-row">
+        <div><span>Paper</span><b>arXiv 2301.08243</b></div>
+        <div><span>Authors</span><b>Assran, Duval, Misra, Bojanowski, Vincent, Rabbat, LeCun, Ballas</b></div>
+        <div><span>Code</span><b>facebookresearch/ijepa</b></div>
+        <div><span>Venue</span><b>CVPR 2023 · pp. 15619–15629</b></div>
+      </div>
+      <a class="guide-back" href="papers.html">← All paper guides</a>
+    </header>
+
+    <div class="article-frame" id="article">
+      <aside class="article-rail" aria-label="Article navigation">
+        <div class="rail-inner">
+          <p class="rail-label">In this guide</p>
+          <ol class="article-toc">
+            <li><a href="#case">Human case study</a></li>
+            <li><a href="#walk">The paper, in order</a></li>
+            <li><a href="#tension">The engineering tension</a></li>
+            <li><a href="#prereqs">Prerequisites</a></li>
+            <li><a href="#graph">Knowledge graph</a></li>
+            <li><a href="#arch">Architecture</a></li>
+            <li><a href="#mask">Multi-block masking</a></li>
+            <li><a href="#results">Results, honestly</a></li>
+            <li><a href="#worked">Worked intuition</a></li>
+            <li><a href="#caveats">Caveats</a></li>
+            <li><a href="#study">Study plan</a></li>
+            <li><a href="#sources">Primary sources</a></li>
+          </ol>
+          <div class="session-note">
+            <span>80-minute route</span>
+            <p><b>10</b> dog-behind-a-hand</p>
+            <p><b>25</b> walk §1–3 + figures</p>
+            <p><b>20</b> Table 1 + ablations</p>
+            <p><b>15</b> masking + predictor viz</p>
+            <p><b>10</b> then V-JEPA</p>
+          </div>
+        </div>
+      </aside>
+
+      <article class="technical-article">
+        <h2 id="case">How a person fills in a dog whose head is covered</h2>
+        <div class="case-study">
+          <p class="case-lede">Someone holds a notebook over a dog’s head in a photo. You are not asked to paint fur. You are asked what is behind the notebook. You already know: a dog head, facing left, ears up. That prediction is semantic. Reconstructing every hair would be a different, worse job.</p>
+          <div class="case-step">
+            <div class="n">01</div>
+            <div class="human"><h4>You</h4><p>You look at everything that is <em>not</em> covered: body, leash, grass, the way the neck is aimed.</p></div>
+            <div class="model"><h4>The paper</h4><p><strong>Context encoder</strong> (ViT) sees only the visible patches. No mask tokens inside the encoder — they would leak “something is missing here.”</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">02</div>
+            <div class="human"><h4>You</h4><p>You are told <em>where</em> to guess: “the rectangle over the neck.” Without a location you would not know whether to predict a head or a tail.</p></div>
+            <div class="model"><h4>The paper</h4><p><strong>Predictor</strong> is a narrow ViT. It gets context tokens plus positional tokens $z$ for the target block’s location.</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">03</div>
+            <div class="human"><h4>You</h4><p>Your answer is “dog head, this pose,” not a PNG. Extra whiskers would not make you more right.</p></div>
+            <div class="model"><h4>The paper</h4><p>Loss is in <strong>representation space</strong>. Targets come from a <strong>target encoder</strong> (EMA of the context encoder) run on the full image; you read off the tokens in the target block.</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">04</div>
+            <div class="human"><h4>You</h4><p>You guess several covered regions, not one pixel-wide slit. A slit is texture. A block is an object part.</p></div>
+            <div class="model"><h4>The paper</h4><p><strong>Multi-block masking:</strong> four target blocks with scale $(0.15, 0.2)$, then a big context block scale $(0.85, 1.0)$ with those targets punched out. Small random MAE masks fail this test.</p></div>
+          </div>
+          <p class="case-punch">The mapping <em>is</em> the architecture: context ViT → predictor-with-positions → EMA target tokens. No colour jitter was required for you to know it was a dog head. That is the point of dropping SimCLR augmentations.</p>
+        </div>
+
+        <h2 id="walk">The paper, in order — every section</h2>
+        <p>Open <a href="https://arxiv.org/pdf/2301.08243">arXiv 2301.08243</a> (v3, 13 Apr 2023) next to this. Headings below match the PDF.</p>
+
+        <h3>Abstract</h3>
+        <p>Learn semantic image representations without hand-crafted view augmentations. I-JEPA: from a single context block, predict representations of various target blocks in the same image. Masking must (a) sample large-scale (semantic) targets and (b) keep a spatially distributed informative context. ViT-H/14 on ImageNet, 16 A100s, under 72 hours; transfers to linear classification, object counting, depth.</p>
+
+        <h3>Figure 1 — ImageNet linear vs GPU hours</h3>
+        <p>The poster plot: I-JEPA sits above MAE/data2vec at fewer GPU hours because the loss is already in embedding space, so you do not train a pixel decoder. Read the axes before you memorise a single top-1.</p>
+
+        <h3>Figure 2 — three energy cartoons</h3>
+        <p>(a) Joint-Embedding Architecture: pull $E(x)$ and $E(y)$ together for two augmented views. Collapse is the failure mode. (b) Generative: decode $y$ from $E(x)$ and mask tokens $z$. Collapse is unlikely if $z$ is small. (c) JEPA: predict $E(y)$ from $E(x)$ given $z$. Looks like (b), loses like (a). This figure is LeCun 2022 drawn for CVPR. If you cannot redraw it, do not start §3.</p>
+
+        <h3>§1 Introduction</h3>
+        <p>Two SSL families in vision. Invariance methods (SimCLR, BYOL, DINO, VICReg, iBOT): strong semantics, but the augmentation list is a prior that does not travel to audio and is wrong for some tasks (classification vs instance segmentation want different invariances). Generative / mask-denoising (MAE, BEiT): less prior, travels across modalities, but representations are lower-level — you need full fine-tuning to catch up on linear probe. I-JEPA wants MAE’s lack of augmentation prior and DINO’s off-the-shelf semantics.</p>
+        <p>Three empirical claims to score later: (1) beats MAE-like methods on ImageNet linear / 1% / semantic transfer; (2) competitive with view-invariant methods on semantics and <em>better</em> on counting and depth; (3) cheaper: ViT-H/14 &lt; 1200 GPU hours, $2.5\times$ faster than iBOT ViT-S/16, $10\times$ more efficient than MAE ViT-H/14.</p>
+
+        <h3>§2 Background</h3>
+        <p>EBMs: low energy on compatible pairs. JEA collapse fixes: contrastive negatives, VICReg redundancy, clustering entropy, or asymmetric EMA. Generative collapse is rare because you still have to paint $y$. JEPA collapse is real; they steal BYOL’s EMA teacher plus a predictor. Conditioning on $z$ is what makes JEPA not “make two views identical.”</p>
+
+        <h3>§3 Method — Figure 3</h3>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2301.08243v3/ijepa.png" alt="I-JEPA: context encoder, predictor with positional tokens, EMA target encoder" loading="lazy">
+          <figcaption class="article-caption"><strong>Paper Figure 3.</strong> Context ViT on visible patches. Narrow predictor, coloured positional tokens = $z$. Target encoder is EMA of the context encoder. Loss is between predictor output and target-encoder tokens in the block. There is no pixel decoder in this figure. If a slide added one, it is MAE, not this paper.</figcaption>
+        </figure>
+        <p><strong>Targets.</strong> Run the target encoder on the full image (or all patches), then <em>keep only</em> the tokens whose patches fall in a sampled target block. Targets are representations, not pixels, not discrete visual tokens.</p>
+        <p><strong>Context.</strong> Sample a large block, remove any overlap with the targets, feed the rest to the context encoder. The encoder never sees mask tokens.</p>
+        <p><strong>Predictor.</strong> Narrow ViT. Inputs: context tokens + one learned positional token per target patch location. Output: one vector per target patch, same width as the encoder.</p>
+        <p><strong>Loss.</strong> Average L2 (paper: average of squared error in representation space) over predicted vs target tokens. Stop-gradient through the target encoder. EMA update of target weights.</p>
+
+        <h3>Figure 4 — masking</h3>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2301.08243v3/mask-samples-4.png" alt="I-JEPA context and target block masking examples" loading="lazy">
+          <figcaption class="article-caption"><strong>Paper Figure 4.</strong> Four target blocks, scale $(0.15,0.2)$, aspect $(0.75,1.5)$. Context scale $(0.85,1.0)$ minus those blocks. Targets look like object parts. Context is still most of the image, just with holes.</figcaption>
+        </figure>
+
+        <h3>§4 Related work</h3>
+        <p>Places I-JEPA against MAE, data2vec, CAE, MSN, DINO, iBOT. data2vec is the closest cousin (predict EMA representations) but uses a different mask and is not sold as “no view augmentations.” Cite the PDF, not a blog, for the exact differences.</p>
+
+        <h3>§5 Image classification — Table 1</h3>
+        <p>Protocol: freeze encoder, linear probe on full ImageNet-1K train, average-pooled tokens (no [CLS]). LARS, batch 16384, 50 epochs (appendix). Numbers from Table 1:</p>
+        <table class="article-table">
+          <thead><tr><th>Method (no view augs)</th><th>Arch</th><th>Epochs</th><th>IN-1K linear top-1</th></tr></thead>
+          <tbody>
+            <tr><td>MAE</td><td>ViT-B/16</td><td>1600</td><td>68.0</td></tr>
+            <tr><td>MAE</td><td>ViT-L/16</td><td>1600</td><td>76.0</td></tr>
+            <tr><td>MAE</td><td>ViT-H/14</td><td>1600</td><td>77.2</td></tr>
+            <tr><td>data2vec</td><td>ViT-L/16</td><td>1600</td><td>77.3</td></tr>
+            <tr><td>I-JEPA</td><td>ViT-B/16</td><td>600</td><td>72.9</td></tr>
+            <tr><td>I-JEPA</td><td>ViT-L/16</td><td>600</td><td>77.5</td></tr>
+            <tr><td>I-JEPA</td><td>ViT-H/14</td><td>300</td><td>79.3</td></tr>
+            <tr><td>I-JEPA</td><td>ViT-H/16 at 448</td><td>300</td><td>81.1</td></tr>
+          </tbody>
+        </table>
+        <p>View-aug methods still sit higher at similar size (DINO ViT-B/8 80.1, iBOT ViT-L/16 81.0). The paper’s claim is not “beats DINO.” It is “matches that ballpark without the augmentation prior, and does it with fewer epochs than MAE.”</p>
+        <p>1% ImageNet semi-supervised (≈12 labels/class): ViT-L/16 69.4, ViT-H/14 73.3, ViT-H/16<sub>448</sub> 77.3 (Meta blog quotes the 12-shot story). Full fine-tune, appendix Table 15: I-JEPA ViT-H/16<sub>448</sub> 87.1 vs MAE ViT-H/14<sub>448</sub> 87.8 after 1600 MAE epochs — I-JEPA used 300. Within 1%, 5.3× fewer epochs. Do not say “beats MAE at fine-tune.”</p>
+
+        <h3>§6 Local prediction tasks</h3>
+        <p>This is the section that justifies dropping SimCLR. Counting (CLEVR) and depth: view-invariance methods throw away localisation that those tasks need. I-JEPA keeps it because the predictor is still spatially addressed. Quote the PDF’s tables here rather than a tweet. The qualitative claim in the Meta blog: a decoder fitted on predictor outputs sketches a dog head / bird leg in the right pose — semantics without discarding position.</p>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2301.08243v3/visualization_predictor_2.png" alt="I-JEPA predictor visualizations decoded back to pixels" loading="lazy">
+          <figcaption class="article-caption"><strong>Paper predictor visualisation.</strong> Context outside the box → predictor representation inside the box → a separate generative probe paints a sketch. The sketch is not the training loss. It is a probe that the latent meant “the rest of the animal, correct pose.”</figcaption>
+        </figure>
+
+        <h3>§7 Scalability</h3>
+        <p>ViT-H/14 &lt; 1200 GPU hours; 16×A100 &lt; 72 h. Faster than iBOT ViT-S/16 by $2.5\times$, cheaper than MAE ViT-H/14 by $10\times$. Predicting in representation space removes the decoder FLOPs and converges in ~5× fewer iterations than MAE (paper’s comparison).</p>
+
+        <h3>§8 Predictor visualisations</h3>
+        <p>Already above. The predictor is a restricted world model of <em>spatial</em> uncertainty in a still image. It is not a physics engine.</p>
+
+        <h3>§9 Ablations</h3>
+        <p>Load-bearing knobs, from the PDF: large target blocks beat small/random MAE masks; context must remain informative (do not mask 90% like MAE); predicting encoder outputs beats predicting pixels (Table 11 flavour: masking the target-encoder output vs input). Predictor width is a bottleneck on purpose — too wide and it copies texture.</p>
+
+        <h3>§10 Conclusion</h3>
+        <p>Semantic features, no hand-crafted views, cheaper than pixel reconstruction. Path for joint-embedding methods that are not SimCLR. Next sentence in history is V-JEPA (replace image blocks with video tubes).</p>
+
+        <h3>What the paper does <em>not</em> claim</h3>
+        <p>Not a world model of time. Not an agent. Not “beats DINO.” Not hierarchical JEPA. No language. No robot.</p>
+
+        <h2 id="tension">The engineering tension</h2>
+        <figure class="figure-block">
+          <div class="compare">
+            <div class="pane bad"><h4>MAE</h4><p>Mask 75% of patches, decode RGB. Travels to video. Linear probe is mediocre because the encoder kept texture the decoder needed.</p></div>
+            <div class="pane good"><h4>I-JEPA</h4><p>Mask large semantic blocks, predict EMA embeddings. Same “no augmentation list” as MAE. Linear probe jumps (ViT-H/14: 79.3 vs MAE 77.2) at a fraction of the GPU hours.</p></div>
+          </div>
+        </figure>
+        <figure class="figure-block">
+          <div class="compare">
+            <div class="pane bad"><h4>DINO / SimCLR</h4><p>Two views, make embeddings equal. Needs colour jitter, crops, maybe multi-crop. Semantics are great; counting/depth suffer; the recipe is image-specific.</p></div>
+            <div class="pane good"><h4>I-JEPA</h4><p>One view, predict other <em>places</em> in the same image. Invariances are learned only if they help prediction. Depth and counting stay in the representation.</p></div>
+          </div>
+        </figure>
+
+        <h2 id="prereqs">Prerequisites</h2>
+        <ol class="prereq-list">
+          <li>
+            <b>01</b>
+            <div>
+              <h4>Vision Transformers</h4>
+              <p>Patch tokens, positional embeddings, no [CLS] required (I-JEPA pools). If ViT is fuzzy, Figure 3 is unreadable.</p>
+            </div>
+          </li>
+          <li>
+            <b>02</b>
+            <div>
+              <h4>MAE-style masking</h4>
+              <p>I-JEPA reuses the “hide patches, predict them” game. The change is the output space.</p>
+            </div>
+          </li>
+          <li>
+            <b>03</b>
+            <div>
+              <h4>BYOL / EMA teacher</h4>
+              <p>Stop-gradient + slow copy of the encoder is the collapse brake. Same idea as Grill et al. 2020.</p>
+            </div>
+          </li>
+          <li>
+            <b>04</b>
+            <div>
+              <h4>The JEPA cartoon</h4>
+              <p>Read <a href="papers-jepa.html">LeCun 2022</a> until Figure 2 of this paper is obvious.</p>
+            </div>
+          </li>
+        </ol>
+        <figure class="video-embed">
+          <iframe class="video-frame" src="https://www.youtube.com/embed/wjZofJX0v4M" title="3Blue1Brown — Transformers" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+          <figcaption class="article-caption">Why this video: the ViT is a transformer on patches. Not a recap of I-JEPA.</figcaption>
+        </figure>
+        <figure class="video-embed">
+          <iframe class="video-frame" src="https://www.youtube.com/embed/csEgtSh7jV4" title="DINOv2 — self-supervised ViT features" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+          <figcaption class="article-caption">The invariance-family cousin. Useful so you can feel what I-JEPA is refusing (view augmentations) and what it still wants (semantic frozen features).</figcaption>
+        </figure>
+
+        <h2 id="graph">Knowledge graph</h2>
+        <div class="knowledge-graph">LeCun JEPA 2022
+   │
+   ├─ MAE (mask, pixel loss)
+   ├─ BYOL (EMA teacher)
+   └─ ViT
+          │
+          ▼
+       I-JEPA
+          ├─ multi-block mask
+          ├─ context ViT
+          └─ predictor + z
+                │
+                ▼
+             V-JEPA</div>
+        <figure class="figure-block">
+          <div class="graph-stack">
+            <div class="graph-level">
+              <span class="kg-node gold">JEPA 2022</span>
+              <span class="kg-node sky">MAE</span>
+              <span class="kg-node rose">BYOL EMA</span>
+            </div>
+            <div class="graph-v">↓</div>
+            <div class="graph-level">
+              <span class="kg-node leaf">context encoder</span>
+              <span class="kg-node leaf">predictor + z</span>
+              <span class="kg-node leaf">EMA target</span>
+            </div>
+            <div class="graph-v">↓</div>
+            <div class="graph-level"><span class="kg-node ink">I-JEPA (this paper)</span></div>
+          </div>
+        </figure>
+
+        <h2 id="arch">Architecture</h2>
+        <figure class="figure-block">
+          <div class="arch">
+            <div class="arch-row">
+              <div class="arch-box tone-sky">Image patches<small>224², patch 16 or 14</small></div>
+            </div>
+            <div class="arch-down">↓ sample 4 target blocks + 1 context</div>
+            <div class="arch-row">
+              <div class="arch-box tone-leaf">Context encoder ViT<small>visible patches only</small></div>
+              <div class="arch-box tone-gold">Target encoder ViT<small>EMA, full image, stop-grad</small></div>
+            </div>
+            <div class="arch-down">↓ + positional tokens z</div>
+            <div class="arch-row">
+              <div class="arch-box tone-lilac">Predictor (narrow ViT)<small>emits one vector per target patch</small></div>
+            </div>
+            <div class="arch-down">↓ L2</div>
+            <div class="arch-row">
+              <div class="arch-box tone-ink">‖P − Ē(target tokens)‖²</div>
+            </div>
+          </div>
+        </figure>
+
+        <h2 id="mask">Multi-block masking</h2>
+        <p>Default recipe from Figure 4 / §3: $M=4$ targets, scale $U(0.15,0.2)$, aspect $U(0.75,1.5)$; context scale $U(0.85,1.0)$ then subtract overlaps. This is not MAE’s random 75%. A random sprinkle of patches can be inpainted from local texture; a 20% block cannot, unless you know what object was there.</p>
+
+        <h2 id="results">Results, honestly</h2>
+        <table class="article-table">
+          <thead><tr><th>Fact from the paper</th><th>What it means</th></tr></thead>
+          <tbody>
+            <tr><td>ViT-H/14 linear 79.3 after 300 epochs</td><td>Above MAE ViT-H/14 77.2 after 1600 epochs, no view augs.</td></tr>
+            <tr><td>ViT-H/16<sub>448</sub> linear 81.1</td><td>In iBOT’s neighbourhood, still without SimCLR augs.</td></tr>
+            <tr><td>Fine-tune 87.1 vs MAE 87.8</td><td>Not a win. A near-tie at 5.3× fewer pretrain epochs.</td></tr>
+            <tr><td>&lt;1200 GPU hours for ViT-H/14</td><td>The efficiency claim. Predict in $E(\cdot)$, skip the pixel decoder.</td></tr>
+            <tr><td>Better counting / depth than DINO-like</td><td>The reason to prefer I-JEPA when the downstream task is spatial, not just IN-1K top-1.</td></tr>
+          </tbody>
+        </table>
+        <p>Protocol reminder: linear numbers are frozen-encoder, average pool, LARS probe. Do not compare them to a paper that fine-tunes the backbone unless you say so.</p>
+
+        <h2 id="worked">Worked intuition</h2>
+        <p>ViT-B/16, $224\times 224$ → $14\times 14 = 196$ patches, $d=768$. Sample a target block of ~20% area ≈ 40 patches. Context keeps ~$196-40=156$ patches (more, because four smaller blocks). Context encoder: 156 tokens → 156 vectors in $\mathbb{R}^{768}$. Predictor (narrower, say 384-d inside, project back) + 40 position tokens → 40 vectors in $\mathbb{R}^{768}$. Target encoder: 196 tokens, index the 40. Loss: mean of $\| \hat{v}_i - \mathrm{sg}(\bar{v}_i) \|_2^2$. EMA $\bar{\theta} \leftarrow m\bar{\theta} + (1-m)\theta$. Nobody decoded $16\times 16\times 3$ RGB cells.</p>
+
+        <h2 id="caveats">Caveats</h2>
+        <ul>
+          <li>Still ImageNet-centric pretraining. “No augmentations” still uses random resized crop to 224 in the usual ViT pipeline — they mean no colour jitter / blur / multi-crop <em>views</em>.</li>
+          <li>Linear-probe wins versus MAE are the headline; fine-tune is a near-tie.</li>
+          <li>Predictor visualisations use a separate generative probe. Pretty pictures are not the loss.</li>
+          <li>Not a temporal world model. That is V-JEPA.</li>
+        </ul>
+
+        <h2 id="study">Study plan</h2>
+        <p>80 minutes: case (10) → Figure 2 cartoons + Figure 3 (20) → Table 1 protocol and numbers (15) → Figure 4 masking + §9 (15) → §6 counting/depth vs DINO (10) → open <a href="papers-vjepa.html">V-JEPA</a> (10). Hold the PDF on Figure 3 the whole time.</p>
+
+        <h2 id="sources">Primary sources</h2>
+        <ul>
+          <li>Paper: <a href="https://arxiv.org/abs/2301.08243">arXiv:2301.08243</a> · <a href="https://arxiv.org/html/2301.08243v3">arXiv HTML v3</a></li>
+          <li>CVPR page: Assran et al., CVPR 2023, pp. 15619–15629</li>
+          <li>Code / weights: <a href="https://github.com/facebookresearch/ijepa">github.com/facebookresearch/ijepa</a></li>
+          <li>Official blog: <a href="https://ai.meta.com/blog/yann-lecun-ai-model-i-jepa/">Meta AI — I-JEPA</a></li>
+          <li>Blueprint: <a href="papers-jepa.html">LeCun 2022 JEPA</a> · next: <a href="papers-vjepa.html">V-JEPA</a></li>
+        </ul>
+        <div class="citation">
+          <strong>BibTeX</strong>
+          <pre>@InProceedings{Assran_2023_CVPR,
+  author    = {Assran, Mahmoud and Duval, Quentin and Misra, Ishan and Bojanowski, Piotr and Vincent, Pascal and Rabbat, Michael and LeCun, Yann and Ballas, Nicolas},
+  title     = {Self-Supervised Learning From Images With a Joint-Embedding Predictive Architecture},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  month     = {June},
+  year      = {2023},
+  pages     = {15619--15629}
+}</pre>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="editorial-footer">
+    <div><strong>AI Research Lab</strong><p>Self-contained companion. Primary sources only.</p></div>
+    <div class="footer-links">
+      <a href="papers.html">All guides</a>
+      <a href="curriculum.html">Curriculum</a>
+    </div>
+  </footer>
+  <script>
+    window.addEventListener('scroll', () => {
+      const bar = document.getElementById('reading-progress-bar');
+      if (!bar) return;
+      const h = document.documentElement;
+      const p = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100 || 0;
+      bar.style.width = p + '%';
+    });
+  </script>
+</body>
+</html>

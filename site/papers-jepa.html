@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Complete reading guide for Yann LeCun’s 2022 position paper A Path Towards Autonomous Machine Intelligence — the Joint Embedding Predictive Architecture (JEPA).">
+  <meta name="theme-color" content="#f3f0e8">
+  <title>JEPA · Paper Guide · AI Research Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/curriculum.css">
+  <link rel="stylesheet" href="assets/papers.css">
+  <script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]]},svg:{fontCache:"global"}};</script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body class="editorial">
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
+  <header class="topbar editorial-nav">
+    <a class="brand" href="curriculum.html"><span class="brand-mark">∇</span><span>AI Research Lab</span></a>
+    <nav aria-label="Primary navigation">
+      <a href="papers.html">All guides</a>
+      <a href="curriculum.html">Curriculum</a>
+      <a href="index.html">Robotics intelligence ↗</a>
+    </nav>
+  </header>
+
+  <main>
+    <header class="publication-header" id="overview">
+      <div class="journal-masthead"><span>AI Research Lab</span><span>Paper reading companion</span></div>
+      <p class="publication-label">World models · OpenReview 2022 · not an experiment paper</p>
+      <h1>JEPA: predict the idea of the next second, not the pixels</h1>
+      <div class="abstract">
+        <span>Lede</span>
+        <p class="publication-deck">Animals do not generate a photorealistic movie of the kitchen before they reach for a mug. They run a cheap internal model of what is predictable (the mug stays, the floor is solid) and ignore what is not (steam swirls). LeCun’s 2022 position paper names that model a Joint Embedding Predictive Architecture and puts it at the centre of a six-module agent. I-JEPA, V-JEPA, and V-JEPA&nbsp;2 are the later engineering papers that actually train it. This guide is the blueprint they cite as [48] / [LeCun 2022].</p>
+      </div>
+      <div class="byline-row">
+        <div><span>Paper</span><b>OpenReview BZ5a1r-kVsf</b></div>
+        <div><span>Author</span><b>Yann LeCun</b></div>
+        <div><span>Version</span><b>0.9.2 · 27 Jun 2022</b></div>
+        <div><span>Reading</span><b>~75 minutes with the PDF</b></div>
+      </div>
+      <a class="guide-back" href="papers.html">← All paper guides</a>
+    </header>
+
+    <div class="article-frame" id="article">
+      <aside class="article-rail" aria-label="Article navigation">
+        <div class="rail-inner">
+          <p class="rail-label">In this guide</p>
+          <ol class="article-toc">
+            <li><a href="#case">Human case study</a></li>
+            <li><a href="#walk">The paper, in order</a></li>
+            <li><a href="#tension">The engineering tension</a></li>
+            <li><a href="#prereqs">Prerequisites</a></li>
+            <li><a href="#graph">Knowledge graph</a></li>
+            <li><a href="#arch">Six modules + JEPA</a></li>
+            <li><a href="#results">What this paper does not claim</a></li>
+            <li><a href="#worked">Worked intuition</a></li>
+            <li><a href="#caveats">Caveats</a></li>
+            <li><a href="#study">Study plan</a></li>
+            <li><a href="#sources">Primary sources</a></li>
+          </ol>
+          <div class="session-note">
+            <span>75-minute route</span>
+            <p><b>10</b> kitchen case</p>
+            <p><b>25</b> walk the PDF</p>
+            <p><b>15</b> JEPA vs pixels vs SimCLR</p>
+            <p><b>15</b> six modules</p>
+            <p><b>10</b> then open I-JEPA</p>
+          </div>
+        </div>
+      </aside>
+
+      <article class="technical-article">
+        <h2 id="case">How a person walks into a kitchen they have never seen</h2>
+        <div class="case-study">
+          <p class="case-lede">You enter a stranger’s kitchen. Steam, a mug on the counter, a cat somewhere. You are going to pick up the mug. You do not render a 4K movie of the next two seconds in your head. You also do not need a labelled dataset of “mug-grasp, kitchen #4821.” You already have a cheap model of what will stay true.</p>
+          <div class="case-step">
+            <div class="n">01</div>
+            <div class="human"><h4>You</h4><p>You glance: counter, mug, steam, cat-shaped blur. You do not inventory every specular highlight.</p></div>
+            <div class="model"><h4>The paper</h4><p><strong>Perception module.</strong> Embed the sensory stream into a representation $s_t$ that already threw away unpredictable clutter.</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">02</div>
+            <div class="human"><h4>You</h4><p>You remember: I just walked through a doorway; the mug was on the left. You do not replay the last minute of video.</p></div>
+            <div class="model"><h4>The paper</h4><p><strong>Short-term memory.</strong> A running latent of recent $s_t$, not a pixel buffer.</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">03</div>
+            <div class="human"><h4>You</h4><p>You predict: if I reach, the mug will still be there; steam will do whatever steam does and I do not care.</p></div>
+            <div class="model"><h4>The paper</h4><p><strong>World model = JEPA.</strong> Predict the embedding of the future (or of the occluded part), conditioned on a latent $z$ that says <em>which</em> future. Do not decode pixels.</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">04</div>
+            <div class="human"><h4>You</h4><p>You feel a cost: do not burn your hand; do not knock the cat. Nobody labelled those as rewards in this kitchen.</p></div>
+            <div class="model"><h4>The paper</h4><p><strong>Cost / energy module</strong> with intrinsic drives (energy, uncertainty, discomfort) plus a few hardwired terms. Behaviour is not “maximise a scalar reward the experimenter wrote.”</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">05</div>
+            <div class="human"><h4>You</h4><p>You pick an action by mentally trying a few reaches until the predicted cost is low, then you move.</p></div>
+            <div class="model"><h4>The paper</h4><p><strong>Actor</strong> proposes actions; planning is search in latent space through the world model. <strong>Configurator</strong> sets which level of the hierarchy is running (grasp vs walk-to-counter).</p></div>
+          </div>
+          <p class="case-punch">The mapping <em>is</em> the architecture: perception → memory → JEPA world model → cost → actor, with a configurator on top. I-JEPA later trains only the “glance + predict the hidden part” piece on still images. V-JEPA trains it on video. V-JEPA&nbsp;2 adds the actor’s planning loop on a Franka.</p>
+        </div>
+
+        <h2 id="walk">The paper, in order — every section</h2>
+        <p>Open <a href="https://openreview.net/pdf?id=BZ5a1r-kVsf">OpenReview PDF BZ5a1r-kVsf</a> (62 pages, version 0.9.2). This is a <em>position</em> paper. There are no ImageNet tables. Do not look for them.</p>
+
+        <h3>Abstract</h3>
+        <p>Three questions: how could machines learn as efficiently as humans and animals? How could they reason and plan? How could they learn representations of percepts and action plans at multiple levels of abstraction, so they can predict and plan at multiple time horizons?</p>
+        <p>The proposed answer is an architecture plus training paradigms: a configurable predictive world model, behaviour driven by intrinsic motivation, and hierarchical joint-embedding architectures trained with self-supervised learning.</p>
+        <p>Keywords he lists so you know the vocabulary pile: energy-based models, world models, joint embedding architecture, intrinsic motivation, SSL.</p>
+
+        <h3>§1 Prologue</h3>
+        <p>He says this is not a technical nor scholarly paper in the traditional sense. It is a vision for machines that learn more like animals, that can reason and plan, whose behaviour is driven by intrinsic objectives rather than hard-wired programs, external supervision, or external rewards. Read that sentence twice: the later I-JEPA paper is allowed to have no labels and no SimCLR colour jitter because this prologue already forbade those as the path.</p>
+
+        <h3>Stated contributions (early in the PDF)</h3>
+        <ol>
+          <li>A cognitive architecture for autonomous intelligence (the six modules).</li>
+          <li><strong>JEPA and Hierarchical JEPA</strong> — a non-generative architecture for predictive world models that learn a hierarchy of representations (his Figures 12 and 15).</li>
+          <li>A non-contrastive SSL paradigm that produces representations that are simultaneously informative and predictable (his Figure 13; the VICReg family is the working example).</li>
+        </ol>
+
+        <h3>Why not generative models / LLMs as the world model</h3>
+        <p>A generative model that reconstructs $y$ from $x$ in observation space must spend capacity on unpredictable details (leaves, steam, exact finger wrinkles). Animals do not. A JEPA predicts in embedding space, so the encoder is free to throw those details away. That is the entire technical claim of the position paper; I-JEPA §2 will draw it as three energy-based cartoons.</p>
+        <p>LLMs, in this document, are useful but are not a world model of the physical world: they predict tokens, not latent states of a kitchen. Do not over-read a 2022 position paper as a 2026 LLM takedown. The engineering content is “predict $E(y)$ from $E(x)$, conditioned on $z$.”</p>
+
+        <h3>Energy-based models (the maths he actually uses)</h3>
+        <p>Compatible pair $(x,y)$ should have low energy $F(x,y)$; incompatible pairs high energy. JEA (joint embedding architecture, SimCLR/BYOL/VICReg): $F = D(E_x(x), E_y(y))$. Generative: $F = D(y, \mathrm{Dec}(E(x), z))$. JEPA: $F = D(E_y(y), P(E_x(x), z))$. Same energy idea, loss in latent space, extra variable $z$ that tells the predictor <em>which</em> $y$ to aim at (mask location, future time, action).</p>
+
+        <h3>The six-module agent</h3>
+        <p>Configurator, perception, world model, cost, actor, short-term memory. Perception and world model are JEPAs (possibly stacked). The configurator modulates them so the same hardware can plan a grasp at 200&nbsp;ms and a walk across the room at 20&nbsp;s. Cost is not a sparse external reward; it is a differentiable energy the actor minimises by thinking ahead through the world model.</p>
+
+        <h3>Hierarchical JEPA</h3>
+        <p>Low level: fast, concrete, maybe closer to pixels. High level: slow, abstract, good for long-horizon planning. Each level predicts at its own timescale. This is the piece <em>none</em> of I-JEPA / V-JEPA / V-JEPA&nbsp;2 fully trains. They are single-level JEPAs. When someone says “LeCun’s JEPA,” check whether they mean this hierarchy or the single predictor in I-JEPA Figure 3.</p>
+
+        <h3>Training / collapse</h3>
+        <p>Joint embedding methods collapse if you only pull positives together. Contrastive negatives, VICReg variance-covariance, clustering, or an EMA teacher (BYOL) are the collapse brakes. I-JEPA and V-JEPA pick the EMA teacher. The position paper prefers non-contrastive (no need to define “incompatible” images).</p>
+
+        <h3>What the paper does <em>not</em> claim</h3>
+        <p>No new ImageNet number. No trained weights. No proof that JEPA beats MAE. No robot demo. Those arrive in 2023–2025. If you only need the trained image model, skip to <a href="papers-ijepa.html">I-JEPA</a>.</p>
+
+        <h2 id="tension">The engineering tension</h2>
+        <p>SSL in vision in 2022 is a fork: (A) invariance methods that need a hand-written list of “this crop is the same image,” which do not travel to video or audio cleanly; (B) MAE-style pixel reconstruction, which travels but learns a lot of texture. JEPA is the bet that you can keep MAE’s masking (so no SimCLR recipe) and still get semantic features by moving the loss into embedding space. The kitchen case is why: you want the mug-ness, not the steam.</p>
+        <figure class="figure-block">
+          <div class="compare">
+            <div class="pane bad"><h4>Naive world model</h4><p>Decode the next RGB frame. Capacity goes into leaves and specularities. Planning a grasp means generating a video. Expensive, and most of the video is irrelevant.</p></div>
+            <div class="pane good"><h4>JEPA world model</h4><p>Encode $x$ and $y$. Predict $E(y)$ from $E(x)$ given $z$. The encoder may delete steam. Planning is search in $E(\cdot)$, which is what V-JEPA&nbsp;2-AC later does on a Franka.</p></div>
+          </div>
+        </figure>
+
+        <h2 id="prereqs">Prerequisites</h2>
+        <ol class="prereq-list">
+          <li>
+            <b>01</b>
+            <div>
+              <h4>What a representation is for</h4>
+              <p>If “embedding” is still a vibe, the rest of JEPA is word salad. You need: a vector that is useful for later tasks, not a compressed JPEG.</p>
+            </div>
+          </li>
+          <li>
+            <b>02</b>
+            <div>
+              <h4>Self-supervised learning, two families</h4>
+              <p>Invariance (SimCLR / DINO / VICReg) versus reconstruction (MAE / BERT). JEPA is a third cartoon that looks like MAE but loses like DINO.</p>
+            </div>
+          </li>
+          <li>
+            <b>03</b>
+            <div>
+              <h4>World models as “imagine then act”</h4>
+              <p>Ha &amp; Schmidhuber 2018 is the named ancestor for “train a model of the world, then plan inside it.” JEPA is that idea with the decoder ripped out.</p>
+            </div>
+          </li>
+        </ol>
+        <figure class="video-embed">
+          <iframe class="video-frame" src="https://www.youtube.com/embed/aircAruvnKk" title="3Blue1Brown — But what is a neural network?" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+          <figcaption class="article-caption">Why this video: the prerequisite, not this paper. What an embedding layer even is.</figcaption>
+        </figure>
+        <figure class="video-embed">
+          <iframe class="video-frame" src="https://www.youtube.com/embed/b1roEd6liWI" title="World Models explained" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+          <figcaption class="article-caption">Ha &amp; Schmidhuber lineage: VAE + RNN world model. JEPA’s move is to drop the pixel decoder and predict $E(y)$ instead.</figcaption>
+        </figure>
+
+        <h2 id="graph">Knowledge graph</h2>
+        <div class="knowledge-graph">energy-based models
+   │
+   ├─ JEA (SimCLR / VICReg / DINO)  — invariant views
+   ├─ generative (MAE / BERT)       — reconstruct y
+   └─ JEPA                          — predict E(y) | E(x), z
+          │
+          ├─ I-JEPA   images, 2023
+          ├─ V-JEPA   video, 2024
+          └─ V-JEPA 2 video + robot planning, 2025</div>
+        <figure class="figure-block">
+          <div class="graph-stack">
+            <div class="graph-level"><span class="kg-node gold">EBM / VICReg / MAE</span></div>
+            <div class="graph-v">↓</div>
+            <div class="graph-level">
+              <span class="kg-node leaf">perception</span>
+              <span class="kg-node sky">JEPA world model</span>
+              <span class="kg-node rose">cost</span>
+            </div>
+            <div class="graph-v">↓</div>
+            <div class="graph-level"><span class="kg-node ink">six-module agent (this paper)</span></div>
+          </div>
+        </figure>
+
+        <h2 id="arch">Architecture</h2>
+        <figure class="figure-block">
+          <div class="arch">
+            <div class="arch-row">
+              <div class="arch-box tone-lilac">Configurator<small>which timescale / which expert</small></div>
+            </div>
+            <div class="arch-down">↓ modulates</div>
+            <div class="arch-row">
+              <div class="arch-box tone-sky">Perception<small>s_t = E(obs)</small></div>
+              <div class="arch-box tone-gold">Short-term memory<small>recent s</small></div>
+            </div>
+            <div class="arch-down">↓</div>
+            <div class="arch-row">
+              <div class="arch-box tone-leaf">World model (JEPA)<small>ŝ' = P(E(x), z)</small></div>
+              <div class="arch-box tone-rose">Cost / energy<small>intrinsic + a few hardwired</small></div>
+            </div>
+            <div class="arch-down">↓</div>
+            <div class="arch-row">
+              <div class="arch-box tone-ink">Actor<small>search actions that lower predicted cost</small></div>
+            </div>
+          </div>
+          <p class="article-caption">LeCun’s agent. Only the world-model box is what I-JEPA trains. V-JEPA&nbsp;2-AC is the first paper in this family that actually closes the actor loop on hardware.</p>
+        </figure>
+        <figure class="figure-block">
+          <div class="arch">
+            <div class="arch-row">
+              <div class="arch-box tone-sky">x<small>context (visible)</small></div>
+              <div class="arch-box tone-gold">y<small>target (hidden / future)</small></div>
+              <div class="arch-box tone-lilac">z<small>mask / time / action</small></div>
+            </div>
+            <div class="arch-down">↓</div>
+            <div class="arch-row">
+              <div class="arch-box tone-leaf">E_x(x)</div>
+              <div class="arch-box tone-leaf">E_y(y) <small>often EMA teacher</small></div>
+            </div>
+            <div class="arch-down">↓</div>
+            <div class="arch-row">
+              <div class="arch-box tone-ink">P(E_x(x), z) ≈ E_y(y)<small>loss in embedding space</small></div>
+            </div>
+          </div>
+          <p class="article-caption">The JEPA cartoon every later paper redraws. $z$ is what makes this <em>predictive</em> rather than “make two views identical.”</p>
+        </figure>
+
+        <h2 id="results">Results, honestly</h2>
+        <table class="article-table">
+          <thead><tr><th>Fact from the paper</th><th>What it means</th></tr></thead>
+          <tbody>
+            <tr><td>Zero trained models, zero tables</td><td>Do not cite this PDF for an ImageNet number.</td></tr>
+            <tr><td>JEPA defined as $P(E(x),z)\approx E(y)$</td><td>This is the sentence I-JEPA implements with multi-block masking.</td></tr>
+            <tr><td>Hierarchical JEPA is proposed, not trained</td><td>Still mostly open. V-JEPA&nbsp;2 has two <em>stages</em> (video then actions), not a trained hierarchy of timescales.</td></tr>
+            <tr><td>Behaviour from intrinsic cost, not RL reward</td><td>V-JEPA&nbsp;2-AC still plans toward an <em>image goal</em>, not a learned intrinsic cost. The actor in this PDF is ahead of the engineering.</td></tr>
+          </tbody>
+        </table>
+        <div class="research-note">If a blog says “JEPA achieves 81% on ImageNet,” they mean I-JEPA or V-JEPA. This document cannot achieve anything. It is a drawing.</div>
+
+        <h2 id="worked">Worked intuition</h2>
+        <p>Take a $224\times 224$ kitchen photo. Split it into $16\times 16$ ViT patches ($14\times 14 = 196$ tokens). Hide a $6\times 6$ block covering the mug (36 tokens). Context encoder sees the remaining tokens → a set of $d$-dimensional vectors. Predictor, told the $(x,y)$ positions of the missing block via $z$, emits 36 vectors. Target encoder (EMA) sees the <em>full</em> image and you read off those 36 locations. L2 or L1 between predicted and target vectors. Nobody asked you to paint mug pixels. If the 36 vectors mean “ceramic cylinder, handle on the left,” the loss is already happy — which is what you wanted in the kitchen.</p>
+
+        <h2 id="caveats">Caveats</h2>
+        <ul>
+          <li>Position paper. Citing it as empirical evidence is a mistake.</li>
+          <li>The six-module agent is a research programme, not a released stack.</li>
+          <li>Collapse prevention is hand-waved toward VICReg / EMA; the later papers pick EMA and an asymmetric predictor.</li>
+          <li>OpenReview, not arXiv. Link the PDF id <code>BZ5a1r-kVsf</code>, not a random mirror.</li>
+        </ul>
+
+        <h2 id="study">Study plan</h2>
+        <p>60–75 minutes: kitchen case (10) → abstract + JEPA cartoon vs MAE vs SimCLR (20) → six modules (15) → hierarchical JEPA and “what is not claimed” (10) → start <a href="papers-ijepa.html">I-JEPA</a> Figure 3 (15). Do not read all 62 pages of speculation on consciousness; the load-bearing pages are the energy cartoons and the module diagram.</p>
+
+        <h2 id="sources">Primary sources</h2>
+        <ul>
+          <li>Paper: <a href="https://openreview.net/pdf?id=BZ5a1r-kVsf">A Path Towards Autonomous Machine Intelligence</a> (OpenReview, 2022-06-27, v0.9.2)</li>
+          <li>Next engineering paper: <a href="papers-ijepa.html">I-JEPA</a> · <a href="papers-vjepa.html">V-JEPA</a> · <a href="papers-vjepa2.html">V-JEPA 2</a></li>
+          <li>Official I-JEPA blog (Meta AI, 2023): <a href="https://ai.meta.com/blog/yann-lecun-ai-model-i-jepa/">ai.meta.com/blog/yann-lecun-ai-model-i-jepa</a></li>
+        </ul>
+        <div class="citation">
+          <strong>BibTeX</strong>
+          <pre>@article{lecun2022path,
+  title={A Path Towards Autonomous Machine Intelligence},
+  author={LeCun, Yann},
+  journal={OpenReview},
+  year={2022},
+  note={Version 0.9.2, 2022-06-27, id BZ5a1r-kVsf}
+}</pre>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="editorial-footer">
+    <div><strong>AI Research Lab</strong><p>Self-contained companion. Primary sources only.</p></div>
+    <div class="footer-links">
+      <a href="papers.html">All guides</a>
+      <a href="curriculum.html">Curriculum</a>
+    </div>
+  </footer>
+  <script>
+    window.addEventListener('scroll', () => {
+      const bar = document.getElementById('reading-progress-bar');
+      if (!bar) return;
+      const h = document.documentElement;
+      const p = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100 || 0;
+      bar.style.width = p + '%';
+    });
+  </script>
+</body>
+</html>

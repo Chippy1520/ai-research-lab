@@ -103,6 +103,10 @@ paper, follow `papers/ADDING_A_PAPER.md` and copy `site/papers-_template.html`.
 | VGGT, CVPR 2025 Best Paper (arXiv 2503.11651) | [papers-vggt.html](https://chippy1520.github.io/ai-research-lab/papers-vggt.html) |
 | ACT / ALOHA (arXiv 2304.13705) | [papers-act.html](https://chippy1520.github.io/ai-research-lab/papers-act.html) |
 | STLight (arXiv 2411.10198) | [papers-stlight.html](https://chippy1520.github.io/ai-research-lab/papers-stlight.html) |
+| JEPA, LeCun 2022 (OpenReview BZ5a1r-kVsf) | [papers-jepa.html](https://chippy1520.github.io/ai-research-lab/papers-jepa.html) |
+| I-JEPA (arXiv 2301.08243) | [papers-ijepa.html](https://chippy1520.github.io/ai-research-lab/papers-ijepa.html) |
+| V-JEPA (arXiv 2404.08471) | [papers-vjepa.html](https://chippy1520.github.io/ai-research-lab/papers-vjepa.html) |
+| V-JEPA 2 (arXiv 2506.09985) | [papers-vjepa2.html](https://chippy1520.github.io/ai-research-lab/papers-vjepa2.html) |
 
 Index: https://chippy1520.github.io/ai-research-lab/papers.html  
 Sources in-repo: `site/papers-*.html` (canonical) and `papers/` (notes).

@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Complete reading guide for V-JEPA (Bardes et al., arXiv 2404.08471): feature prediction as a stand-alone objective for video representations.">
+  <meta name="theme-color" content="#f3f0e8">
+  <title>V-JEPA · Paper Guide · AI Research Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/curriculum.css">
+  <link rel="stylesheet" href="assets/papers.css">
+  <script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]]},svg:{fontCache:"global"}};</script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body class="editorial">
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
+  <header class="topbar editorial-nav">
+    <a class="brand" href="curriculum.html"><span class="brand-mark">∇</span><span>AI Research Lab</span></a>
+    <nav aria-label="Primary navigation">
+      <a href="papers.html">All guides</a>
+      <a href="curriculum.html">Curriculum</a>
+      <a href="index.html">Robotics intelligence ↗</a>
+    </nav>
+  </header>
+
+  <main>
+    <header class="publication-header" id="overview">
+      <div class="journal-masthead"><span>AI Research Lab</span><span>Paper reading companion</span></div>
+      <p class="publication-label">Self-supervised video · February 2024</p>
+      <h1>V-JEPA: predict the next motion in feature space, from video only</h1>
+      <div class="abstract">
+        <span>Lede</span>
+        <p class="publication-deck">I-JEPA hid a block in a still photo. V-JEPA hides a tube in a clip and predicts the missing embeddings — no pretrained image encoder, no text, no negatives, no pixel reconstruction. The test is whether one frozen backbone can do both “what is this” (Kinetics, ImageNet) and “how did it move” (Something-Something-v2). Their ViT-H/16, trained on 2M public videos, reports 81.9 / 72.2 / 77.9 on those three.</p>
+      </div>
+      <div class="byline-row">
+        <div><span>Paper</span><b>arXiv 2404.08471</b></div>
+        <div><span>Authors</span><b>Bardes, Garrido, Ponce, Chen, Rabbat, LeCun, Assran, Ballas</b></div>
+        <div><span>Code</span><b>facebookresearch/jepa</b></div>
+        <div><span>Also called</span><b>Revisiting Feature Prediction for Learning Visual Representations from Video</b></div>
+      </div>
+      <a class="guide-back" href="papers.html">← All paper guides</a>
+    </header>
+
+    <div class="article-frame" id="article">
+      <aside class="article-rail" aria-label="Article navigation">
+        <div class="rail-inner">
+          <p class="rail-label">In this guide</p>
+          <ol class="article-toc">
+            <li><a href="#case">Human case study</a></li>
+            <li><a href="#walk">The paper, in order</a></li>
+            <li><a href="#tension">The engineering tension</a></li>
+            <li><a href="#prereqs">Prerequisites</a></li>
+            <li><a href="#graph">Knowledge graph</a></li>
+            <li><a href="#arch">Architecture</a></li>
+            <li><a href="#results">Results, honestly</a></li>
+            <li><a href="#worked">Worked intuition</a></li>
+            <li><a href="#caveats">Caveats</a></li>
+            <li><a href="#study">Study plan</a></li>
+            <li><a href="#sources">Primary sources</a></li>
+          </ol>
+          <div class="session-note">
+            <span>80-minute route</span>
+            <p><b>10</b> pouring coffee</p>
+            <p><b>25</b> §3 objective + mask</p>
+            <p><b>20</b> frozen vs pixels</p>
+            <p><b>15</b> K400 / SSv2 numbers</p>
+            <p><b>10</b> then V-JEPA 2</p>
+          </div>
+        </div>
+      </aside>
+
+      <article class="technical-article">
+        <h2 id="case">How a person watches someone pour coffee with a hand in the way</h2>
+        <div class="case-study">
+          <p class="case-lede">A clip: kettle, mug, arm. For a few frames a sleeve covers the mug. You are not asked to paint the missing steam. You are asked whether the pour continues. That is motion understanding. A model that only recognised “kitchen” from a still would fail Something-Something-v2 (“pushing” vs “pulling”).</p>
+          <div class="case-step">
+            <div class="n">01</div>
+            <div class="human"><h4>You</h4><p>You watch the visible parts of the clip as one moving picture, not 16 unrelated JPEGs.</p></div>
+            <div class="model"><h4>The paper</h4><p>Video is tube-tokenised (space–time patches). The encoder is a ViT over those tokens. No frozen DINO image encoder is allowed — the abstract forbids it.</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">02</div>
+            <div class="human"><h4>You</h4><p>Someone covers the mug for a moment. You still know the pour is happening <em>there</em>.</p></div>
+            <div class="model"><h4>The paper</h4><p>Mask a spatio-temporal region $y$. Context $x$ is the rest. Predictor $P_\phi(E_\theta(x), \Delta_y)$ is told the missing coordinates via $z \leftarrow \Delta_y$.</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">03</div>
+            <div class="human"><h4>You</h4><p>Your prediction is “liquid still going into a mug,” not a RGB inpainting of every droplet.</p></div>
+            <div class="model"><h4>The paper</h4><p>L1 in feature space against an EMA teacher $\bar{E}_\theta(y)$ with stop-gradient. Eq. (1) in the PDF. L1, not I-JEPA’s L2 — they say L1 was more stable on video.</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">04</div>
+            <div class="human"><h4>You</h4><p>Later, without retraining your eyes, you can both name the action (Kinetics) and tell pushing from pulling (SSv2), and even recognise a still (ImageNet).</p></div>
+            <div class="model"><h4>The paper</h4><p><strong>Frozen backbone</strong> + attentive probe. Figure 1’s whole point: one encoder, motion <em>and</em> appearance, no end-to-end fine-tune required to make the claim.</p></div>
+          </div>
+          <p class="case-punch">The mapping <em>is</em> the method: mask a tube, predict $E(y)$, evaluate frozen. Pixel-reconstruction video MAEs can look sharp and still lose SSv2, because they spent capacity on droplets.</p>
+        </div>
+
+        <h2 id="walk">The paper, in order — every section</h2>
+        <p>Open <a href="https://arxiv.org/pdf/2404.08471">arXiv 2404.08471</a>. Code line in the PDF: github.com/facebookresearch/jepa.</p>
+
+        <h3>Abstract</h3>
+        <p>Feature prediction as a stand-alone unsupervised objective on video. No pretrained image encoder, text, negatives, reconstruction, or other supervision. 2M videos from public datasets. Frozen evaluation on image and video tasks. Largest: ViT-H/16 → 81.9% K400, 72.2% SSv2, 77.9% ImageNet-1K.</p>
+
+        <h3>Figure 1</h3>
+        <p>Two axes: motion (SSv2) vs appearance (K400), frozen. V-JEPA sits up-right. DINOv2-like image models sit high on appearance and drop on SSv2. That scatter is the paper’s argument in one glance.</p>
+
+        <h3>§1 Introduction</h3>
+        <p>Humans map retina spikes into objects and global motion (Spelke). Predictive-feature principle (Rao &amp; Ballard): temporally adjacent representations should predict each other. Question they isolate: <em>how effective is feature prediction as a stand-alone objective for unsupervised learning from video with modern tools</em> (ViT, masked modelling, JEPA, bigger data)?</p>
+        <p>Three findings to score: (1) frozen versatility, +6% on SSv2 vs methods they consider, competitive on K400 where image models already excel; (2) beats pixel prediction under frozen/attentive probe, competitive under full fine-tune, shorter schedule; (3) more label-efficient as you remove labels (their Table 7).</p>
+
+        <h3>§2 Related works</h3>
+        <p>Slow features / SFA: make nearby frames identical. Predictive features: a predictor from $t$ to $t{+}1$, often on a frozen encoder or with contrastive negatives. JEPA (LeCun 2022) + I-JEPA (images) + data2vec (audio/vision). Video MAEs (Tong et al. VideoMAE, Feichtenhofer MAE): pixel/tube reconstruction. V-JEPA’s bet: same mask game, latent loss, video from scratch.</p>
+
+        <h3>§3 Methodology: Video-JEPA</h3>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2404.08471v1/decoder-color.png" alt="V-JEPA joint-embedding predictive architecture" loading="lazy">
+          <figcaption class="article-caption"><strong>Paper Figure 2 flavour.</strong> Predict $E(y)$ from $E(x)$ given $z$. $z$ carries the spatio-temporal location of the missing tube. If this drawing has a pixel decoder, you are in the VideoMAE column of their comparison, not here.</figcaption>
+        </figure>
+
+        <h4>§3.1 Training objective — Eq. (1)</h4>
+        <p>Naive $\\|P_\phi(E_\theta(x),\Delta_y) - E_\theta(y)\\|_1$ collapses to a constant. They use
+        $$
+        \min_{\theta,\phi}\ \big\| P_\phi(E_\theta(x),\Delta_y) - \mathrm{sg}(\bar{E}_\theta(y)) \big\|_1
+        $$
+        EMA teacher $\bar{E}$, stop-gradient, L1 (I-JEPA used L2; they found L1 more stable). Theoretical aside: BYOL-style argument adapted to L1, one-dimensional sketch in the PDF — read it if you need why EMA does not collapse, skip if you already believe Grill et al.</p>
+
+        <h4>§3.2 Prediction task</h4>
+        <p>$y$ is a masked spatio-temporal block (or several). $x$ is the complement. $z=\Delta_y$ is positions. Multi-block, as in I-JEPA, extended in time. Figure samples in the HTML: <code>assets/samples-v1.png</code>.</p>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2404.08471v1/assets/samples-v1.png" alt="V-JEPA masking samples on video" loading="lazy">
+          <figcaption class="article-caption"><strong>Masking samples.</strong> Targets are tubes, not salt-and-pepper. Local texture should not be enough; you need the motion.</figcaption>
+        </figure>
+
+        <h4>§3.3 Network parameterization</h4>
+        <p>ViT over space–time patches. Predictor is a lighter transformer. Table 2 in the PDF lists widths / depths — copy from there if you re-implement, do not invent.</p>
+
+        <h4>§3.4 Data and eval</h4>
+        <p>2M videos, public mixtures (VideoMix2M in their notation). Downstream: K400, SSv2, IN1K, plus detection in the appendix. Two protocols: frozen + attentive probe, and end-to-end fine-tune. Attentive probe matters: average-pool linear probes understate video models that have no [CLS].</p>
+
+        <h3>§4 What matters</h3>
+        <p>§4.1 Representations vs pixels: latent prediction wins frozen eval, similar fine-tune, shorter training. §4.2 Pretraining data mix — video diversity vs ImageNet-only. §4.3 Attentive probing is the fair frozen protocol. §4.4 How you sample $(x,y)$ (block size, duration) is load-bearing, same moral as I-JEPA Figure 4.</p>
+
+        <h3>§5 Comparison with prior work</h3>
+        <p>Headline frozen ViT-H/16: <strong>K400 81.9, SSv2 72.2, IN1K 77.9</strong>. Pixel-prediction video MAEs lag on frozen SSv2. Image SSL (DINOv2) is strong on K400/IN1K and weaker on SSv2 — appearance without motion. Label-efficiency Table 7: drop labels, the gap vs pixel models grows. Fine-tune tables in the appendix: competitive, not a massacre. Quote the protocol (frozen vs 100% fine-tune) every time you repeat a number.</p>
+
+        <h3>§6 Evaluating the predictor</h3>
+        <p>They probe whether $P$ actually forecasts, not just whether $E$ is a good frozen backbone. Visualisations (Figure 6 in the PDF) decode predicted latents. Treat them as qualitative, like I-JEPA’s dog-head sketches.</p>
+
+        <h3>§7 Conclusion</h3>
+        <p>Feature prediction is a sufficient stand-alone objective for video with 2024 tools. Frozen versatility is the product. Next paper in the family (V-JEPA 2) scales data to 1M hours and adds an action-conditioned planner.</p>
+
+        <h3>What the paper does <em>not</em> claim</h3>
+        <p>No robot. No LLM alignment. No 1M-hour dataset yet. Not “beats every video foundation model ever.” SSv2 +6% is versus the methods in their tables, under their probe.</p>
+
+        <h2 id="tension">The engineering tension</h2>
+        <figure class="figure-block">
+          <div class="compare">
+            <div class="pane bad"><h4>Video MAE</h4><p>Reconstruct masked RGB tubes. Need long schedules. Frozen probe sees a texture specialist. SSv2 (push vs pull) suffers.</p></div>
+            <div class="pane good"><h4>V-JEPA</h4><p>Reconstruct masked <em>features</em>. Shorter schedule. Frozen backbone keeps motion. SSv2 72.2 with ViT-H/16, still 81.9 on K400.</p></div>
+          </div>
+        </figure>
+        <figure class="figure-block">
+          <div class="compare">
+            <div class="pane bad"><h4>Frozen DINOv2 on video</h4><p>Excellent “what.” Weak “how it moved.” Kinetics can be solved as a bag of objects. SSv2 cannot.</p></div>
+            <div class="pane good"><h4>Train on video, predict features</h4><p>One encoder for both axes in Figure 1. That is why they forbid a pretrained image encoder in the abstract.</p></div>
+          </div>
+        </figure>
+
+        <h2 id="prereqs">Prerequisites</h2>
+        <ol class="prereq-list">
+          <li>
+            <b>01</b>
+            <div>
+              <h4>I-JEPA</h4>
+              <p>Same three networks (context, EMA target, predictor). Read <a href="papers-ijepa.html">I-JEPA</a> Figure 3 before this Figure 2.</p>
+            </div>
+          </li>
+          <li>
+            <b>02</b>
+            <div>
+              <h4>Space–time patches</h4>
+              <p>A token is a cube of pixels across a few frames, not a 16×16 still. VideoMAE already taught this; V-JEPA keeps the tokenisation and changes the loss.</p>
+            </div>
+          </li>
+          <li>
+            <b>03</b>
+            <div>
+              <h4>Frozen vs fine-tune</h4>
+              <p>If you only compare fine-tunes, pixel models look closer. The paper’s claim is the frozen column.</p>
+            </div>
+          </li>
+        </ol>
+        <figure class="video-embed">
+          <iframe class="video-frame" src="https://www.youtube.com/embed/eMlx5fFNoYc" title="3Blue1Brown — Attention in transformers" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+          <figcaption class="article-caption">Prerequisite: attention, not a V-JEPA recap. The video ViT is this mechanism on tube tokens.</figcaption>
+        </figure>
+        <figure class="video-embed">
+          <iframe class="video-frame" src="https://www.youtube.com/embed/b1roEd6liWI" title="World Models explained" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+          <figcaption class="article-caption">World-model intuition. V-JEPA is still only the encoder+predictor, not the actor. The actor arrives in V-JEPA 2-AC.</figcaption>
+        </figure>
+
+        <h2 id="graph">Knowledge graph</h2>
+        <div class="knowledge-graph">I-JEPA (images)
+   │
+   ├─ VideoMAE tokenisation (tubes)
+   ├─ BYOL EMA + L1
+   └─ 2M unlabeled clips
+          │
+          ▼
+       V-JEPA
+          ├─ frozen K400 / SSv2 / IN1K
+          └─ predictor as primitive dynamics
+                │
+                ▼
+             V-JEPA 2</div>
+        <figure class="figure-block">
+          <div class="graph-stack">
+            <div class="graph-level">
+              <span class="kg-node gold">I-JEPA</span>
+              <span class="kg-node sky">VideoMAE tubes</span>
+            </div>
+            <div class="graph-v">↓</div>
+            <div class="graph-level">
+              <span class="kg-node leaf">L1 + EMA</span>
+              <span class="kg-node leaf">multi-block tubes</span>
+              <span class="kg-node rose">frozen probe</span>
+            </div>
+            <div class="graph-v">↓</div>
+            <div class="graph-level"><span class="kg-node ink">V-JEPA (this paper)</span></div>
+          </div>
+        </figure>
+
+        <h2 id="arch">Architecture</h2>
+        <figure class="figure-block">
+          <div class="arch">
+            <div class="arch-row">
+              <div class="arch-box tone-sky">Clip → space–time tokens<small>2M public videos</small></div>
+            </div>
+            <div class="arch-down">↓ mask tubes y, keep context x</div>
+            <div class="arch-row">
+              <div class="arch-box tone-leaf">E_θ(x)</div>
+              <div class="arch-box tone-gold">Ē_θ(y) EMA, sg</div>
+            </div>
+            <div class="arch-down">↓ z = Δy</div>
+            <div class="arch-row">
+              <div class="arch-box tone-lilac">P_φ(E(x), z)</div>
+            </div>
+            <div class="arch-down">↓ L1</div>
+            <div class="arch-row">
+              <div class="arch-box tone-ink">frozen E_θ → K400 / SSv2 / IN1K</div>
+            </div>
+          </div>
+        </figure>
+
+        <h2 id="results">Results, honestly</h2>
+        <table class="article-table">
+          <thead><tr><th>Fact from the paper</th><th>What it means</th></tr></thead>
+          <tbody>
+            <tr><td>ViT-H/16 frozen: K400 81.9, SSv2 72.2, IN1K 77.9</td><td>The abstract triple. Appearance <em>and</em> motion, one backbone, trained only on video.</td></tr>
+            <tr><td>+6% SSv2 vs methods they consider</td><td>The motion-understanding headline. Check Table 6 for the exact baselines.</td></tr>
+            <tr><td>Frozen &gt; pixel models; fine-tune ≈</td><td>Do not advertise a fine-tune blowout. The paper does not.</td></tr>
+            <tr><td>Label-efficiency gap grows as labels drop</td><td>Table 7. Feature prediction helps when you cannot fine-tune on a lot of SSv2 labels.</td></tr>
+            <tr><td>No image-encoder init</td><td>A constraint, not a trick. If you cheat with DINOv2 init you are not reproducing this paper.</td></tr>
+          </tbody>
+        </table>
+
+        <h2 id="worked">Worked intuition</h2>
+        <p>Take 16 frames at 224². Tube tokens $2\times 16\times 16$ pixels → about $8\times 14\times 14 \approx 1568$ tokens (order-of-magnitude; use the paper’s exact tube size when coding). Mask ~50% as a few large tubes. Encoder sees the rest. Predictor emits one vector per masked token. Teacher (EMA) sees the full clip, stop-grad. L1. After pretrain, freeze $E_\theta$, train a tiny attentive pool + linear head on K400. If SSv2 is also high, you did not just learn “there is a kettle.”</p>
+
+        <h2 id="caveats">Caveats</h2>
+        <ul>
+          <li>2M videos is already a cluster job. The method is simple; the data is not.</li>
+          <li>Attentive probe ≠ linear probe on a [CLS]. Mixing those numbers is how people “beat” this paper on Twitter.</li>
+          <li>Predictor visualisations are decoded with an extra network. Not evidence of a physics simulator.</li>
+          <li>No actions in $z$. $z$ is only <em>where/when</em> the hole is. Actions arrive in V-JEPA 2-AC.</li>
+        </ul>
+
+        <h2 id="study">Study plan</h2>
+        <p>80 minutes: coffee case (10) → Eq. (1) and why L1+EMA (15) → Figure 1 scatter (10) → abstract triple + frozen vs fine-tune (20) → masking samples (10) → <a href="papers-vjepa2.html">V-JEPA 2</a> planning teaser (15).</p>
+
+        <h2 id="sources">Primary sources</h2>
+        <ul>
+          <li>Paper: <a href="https://arxiv.org/abs/2404.08471">arXiv:2404.08471</a> · <a href="https://arxiv.org/html/2404.08471v1">HTML v1</a></li>
+          <li>Code: <a href="https://github.com/facebookresearch/jepa">github.com/facebookresearch/jepa</a></li>
+          <li>Official blog: <a href="https://ai.meta.com/blog/v-jepa-yann-lecun-ai-model-video-joint-embedding-predictive-architecture/">Meta AI — V-JEPA</a></li>
+          <li>Previous: <a href="papers-ijepa.html">I-JEPA</a> · next: <a href="papers-vjepa2.html">V-JEPA 2</a></li>
+        </ul>
+        <div class="citation">
+          <strong>BibTeX</strong>
+          <pre>@article{bardes2024vjepa,
+  title={Revisiting Feature Prediction for Learning Visual Representations from Video},
+  author={Bardes, Adrien and Garrido, Quentin and Ponce, Jean and Chen, Xinlei and Rabbat, Michael and LeCun, Yann and Assran, Mahmoud and Ballas, Nicolas},
+  journal={arXiv preprint arXiv:2404.08471},
+  year={2024}
+}</pre>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="editorial-footer">
+    <div><strong>AI Research Lab</strong><p>Self-contained companion. Primary sources only.</p></div>
+    <div class="footer-links">
+      <a href="papers.html">All guides</a>
+      <a href="curriculum.html">Curriculum</a>
+    </div>
+  </footer>
+  <script>
+    window.addEventListener('scroll', () => {
+      const bar = document.getElementById('reading-progress-bar');
+      if (!bar) return;
+      const h = document.documentElement;
+      const p = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100 || 0;
+      bar.style.width = p + '%';
+    });
+  </script>
+</body>
+</html>

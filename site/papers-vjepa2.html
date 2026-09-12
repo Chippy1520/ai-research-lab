@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Complete reading guide for V-JEPA 2 (Assran et al., arXiv 2506.09985): 1M-hour video JEPA, action-conditioned world model, zero-shot Franka planning.">
+  <meta name="theme-color" content="#f3f0e8">
+  <title>V-JEPA 2 · Paper Guide · AI Research Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/curriculum.css">
+  <link rel="stylesheet" href="assets/papers.css">
+  <script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]]},svg:{fontCache:"global"}};</script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body class="editorial">
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
+  <header class="topbar editorial-nav">
+    <a class="brand" href="curriculum.html"><span class="brand-mark">∇</span><span>AI Research Lab</span></a>
+    <nav aria-label="Primary navigation">
+      <a href="papers.html">All guides</a>
+      <a href="curriculum.html">Curriculum</a>
+      <a href="index.html">Robotics intelligence ↗</a>
+    </nav>
+  </header>
+
+  <main>
+    <header class="publication-header" id="overview">
+      <div class="journal-masthead"><span>AI Research Lab</span><span>Paper reading companion</span></div>
+      <p class="publication-label">World models · robotics · June 2025</p>
+      <h1>V-JEPA 2: watch a million hours, then plan a grasp in latent space</h1>
+      <div class="abstract">
+        <span>Lede</span>
+        <p class="publication-deck">LeCun’s 2022 drawing said: learn a world model from observation, then plan. V-JEPA 2 is the first paper in this family that actually closes that loop on a robot. Stage 1 — action-free JEPA on &gt;1 million hours of internet video. Stage 2 — freeze the encoder, train a 300M action-conditioned predictor on &lt;62 hours of unlabeled Droid trajectories. Deploy zero-shot on Franka arms in two labs, image-goal pick-and-place, no task reward, no data from those robots.</p>
+      </div>
+      <div class="byline-row">
+        <div><span>Paper</span><b>arXiv 2506.09985</b></div>
+        <div><span>Authors</span><b>Assran, Bardes, Fan, Garrido, … LeCun, Rabbat, Ballas (FAIR)</b></div>
+        <div><span>Code</span><b>facebookresearch/vjepa2</b></div>
+        <div><span>Also</span><b>V-JEPA 2-AC · 48 pages, 19 figures</b></div>
+      </div>
+      <a class="guide-back" href="papers.html">← All paper guides</a>
+    </header>
+
+    <div class="article-frame" id="article">
+      <aside class="article-rail" aria-label="Article navigation">
+        <div class="rail-inner">
+          <p class="rail-label">In this guide</p>
+          <ol class="article-toc">
+            <li><a href="#case">Human case study</a></li>
+            <li><a href="#walk">The paper, in order</a></li>
+            <li><a href="#tension">The engineering tension</a></li>
+            <li><a href="#prereqs">Prerequisites</a></li>
+            <li><a href="#graph">Knowledge graph</a></li>
+            <li><a href="#arch">Two-stage architecture</a></li>
+            <li><a href="#plan">Planning / MPC</a></li>
+            <li><a href="#results">Results, honestly</a></li>
+            <li><a href="#worked">Worked intuition</a></li>
+            <li><a href="#caveats">Caveats</a></li>
+            <li><a href="#study">Study plan</a></li>
+            <li><a href="#sources">Primary sources</a></li>
+          </ol>
+          <div class="session-note">
+            <span>90-minute route</span>
+            <p><b>10</b> mug on a Franka</p>
+            <p><b>25</b> §1–2 scale recipe</p>
+            <p><b>20</b> §3–4 AC + robot</p>
+            <p><b>20</b> §5–7 probes / VQA</p>
+            <p><b>15</b> what not to claim</p>
+          </div>
+        </div>
+      </aside>
+
+      <article class="technical-article">
+        <h2 id="case">How a person picks up a mug they have never seen, in a kitchen they have never been in</h2>
+        <div class="case-study">
+          <p class="case-lede">You have watched years of other people handling objects (YouTube). You have maybe a weekend of actually moving your own arms in a lab. Someone shows you a photo of “mug on the right, please.” You do not re-learn vision. You imagine a few reaches until the imagined scene matches the photo, then you move. That is V-JEPA 2-AC.</p>
+          <div class="case-step">
+            <div class="n">01</div>
+            <div class="human"><h4>You</h4><p>Years of watching: objects persist, hands grasp, liquids pour. You were not labelled.</p></div>
+            <div class="model"><h4>The paper</h4><p><strong>Stage 1 — V-JEPA 2.</strong> Action-free mask-denoising JEPA on &gt;1M hours of internet video plus images. Encoder up to ~1B parameters. Same game as V-JEPA, scaled.</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">02</div>
+            <div class="human"><h4>You</h4><p>A weekend of actually moving: if I send this joint command, the scene changes like <em>that</em>.</p></div>
+            <div class="model"><h4>The paper</h4><p><strong>Stage 2 — V-JEPA 2-AC.</strong> Freeze $E$. Train a 300M block-causal transformer that predicts the <em>next frame’s embedding</em> given past embeddings and the action. &lt;62 hours of unlabeled Droid robot video. No reward.</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">03</div>
+            <div class="human"><h4>You</h4><p>Someone shows a goal photo. You mentally try reaches until the imagined view looks like the photo.</p></div>
+            <div class="model"><h4>The paper</h4><p><strong>Planning.</strong> Sample action sequences, roll out $\hat{s}_{t+1}=P(\hat{s}_t, a_t)$ in latent space, score distance to $E(\text{goal image})$, pick the best first action (MPC). Figure of the loop: <code>vjepa2-mpc.png</code>.</p></div>
+          </div>
+          <div class="case-step">
+            <div class="n">04</div>
+            <div class="human"><h4>You</h4><p>You do this in a new building, with a mug the weekend never contained, without a new round of practice.</p></div>
+            <div class="model"><h4>The paper</h4><p>Zero-shot Franka, two labs, novel objects. No data from those robots, no task-specific training. Prehensile grasp / pick-and-place from a monocular RGB camera.</p></div>
+          </div>
+          <p class="case-punch">The mapping <em>is</em> the two-stage training: watch the world at internet scale, then fit a cheap action-conditioned predictor on a little interaction, then plan. That is LeCun 2022’s actor, finally on hardware — with an image goal instead of his intrinsic cost module.</p>
+        </div>
+
+        <h2 id="walk">The paper, in order — every section</h2>
+        <p>Open <a href="https://arxiv.org/pdf/2506.09985">arXiv 2506.09985</a> (48 pages, 19 figures). HTML figures below are the paper’s own.</p>
+
+        <h3>Abstract</h3>
+        <p>Learn to understand and act largely by observation. Combine internet-scale video with a small amount of interaction. Stage 1: action-free V-JEPA 2 on &gt;1M hours. Motion: 77.3 top-1 on SSv2. Anticipation: 39.7 recall-at-5 on Epic-Kitchens-100 (SOTA, 44% relative over previous best). Align with an 8B LLM: 84.0 PerceptionTest, 76.9 TempCompass, plus MVP 44.5, TemporalBench 36.7, TOMATO 40.3. Stage 2: V-JEPA 2-AC on &lt;62 h Droid, zero-shot Franka pick-and-place with image goals, no in-lab data, no task reward.</p>
+
+        <h3>Figure 1 — overview</h3>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2506.09985v1/flowchart.png" alt="V-JEPA 2 overview: pretrain, probes, LLM align, action-conditioned planning" loading="lazy">
+          <figcaption class="article-caption"><strong>Paper Figure 1 / flowchart.</strong> Left: mask-denoise video → encoder. Branches: classification probes, LLM alignment for VideoQA, freeze encoder and train AC predictor for robot MPC. If your mental model has one loss that does all of this, redraw. It is staged.</figcaption>
+        </figure>
+
+        <h3>§1 Introduction</h3>
+        <p>Humans integrate sensation into a world model and use it to plan (Sutton &amp; Barto; Ha &amp; Schmidhuber; Wolpert). Interaction-only world models do not scale — not enough real robot hours. Video-generation world models can look pretty and still be too slow to plan in (you would generate RGB at every candidate action). JEPA predicts in $E(\cdot)$, so planning is cheap and the encoder may ignore grass blades.</p>
+        <p>Four claims: (understanding / probe) SSv2 77.3; (understanding / VQA) SOTA in the 8B class on several temporal benchmarks without language supervision in the video encoder; (prediction) EK100 39.7 R@5, +44% relative; (planning) AC model from 62 h Droid, zero-shot Franka.</p>
+        <p>Roadmap they announce: §2 pretrain, §3 AC model, §4 robot, §5 probes, §6 anticipation, §7 VQA, §8 related, §9 close. That is the PDF order. Follow it; do not read the robot section as if the VQA numbers proved the grasp.</p>
+
+        <h3>§2 V-JEPA 2 — scaling SSL video</h3>
+        <h4>§2.1 Methodology</h4>
+        <p>Mask-denoising in feature space, as V-JEPA. Patchify clip → drop tokens → encoder on the rest → concat learnable mask tokens with positions → predictor → L1 to teacher targets. Teacher is EMA. Scaling ingredients beyond Bardes et al. 2024 live in §2.2–2.4 (data, resolution, duration, model size). Copy those tables from the PDF when reproducing; do not invent a recipe from this sentence.</p>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2506.09985v1/vjepa2-abstract-new.png" alt="V-JEPA 2 pretraining: mask denoising in representation space" loading="lazy">
+          <figcaption class="article-caption"><strong>Pretrain cartoon.</strong> Same JEPA as V-JEPA, internet scale. $z$ is still mask position, not yet an action.</figcaption>
+        </figure>
+        <h4>§2.3 Dataset</h4>
+        <p>&gt;1 million hours of internet video + ~1M images. This is the number that changed from V-JEPA’s 2M clips. Diversity and duration, not a new loss.</p>
+        <h4>§2.4 Recipe</h4>
+        <p>Progressive scaling: model size up to 1B, longer clips, higher resolution. The paper’s ablation claim: scaling SSL video pretraining improves motion understanding and anticipation, not just IN1K.</p>
+
+        <h3>§3 V-JEPA 2-AC</h3>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2506.09985v1/vjepa2-ac-abstract-new.png" alt="V-JEPA 2-AC action-conditioned world model" loading="lazy">
+          <figcaption class="article-caption"><strong>AC cartoon.</strong> Frozen $E$ from stage 1. New predictor $P(s_t, a_t)\to s_{t+1}$ in latent space. Actions are robot controls from Droid, not internet-video verbs.</figcaption>
+        </figure>
+        <h4>§3.1 Training</h4>
+        <p>300M-parameter transformer, <strong>block-causal</strong> attention, autoregressive in time: each frame embedding may look at past frames and the action that was applied. Unlabeled Droid trajectories: images + actions, no language, no reward. &lt;62 hours. Because $E$ is frozen, this stage cannot invent a new visual system; it can only learn dynamics <em>in the coordinates $E$ already provides</em>.</p>
+        <h4>§3.2 Inferring actions by planning</h4>
+        <p>Not imitation of Droid’s actions at test time. At test time you have a goal image. Sample or optimise $a_{0:H}$, roll out latents, minimise $\| \hat{s}_H - E(g) \|$ (plus regularisers the PDF specifies). Receding horizon: execute $a_0$, replan. That is classical MPC sitting on a latent world model.</p>
+
+        <h3>§4 Planning — zero-shot robot control</h3>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2506.09985v1/vjepa2-mpc.png" alt="V-JEPA 2-AC model-predictive control loop" loading="lazy">
+          <figcaption class="article-caption"><strong>MPC loop.</strong> RGB → $E$ → plan actions in $E$ → send to Franka → new RGB. Goal is an image, not a reward classifier.</figcaption>
+        </figure>
+        <h4>§4.1 Setup</h4>
+        <p>Franka arms, two different labs, monocular RGB, image subgoals for grasp / pick-and-place. Novel objects. No demonstrations from these robots.</p>
+        <h4>§4.2 Results</h4>
+        <p>They report success on prehensile tasks under that protocol. Read the exact success-rate table in the PDF before quoting a percentage — the abstract claims feasibility (“successfully handles”), not 99% warehouse picking. Trajectory figures (<code>traj-pnp-*.jpg</code>) are qualitative.</p>
+        <h4>§4.3 Limitations</h4>
+        <p>Read this subsection. Typical failures for latent MPC: goal image underspecifies (which mug?), long-horizon compounding in $P$, contact-rich physics $E$ never represented, camera/robot shift beyond Droid. Do not skip it to make the Franka GIF the paper.</p>
+
+        <h3>§5 Understanding — probe-based classification</h3>
+        <p>SSv2 <strong>77.3</strong> top-1 with an attentive probe (abstract). Compare to V-JEPA’s 72.2 ViT-H/16: scaling data/model moved motion understanding. Appearance tasks remain strong; the point of §5 is “frozen encoder, many tasks,” not a new loss.</p>
+
+        <h3>§6 Prediction — action anticipation</h3>
+        <p>Epic-Kitchens-100: <strong>39.7 recall-at-5</strong>, SOTA, 44% relative over previous best, attentive probe. Anticipation is the closest frozen proxy to “world model” they have without a robot: given the past, which action is coming.</p>
+
+        <h3>§7 Video question answering</h3>
+        <p>Align frozen (or lightly adapted) V-JEPA 2 encoder with an 8B LLM via visual instruction tuning (§7.1). Encoder was <em>not</em> trained with language. They treat that as a feature: conventional wisdom said you need a vision encoder trained on captions. Numbers at 8B class: PerceptionTest <strong>84.0</strong>, TempCompass <strong>76.9</strong>, MVP 44.5 paired acc, TemporalBench 36.7, TOMATO 40.3. §7.2 vs image encoders, §7.3 scale encoder size and resolution, §7.4 scale data. These numbers do not imply the Franka can answer questions.</p>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2506.09985v1/visualizations_2.png" alt="V-JEPA 2 qualitative visualisations" loading="lazy">
+          <figcaption class="article-caption"><strong>Qualitative visualisations.</strong> Use them as “what the latent attends to,” not as proof of planning.</figcaption>
+        </figure>
+
+        <h3>§8 Related work</h3>
+        <p>World models from interaction (Dreamer, TD-MPC), video generation for control, V-JEPA 1, VLAs. The contrast they want: generate pixels vs predict $E$; train only on robot hours vs pretrain on internet video then a little Droid.</p>
+
+        <h3>§9 Conclusion</h3>
+        <p>SSL from web video + a little interaction can yield a world model that understands, predicts, and plans. Hierarchical JEPA (LeCun’s stacked timescales) is still not trained here — two stages, one encoder timescale.</p>
+
+        <h3>What the paper does <em>not</em> claim</h3>
+        <p>Not a VLA (no language in the control loop). Not reward-free in LeCun’s intrinsic-cost sense — the goal is an image you provide. Not trained on the deployment robots, but also not “works in any kitchen.” Not 1M hours of <em>robot</em> data. Not hierarchical JEPA.</p>
+
+        <h2 id="tension">The engineering tension</h2>
+        <figure class="figure-block">
+          <div class="compare">
+            <div class="pane bad"><h4>Train a world model only on robot hours</h4><p>Droid is tens of hours, not a childhood. The visual system never sees a mug that was not in the lab. Planning is then overfitting to that room.</p></div>
+            <div class="pane good"><h4>Internet video, then a little Droid</h4><p>$E$ already knows objects and motion. AC only has to learn how Franka-like actions move that latent. 62 hours become plausible.</p></div>
+          </div>
+        </figure>
+        <figure class="figure-block">
+          <div class="compare">
+            <div class="pane bad"><h4>Plan by generating video</h4><p>Each candidate action sequence is a video. Too slow for MPC at control rate. Also wastes capacity on unneeded pixels.</p></div>
+            <div class="pane good"><h4>Plan in $E(\cdot)$</h4><p>Rollouts are transformer steps on embeddings. Goal score is a latent distance. That is why a 300M $P$ can sit in a control loop.</p></div>
+          </div>
+        </figure>
+
+        <h2 id="prereqs">Prerequisites</h2>
+        <ol class="prereq-list">
+          <li>
+            <b>01</b>
+            <div>
+              <h4>V-JEPA</h4>
+              <p>Stage 1 is V-JEPA scaled. If Eq. (1) from <a href="papers-vjepa.html">V-JEPA</a> is fuzzy, §2 here is unreadable.</p>
+            </div>
+          </li>
+          <li>
+            <b>02</b>
+            <div>
+              <h4>Model-predictive control</h4>
+              <p>Optimise a short action sequence, execute the first, repeat. No new ML — classical. The novelty is the model $P$ being a latent JEPA.</p>
+            </div>
+          </li>
+          <li>
+            <b>03</b>
+            <div>
+              <h4>World models</h4>
+              <p>Ha &amp; Schmidhuber: learn $s_{t+1}=f(s_t,a_t)$, plan inside it. JEPA removes the pixel decoder.</p>
+            </div>
+          </li>
+        </ol>
+        <figure class="video-embed">
+          <iframe class="video-frame" src="https://www.youtube.com/embed/b1roEd6liWI" title="World Models explained" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+          <figcaption class="article-caption">Prerequisite: imagine-then-act. V-JEPA 2-AC is that loop with $f$ in embedding space.</figcaption>
+        </figure>
+        <figure class="video-embed">
+          <iframe class="video-frame" src="https://www.youtube.com/embed/wjZofJX0v4M" title="3Blue1Brown — Transformers" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+          <figcaption class="article-caption">The AC predictor is a block-causal transformer. This is the mechanism, not a recap of the paper.</figcaption>
+        </figure>
+
+        <h2 id="graph">Knowledge graph</h2>
+        <div class="knowledge-graph">LeCun JEPA 2022
+   │
+   ├─ I-JEPA → V-JEPA
+   │         │
+   │         ▼
+   │      V-JEPA 2 encoder  (1M hours)
+   │         │
+   │         ├─ probes (SSv2, EK100)
+   │         ├─ + LLM  (VideoQA)
+   │         └─ freeze
+   │              │
+   │              ▼
+   │         V-JEPA 2-AC  (62 h Droid)
+   │              │
+   │              ▼
+   │         MPC on Franka
+   └─ Ha world models / MPC</div>
+        <figure class="figure-block">
+          <div class="graph-stack">
+            <div class="graph-level"><span class="kg-node gold">V-JEPA</span><span class="kg-node sky">1M h video</span></div>
+            <div class="graph-v">↓</div>
+            <div class="graph-level"><span class="kg-node leaf">V-JEPA 2 encoder</span></div>
+            <div class="graph-v">↓</div>
+            <div class="graph-level">
+              <span class="kg-node rose">probes / VQA</span>
+              <span class="kg-node lilac">AC predictor</span>
+            </div>
+            <div class="graph-v">↓</div>
+            <div class="graph-level"><span class="kg-node ink">zero-shot Franka MPC</span></div>
+          </div>
+        </figure>
+
+        <h2 id="arch">Two-stage architecture</h2>
+        <figure class="figure-block">
+          <div class="arch">
+            <div class="arch-row">
+              <div class="arch-box tone-sky">Internet video &gt;1M h<small>action-free</small></div>
+            </div>
+            <div class="arch-down">↓ mask-denoise JEPA</div>
+            <div class="arch-row">
+              <div class="arch-box tone-leaf">Encoder E up to 1B<small>frozen after stage 1</small></div>
+            </div>
+            <div class="arch-down">↓</div>
+            <div class="arch-row">
+              <div class="arch-box tone-gold">Attentive probes</div>
+              <div class="arch-box tone-gold">+ 8B LLM</div>
+              <div class="arch-box tone-lilac">AC predictor 300M<small>block-causal, Droid 62 h</small></div>
+            </div>
+            <div class="arch-down">↓ image goal</div>
+            <div class="arch-row">
+              <div class="arch-box tone-ink">MPC → Franka</div>
+            </div>
+          </div>
+        </figure>
+
+        <h2 id="plan">Planning / MPC</h2>
+        <p>State $s_t = E(\text{frame}_t)$. Dynamics $\hat{s}_{t+1} = P(\hat{s}_t, a_t)$. Goal $s_g = E(\text{goal image})$. Horizon $H$ short enough that $P$ does not drift off a table. Objective roughly $\sum_t \| \hat{s}_t - s_g \|$ plus action smoothness (see PDF for the exact regularisers). Receding horizon. Subgoals matter: a single goal image of “mug in the rack” is a long-horizon problem $P$ may not hold; the paper uses subgoals for grasp then place.</p>
+
+        <h2 id="results">Results, honestly</h2>
+        <table class="article-table">
+          <thead><tr><th>Fact from the paper</th><th>What it means</th></tr></thead>
+          <tbody>
+            <tr><td>SSv2 77.3 top-1 (probe)</td><td>Motion understanding after scaling. V-JEPA was 72.2 at ViT-H/16.</td></tr>
+            <tr><td>EK100 39.7 R@5, +44% relative</td><td>Frozen anticipation SOTA. Closest non-robot “prediction” number.</td></tr>
+            <tr><td>PerceptionTest 84.0, TempCompass 76.9 (8B)</td><td>VideoQA after LLM alignment. Encoder itself had no language loss.</td></tr>
+            <tr><td>&lt;62 h Droid → AC model</td><td>Interaction data is small <em>because</em> $E$ already exists. Not “62 h from scratch.”</td></tr>
+            <tr><td>Zero-shot Franka, two labs, image goals</td><td>The LeCun-loop result. Quote success tables from §4, not the GIF.</td></tr>
+            <tr><td>No in-lab robot data, no task reward</td><td>True under their protocol. Goal images are still supervision of a kind.</td></tr>
+          </tbody>
+        </table>
+        <div class="research-note">Three papers’ numbers are not interchangeable. 81.1 linear IN-1K is I-JEPA. 72.2 SSv2 is V-JEPA ViT-H/16. 77.3 SSv2 is V-JEPA 2. Mixing them is how a blog invents a model that does not exist.</div>
+
+        <h2 id="worked">Worked intuition</h2>
+        <p>Stage 1: 16-frame clip, tube tokens, mask, L1 in $E$, as V-JEPA, but the data loader now spans a million hours. Stage 2: a Droid episode is $(o_0,a_0,o_1,a_1,\ldots)$. Encode every $o_t$ once with frozen $E$ → $s_t$. Train $P$ so $P(s_t, a_t)\approx s_{t+1}$ (block-causal over the window). At test: current camera frame $o$, goal photo $g$. Sample $K$ action chunks of length $H$, roll $P$, score $\|P^{\circ H}(E(o), a_{0:H}) - E(g)\|$, execute $a_0^\star$, repeat. The Franka never sees a pixel decoder.</p>
+
+        <h2 id="caveats">Caveats</h2>
+        <ul>
+          <li>Image goals are a crutch relative to LeCun’s intrinsic cost. Someone still has to specify the photo.</li>
+          <li>Zero-shot is “zero data from these two labs,” not “any morphology, any camera.”</li>
+          <li>VQA SOTA is at the 8B language-model class, after alignment. It is not the robot stack.</li>
+          <li>Hierarchical JEPA (multiple timescales) remains a drawing in the 2022 PDF.</li>
+          <li>Contact, occlusion, and long-horizon rearrangement are exactly where latent MPC usually dies — §4.3.</li>
+        </ul>
+
+        <h2 id="study">Study plan</h2>
+        <p>90 minutes: Franka mug case (10) → Figure 1 flowchart until the three branches are distinct (10) → §2 scaling vs V-JEPA (15) → §3 AC + MPC diagram (20) → §4 limitations with the success table (15) → abstract numbers for SSv2 / EK100 / VQA, each with protocol (15) → skim <a href="papers-jepa.html">LeCun 2022</a> six-module list and mark which boxes are still empty (5).</p>
+
+        <h2 id="sources">Primary sources</h2>
+        <ul>
+          <li>Paper: <a href="https://arxiv.org/abs/2506.09985">arXiv:2506.09985</a> · <a href="https://arxiv.org/html/2506.09985v1">HTML v1</a></li>
+          <li>Code: <a href="https://github.com/facebookresearch/vjepa2">github.com/facebookresearch/vjepa2</a></li>
+          <li>Official blog: <a href="https://ai.meta.com/blog/v-jepa-2-world-model-benchmarks">Meta AI — V-JEPA 2</a></li>
+          <li>Family: <a href="papers-jepa.html">JEPA 2022</a> · <a href="papers-ijepa.html">I-JEPA</a> · <a href="papers-vjepa.html">V-JEPA</a></li>
+        </ul>
+        <div class="citation">
+          <strong>BibTeX</strong>
+          <pre>@article{assran2025vjepa2,
+  title={V-JEPA 2: Self-Supervised Video Models Enable Understanding, Prediction and Planning},
+  author={Assran, Mahmoud and Bardes, Adrien and Fan, David and Garrido, Quentin and Howes, Russell and Komeili, Mojtaba and Muckley, Matthew and Rizvi, Ammar and Roberts, Claire and Sinha, Koustuv and others},
+  journal={arXiv preprint arXiv:2506.09985},
+  year={2025}
+}</pre>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="editorial-footer">
+    <div><strong>AI Research Lab</strong><p>Self-contained companion. Primary sources only.</p></div>
+    <div class="footer-links">
+      <a href="papers.html">All guides</a>
+      <a href="curriculum.html">Curriculum</a>
+    </div>
+  </footer>
+  <script>
+    window.addEventListener('scroll', () => {
+      const bar = document.getElementById('reading-progress-bar');
+      if (!bar) return;
+      const h = document.documentElement;
+      const p = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100 || 0;
+      bar.style.width = p + '%';
+    });
+  </script>
+</body>
+</html>

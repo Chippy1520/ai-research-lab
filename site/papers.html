@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Self-contained paper reading guides: SmolVLA, VGGT, ACT, STLight. Human case study first, then mapped onto the paper.">
+  <meta name="description" content="Self-contained paper reading guides: SmolVLA, VGGT, ACT, STLight, JEPA, I-JEPA, V-JEPA, V-JEPA 2. Human case study first, then mapped onto the paper.">
   <meta name="theme-color" content="#f3f0e8">
   <title>Paper Reading Guides · AI Research Lab</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,7 +37,7 @@
         <p class="publication-deck">Each guide starts the way a human would solve the problem — a concrete case study — then maps every step onto the paper’s modules. Diagrams, comparison charts, and embedded lectures sit next to the mapping. Jargon comes second.</p>
       </div>
       <div class="byline-row">
-        <div><span>Papers</span><b>4</b></div>
+        <div><span>Papers</span><b>8</b></div>
         <div><span>Excluded</span><b>CLIP-Meets-DINO · FaultAdapt</b></div>
         <div><span>Method</span><b>Human case → framework map</b></div>
         <div><span>Hosting</span><b>This repository only</b></div>
@@ -67,6 +67,30 @@
         <h3>STLight</h3>
         <div class="paper-meta">Spatio-temporal prediction · arXiv 2411.10198 · November 2024</div>
         <p>Case study: watching a bouncing ball and predicting the next second without narrating every past frame — then joint space–time patches and a convolutional mixer instead of an RNN.</p>
+      </a>
+
+      <a class="paper-card tone-a" href="papers-jepa.html">
+        <h3>JEPA · LeCun 2022</h3>
+        <div class="paper-meta">World models · OpenReview BZ5a1r-kVsf · June 2022</div>
+        <p>Case study: walking into a stranger’s kitchen and predicting the mug will stay, not rendering the steam — then the six-module agent whose world model is a Joint Embedding Predictive Architecture.</p>
+      </a>
+
+      <a class="paper-card tone-b" href="papers-ijepa.html">
+        <h3>I-JEPA</h3>
+        <div class="paper-meta">Self-supervised images · CVPR 2023 · arXiv 2301.08243</div>
+        <p>Case study: a notebook covering a dog’s head — you guess “dog head, this pose,” not fur pixels. Then context ViT, EMA targets, multi-block masking, no SimCLR jitter.</p>
+      </a>
+
+      <a class="paper-card tone-c" href="papers-vjepa.html">
+        <h3>V-JEPA</h3>
+        <div class="paper-meta">Self-supervised video · arXiv 2404.08471 · February 2024</div>
+        <p>Case study: a sleeve covering a coffee pour — you still know the pour continues. Then tube masking, L1 in feature space, one frozen backbone for Kinetics and Something-Something.</p>
+      </a>
+
+      <a class="paper-card tone-d" href="papers-vjepa2.html">
+        <h3>V-JEPA 2</h3>
+        <div class="paper-meta">World model + planning · arXiv 2506.09985 · June 2025</div>
+        <p>Case study: years of watching, a weekend of moving your arms, then picking up a new mug from a photo goal. Then 1M-hour pretrain, 62 h Droid, zero-shot Franka MPC in latent space.</p>
       </a>
     </div>
 
