@@ -28,6 +28,8 @@
   <div class="mm-shell">
     <div class="mm-stage" id="mm-stage">
       <div class="mm-toolbar">
+        <button type="button" class="mm-navbtn" id="mm-back" aria-label="Go back one layer">← Back</button>
+        <button type="button" class="mm-navbtn" id="mm-top" aria-label="Collapse to the field">Top</button>
         <nav class="mm-crumb" id="mm-crumb" aria-label="Layer path"></nav>
         <input id="mm-search" type="search" placeholder="Find a node…" enterkeyhint="search" aria-label="Find a node">
       </div>
@@ -42,7 +44,7 @@
         <span><i class="k-framework"></i>code</span>
         <span><i class="k-lab"></i>lab</span>
       </div>
-      <p class="mm-hint">Click an orb to go one layer deeper. The bar is the path back.</p>
+      <p class="mm-hint">Back / tap empty / Esc collapses a layer. Click an orb to go deeper.</p>
     </div>
     <aside class="mm-panel" id="mm-panel" aria-live="polite">
       <button type="button" class="mm-sheet-bar" id="mm-sheet-toggle" aria-label="Expand or collapse details">

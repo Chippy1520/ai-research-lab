@@ -4,6 +4,8 @@
   const search = document.getElementById("mm-search");
   const body = document.getElementById("mm-panel-body");
   const sheetToggle = document.getElementById("mm-sheet-toggle");
+  const backBtn = document.getElementById("mm-back");
+  const topBtn = document.getElementById("mm-top");
   if (!svg) return;
 
   const KIND = {
@@ -27,6 +29,7 @@
   const view = { x: 0, y: 0, s: 1 };
   let world = null;
   let drag = null;
+  let dragged = false;
 
   function phone() {
     return window.matchMedia("(max-width: 860px)").matches;
@@ -157,7 +160,7 @@
       const c = el("circle", { r: p.r });
       g.appendChild(c);
       const t = el("text", { y: p.r + 14 });
-      t.textContent = p.up ? "↑ " + n.label : n.label;
+      t.textContent = p.up ? "← back" : n.label;
       g.appendChild(t);
       g.addEventListener("click", (ev) => {
         ev.stopPropagation();
@@ -205,7 +208,9 @@
     const relatedJobs = jobsFor(n);
     const intern = relatedJobs.filter((j) => j.seniority === "internship");
     document.body.classList.add("mm-sheet-open");
+    const canUp = !!(n.parent && byId[n.parent]);
     body.innerHTML = `
+      ${canUp ? `<p><button type="button" class="mm-navbtn" id="mm-panel-back">← Back</button></p>` : ""}
       <div class="mm-kicker">${KIND[n.kind] || n.kind} · layer ${n.layer ?? "—"}</div>
       <h2>${n.label}</h2>
       <p>${n.brief || ""}</p>
@@ -230,7 +235,25 @@
         onOrb(a.dataset.go);
       });
     });
+    const pb = document.getElementById("mm-panel-back");
+    if (pb) pb.addEventListener("click", goBack);
     body.scrollTop = 0;
+  }
+
+  function syncNav() {
+    const f = byId[focus];
+    const up = !!(f && f.parent && byId[f.parent]);
+    if (backBtn) backBtn.disabled = !up;
+    if (topBtn) topBtn.disabled = !f || f.id === graph.center;
+  }
+
+  function goBack() {
+    const f = byId[focus];
+    if (f?.parent && byId[f.parent]) setFocus(f.parent);
+  }
+
+  function goTop() {
+    setFocus(graph.center || "embodied-ai");
   }
 
   function setFocus(id, open = true) {
@@ -240,6 +263,7 @@
     view.y = 0;
     view.s = 1;
     draw();
+    syncNav();
     if (open) openPanel(id);
   }
 
@@ -247,8 +271,8 @@
     const n = byId[id];
     if (!n) return;
     if (id === focus) {
-      openPanel(id);
-      draw();
+      if (n.parent && byId[n.parent]) goBack();
+      else openPanel(id);
       return;
     }
     if (id === n.parent || (byId[focus] && id === byId[focus].parent)) {
@@ -265,16 +289,21 @@
 
   svg.addEventListener("pointerdown", (e) => {
     if (e.target.closest(".mm-node")) return;
-    drag = { x: e.clientX - view.x, y: e.clientY - view.y };
+    drag = { x: e.clientX - view.x, y: e.clientY - view.y, sx: e.clientX, sy: e.clientY };
+    dragged = false;
     svg.setPointerCapture(e.pointerId);
   });
   svg.addEventListener("pointermove", (e) => {
     if (!drag) return;
+    if (Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy) > 8) dragged = true;
     view.x = e.clientX - drag.x;
     view.y = e.clientY - drag.y;
     applyView();
   });
-  svg.addEventListener("pointerup", () => { drag = null; });
+  svg.addEventListener("pointerup", () => {
+    if (drag && !dragged) goBack();
+    drag = null;
+  });
   svg.addEventListener("wheel", (e) => {
     e.preventDefault();
     const next = Math.min(2.4, Math.max(0.4, view.s * (e.deltaY > 0 ? 0.92 : 1.08)));
@@ -290,6 +319,16 @@
   }, { passive: false });
 
   if (sheetToggle) sheetToggle.addEventListener("click", () => document.body.classList.toggle("mm-sheet-open"));
+  if (backBtn) backBtn.addEventListener("click", goBack);
+  if (topBtn) topBtn.addEventListener("click", goTop);
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" || e.key === "Backspace") {
+      if (e.target === search) return;
+      e.preventDefault();
+      goBack();
+    }
+    if (e.key === "Home" && e.target !== search) goTop();
+  });
 
   let searchT = 0;
   search.addEventListener("input", () => {
