@@ -7,6 +7,10 @@
   "changelog": [
     {
       "date": "2026-09-12",
+      "note": "Unexplored neighbors: RT-1/2, OXE, Octo, GR00T N1.5, Gemini Robotics 2, Helix, WBC, CoTracker, MASt3R, Depth Anything, sim-to-real, offline RL, PPO/SAC, cross-embodiment, LIBERO, Cosmos, MuJoCo, NVIDIA GEAR, DeepMind Robotics, Dexterity, Persona, Foundation, Eagle 2.5, RDT-1B, VQ-BeT."
+    },
+    {
+      "date": "2026-09-12",
       "note": "Seed graph from SmolVLA, VGGT, ACT, STLight, GEN-1.5, Skild S1, and tracked US embodied-AI labs."
     }
   ],
@@ -26,8 +30,16 @@
         "Async / edge inference so policies keep up with 30–100 Hz control"
       ],
       "resources": [
-        {"type": "guide", "title": "Paper guides hub", "url": "papers.html"},
-        {"type": "intel", "title": "Robotics intelligence desk", "url": "index.html"}
+        {
+          "type": "guide",
+          "title": "Paper guides hub",
+          "url": "papers.html"
+        },
+        {
+          "type": "intel",
+          "title": "Robotics intelligence desk",
+          "url": "index.html"
+        }
       ]
     },
     {
@@ -37,7 +49,10 @@
       "domain": "perception",
       "brief": "Turn pixels (and maybe depth) into geometry, semantics, and tracks the policy can condition on.",
       "why": "A VLA that cannot see 3D structure or correspondences is guessing in image space.",
-      "research_directions": ["Feed-forward multi-view 3D", "Self-supervised ViT features as robot backbones"]
+      "research_directions": [
+        "Feed-forward multi-view 3D",
+        "Self-supervised ViT features as robot backbones"
+      ]
     },
     {
       "id": "learning",
@@ -46,7 +61,11 @@
       "domain": "learning",
       "brief": "How a robot acquires a skill: copy a human, optimize a reward, or prompt a pretrained model in context.",
       "why": "ACT, DAgger, RL, and GEN-1.5 are different answers to the same compounding-error problem.",
-      "research_directions": ["Chunked imitation", "In-context physical prompting", "Offline RL on robot logs"]
+      "research_directions": [
+        "Chunked imitation",
+        "In-context physical prompting",
+        "Offline RL on robot logs"
+      ]
     },
     {
       "id": "policy",
@@ -55,7 +74,11 @@
       "domain": "policy",
       "brief": "The mapping π(cameras, language, state) → actions. Chunked BC, diffusion/flow experts, discrete tokens, or LLM-centric VLAs.",
       "why": "This is what you train in LeRobot. Size, tokenizer, and inference stack decide whether it runs on a 4090 or a cluster.",
-      "research_directions": ["Flow vs diffusion experts", "Layer skip / token prune", "Async chunk queues"]
+      "research_directions": [
+        "Flow vs diffusion experts",
+        "Layer skip / token prune",
+        "Async chunk queues"
+      ]
     },
     {
       "id": "systems",
@@ -64,7 +87,11 @@
       "domain": "systems",
       "brief": "Datasets, simulators, middleware, and inference stacks that make the papers runnable on a real arm.",
       "why": "Without LeRobotDataset, Isaac, or an async client/server, a VLA is a PDF.",
-      "research_directions": ["Unified robot datasets", "Sim-to-real without rendering in pretrain", "On-robot async inference"]
+      "research_directions": [
+        "Unified robot datasets",
+        "Sim-to-real without rendering in pretrain",
+        "On-robot async inference"
+      ]
     },
     {
       "id": "labs",
@@ -73,7 +100,10 @@
       "domain": "labs",
       "brief": "Who is shipping generalist robot models or humanoids, and who is hiring. Click a lab for careers and internships from the intelligence desk.",
       "why": "Research directions and jobs are the same graph: Helix, GEN-1.5, π₀, S1 are both papers-to-read and employers.",
-      "research_directions": ["Track one-shot claims independently", "Prefer official careers pages"]
+      "research_directions": [
+        "Track one-shot claims independently",
+        "Prefer official careers pages"
+      ]
     },
     {
       "id": "behavior-cloning",
@@ -82,7 +112,13 @@
       "domain": "learning",
       "brief": "Supervised map from observation to expert action. Fast to train, fails when the policy leaves the demo manifold — compounding error.",
       "why": "Every LeRobot ACT/SmolVLA fine-tune is still BC at heart.",
-      "resources": [{"type": "paper", "title": "DAgger", "url": "https://arxiv.org/abs/1011.0686"}]
+      "resources": [
+        {
+          "type": "paper",
+          "title": "DAgger",
+          "url": "https://arxiv.org/abs/1011.0686"
+        }
+      ]
     },
     {
       "id": "compounding-error",
@@ -92,8 +128,16 @@
       "brief": "A slightly wrong action, integrated at 30–50 Hz, puts the robot in states no demonstration showed. Horizon length is the enemy.",
       "why": "ACT's chunk size k is a horizon hack. DAgger is an interactive-relabel hack. GEN-1.5 tries to skip both with in-context demos.",
       "resources": [
-        {"type": "paper", "title": "DAgger · Ross et al.", "url": "https://arxiv.org/abs/1011.0686"},
-        {"type": "guide", "title": "ACT guide", "url": "papers-act.html"}
+        {
+          "type": "paper",
+          "title": "DAgger · Ross et al.",
+          "url": "https://arxiv.org/abs/1011.0686"
+        },
+        {
+          "type": "guide",
+          "title": "ACT guide",
+          "url": "papers-act.html"
+        }
       ]
     },
     {
@@ -103,7 +147,13 @@
       "domain": "learning",
       "brief": "Predict k future joint commands at once, π(a_{t:t+k}|o_t). Effective horizon becomes T/k. Ablation in ACT: k=1 ~1% vs k=100 ~44% on the sim average.",
       "why": "SmolVLA, Diffusion Policy, and π₀ all still emit chunks. The fight moved to how the chunk is generated.",
-      "resources": [{"type": "guide", "title": "ACT", "url": "papers-act.html"}]
+      "resources": [
+        {
+          "type": "guide",
+          "title": "ACT",
+          "url": "papers-act.html"
+        }
+      ]
     },
     {
       "id": "cvae",
@@ -113,8 +163,16 @@
       "brief": "Model multimodal human demos as z ~ q(z|chunk, proprio); at test set z=0. ACT's answer to pauses and style.",
       "why": "SmolVLA drops this for flow matching. Know why before you delete z.",
       "resources": [
-        {"type": "paper", "title": "VAE · Kingma & Welling", "url": "https://arxiv.org/abs/1312.6114"},
-        {"type": "guide", "title": "ACT", "url": "papers-act.html"}
+        {
+          "type": "paper",
+          "title": "VAE · Kingma & Welling",
+          "url": "https://arxiv.org/abs/1312.6114"
+        },
+        {
+          "type": "guide",
+          "title": "ACT",
+          "url": "papers-act.html"
+        }
       ]
     },
     {
@@ -124,7 +182,13 @@
       "domain": "policy",
       "brief": "Query a new chunk every tick, average overlaps with w_i=exp(−m i). Smooth, expensive — a forward pass per control step.",
       "why": "SmolVLA async is the cheap cousin: infer only when the queue fraction drops below g.",
-      "resources": [{"type": "guide", "title": "ACT", "url": "papers-act.html"}]
+      "resources": [
+        {
+          "type": "guide",
+          "title": "ACT",
+          "url": "papers-act.html"
+        }
+      ]
     },
     {
       "id": "flow-matching",
@@ -134,8 +198,16 @@
       "brief": "Regress a velocity field that transports noise to data along nearly straight ODE paths. Fewer function evaluations than diffusion.",
       "why": "SmolVLA's action expert is 0.75d because the path is short. Lipman et al. 2210.02747 is the paper.",
       "resources": [
-        {"type": "paper", "title": "Flow Matching for Generative Modeling", "url": "https://arxiv.org/abs/2210.02747"},
-        {"type": "video", "title": "Outlier: Flow Matching", "url": "https://www.youtube.com/watch?v=7cMzfkWFWhI"}
+        {
+          "type": "paper",
+          "title": "Flow Matching for Generative Modeling",
+          "url": "https://arxiv.org/abs/2210.02747"
+        },
+        {
+          "type": "video",
+          "title": "Outlier: Flow Matching",
+          "url": "https://www.youtube.com/watch?v=7cMzfkWFWhI"
+        }
       ]
     },
     {
@@ -145,7 +217,13 @@
       "domain": "policy",
       "brief": "Chi et al.: denoise an action chunk. Same chunking instinct as ACT, different generative head. LeRobot ships it next to ACT.",
       "why": "The other baseline you will actually train before a VLA.",
-      "resources": [{"type": "paper", "title": "arXiv 2303.04137", "url": "https://arxiv.org/abs/2303.04137"}]
+      "resources": [
+        {
+          "type": "paper",
+          "title": "arXiv 2303.04137",
+          "url": "https://arxiv.org/abs/2303.04137"
+        }
+      ]
     },
     {
       "id": "act",
@@ -155,9 +233,21 @@
       "brief": "Zhao et al., RSS 2023. Chunk + CVAE + temporal ensemble on ALOHA. ~80M, 50 demos, fine bimanual contact. LeRobot's recommended first policy.",
       "why": "The design space later VLAs still live in.",
       "resources": [
-        {"type": "guide", "title": "Our ACT guide", "url": "papers-act.html"},
-        {"type": "paper", "title": "arXiv 2304.13705", "url": "https://arxiv.org/abs/2304.13705"},
-        {"type": "docs", "title": "LeRobot ACT", "url": "https://huggingface.co/docs/lerobot/act"}
+        {
+          "type": "guide",
+          "title": "Our ACT guide",
+          "url": "papers-act.html"
+        },
+        {
+          "type": "paper",
+          "title": "arXiv 2304.13705",
+          "url": "https://arxiv.org/abs/2304.13705"
+        },
+        {
+          "type": "docs",
+          "title": "LeRobot ACT",
+          "url": "https://huggingface.co/docs/lerobot/act"
+        }
       ]
     },
     {
@@ -168,9 +258,21 @@
       "brief": "Hugging Face, 450M. SmolVLM-2 + flow expert, community data, async inference. LIBERO-competitive with 10× smaller VLAs. SO-100 average 78.3% after community pretrain (51.7 without).",
       "why": "The open, one-GPU VLA you can actually fine-tune.",
       "resources": [
-        {"type": "guide", "title": "Our SmolVLA guide", "url": "papers-smolvla.html"},
-        {"type": "paper", "title": "arXiv 2506.01844", "url": "https://arxiv.org/abs/2506.01844"},
-        {"type": "code", "title": "LeRobot", "url": "https://github.com/huggingface/lerobot"}
+        {
+          "type": "guide",
+          "title": "Our SmolVLA guide",
+          "url": "papers-smolvla.html"
+        },
+        {
+          "type": "paper",
+          "title": "arXiv 2506.01844",
+          "url": "https://arxiv.org/abs/2506.01844"
+        },
+        {
+          "type": "code",
+          "title": "LeRobot",
+          "url": "https://github.com/huggingface/lerobot"
+        }
       ]
     },
     {
@@ -180,7 +282,13 @@
       "domain": "policy",
       "brief": "Kim et al., 7B discrete action tokens on public robot data. The heavy open baseline SmolVLA is sized against.",
       "why": "Read the tokenizer to see what flow matching is refusing.",
-      "resources": [{"type": "paper", "title": "arXiv 2406.09246", "url": "https://arxiv.org/abs/2406.09246"}]
+      "resources": [
+        {
+          "type": "paper",
+          "title": "arXiv 2406.09246",
+          "url": "https://arxiv.org/abs/2406.09246"
+        }
+      ]
     },
     {
       "id": "pi0",
@@ -189,7 +297,13 @@
       "domain": "policy",
       "brief": "Physical Intelligence: Paligemma-scale VLM + diffusion/flow action expert. Cross-embodiment generalist. ~3–7× SmolVLA in params.",
       "why": "The industrial VLA recipe. GEN-1.5 and Skild S1 are the 2026 one-shot cousins.",
-      "resources": [{"type": "paper", "title": "arXiv 2410.24164", "url": "https://arxiv.org/abs/2410.24164"}]
+      "resources": [
+        {
+          "type": "paper",
+          "title": "arXiv 2410.24164",
+          "url": "https://arxiv.org/abs/2410.24164"
+        }
+      ]
     },
     {
       "id": "gen15",
@@ -204,8 +318,16 @@
         "Sim-prompt → real rollout with no sim in pretrain"
       ],
       "resources": [
-        {"type": "blog", "title": "GEN-1.5 blog (Generalist)", "url": "https://generalistai.com/blog/gen-1.5"},
-        {"type": "video", "title": "Introducing GEN-1.5", "url": "https://www.youtube.com/watch?v=1cllCVK-9lo"}
+        {
+          "type": "blog",
+          "title": "GEN-1.5 blog (Generalist)",
+          "url": "https://generalistai.com/blog/gen-1.5"
+        },
+        {
+          "type": "video",
+          "title": "Introducing GEN-1.5",
+          "url": "https://www.youtube.com/watch?v=1cllCVK-9lo"
+        }
       ],
       "company_id": "generalist-ai"
     },
@@ -216,7 +338,13 @@
       "domain": "policy",
       "brief": "Skild AI foundation model: long-horizon tasks from a single video prompt, in-context, no weight update. Company-reported ~66% per-step vs 9% baseline; trained with NVIDIA Isaac Lab / Cosmos. Cross-embodiment is the pitch.",
       "why": "Same 2026 one-shot cluster as GEN-1.5, different lab. Compare claims, don't merge them.",
-      "resources": [{"type": "news", "title": "S1 on NVIDIA infra (Sep 2026)", "url": "https://iottechnews.com/news/skild-trains-s1-robot-physical-ai-model-on-nvidia-infrastructure/"}],
+      "resources": [
+        {
+          "type": "news",
+          "title": "S1 on NVIDIA infra (Sep 2026)",
+          "url": "https://iottechnews.com/news/skild-trains-s1-robot-physical-ai-model-on-nvidia-infrastructure/"
+        }
+      ],
       "company_id": "skild-ai"
     },
     {
@@ -227,9 +355,21 @@
       "brief": "CVPR 2025 Best Paper. One transformer: cameras, depth, points, tracks from 1–hundreds of views in <1 s, often beating BA-based pipelines. At test, fuse depth+cameras rather than the point-map head.",
       "why": "A perception backbone for robots that need 3D without a COLMAP ritual.",
       "resources": [
-        {"type": "guide", "title": "Our VGGT guide", "url": "papers-vggt.html"},
-        {"type": "paper", "title": "arXiv 2503.11651", "url": "https://arxiv.org/abs/2503.11651"},
-        {"type": "code", "title": "facebookresearch/vggt", "url": "https://github.com/facebookresearch/vggt"}
+        {
+          "type": "guide",
+          "title": "Our VGGT guide",
+          "url": "papers-vggt.html"
+        },
+        {
+          "type": "paper",
+          "title": "arXiv 2503.11651",
+          "url": "https://arxiv.org/abs/2503.11651"
+        },
+        {
+          "type": "code",
+          "title": "facebookresearch/vggt",
+          "url": "https://github.com/facebookresearch/vggt"
+        }
       ]
     },
     {
@@ -239,7 +379,13 @@
       "domain": "perception",
       "brief": "Self-supervised ViT features. VGGT's patch encoder; also a common frozen vision tower in VLAs.",
       "why": "If you swap the vision encoder, you are arguing with this paper.",
-      "resources": [{"type": "paper", "title": "arXiv 2304.07193", "url": "https://arxiv.org/abs/2304.07193"}]
+      "resources": [
+        {
+          "type": "paper",
+          "title": "arXiv 2304.07193",
+          "url": "https://arxiv.org/abs/2304.07193"
+        }
+      ]
     },
     {
       "id": "dust3r",
@@ -248,7 +394,13 @@
       "domain": "perception",
       "brief": "Two images → point maps, then global alignment for N>2. VGGT's nearest ancestor and the post-process it deletes.",
       "why": "Read the alignment section before claiming VGGT 'just does DUSt3R faster.'",
-      "resources": [{"type": "paper", "title": "arXiv 2312.14132", "url": "https://arxiv.org/abs/2312.14132"}]
+      "resources": [
+        {
+          "type": "paper",
+          "title": "arXiv 2312.14132",
+          "url": "https://arxiv.org/abs/2312.14132"
+        }
+      ]
     },
     {
       "id": "stlight",
@@ -258,8 +410,16 @@
       "brief": "Fully convolutional future-frame prediction. Fold time into channels, STLMixer, PixelShuffle. SOTA STL at a fraction of PredRNN FLOPs (2% on KTH 10→20 for STLight-L).",
       "why": "Video dynamics / world-model cousin of robot policies. Not a VLA.",
       "resources": [
-        {"type": "guide", "title": "Our STLight guide", "url": "papers-stlight.html"},
-        {"type": "paper", "title": "arXiv 2411.10198", "url": "https://arxiv.org/abs/2411.10198"}
+        {
+          "type": "guide",
+          "title": "Our STLight guide",
+          "url": "papers-stlight.html"
+        },
+        {
+          "type": "paper",
+          "title": "arXiv 2411.10198",
+          "url": "https://arxiv.org/abs/2411.10198"
+        }
       ]
     },
     {
@@ -269,7 +429,10 @@
       "domain": "learning",
       "brief": "Predict future observations (or latents) to plan. STL, video DMs, and some VLA 'imagination' heads sit here. STLight is the efficient CNN end; GEN-1.5's 30 s memory is the foundation-model end.",
       "why": "A policy that can predict contact is halfway to recovering from it.",
-      "research_directions": ["Wrist-cam STL as collision prior", "Latent world models for humanoids"]
+      "research_directions": [
+        "Wrist-cam STL as collision prior",
+        "Latent world models for humanoids"
+      ]
     },
     {
       "id": "rl",
@@ -278,8 +441,17 @@
       "domain": "learning",
       "brief": "Learn from reward, not (only) demos. On real robots: expensive, unsafe, sample-hungry. Still the path for locomotion, recovery, and improving a cloned policy.",
       "why": "Humanoid labs mix IL for manipulation with RL for balance. Don't pretend BC replaced RL.",
-      "research_directions": ["Offline RL on teleop logs", "RL fine-tune of a VLA action expert"],
-      "resources": [{"type": "docs", "title": "Isaac Lab", "url": "https://developer.nvidia.com/isaac/lab"}]
+      "research_directions": [
+        "Offline RL on teleop logs",
+        "RL fine-tune of a VLA action expert"
+      ],
+      "resources": [
+        {
+          "type": "docs",
+          "title": "Isaac Lab",
+          "url": "https://developer.nvidia.com/isaac/lab"
+        }
+      ]
     },
     {
       "id": "lerobot",
@@ -289,8 +461,16 @@
       "brief": "Hugging Face stack: LeRobotDataset, ACT, Diffusion, SmolVLA, π₀ ports, SO-100/101. Teleoperate → record → train → deploy with one CLI.",
       "why": "If you train a policy this year, you will touch this repo.",
       "resources": [
-        {"type": "code", "title": "github.com/huggingface/lerobot", "url": "https://github.com/huggingface/lerobot"},
-        {"type": "docs", "title": "LeRobot docs", "url": "https://huggingface.co/docs/lerobot"}
+        {
+          "type": "code",
+          "title": "github.com/huggingface/lerobot",
+          "url": "https://github.com/huggingface/lerobot"
+        },
+        {
+          "type": "docs",
+          "title": "LeRobot docs",
+          "url": "https://huggingface.co/docs/lerobot"
+        }
       ]
     },
     {
@@ -300,7 +480,13 @@
       "domain": "systems",
       "brief": "NVIDIA robot learning sim. Skild cites it for S1 experience. GPU-parallel RL and synthetic data.",
       "why": "The sim side of foundation-model pretraining when you don't have a factory fleet.",
-      "resources": [{"type": "docs", "title": "Isaac Lab", "url": "https://developer.nvidia.com/isaac/lab"}]
+      "resources": [
+        {
+          "type": "docs",
+          "title": "Isaac Lab",
+          "url": "https://developer.nvidia.com/isaac/lab"
+        }
+      ]
     },
     {
       "id": "ros2",
@@ -309,7 +495,13 @@
       "domain": "systems",
       "brief": "Robot middleware: topics, tf, controllers. Not a policy. Still how most arms talk to cameras and drivers.",
       "why": "LeRobot can hide it; production stacks usually don't.",
-      "resources": [{"type": "docs", "title": "ROS 2 docs", "url": "https://docs.ros.org/en/humble/"}]
+      "resources": [
+        {
+          "type": "docs",
+          "title": "ROS 2 docs",
+          "url": "https://docs.ros.org/en/humble/"
+        }
+      ]
     },
     {
       "id": "async-infer",
@@ -318,7 +510,13 @@
       "domain": "systems",
       "brief": "Decouple RobotClient (pops actions at Δt) from PolicyServer (fills chunks when queue < g). SmolVLA: similar success, ~30% shorter task time (13.75s → 9.7s pick-place).",
       "why": "The systems paper hiding inside a VLA paper. Edge robots live or die here.",
-      "resources": [{"type": "guide", "title": "SmolVLA §3.3", "url": "papers-smolvla.html#walk"}]
+      "resources": [
+        {
+          "type": "guide",
+          "title": "SmolVLA §3.3",
+          "url": "papers-smolvla.html#walk"
+        }
+      ]
     },
     {
       "id": "aloha",
@@ -328,8 +526,16 @@
       "brief": "Low-cost bimanual (ALOHA) and 3D-printed 6-DoF (SO-100/101) teleop. Leader joints are the actions; cheap hardware is the data engine.",
       "why": "Community VLA data exists because these arms exist.",
       "resources": [
-        {"type": "guide", "title": "ACT / ALOHA", "url": "papers-act.html"},
-        {"type": "code", "title": "SO-ARM100", "url": "https://github.com/TheRobotStudio/SO-ARM100"}
+        {
+          "type": "guide",
+          "title": "ACT / ALOHA",
+          "url": "papers-act.html"
+        },
+        {
+          "type": "code",
+          "title": "SO-ARM100",
+          "url": "https://github.com/TheRobotStudio/SO-ARM100"
+        }
       ]
     },
     {
@@ -339,7 +545,10 @@
       "domain": "learning",
       "brief": "Put a short sensorimotor demo in the model's context window; the robot attempts the task with no SGD. GEN-1.5's name for it; Skild S1's video prompt is the same cluster.",
       "why": "If this becomes real outside one lab, dataset size is no longer the only scaling law.",
-      "research_directions": ["Public one-shot benchmark on SO-100", "Prompt composition for long horizon"]
+      "research_directions": [
+        "Public one-shot benchmark on SO-100",
+        "Prompt composition for long horizon"
+      ]
     },
     {
       "id": "figure-ai",
@@ -350,8 +559,16 @@
       "why": "Helix is a closed VLA; careers are the open artifact.",
       "company_id": "figure-ai",
       "resources": [
-        {"type": "company", "title": "figure.ai", "url": "https://www.figure.ai/"},
-        {"type": "jobs", "title": "Careers", "url": "https://www.figure.ai/careers"}
+        {
+          "type": "company",
+          "title": "figure.ai",
+          "url": "https://www.figure.ai/"
+        },
+        {
+          "type": "jobs",
+          "title": "Careers",
+          "url": "https://www.figure.ai/careers"
+        }
       ]
     },
     {
@@ -361,7 +578,13 @@
       "domain": "labs",
       "brief": "Austin. Apollo humanoid, fleet tooling, manufacturing. Largest opening count on this desk as of the last jobs scrape.",
       "company_id": "apptronik",
-      "resources": [{"type": "jobs", "title": "Job listings", "url": "https://apptronik.com/careers/job-listings"}]
+      "resources": [
+        {
+          "type": "jobs",
+          "title": "Job listings",
+          "url": "https://apptronik.com/careers/job-listings"
+        }
+      ]
     },
     {
       "id": "agility",
@@ -370,7 +593,13 @@
       "domain": "labs",
       "brief": "Digit for logistics. More deployed biped-hours than most humanoid startups. Perception + locomotion stack, not a public VLA.",
       "company_id": "agility-robotics",
-      "resources": [{"type": "company", "title": "agilityrobotics.com", "url": "https://www.agilityrobotics.com/"}]
+      "resources": [
+        {
+          "type": "company",
+          "title": "agilityrobotics.com",
+          "url": "https://www.agilityrobotics.com/"
+        }
+      ]
     },
     {
       "id": "physical-intelligence",
@@ -379,7 +608,13 @@
       "domain": "labs",
       "brief": "π₀ / generalist policies, no humanoid hardware of their own. The model lab behind the industrial VLA recipe.",
       "company_id": "physical-intelligence",
-      "resources": [{"type": "company", "title": "physicalintelligence.company", "url": "https://www.physicalintelligence.company/"}]
+      "resources": [
+        {
+          "type": "company",
+          "title": "physicalintelligence.company",
+          "url": "https://www.physicalintelligence.company/"
+        }
+      ]
     },
     {
       "id": "generalist-ai",
@@ -388,7 +623,13 @@
       "domain": "labs",
       "brief": "GEN-1.5 one-shot learner. Manufacturing/manipulation across hardware. First-party evals only — keep that on the node.",
       "company_id": "generalist-ai",
-      "resources": [{"type": "blog", "title": "GEN-1.5", "url": "https://generalistai.com/blog/gen-1.5"}]
+      "resources": [
+        {
+          "type": "blog",
+          "title": "GEN-1.5",
+          "url": "https://generalistai.com/blog/gen-1.5"
+        }
+      ]
     },
     {
       "id": "skild-ai",
@@ -397,7 +638,13 @@
       "domain": "labs",
       "brief": "Omni-bodied foundation models. S1: video-prompt long-horizon tasks. Isaac Lab + Cosmos for experience.",
       "company_id": "skild-ai",
-      "resources": [{"type": "company", "title": "skild.ai", "url": "https://www.skild.ai/"}]
+      "resources": [
+        {
+          "type": "company",
+          "title": "skild.ai",
+          "url": "https://www.skild.ai/"
+        }
+      ]
     },
     {
       "id": "huggingface",
@@ -405,7 +652,13 @@
       "kind": "lab",
       "domain": "labs",
       "brief": "Open stack + SmolVLA. Not a humanoid company; it is the public training substrate.",
-      "resources": [{"type": "code", "title": "LeRobot", "url": "https://github.com/huggingface/lerobot"}]
+      "resources": [
+        {
+          "type": "code",
+          "title": "LeRobot",
+          "url": "https://github.com/huggingface/lerobot"
+        }
+      ]
     },
     {
       "id": "tesla-optimus",
@@ -430,67 +683,929 @@
       "domain": "labs",
       "brief": "NEO home humanoid, embodied-AI data collection. Norwegian-founded, US operations on the desk.",
       "company_id": "1x-technologies"
+    },
+    {
+      "id": "rt2",
+      "label": "RT-2",
+      "kind": "paper",
+      "domain": "policy",
+      "brief": "Google DeepMind 2023: fine-tune a web VLM to emit action tokens. Named the VLA. Closed, billions of params — the paper every later VLA is answering.",
+      "why": "Without RT-2 there is no VLA node. SmolVLA, OpenVLA, and π₀ are size-and-openness replies.",
+      "resources": [
+        {
+          "type": "paper",
+          "title": "RT-2 · Brohan et al.",
+          "url": "https://arxiv.org/abs/2307.15818"
+        }
+      ]
+    },
+    {
+      "id": "rt1",
+      "label": "RT-1",
+      "kind": "paper",
+      "domain": "policy",
+      "brief": "35M transformer on robot demos only, before the VLM graft. The from-scratch ancestor Octo still resembles.",
+      "why": "The non-VLM baseline when someone claims we needed a 7B VLM.",
+      "resources": [
+        {
+          "type": "paper",
+          "title": "RT-1",
+          "url": "https://arxiv.org/abs/2212.06817"
+        }
+      ]
+    },
+    {
+      "id": "oxe",
+      "label": "Open X-Embodiment",
+      "kind": "concept",
+      "domain": "systems",
+      "brief": "Pooled robot data: 21 institutions, ~22 embodiments, 1M+ trajectories, RLDS. Train set for RT-X, OpenVLA, Octo.",
+      "why": "Cross-embodiment is a dataset problem first. Community LeRobot data is the cheap-arm cousin.",
+      "resources": [
+        {
+          "type": "paper",
+          "title": "Open X-Embodiment",
+          "url": "https://arxiv.org/abs/2310.08864"
+        }
+      ],
+      "research_directions": [
+        "How much OXE vs community SO-100 a 450M VLA actually needs"
+      ]
+    },
+    {
+      "id": "octo",
+      "label": "Octo",
+      "kind": "paper",
+      "domain": "policy",
+      "brief": "Berkeley open transformer (~93M) on OXE, no giant VLM. Fast to fine-tune. SmolVLA sim tables still quote it.",
+      "why": "The small-from-scratch generalist before SmolVLA.",
+      "resources": [
+        {
+          "type": "paper",
+          "title": "Octo",
+          "url": "https://arxiv.org/abs/2405.12213"
+        }
+      ]
+    },
+    {
+      "id": "gr00t",
+      "label": "GR00T N1.5",
+      "kind": "paper",
+      "domain": "policy",
+      "brief": "NVIDIA GEAR, Jun 2025. Open humanoid foundation model. Eagle 2.5 VLM; NVIDIA-reported language following 46.6%→93.3% and success 43.3%→83% vs N1 on GR-1.",
+      "why": "The open humanoid VLA we have not walked. Whole-body is a neighbor, not a footnote.",
+      "resources": [
+        {
+          "type": "docs",
+          "title": "GR00T N1.5",
+          "url": "https://research.nvidia.com/labs/gear/gr00t-n1_5/"
+        },
+        {
+          "type": "code",
+          "title": "NVIDIA/Isaac-GR00T",
+          "url": "https://github.com/NVIDIA/Isaac-GR00T"
+        }
+      ],
+      "research_directions": [
+        "Fine-tune N1.5 on SO-100 vs SmolVLA",
+        "WBC + VLA split vs Helix System 0"
+      ]
+    },
+    {
+      "id": "wbc",
+      "label": "Whole-body control",
+      "kind": "concept",
+      "domain": "policy",
+      "brief": "Lower-body RL + upper IK, or a learned high-rate controller under a VLA. NVIDIA SONIC / GR00T-WBC; Figure Helix System 0 (~1 kHz).",
+      "why": "Tabletop VLAs stall on humanoids. This is the actuator-side neighbor.",
+      "resources": [
+        {
+          "type": "code",
+          "title": "GR00T-WholeBodyControl",
+          "url": "https://github.com/NVlabs/GR00T-WholeBodyControl"
+        }
+      ]
+    },
+    {
+      "id": "gemini-robotics",
+      "label": "Gemini Robotics 2",
+      "kind": "paper",
+      "domain": "policy",
+      "brief": "DeepMind, Jul 2026. VLA for full humanoids and bi-arms; on-device variant adapts to a new body in hours; ER 2 for embodied reasoning. First-party demos. Same checkpoint on Apollo 2 and Franka.",
+      "why": "Closed generalist we had not mapped. Contrast with GEN-1.5 one-shot and Helix onboard.",
+      "resources": [
+        {
+          "type": "blog",
+          "title": "Gemini Robotics 2",
+          "url": "https://deepmind.google/blog/gemini-robotics-2-brings-whole-body-intelligence-to-robots/"
+        }
+      ]
+    },
+    {
+      "id": "helix",
+      "label": "Helix / Helix 02",
+      "kind": "paper",
+      "domain": "policy",
+      "brief": "Figure in-house VLA. Helix: 7B VLM (S2) + visuomotor transformer (S1), onboard GPU. Helix 02 (Jan 2026): System 0 learned WBC, palm cameras + tactile. First-party.",
+      "why": "Vertical integration neighbor of π₀ (model-only) and SmolVLA (open).",
+      "company_id": "figure-ai",
+      "resources": [
+        {
+          "type": "blog",
+          "title": "Helix",
+          "url": "https://www.figure.ai/news/helix"
+        }
+      ]
+    },
+    {
+      "id": "cotracker",
+      "label": "CoTracker",
+      "kind": "paper",
+      "domain": "perception",
+      "brief": "Point tracking through occlusions. VGGT feeds T_i into CoTracker2 rather than inventing a tracker.",
+      "why": "Correspondence as a robot skill (grasp, tape, cable).",
+      "resources": [
+        {
+          "type": "paper",
+          "title": "CoTracker",
+          "url": "https://arxiv.org/abs/2307.07635"
+        }
+      ]
+    },
+    {
+      "id": "mast3r",
+      "label": "MASt3R",
+      "kind": "paper",
+      "domain": "perception",
+      "brief": "DUSt3R evolution: two-view matching + geometry, still fused for N>2. VGGT’s pairwise competitor on pose tables.",
+      "why": "Know this before quoting VGGT vs learned SfM.",
+      "resources": [
+        {
+          "type": "paper",
+          "title": "MASt3R",
+          "url": "https://arxiv.org/abs/2406.09756"
+        }
+      ]
+    },
+    {
+      "id": "depth-anything",
+      "label": "Depth Anything",
+      "kind": "paper",
+      "domain": "perception",
+      "brief": "Monocular depth foundation model. The single-task specialist VGGT claims to absorb. Useful when the SO-100 has one camera.",
+      "why": "Cheap depth prior without multi-view.",
+      "resources": [
+        {
+          "type": "paper",
+          "title": "Depth Anything",
+          "url": "https://arxiv.org/abs/2401.10891"
+        }
+      ]
+    },
+    {
+      "id": "sim2real",
+      "label": "Sim-to-real",
+      "kind": "concept",
+      "domain": "learning",
+      "brief": "Train in sim (Isaac, MuJoCo), run on metal. Domain randomization, residual RL, or GEN-1.5’s claim: sim demos as prompts with no sim in pretrain.",
+      "why": "Data multiplier when you do not own a factory.",
+      "research_directions": [
+        "GEN-1.5 sim-prompt replication on SO-100",
+        "Isaac locomotion + LeRobot manipulation"
+      ]
+    },
+    {
+      "id": "offline-rl",
+      "label": "Offline RL",
+      "kind": "method",
+      "domain": "learning",
+      "brief": "Learn from a logged dataset without more env steps (IQL, CQL). The path after BC when failures are in the log.",
+      "why": "Humanoid logs are too expensive to throw away as not demos.",
+      "resources": [
+        {
+          "type": "paper",
+          "title": "IQL · Kostrikov et al.",
+          "url": "https://arxiv.org/abs/2110.06169"
+        }
+      ]
+    },
+    {
+      "id": "ppo-sac",
+      "label": "PPO / SAC",
+      "kind": "method",
+      "domain": "learning",
+      "brief": "On-policy PPO and off-policy SAC. Isaac Lab locomotion defaults. Not how you pry a condiment cup on 50 demos.",
+      "why": "WBC lower body is still this. VLA did not replace it."
+    },
+    {
+      "id": "cross-embod",
+      "label": "Cross-embodiment",
+      "kind": "concept",
+      "domain": "policy",
+      "brief": "One policy, many robot bodies. OXE’s bet; Skild omni-bodied; Gemini 2 few-hour adaptation; LeRobot’s shared schema.",
+      "why": "Opposite of ACT-on-one-ALOHA. Why OXE, π₀, and S1 exist.",
+      "research_directions": [
+        "How much of SmolVLA community data is same-embodiment"
+      ]
+    },
+    {
+      "id": "libero",
+      "label": "LIBERO",
+      "kind": "concept",
+      "domain": "systems",
+      "brief": "Sim suite SmolVLA quotes (Spatial/Object/Goal/Long). Binary success, 10 trials/task. Not a real robot.",
+      "why": "Every VLA percentage you will cite. Know the protocol first."
+    },
+    {
+      "id": "cosmos",
+      "label": "NVIDIA Cosmos",
+      "kind": "framework",
+      "domain": "systems",
+      "brief": "World-model / video-to-data stack Skild cites with Isaac for S1. Synthetic variety from video.",
+      "why": "The data factory next to Isaac Lab, not a policy.",
+      "resources": [
+        {
+          "type": "docs",
+          "title": "NVIDIA Cosmos",
+          "url": "https://www.nvidia.com/en-us/ai/cosmos/"
+        }
+      ]
+    },
+    {
+      "id": "mujoco",
+      "label": "MuJoCo / MJX",
+      "kind": "framework",
+      "domain": "systems",
+      "brief": "Contact-rich sim. ACT cube/insertion lives here. GPU MJX is the academic Isaac cousin.",
+      "why": "If you ablate k on ACT, you are in MuJoCo."
+    },
+    {
+      "id": "nvidia-gear",
+      "label": "NVIDIA GEAR",
+      "kind": "lab",
+      "domain": "labs",
+      "brief": "GR00T, Isaac, Cosmos, SONIC WBC. The open-ish humanoid stack.",
+      "resources": [
+        {
+          "type": "docs",
+          "title": "GEAR GR00T N1.5",
+          "url": "https://research.nvidia.com/labs/gear/gr00t-n1_5/"
+        }
+      ]
+    },
+    {
+      "id": "deepmind-robotics",
+      "label": "Google DeepMind Robotics",
+      "kind": "lab",
+      "domain": "labs",
+      "brief": "RT-1/2, Gemini Robotics 1→2, ER 2. Named the VLA. Closed weights; public blogs.",
+      "resources": [
+        {
+          "type": "blog",
+          "title": "Gemini Robotics",
+          "url": "https://deepmind.google/models/gemini-robotics/"
+        }
+      ]
+    },
+    {
+      "id": "dexterity",
+      "label": "Dexterity",
+      "kind": "lab",
+      "domain": "labs",
+      "brief": "Industrial physical AI, container loading. On the intel desk. Manipulation in the wild, not a public VLA.",
+      "company_id": "dexterity",
+      "resources": [
+        {
+          "type": "company",
+          "title": "dexterity.ai",
+          "url": "https://www.dexterity.ai/"
+        }
+      ]
+    },
+    {
+      "id": "persona-ai",
+      "label": "Persona AI",
+      "kind": "lab",
+      "domain": "labs",
+      "brief": "Rugged humanoids for shipyards / heavy industry. On the ecosystem desk; learning stack not public.",
+      "company_id": "persona-ai"
+    },
+    {
+      "id": "foundation-lab",
+      "label": "Foundation",
+      "kind": "lab",
+      "domain": "labs",
+      "brief": "General-purpose humanoid hardware + autonomy. On the desk; learning stack not public.",
+      "company_id": "foundation"
+    },
+    {
+      "id": "eagle",
+      "label": "Eagle 2.5",
+      "kind": "paper",
+      "domain": "perception",
+      "brief": "VLM NVIDIA starts from for GR00T N1.5 grounding. Neighbor of SigLIP/SmolVLM, not a policy.",
+      "why": "If you swap SmolVLM for a robot-flavored VLM, this is the open humanoid option."
+    },
+    {
+      "id": "rdt",
+      "label": "RDT-1B",
+      "kind": "paper",
+      "domain": "policy",
+      "brief": "1B diffusion transformer for bimanual manipulation. Diffusion Policy scaled; SmolVLA related-work neighbor.",
+      "resources": [
+        {
+          "type": "paper",
+          "title": "RDT-1B",
+          "url": "https://arxiv.org/abs/2410.07864"
+        }
+      ]
+    },
+    {
+      "id": "vqbet",
+      "label": "VQ-BeT",
+      "kind": "paper",
+      "domain": "policy",
+      "brief": "Vector-quantized behavior transformer. Another LeRobot policy class: discrete latents over chunks, not CVAE z=0.",
+      "why": "The third generative head after CVAE and flow/diffusion.",
+      "resources": [
+        {
+          "type": "paper",
+          "title": "VQ-BeT",
+          "url": "https://arxiv.org/abs/2403.03954"
+        }
+      ]
     }
   ],
   "edges": [
-    {"from": "embodied-ai", "to": "perception", "rel": "includes"},
-    {"from": "embodied-ai", "to": "learning", "rel": "includes"},
-    {"from": "embodied-ai", "to": "policy", "rel": "includes"},
-    {"from": "embodied-ai", "to": "systems", "rel": "includes"},
-    {"from": "embodied-ai", "to": "labs", "rel": "includes"},
-    {"from": "perception", "to": "dinov2", "rel": "uses"},
-    {"from": "perception", "to": "vggt", "rel": "includes"},
-    {"from": "perception", "to": "dust3r", "rel": "includes"},
-    {"from": "perception", "to": "stlight", "rel": "includes"},
-    {"from": "vggt", "to": "dinov2", "rel": "uses"},
-    {"from": "vggt", "to": "dust3r", "rel": "replaces-postprocess"},
-    {"from": "stlight", "to": "world-models", "rel": "is-a"},
-    {"from": "learning", "to": "behavior-cloning", "rel": "includes"},
-    {"from": "learning", "to": "rl", "rel": "includes"},
-    {"from": "learning", "to": "one-shot", "rel": "includes"},
-    {"from": "learning", "to": "world-models", "rel": "includes"},
-    {"from": "behavior-cloning", "to": "compounding-error", "rel": "fails-by"},
-    {"from": "compounding-error", "to": "action-chunking", "rel": "mitigated-by"},
-    {"from": "action-chunking", "to": "cvae", "rel": "plus"},
-    {"from": "action-chunking", "to": "temporal-ensembling", "rel": "plus"},
-    {"from": "action-chunking", "to": "act", "rel": "implemented-in"},
-    {"from": "cvae", "to": "act", "rel": "implemented-in"},
-    {"from": "act", "to": "smolvla", "rel": "chunks-kept"},
-    {"from": "flow-matching", "to": "smolvla", "rel": "expert"},
-    {"from": "diffusion-policy", "to": "action-chunking", "rel": "uses"},
-    {"from": "policy", "to": "act", "rel": "includes"},
-    {"from": "policy", "to": "smolvla", "rel": "includes"},
-    {"from": "policy", "to": "openvla", "rel": "includes"},
-    {"from": "policy", "to": "pi0", "rel": "includes"},
-    {"from": "policy", "to": "gen15", "rel": "includes"},
-    {"from": "policy", "to": "skild-s1", "rel": "includes"},
-    {"from": "one-shot", "to": "gen15", "rel": "claimed-by"},
-    {"from": "one-shot", "to": "skild-s1", "rel": "claimed-by"},
-    {"from": "pi0", "to": "physical-intelligence", "rel": "from"},
-    {"from": "gen15", "to": "generalist-ai", "rel": "from"},
-    {"from": "skild-s1", "to": "skild-ai", "rel": "from"},
-    {"from": "skild-s1", "to": "isaac", "rel": "trained-with"},
-    {"from": "smolvla", "to": "lerobot", "rel": "ships-in"},
-    {"from": "act", "to": "lerobot", "rel": "ships-in"},
-    {"from": "smolvla", "to": "async-infer", "rel": "introduces"},
-    {"from": "act", "to": "aloha", "rel": "uses"},
-    {"from": "smolvla", "to": "aloha", "rel": "evals-on"},
-    {"from": "systems", "to": "lerobot", "rel": "includes"},
-    {"from": "systems", "to": "isaac", "rel": "includes"},
-    {"from": "systems", "to": "ros2", "rel": "includes"},
-    {"from": "systems", "to": "async-infer", "rel": "includes"},
-    {"from": "systems", "to": "aloha", "rel": "includes"},
-    {"from": "labs", "to": "figure-ai", "rel": "includes"},
-    {"from": "labs", "to": "apptronik", "rel": "includes"},
-    {"from": "labs", "to": "agility", "rel": "includes"},
-    {"from": "labs", "to": "physical-intelligence", "rel": "includes"},
-    {"from": "labs", "to": "generalist-ai", "rel": "includes"},
-    {"from": "labs", "to": "skild-ai", "rel": "includes"},
-    {"from": "labs", "to": "huggingface", "rel": "includes"},
-    {"from": "labs", "to": "tesla-optimus", "rel": "includes"},
-    {"from": "labs", "to": "boston-dynamics", "rel": "includes"},
-    {"from": "labs", "to": "1x", "rel": "includes"},
-    {"from": "huggingface", "to": "lerobot", "rel": "maintains"},
-    {"from": "huggingface", "to": "smolvla", "rel": "releases"}
+    {
+      "from": "embodied-ai",
+      "to": "perception",
+      "rel": "includes"
+    },
+    {
+      "from": "embodied-ai",
+      "to": "learning",
+      "rel": "includes"
+    },
+    {
+      "from": "embodied-ai",
+      "to": "policy",
+      "rel": "includes"
+    },
+    {
+      "from": "embodied-ai",
+      "to": "systems",
+      "rel": "includes"
+    },
+    {
+      "from": "embodied-ai",
+      "to": "labs",
+      "rel": "includes"
+    },
+    {
+      "from": "perception",
+      "to": "dinov2",
+      "rel": "uses"
+    },
+    {
+      "from": "perception",
+      "to": "vggt",
+      "rel": "includes"
+    },
+    {
+      "from": "perception",
+      "to": "dust3r",
+      "rel": "includes"
+    },
+    {
+      "from": "perception",
+      "to": "stlight",
+      "rel": "includes"
+    },
+    {
+      "from": "vggt",
+      "to": "dinov2",
+      "rel": "uses"
+    },
+    {
+      "from": "vggt",
+      "to": "dust3r",
+      "rel": "replaces-postprocess"
+    },
+    {
+      "from": "stlight",
+      "to": "world-models",
+      "rel": "is-a"
+    },
+    {
+      "from": "learning",
+      "to": "behavior-cloning",
+      "rel": "includes"
+    },
+    {
+      "from": "learning",
+      "to": "rl",
+      "rel": "includes"
+    },
+    {
+      "from": "learning",
+      "to": "one-shot",
+      "rel": "includes"
+    },
+    {
+      "from": "learning",
+      "to": "world-models",
+      "rel": "includes"
+    },
+    {
+      "from": "behavior-cloning",
+      "to": "compounding-error",
+      "rel": "fails-by"
+    },
+    {
+      "from": "compounding-error",
+      "to": "action-chunking",
+      "rel": "mitigated-by"
+    },
+    {
+      "from": "action-chunking",
+      "to": "cvae",
+      "rel": "plus"
+    },
+    {
+      "from": "action-chunking",
+      "to": "temporal-ensembling",
+      "rel": "plus"
+    },
+    {
+      "from": "action-chunking",
+      "to": "act",
+      "rel": "implemented-in"
+    },
+    {
+      "from": "cvae",
+      "to": "act",
+      "rel": "implemented-in"
+    },
+    {
+      "from": "act",
+      "to": "smolvla",
+      "rel": "chunks-kept"
+    },
+    {
+      "from": "flow-matching",
+      "to": "smolvla",
+      "rel": "expert"
+    },
+    {
+      "from": "diffusion-policy",
+      "to": "action-chunking",
+      "rel": "uses"
+    },
+    {
+      "from": "policy",
+      "to": "act",
+      "rel": "includes"
+    },
+    {
+      "from": "policy",
+      "to": "smolvla",
+      "rel": "includes"
+    },
+    {
+      "from": "policy",
+      "to": "openvla",
+      "rel": "includes"
+    },
+    {
+      "from": "policy",
+      "to": "pi0",
+      "rel": "includes"
+    },
+    {
+      "from": "policy",
+      "to": "gen15",
+      "rel": "includes"
+    },
+    {
+      "from": "policy",
+      "to": "skild-s1",
+      "rel": "includes"
+    },
+    {
+      "from": "one-shot",
+      "to": "gen15",
+      "rel": "claimed-by"
+    },
+    {
+      "from": "one-shot",
+      "to": "skild-s1",
+      "rel": "claimed-by"
+    },
+    {
+      "from": "pi0",
+      "to": "physical-intelligence",
+      "rel": "from"
+    },
+    {
+      "from": "gen15",
+      "to": "generalist-ai",
+      "rel": "from"
+    },
+    {
+      "from": "skild-s1",
+      "to": "skild-ai",
+      "rel": "from"
+    },
+    {
+      "from": "skild-s1",
+      "to": "isaac",
+      "rel": "trained-with"
+    },
+    {
+      "from": "smolvla",
+      "to": "lerobot",
+      "rel": "ships-in"
+    },
+    {
+      "from": "act",
+      "to": "lerobot",
+      "rel": "ships-in"
+    },
+    {
+      "from": "smolvla",
+      "to": "async-infer",
+      "rel": "introduces"
+    },
+    {
+      "from": "act",
+      "to": "aloha",
+      "rel": "uses"
+    },
+    {
+      "from": "smolvla",
+      "to": "aloha",
+      "rel": "evals-on"
+    },
+    {
+      "from": "systems",
+      "to": "lerobot",
+      "rel": "includes"
+    },
+    {
+      "from": "systems",
+      "to": "isaac",
+      "rel": "includes"
+    },
+    {
+      "from": "systems",
+      "to": "ros2",
+      "rel": "includes"
+    },
+    {
+      "from": "systems",
+      "to": "async-infer",
+      "rel": "includes"
+    },
+    {
+      "from": "systems",
+      "to": "aloha",
+      "rel": "includes"
+    },
+    {
+      "from": "labs",
+      "to": "figure-ai",
+      "rel": "includes"
+    },
+    {
+      "from": "labs",
+      "to": "apptronik",
+      "rel": "includes"
+    },
+    {
+      "from": "labs",
+      "to": "agility",
+      "rel": "includes"
+    },
+    {
+      "from": "labs",
+      "to": "physical-intelligence",
+      "rel": "includes"
+    },
+    {
+      "from": "labs",
+      "to": "generalist-ai",
+      "rel": "includes"
+    },
+    {
+      "from": "labs",
+      "to": "skild-ai",
+      "rel": "includes"
+    },
+    {
+      "from": "labs",
+      "to": "huggingface",
+      "rel": "includes"
+    },
+    {
+      "from": "labs",
+      "to": "tesla-optimus",
+      "rel": "includes"
+    },
+    {
+      "from": "labs",
+      "to": "boston-dynamics",
+      "rel": "includes"
+    },
+    {
+      "from": "labs",
+      "to": "1x",
+      "rel": "includes"
+    },
+    {
+      "from": "huggingface",
+      "to": "lerobot",
+      "rel": "maintains"
+    },
+    {
+      "from": "huggingface",
+      "to": "smolvla",
+      "rel": "releases"
+    },
+    {
+      "from": "policy",
+      "to": "rt2",
+      "rel": "includes"
+    },
+    {
+      "from": "policy",
+      "to": "rt1",
+      "rel": "includes"
+    },
+    {
+      "from": "policy",
+      "to": "octo",
+      "rel": "includes"
+    },
+    {
+      "from": "policy",
+      "to": "gr00t",
+      "rel": "includes"
+    },
+    {
+      "from": "policy",
+      "to": "gemini-robotics",
+      "rel": "includes"
+    },
+    {
+      "from": "policy",
+      "to": "helix",
+      "rel": "includes"
+    },
+    {
+      "from": "policy",
+      "to": "rdt",
+      "rel": "includes"
+    },
+    {
+      "from": "policy",
+      "to": "vqbet",
+      "rel": "includes"
+    },
+    {
+      "from": "rt2",
+      "to": "rt1",
+      "rel": "evolves"
+    },
+    {
+      "from": "openvla",
+      "to": "oxe",
+      "rel": "trained-on"
+    },
+    {
+      "from": "octo",
+      "to": "oxe",
+      "rel": "trained-on"
+    },
+    {
+      "from": "systems",
+      "to": "oxe",
+      "rel": "includes"
+    },
+    {
+      "from": "systems",
+      "to": "libero",
+      "rel": "includes"
+    },
+    {
+      "from": "systems",
+      "to": "cosmos",
+      "rel": "includes"
+    },
+    {
+      "from": "systems",
+      "to": "mujoco",
+      "rel": "includes"
+    },
+    {
+      "from": "smolvla",
+      "to": "libero",
+      "rel": "evals-on"
+    },
+    {
+      "from": "smolvla",
+      "to": "octo",
+      "rel": "compared-to"
+    },
+    {
+      "from": "smolvla",
+      "to": "openvla",
+      "rel": "compared-to"
+    },
+    {
+      "from": "act",
+      "to": "mujoco",
+      "rel": "sim-in"
+    },
+    {
+      "from": "diffusion-policy",
+      "to": "vqbet",
+      "rel": "cousin"
+    },
+    {
+      "from": "perception",
+      "to": "cotracker",
+      "rel": "includes"
+    },
+    {
+      "from": "perception",
+      "to": "mast3r",
+      "rel": "includes"
+    },
+    {
+      "from": "perception",
+      "to": "depth-anything",
+      "rel": "includes"
+    },
+    {
+      "from": "perception",
+      "to": "eagle",
+      "rel": "includes"
+    },
+    {
+      "from": "vggt",
+      "to": "cotracker",
+      "rel": "uses"
+    },
+    {
+      "from": "vggt",
+      "to": "mast3r",
+      "rel": "compared-to"
+    },
+    {
+      "from": "dust3r",
+      "to": "mast3r",
+      "rel": "evolves"
+    },
+    {
+      "from": "gr00t",
+      "to": "eagle",
+      "rel": "uses"
+    },
+    {
+      "from": "gr00t",
+      "to": "wbc",
+      "rel": "plus"
+    },
+    {
+      "from": "gr00t",
+      "to": "nvidia-gear",
+      "rel": "from"
+    },
+    {
+      "from": "helix",
+      "to": "wbc",
+      "rel": "plus"
+    },
+    {
+      "from": "helix",
+      "to": "figure-ai",
+      "rel": "from"
+    },
+    {
+      "from": "gemini-robotics",
+      "to": "deepmind-robotics",
+      "rel": "from"
+    },
+    {
+      "from": "gemini-robotics",
+      "to": "wbc",
+      "rel": "plus"
+    },
+    {
+      "from": "learning",
+      "to": "sim2real",
+      "rel": "includes"
+    },
+    {
+      "from": "learning",
+      "to": "offline-rl",
+      "rel": "includes"
+    },
+    {
+      "from": "rl",
+      "to": "ppo-sac",
+      "rel": "includes"
+    },
+    {
+      "from": "rl",
+      "to": "offline-rl",
+      "rel": "includes"
+    },
+    {
+      "from": "wbc",
+      "to": "ppo-sac",
+      "rel": "uses"
+    },
+    {
+      "from": "policy",
+      "to": "cross-embod",
+      "rel": "includes"
+    },
+    {
+      "from": "oxe",
+      "to": "cross-embod",
+      "rel": "enables"
+    },
+    {
+      "from": "skild-s1",
+      "to": "cross-embod",
+      "rel": "claims"
+    },
+    {
+      "from": "pi0",
+      "to": "cross-embod",
+      "rel": "claims"
+    },
+    {
+      "from": "skild-s1",
+      "to": "cosmos",
+      "rel": "uses"
+    },
+    {
+      "from": "isaac",
+      "to": "cosmos",
+      "rel": "adjacent"
+    },
+    {
+      "from": "labs",
+      "to": "nvidia-gear",
+      "rel": "includes"
+    },
+    {
+      "from": "labs",
+      "to": "deepmind-robotics",
+      "rel": "includes"
+    },
+    {
+      "from": "labs",
+      "to": "dexterity",
+      "rel": "includes"
+    },
+    {
+      "from": "labs",
+      "to": "persona-ai",
+      "rel": "includes"
+    },
+    {
+      "from": "labs",
+      "to": "foundation-lab",
+      "rel": "includes"
+    },
+    {
+      "from": "one-shot",
+      "to": "sim2real",
+      "rel": "touches"
+    },
+    {
+      "from": "gen15",
+      "to": "sim2real",
+      "rel": "claims"
+    },
+    {
+      "from": "rdt",
+      "to": "diffusion-policy",
+      "rel": "scales"
+    },
+    {
+      "from": "vqbet",
+      "to": "action-chunking",
+      "rel": "uses"
+    },
+    {
+      "from": "gr00t",
+      "to": "cross-embod",
+      "rel": "humanoid"
+    }
   ]
 }

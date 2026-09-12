@@ -37,8 +37,8 @@
     domains.forEach((d, i) => {
       const a = -Math.PI / 2 + (i * 2 * Math.PI) / Math.max(domains.length, 1);
       positions.set(d.id, {
-        x: cx + Math.cos(a) * 210,
-        y: cy + Math.sin(a) * 210,
+        x: cx + Math.cos(a) * 240,
+        y: cy + Math.sin(a) * 240,
         r: R.domain,
         a,
       });
@@ -54,7 +54,7 @@
       kids.forEach((n, i) => {
         const spread = Math.min(1.1, 0.22 * kids.length);
         const a = base.a - spread / 2 + (kids.length === 1 ? 0 : (i * spread) / (kids.length - 1));
-        const ring = 360 + (i % 2) * 42;
+        const ring = 400 + (i % 3) * 48;
         positions.set(n.id, {
           x: cx + Math.cos(a) * ring,
           y: cy + Math.sin(a) * ring,
