@@ -1,5 +1,4 @@
 (() => {
-  const stage = document.getElementById("mm-stage");
   const host = document.getElementById("mm-cy");
   const panel = document.getElementById("mm-panel");
   const body = document.getElementById("mm-panel-body") || panel;
@@ -7,6 +6,8 @@
   const filters = document.getElementById("mm-filters");
   const hint = document.getElementById("mm-hint");
   const fitBtn = document.getElementById("mm-fit");
+  const globalBtn = document.getElementById("mm-global");
+  const localBtn = document.getElementById("mm-local");
   const sheetToggle = document.getElementById("mm-sheet-toggle");
   if (!host || typeof cytoscape !== "function") {
     if (panel) panel.innerHTML = "<p>Cytoscape.js failed to load. Check the CDN.</p>";
@@ -14,39 +15,30 @@
   }
 
   const KIND = {
-    hub: "dark — the field this map is about",
-    domain: "green — a branch of the field",
-    concept: "lilac — an idea, not a paper",
-    method: "gold — an algorithm you implement",
-    paper: "blue — one specific paper",
-    framework: "terracotta — code or stack you run",
-    lab: "grey — a lab or company (jobs attach here)",
+    hub: "the vault — this field",
+    domain: "folder — a branch",
+    concept: "note — an idea",
+    method: "note — an algorithm",
+    paper: "note — one paper",
+    framework: "note — code you run",
+    lab: "note — a lab (jobs attach)",
   };
   const FILL = {
-    hub: "#243028",
-    domain: "#cfe8d4",
-    paper: "#c9dff0",
-    method: "#f3ddb0",
-    concept: "#ddd4ee",
-    framework: "#f1cfc4",
-    lab: "#eceae2",
+    hub: "#8a5cf5",
+    domain: "#3dd68c",
+    paper: "#4aa3df",
+    method: "#e6b422",
+    concept: "#c4b5fd",
+    framework: "#e07a5f",
+    lab: "#9a9a9a",
   };
-  const STROKE = {
-    hub: "#7dcea0",
-    domain: "#2d6a45",
-    paper: "#2a6f97",
-    method: "#b57a12",
-    concept: "#6b4ea0",
-    framework: "#a24c38",
-    lab: "#606660",
-  };
-  const R = { hub: 34, domain: 22, default: 12 };
 
   let graph = { nodes: [], edges: [] };
   let jobs = { openings: [] };
   let cy = null;
   let active = null;
   let domainFilter = "all";
+  let mode = "global";
 
   function phone() {
     return window.matchMedia("(max-width: 860px)").matches;
@@ -71,7 +63,7 @@
     const pos = new Map();
     const hub = graph.nodes.find((n) => n.id === graph.center) || graph.nodes[0];
     if (hub) pos.set(hub.id, { x: cx, y: cy });
-    const domainR = Math.max(phone() ? 140 : 280, S * (phone() ? 0.28 : 0.34));
+    const domainR = Math.max(phone() ? 120 : 240, S * 0.28);
     domains.forEach((d, i) => {
       const a = -Math.PI / 2 + (i * 2 * Math.PI) / Math.max(domains.length, 1);
       pos.set(d.id, { x: cx + Math.cos(a) * domainR, y: cy + Math.sin(a) * domainR, a });
@@ -81,19 +73,18 @@
       if (n.kind === "hub" || n.kind === "domain") continue;
       (grouped[n.domain] ||= []).push(n);
     }
-    const ringGap = phone() ? 72 : 92;
     domains.forEach((d) => {
       const kids = grouped[d.domain] || [];
       const base = pos.get(d.id);
       const sector = (2 * Math.PI) / Math.max(domains.length, 1);
-      const spread = sector * 0.88;
-      const rings = Math.max(3, Math.ceil(kids.length / (phone() ? 4 : 5)));
+      const spread = sector * 0.9;
+      const rings = Math.max(3, Math.ceil(kids.length / 5));
       kids.forEach((n, i) => {
         const ring = i % rings;
         const slot = Math.floor(i / rings);
         const slots = Math.ceil(kids.length / rings);
         const a = base.a - spread / 2 + (slots === 1 ? spread / 2 : (slot * spread) / Math.max(slots - 1, 1));
-        const rad = domainR + (phone() ? 90 : 140) + ring * ringGap + (slot % 2) * 16;
+        const rad = domainR + 100 + ring * 78 + (slot % 2) * 14;
         pos.set(n.id, { x: cx + Math.cos(a) * rad, y: cy + Math.sin(a) * rad });
       });
     });
@@ -114,10 +105,7 @@
     const vis = new Set(graph.nodes.filter(visibleNode).map((n) => n.id));
     const nodes = graph.nodes.filter((n) => vis.has(n.id)).map((n) => {
       const p = pos.get(n.id);
-      return {
-        data: { id: n.id, label: n.label, kind: n.kind },
-        position: { x: p.x, y: p.y },
-      };
+      return { data: { id: n.id, label: n.label, kind: n.kind }, position: { x: p.x, y: p.y } };
     });
     const edges = graph.edges
       .filter((e) => vis.has(e.from) && vis.has(e.to))
@@ -126,7 +114,6 @@
   }
 
   function stylesheet() {
-    const fs = phone() ? 11 : 12;
     return [
       {
         selector: "node",
@@ -134,33 +121,75 @@
           label: "data(label)",
           "text-valign": "bottom",
           "text-halign": "center",
-          "text-margin-y": 6,
+          "text-margin-y": 4,
           "font-family": "Manrope, system-ui, sans-serif",
-          "font-size": fs,
-          "font-weight": 600,
-          color: "#1b1f1c",
+          "font-size": 11,
+          "font-weight": 500,
+          color: "#c8c8c8",
+          "text-outline-width": 2,
+          "text-outline-color": "#191919",
           "text-wrap": "wrap",
-          "text-max-width": phone() ? 72 : 90,
-          "min-zoomed-font-size": 8,
-          width: 24,
-          height: 24,
-          "background-color": "#eceae2",
-          "border-width": 2,
-          "border-color": "#606660",
+          "text-max-width": 86,
+          "min-zoomed-font-size": 9,
+          width: 14,
+          height: 14,
+          "background-color": "#9a9a9a",
+          "border-width": 0,
+          "overlay-padding": 6,
+          "overlay-opacity": 0,
         },
       },
-      { selector: "node[kind = 'hub']", style: { width: 56, height: 56, "font-size": 14, color: "#f4f1ea", "text-valign": "center", "text-margin-y": 0, "background-color": FILL.hub, "border-color": STROKE.hub } },
-      { selector: "node[kind = 'domain']", style: { width: 38, height: 38, "background-color": FILL.domain, "border-color": STROKE.domain } },
-      { selector: "node[kind = 'paper']", style: { "background-color": FILL.paper, "border-color": STROKE.paper } },
-      { selector: "node[kind = 'method']", style: { "background-color": FILL.method, "border-color": STROKE.method } },
-      { selector: "node[kind = 'concept']", style: { "background-color": FILL.concept, "border-color": STROKE.concept } },
-      { selector: "node[kind = 'framework']", style: { "background-color": FILL.framework, "border-color": STROKE.framework } },
-      { selector: "node[kind = 'lab']", style: { "background-color": FILL.lab, "border-color": STROKE.lab } },
-      { selector: "edge", style: { width: 1.2, "line-color": "#c8c2b4", "curve-style": "haystack", opacity: 0.55, "target-arrow-shape": "none" } },
-      { selector: "node.active", style: { "border-width": 4 } },
-      { selector: "node.near", style: { "border-width": 3 } },
-      { selector: "edge.on", style: { width: 2.4, "line-color": "#2d6a45", opacity: 1 } },
+      { selector: "node[kind = 'hub']", style: { width: 28, height: 28, "font-size": 13, color: "#eee", "background-color": FILL.hub, "overlay-color": FILL.hub, "overlay-opacity": 0.25, "overlay-padding": 10 } },
+      { selector: "node[kind = 'domain']", style: { width: 20, height: 20, "background-color": FILL.domain, "overlay-color": FILL.domain, "overlay-opacity": 0.18, "overlay-padding": 7 } },
+      { selector: "node[kind = 'paper']", style: { "background-color": FILL.paper } },
+      { selector: "node[kind = 'method']", style: { "background-color": FILL.method } },
+      { selector: "node[kind = 'concept']", style: { "background-color": FILL.concept } },
+      { selector: "node[kind = 'framework']", style: { "background-color": FILL.framework } },
+      { selector: "node[kind = 'lab']", style: { "background-color": FILL.lab } },
+      { selector: "edge", style: { width: 1, "line-color": "#5a5a5a", "curve-style": "haystack", "haystack-radius": 0.6, opacity: 0.35, "target-arrow-shape": "none" } },
+      { selector: "node.active", style: { width: 22, height: 22, "overlay-opacity": 0.35, "overlay-padding": 10, "overlay-color": "#8a5cf5" } },
+      { selector: "node.near", style: { "overlay-opacity": 0.2, "overlay-padding": 6 } },
+      { selector: "edge.on", style: { width: 1.8, "line-color": "#8a5cf5", opacity: 0.85 } },
+      { selector: ".faded", style: { opacity: 0.08 } },
     ];
+  }
+
+  function setModeButtons() {
+    if (globalBtn) globalBtn.classList.toggle("on", mode === "global");
+    if (localBtn) localBtn.classList.toggle("on", mode === "local");
+  }
+
+  function applyLocal() {
+    if (!cy) return;
+    cy.batch(() => {
+      cy.elements().removeClass("faded");
+      if (mode !== "local" || !active) {
+        cy.elements().style("display", "element");
+        return;
+      }
+      const n = cy.getElementById(active);
+      if (!n.nonempty()) return;
+      const keep = n.closedNeighborhood();
+      cy.elements().forEach((el) => {
+        el.style("display", keep.contains(el) ? "element" : "none");
+      });
+    });
+  }
+
+  function coseOnce(eles) {
+    const target = eles || cy.elements(":visible");
+    target.layout({
+      name: "cose",
+      animate: false,
+      randomize: false,
+      numIter: 600,
+      nodeRepulsion: function (n) { return n.data("kind") === "hub" ? 12000 : 4500; },
+      idealEdgeLength: 72,
+      gravity: 0.4,
+      nestingFactor: 1.2,
+      coolingFactor: 0.92,
+      minTemp: 1,
+    }).run();
   }
 
   function mountCy(fitAll) {
@@ -169,7 +198,9 @@
     if (cy) {
       cy.json({ elements });
       cy.style(stylesheet());
-      if (fitAll) cy.fit(undefined, phone() ? 24 : 40);
+      coseOnce();
+      applyLocal();
+      if (fitAll) cy.fit(cy.elements(":visible"), phone() ? 28 : 48);
       paintFocus();
       return;
     }
@@ -178,19 +209,38 @@
       elements,
       style: stylesheet(),
       layout: { name: "preset", fit: false },
-      minZoom: 0.22,
-      maxZoom: 2.6,
-      wheelSensitivity: 0.22,
-      autoungrabify: true,
+      minZoom: 0.18,
+      maxZoom: 3,
+      wheelSensitivity: 0.2,
+      autoungrabify: false,
       boxSelectionEnabled: false,
       textureOnViewport: true,
       motionBlur: false,
       pixelRatio: "auto",
     });
     cy.on("tap", "node", (evt) => {
+      mode = "local";
+      setModeButtons();
       openNode(evt.target.id());
     });
-    if (fitAll) cy.fit(undefined, phone() ? 24 : 40);
+    cy.on("tap", (evt) => {
+      if (evt.target === cy && mode === "global") {
+        cy.elements().removeClass("faded");
+      }
+    });
+    cy.on("mouseover", "node", (evt) => {
+      if (mode !== "global") return;
+      const keep = evt.target.closedNeighborhood();
+      cy.elements().addClass("faded");
+      keep.removeClass("faded");
+    });
+    cy.on("mouseout", "node", () => {
+      if (mode !== "global") return;
+      cy.elements().removeClass("faded");
+      paintFocus();
+    });
+    coseOnce();
+    if (fitAll) cy.fit(undefined, phone() ? 28 : 48);
   }
 
   function paintFocus() {
@@ -236,10 +286,12 @@
     const n = graph.nodes.find((x) => x.id === id);
     if (!n || !cy) return;
     active = id;
+    applyLocal();
     paintFocus();
     if (zoom) {
-      const nbh = cy.getElementById(id).closedNeighborhood();
-      cy.animate({ fit: { eles: nbh, padding: phone() ? 36 : 48 }, duration: 220, easing: "ease-out" });
+      const shown = mode === "local" ? cy.getElementById(id).closedNeighborhood() : cy.getElementById(id).closedNeighborhood();
+      if (mode === "local") coseOnce(shown);
+      cy.animate({ fit: { eles: shown, padding: phone() ? 40 : 56 }, duration: 240, easing: "ease-out" });
     }
     if (sheet) document.body.classList.add("mm-sheet-open");
 
@@ -257,7 +309,7 @@
       <p>${n.brief || ""}</p>
       ${firstYt ? `<h3>Watch</h3><div class="mm-yt"><iframe src="https://www.youtube-nocookie.com/embed/${firstYt}" title="Lecture" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>` : ""}
       ${n.why ? `<h3>Why it is on the map</h3><p>${n.why}</p>` : ""}
-      <h3>Neighbors</h3>
+      <h3>Linked</h3>
       <ul class="mm-res">${nb.map((x) => `<li><a href="#" data-go="${x.id}">${x.label}</a> <small>${x.kind}</small></li>`).join("") || "<li class='mm-empty'>Isolated</li>"}</ul>
       <h3>Resources</h3>
       <ul class="mm-res">${[...vids, ...rest].map((r) => `<li><a href="${r.url}">${r.title}</a></li>`).join("") || "<li class='mm-empty'>None yet</li>"}</ul>
@@ -266,16 +318,28 @@
       ${
         relatedJobs.length
           ? `<ul class="mm-jobs">${relatedJobs.slice(0, 12).map((j) => `<li><a href="${j.url}">${j.title}</a><small>${j.company} · ${j.location || ""} · ${j.seniority}</small></li>`).join("")}${intern.length ? `<li class="mm-empty">${intern.length} internship(s) in this slice of the desk.</li>` : ""}</ul>`
-          : `<p class="mm-empty">${n.kind === "lab" ? "No tracked official openings in the last jobs scrape." : "Not a hiring node — open a lab on the outer ring."}</p>`
+          : `<p class="mm-empty">${n.kind === "lab" ? "No tracked official openings in the last jobs scrape." : "Not a hiring node — open a lab."}</p>`
       }
     `;
     body.querySelectorAll("[data-go]").forEach((a) => {
       a.addEventListener("click", (e) => {
         e.preventDefault();
+        mode = "local";
+        setModeButtons();
         openNode(a.dataset.go);
       });
     });
     body.scrollTop = 0;
+  }
+
+  function showGlobal() {
+    mode = "global";
+    setModeButtons();
+    if (!cy) return;
+    cy.elements().style("display", "element");
+    cy.elements().removeClass("faded");
+    cy.fit(undefined, phone() ? 28 : 48);
+    paintFocus();
   }
 
   function chips() {
@@ -289,6 +353,8 @@
       b.textContent = d;
       b.addEventListener("click", () => {
         domainFilter = d;
+        mode = "global";
+        setModeButtons();
         chips();
         mountCy(true);
       });
@@ -296,31 +362,28 @@
     });
   }
 
-  if (fitBtn) {
-    fitBtn.addEventListener("click", () => {
-      if (!cy) return;
-      cy.animate({ fit: { padding: phone() ? 24 : 40 }, duration: 200 });
+  if (fitBtn) fitBtn.addEventListener("click", () => { if (cy) cy.fit(cy.elements(":visible"), phone() ? 28 : 48); });
+  if (globalBtn) globalBtn.addEventListener("click", showGlobal);
+  if (localBtn) {
+    localBtn.addEventListener("click", () => {
+      if (!active) return;
+      mode = "local";
+      setModeButtons();
+      openNode(active);
     });
   }
-  if (sheetToggle) {
-    sheetToggle.addEventListener("click", () => {
-      document.body.classList.toggle("mm-sheet-open");
-    });
-  }
+  if (sheetToggle) sheetToggle.addEventListener("click", () => document.body.classList.toggle("mm-sheet-open"));
 
   let searchT = 0;
   search.addEventListener("input", () => {
     clearTimeout(searchT);
-    searchT = setTimeout(() => mountCy(true), 140);
+    searchT = setTimeout(() => { mode = "global"; setModeButtons(); mountCy(true); }, 140);
   });
 
   let resizeT = 0;
   window.addEventListener("resize", () => {
     clearTimeout(resizeT);
-    resizeT = setTimeout(() => {
-      if (cy) cy.resize();
-      mountCy(true);
-    }, 120);
+    resizeT = setTimeout(() => { if (cy) cy.resize(); mountCy(true); }, 150);
   });
 
   Promise.all([
@@ -330,9 +393,10 @@
     graph = g;
     jobs = j;
     chips();
+    setModeButtons();
     mountCy(true);
     openNode(g.center, { zoom: false, sheet: false });
-    if (hint) hint.textContent = `${g.nodes.length} concepts · pinch / tap`;
+    if (hint) hint.textContent = `${g.nodes.length} notes · Global / Local`;
   }).catch((err) => {
     body.innerHTML = `<p>Failed to load mind map: ${err}</p>`;
   });
