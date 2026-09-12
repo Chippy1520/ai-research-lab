@@ -19,26 +19,26 @@
     lab: "lab",
   };
   const FILL = {
-    hub: "#c9a227",
-    domain: "#5d9a6e",
-    area: "#7aa35c",
-    concept: "#7b68a6",
-    method: "#c9a227",
-    paper: "#4a90b8",
-    framework: "#c46a54",
-    lab: "#8a847a",
+    hub: "#243028",
+    domain: "#cfe8d4",
+    area: "#dcecc8",
+    concept: "#ddd4ee",
+    method: "#f3ddb0",
+    paper: "#c9dff0",
+    framework: "#f1cfc4",
+    lab: "#eceae2",
   };
   const STROKE = {
-    hub: "#f0d78c",
-    domain: "#8fd4a8",
-    area: "#c5e09a",
-    concept: "#c4b5fd",
-    method: "#f0d78c",
-    paper: "#7ec8f0",
-    framework: "#e07a5f",
-    lab: "#d0ccc4",
+    hub: "#7dcea0",
+    domain: "#2d6a45",
+    area: "#4a7a3a",
+    concept: "#6b4ea0",
+    method: "#b57a12",
+    paper: "#2a6f97",
+    framework: "#a24c38",
+    lab: "#606660",
   };
-  const R = { hub: 42, domain: 32, area: 26, default: 20 };
+  const R = { hub: 28, domain: 22, area: 18, default: 14 };
 
   let graph = { nodes: [], edges: [], center: "embodied-ai" };
   let jobs = { openings: [] };
@@ -129,7 +129,7 @@
       pos.set(n.id, {
         x: left + i * step,
         y: cy,
-        r: last ? (R[n.kind] || 28) + 10 : 20,
+        r: last ? (R[n.kind] || 18) + 6 : 14,
         spine: true,
         focus: last,
       });
@@ -154,35 +154,6 @@
     return n;
   }
 
-  function defs() {
-    const d = el("defs");
-    const gstops = {
-      hub: ["#f8e7b0", "#c9a227", "#7a5810"],
-      domain: ["#c5ebcf", "#5d9a6e", "#2d5a3c"],
-      area: ["#d4efb8", "#7aa35c", "#3f5e2c"],
-      concept: ["#e0d4ff", "#7b68a6", "#3d2f5c"],
-      method: ["#f8e7b0", "#c9a227", "#7a5810"],
-      paper: ["#c5e8f7", "#4a90b8", "#1f4e6a"],
-      framework: ["#f3c4b8", "#c46a54", "#6e3228"],
-      lab: ["#ddd9d0", "#8a847a", "#4a4742"],
-    };
-    for (const [k, [a, b, c]] of Object.entries(gstops)) {
-      const g = el("radialGradient", { id: `mm-g-${k}`, cx: "32%", cy: "28%", r: "72%" });
-      g.appendChild(el("stop", { offset: "0%", "stop-color": a }));
-      g.appendChild(el("stop", { offset: "55%", "stop-color": b }));
-      g.appendChild(el("stop", { offset: "100%", "stop-color": c }));
-      d.appendChild(g);
-    }
-    const f = el("filter", { id: "mm-soft", x: "-40%", y: "-40%", width: "180%", height: "180%" });
-    f.appendChild(el("feGaussianBlur", { stdDeviation: "1.6", result: "b" }));
-    const m = el("feMerge");
-    m.appendChild(el("feMergeNode", { in: "b" }));
-    m.appendChild(el("feMergeNode", { in: "SourceGraphic" }));
-    f.appendChild(m);
-    d.appendChild(f);
-    return d;
-  }
-
   function draw() {
     const pos = layout();
     world = el("g");
@@ -190,16 +161,6 @@
     const children = kids[focus] || [];
     const path = pathTo(focus);
     const fp = pos.get(focus);
-
-    if (fp) {
-      world.appendChild(el("ellipse", {
-        cx: fp.x + 90,
-        cy: fp.y,
-        rx: 160,
-        ry: Math.max(90, (children.length || 1) * 28),
-        fill: "rgba(201,162,39,.06)",
-      }));
-    }
 
     for (let i = 1; i < path.length; i++) {
       const a = pos.get(path[i - 1].id);
@@ -222,45 +183,26 @@
 
     const drawNode = (n, p) => {
       const g = el("g", {
-        class: `mm-node ${n.kind}${n.id === active || p.focus ? " active" : ""}${(kids[n.id] || []).length ? " has-kids" : ""}${p.spine && !p.focus ? " ancestor" : ""}`,
+        class: `mm-node ${n.kind}${n.id === active || p.focus ? " active" : ""}${p.spine && !p.focus ? " ancestor" : ""}`,
         transform: `translate(${p.x} ${p.y})`,
       });
       g.dataset.id = n.id;
       if (p.focus) {
         g.appendChild(el("circle", {
-          r: p.r + 14,
-          fill: "rgba(240,215,140,.08)",
-          stroke: "rgba(240,215,140,.45)",
-          "stroke-width": 1.5,
+          r: p.r + 6,
+          fill: "none",
+          stroke: "#243028",
+          "stroke-width": 1.25,
         }));
       }
       g.appendChild(el("circle", {
-        class: "mm-core",
         r: p.r,
-        fill: `url(#mm-g-${n.kind})`,
+        fill: FILL[n.kind] || FILL.lab,
         stroke: STROKE[n.kind] || STROKE.lab,
-        "stroke-width": p.focus || n.id === active ? 2.6 : 1.6,
-        filter: p.focus ? "url(#mm-soft)" : "",
+        "stroke-width": p.focus ? 2.2 : 1.6,
       }));
-      g.appendChild(el("circle", {
-        r: p.r * 0.38,
-        cx: -p.r * 0.22,
-        cy: -p.r * 0.28,
-        fill: "rgba(255,255,255,.28)",
-      }));
-      const label = n.label;
-      const tw = Math.min(168, label.length * 7.2 + 16);
-      const ly = p.r + 18;
-      g.appendChild(el("rect", {
-        x: -tw / 2,
-        y: ly - 13,
-        width: tw,
-        height: 20,
-        rx: 10,
-        fill: "rgba(12,10,8,.78)",
-      }));
-      const t = el("text", { y: ly + 2 });
-      t.textContent = label;
+      const t = el("text", { y: p.r + 16 });
+      t.textContent = n.label;
       g.appendChild(t);
       g.addEventListener("click", (ev) => {
         ev.stopPropagation();
@@ -274,7 +216,7 @@
     });
     for (const c of children) drawNode(c, pos.get(c.id));
 
-    svg.replaceChildren(defs(), world);
+    svg.replaceChildren(world);
     renderCrumb();
   }
 
