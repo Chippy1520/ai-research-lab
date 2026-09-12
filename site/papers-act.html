@@ -116,15 +116,15 @@
         <h3>Abstract</h3>
         <p>Fine tasks (cable ties, battery slotting) need precision, contact, closed-loop vision. Usually that means expensive robots and calibration. Question: can learning make cheap, imprecise hardware do them? They collect demos on a custom teleop rig and train end-to-end. Imitation has two diseases here: compounding error, and non-stationary humans. ACT is a generative model over action sequences. Six real tasks (open a translucent condiment cup, slot a battery) at 80–90% with ~10 minutes of demos. Site: tonyzhaozh.github.io/aloha.</p>
         <figure class="paper-fig">
-          <img src="https://arxiv.org/html/2304.13705/2304.13705v1/figures/setup.jpg" alt="ALOHA bimanual teleoperation hardware" loading="lazy">
+          <img src="https://arxiv.org/html/2304.13705v1/figures/setup.jpg" alt="ALOHA bimanual teleoperation hardware" loading="lazy">
           <figcaption class="article-caption"><strong>Paper hardware figure.</strong> Leader arms in the operator’s hands, followers on the table, four cameras. Joint-space mapping — no IK. This is the data engine; ACT is the learner.</figcaption>
         </figure>
         <figure class="paper-fig">
-          <img src="https://arxiv.org/html/2304.13705/2304.13705v1/real_tasks.png" alt="ACT real-world fine manipulation tasks" loading="lazy">
+          <img src="https://arxiv.org/html/2304.13705v1/real_tasks.png" alt="ACT real-world fine manipulation tasks" loading="lazy">
           <figcaption class="article-caption"><strong>Paper real tasks.</strong> Cup, battery, velcro, tape, shoe. Each frame is a contact story from §V-A. Quote subtask columns, not a single %.</figcaption>
         </figure>
         <figure class="paper-fig">
-          <img src="https://arxiv.org/html/2304.13705/2304.13705v1/figures/obs.jpg" alt="Four camera observations used by ACT" loading="lazy">
+          <img src="https://arxiv.org/html/2304.13705v1/figures/obs.jpg" alt="Four camera observations used by ACT" loading="lazy">
           <figcaption class="article-caption"><strong>Paper observations.</strong> Four RGB streams at 480×640. Wrist + workspace. This is why ResNet-18 × 4, not a single front camera.</figcaption>
         </figure>
 
@@ -202,6 +202,14 @@
         </figure>
 
         <h3>§V Tasks (read every one)</h3>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2304.13705v1/sim_tasks.png" alt="ACT simulated cube transfer and insertion" loading="lazy">
+          <figcaption class="article-caption"><strong>Paper sim tasks.</strong> Transfer Cube and Bimanual Insertion — the $k=1$ vs $k=100$ ablation lives here, not on the cup.</figcaption>
+        </figure>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2304.13705v1/figures/teleop_tasks.jpg" alt="ALOHA teleop skill examples" loading="lazy">
+          <figcaption class="article-caption"><strong>Paper teleop skills.</strong> Existence proof for the hardware (zip-tie, RAM, …). Do not quote these as ACT policy success rates.</figcaption>
+        </figure>
         <p>Sim: Transfer Cube, Bimanual Insertion. Real: Slide Ziploc, Slot Battery, Open Cup, Thread Velcro (3 mm × 25 mm loop), Prep Tape, Put On Shoe. Each paragraph in V-A is a contact story — mid-air second grasp, springy battery slot, tight shoe. Thread Velcro: millimetres at grasp 1 become &gt;10 mm at insertion.</p>
 
         <h3>Tables I–II</h3>

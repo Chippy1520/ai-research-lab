@@ -121,7 +121,7 @@
 
         <h3>Figure 1 (do this before §1)</h3>
         <figure class="paper-fig">
-          <img src="https://arxiv.org/html/2506.01844/2506.01844v1/SmolVLA.png" alt="SmolVLA architecture: VLM with scissors, three inputs, action expert, action chunk" loading="lazy">
+          <img src="https://arxiv.org/html/2506.01844v1/SmolVLA.png" alt="SmolVLA architecture: VLM with scissors, three inputs, action expert, action chunk" loading="lazy">
           <figcaption class="article-caption"><strong>Paper Figure 1.</strong> Scissors = dropped late VLM layers. Gold blocks = cross-attention into the VLM; pale = causal self-attention inside the chunk. Flow matching sits in the expert, not in the VLM. Community data and cheap arms are in the caption on purpose — they are part of the claim, not decoration.</figcaption>
         </figure>
         <p>The scissors icon is not decoration: the last $L-N$ VLM layers are discarded. Three inputs merge — language, RGB view(s), sensorimotor state — then an action expert of alternating cross-attention (gold) and self-attention (pale) blocks, trained with flow matching, emits a chunk $a_t,\dots,a_{t+n}$. Pretraining is public community data; evaluation is low-cost robots. If you cannot redraw this figure from memory, do not start §3.1.</p>
@@ -192,11 +192,11 @@
 
         <h3>§3.3 Asynchronous inference</h3>
         <figure class="paper-fig">
-          <img src="https://arxiv.org/html/2506.01844/2506.01844v1/async_inference.png" alt="Asynchronous inference: RobotClient and PolicyServer" loading="lazy">
+          <img src="https://arxiv.org/html/2506.01844v1/async_inference.png" alt="Asynchronous inference: RobotClient and PolicyServer" loading="lazy">
           <figcaption class="article-caption"><strong>Paper Figure 2.</strong> Client pops actions at the control rate. Server infers on another machine/process. The arm does not wait for the forward pass.</figcaption>
         </figure>
         <figure class="paper-fig">
-          <img src="https://arxiv.org/html/2506.01844/2506.01844v1/queues.png" alt="Action queue size versus threshold g, with and without joint-space filter" loading="lazy">
+          <img src="https://arxiv.org/html/2506.01844v1/queues.png" alt="Action queue size versus threshold g, with and without joint-space filter" loading="lazy">
           <figcaption class="article-caption"><strong>Paper Figure 3.</strong> Left: no filter, queue never empties because near-duplicate observations keep filling it. Right: joint-space filter, except the red arrow — empty queue forces an infer even on a duplicate, or the robot stalls.</figcaption>
         </figure>
         <p>Modern policies output chunks $\pi(o_t)=\mathbf{A}_t=(a_t,\ldots,a_{t+n})$. The naive loop executes the whole chunk, then looks again — open-loop for $n$ steps, plus an idle gap while the next chunk is computed.</p>
@@ -218,6 +218,10 @@
         </figure>
 
         <h3>§4 Experiments — protocol first</h3>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2506.01844v1/tasks.png" alt="SmolVLA real-world SO-100 tasks" loading="lazy">
+          <figcaption class="article-caption"><strong>Paper task figure.</strong> Start and end frames for pick-place, stack, sort. Partial credit is defined on these substeps (0.5+0.5 or 0.25×4), not a binary sim success bit.</figcaption>
+        </figure>
         <p>Sim: new Meta-World dataset, 50 demos × 50 tasks. Real: three SO-100 tasks + one SO-101, 10 trajectories × 5 start poses = 50 demos each. Default training is multi-task.</p>
         <p><strong>Metrics.</strong> Sim success is binary. Real success is partial: pick-place 0.5 grasp + 0.5 place; stacking same; sorting 0.25 × 4 substeps.</p>
         <p>LIBERO: Spatial / Object / Goal / Long, 10 tasks each, dataset <code>physical-intelligence/libero</code> (1,693 episodes), 10 trials/task. Meta-World: 2,500 episodes, same 10-trial protocol. SO-101 pick-place is <em>not</em> in pretraining.</p>

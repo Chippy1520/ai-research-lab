@@ -114,15 +114,15 @@
         <h3>Abstract</h3>
         <p>VGGT is a feed-forward net that infers cameras, point maps, depth, and 3D tracks from one, a few, or hundreds of views. 3D vision has been specialized per task; this is one model for all of them. Reconstruction in under a second, still beating methods that post-process with geometry optimization. SOTA on camera pose, multi-view depth, dense clouds, point tracking. Pretrained VGGT as a backbone also helps non-rigid tracking and feed-forward novel-view synthesis. Code: facebookresearch/vggt.</p>
         <figure class="paper-fig">
-          <img src="https://arxiv.org/html/2503.11651/2503.11651v1/teaser.png" alt="VGGT teaser: cameras, depth, points, tracks from many views" loading="lazy">
+          <img src="https://arxiv.org/html/2503.11651v1/teaser.png" alt="VGGT teaser: cameras, depth, points, tracks from many views" loading="lazy">
           <figcaption class="article-caption"><strong>Paper Figure 1 (teaser).</strong> One forward pass, variable $N$. The frustums are predicted cameras, not COLMAP cameras. If this picture is not obvious, the method section will not be either.</figcaption>
         </figure>
         <figure class="paper-fig">
-          <img src="https://arxiv.org/html/2503.11651/2503.11651v1/architecture_v4.png" alt="VGGT architecture: DINO tokens, alternating attention, heads" loading="lazy">
+          <img src="https://arxiv.org/html/2503.11651v1/architecture_v4.png" alt="VGGT architecture: DINO tokens, alternating attention, heads" loading="lazy">
           <figcaption class="article-caption"><strong>Paper architecture figure.</strong> Patchify with DINO, append camera + register tokens, alternate frame-wise and global self-attention, then camera head vs DPT heads. No cross-attention. Frame 1’s camera token is a different learned vector so the world frame is marked.</figcaption>
         </figure>
         <figure class="paper-fig">
-          <img src="https://arxiv.org/html/2503.11651/2503.11651v1/comparison_vggt_dust3r.png" alt="VGGT vs DUSt3R qualitative 3D" loading="lazy">
+          <img src="https://arxiv.org/html/2503.11651v1/comparison_vggt_dust3r.png" alt="VGGT vs DUSt3R qualitative 3D" loading="lazy">
           <figcaption class="article-caption"><strong>Paper qualitative vs DUSt3R.</strong> Oil painting, non-overlapping pair, repeated texture. DUSt3R is a two-view method plus fusion; this figure is why “just run DUSt3R” is not the same paper.</figcaption>
         </figure>
 
@@ -199,6 +199,10 @@
         </figure>
         <p><strong>§4.2 depth (DTU).</strong> Accuracy / completeness / overall (Chamfer). Only DUSt3R and VGGT lack GT cameras. Overall 1.741 → 0.382 vs DUSt3R; comparable to methods that <em>are given</em> GT cameras (GeoMVSNet cost volumes, MASt3R with GT triangulation).</p>
         <p><strong>§4.3 point maps (ETH3D).</strong> 10 frames, Umeyama align, official masks. Same three Chamfer numbers vs DUSt3R/MASt3R.</p>
+        <figure class="paper-fig">
+          <img src="https://arxiv.org/html/2503.11651v1/pointmap_v6.png" alt="VGGT predicted point maps with camera frustums" loading="lazy">
+          <figcaption class="article-caption"><strong>Paper point-map figure.</strong> Predicted cloud + frustums. This is $P$ (or fused $D$+$g$), not a COLMAP sparse model colored in.</figcaption>
+        </figure>
         <p><strong>§4.4 tracking / matching.</strong> Tracking head is not a two-view specialist, yet beats Roma on ScanNet-1500 AUC. Finetuned backbone also lifts dynamic CoTracker.</p>
         <p><strong>Qualitative (Figs. 3–4).</strong> Oil painting geometry, two views with <em>no overlap</em>, repeated texture — DUSt3R fails or OOMs past 32 frames; VGGT does not.</p>
         <p><strong>§4.5 over-complete ablation</strong> is the reason they predict redundant heads. Read it before you delete a loss “because PnP exists.”</p>

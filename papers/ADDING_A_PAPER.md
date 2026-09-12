@@ -32,7 +32,7 @@ Reuse `site/assets/papers.css` + `curriculum.css`. Do not add a new stylesheet u
 3. Pull the actual numbers you will quote (success rates, FLOPs, ablations). Do not paraphrase a table you did not read.
 4. Find 2–4 primary lecture videos for *fundamentals* (transformers, SfM, VAE, flow matching, …), not recaps of this paper. Embed `youtube.com/embed/<id>`.
 5. Official code + weights + blog if the authors published them.
-6. Embed the paper’s own figures from `https://arxiv.org/html/<id>/<id>v1/...` and caption what to look at. Do not redraw a figure the PDF already has.
+6. Embed the paper’s own figures from `https://arxiv.org/html/<id>v1/<file>` (not `/html/<id>/<id>v1/`). Caption what to look at.
 7. Knowledge graph is a **spoke-map**: claim in the center, foundations on the left, this-paper modules on the right. ASCII is a footnote, not the graph.
 
 ## Page order (fixed)
