@@ -611,6 +611,11 @@
       "why": "LeRobot can hide it; production stacks usually don't.",
       "resources": [
         {
+          "type": "video",
+          "title": "ROS 2 in 5 minutes",
+          "url": "https://www.youtube.com/watch?v=0aPbWsy2q8I"
+        },
+        {
           "type": "docs",
           "title": "ROS 2 docs",
           "url": "https://docs.ros.org/en/humble/"
