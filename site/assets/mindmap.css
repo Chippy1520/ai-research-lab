@@ -32,6 +32,31 @@
 .mm-node.concept circle { fill: #ddd4ee; stroke: #6b4ea0; }
 .mm-node.framework circle { fill: #f1cfc4; stroke: #a24c38; }
 .mm-node.lab circle { fill: #eceae2; stroke: #606660; }
+.mm-legend {
+  position: absolute;
+  bottom: 36px;
+  left: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  max-width: min(640px, 70%);
+  font: 500 11px Manrope, sans-serif;
+  color: #3e443f;
+  background: rgba(255,252,246,.88);
+  border: 1px solid #ddd8cc;
+  padding: 8px 12px;
+}
+.mm-legend span { display: flex; align-items: center; gap: 6px; }
+.mm-legend i {
+  width: 10px; height: 10px; border-radius: 99px; border: 1px solid rgba(0,0,0,.2);
+}
+.mm-legend .k-hub { background: #243028; }
+.mm-legend .k-domain { background: #cfe8d4; }
+.mm-legend .k-paper { background: #c9dff0; }
+.mm-legend .k-method { background: #f3ddb0; }
+.mm-legend .k-concept { background: #ddd4ee; }
+.mm-legend .k-framework { background: #f1cfc4; }
+.mm-legend .k-lab { background: #eceae2; }
 .mm-node.active circle { stroke-width: 3.5; filter: drop-shadow(0 0 0 3px #2d6a45); }
 .mm-toolbar {
   position: absolute;

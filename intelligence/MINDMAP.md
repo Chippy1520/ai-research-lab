@@ -21,7 +21,17 @@ Paper ASCII trees (ACT chunks, SmolVLA flow, …) are local footnotes. This map 
 - Append a `changelog` line with the date.
 - After editing, run `python scripts/build_robotics_site.py` so Pages payload includes the graph. Commit + push `main` if the graph actually changed.
 
-## Node schema
+## Colors mean kind, not topic
+
+- dark — hub (the field)
+- green — domain (a branch)
+- lilac — concept (an idea)
+- gold — method (an algorithm you implement)
+- blue — paper (one publication)
+- terracotta — framework (code you run)
+- grey — lab (company; jobs attach)
+
+Do not recode colors for “importance.” Filter chips are domains; fill is kind.
 
 `id, label, kind (hub|domain|concept|method|paper|framework|lab), domain, brief, why?, research_directions[], resources[{type,title,url}], company_id?`
 

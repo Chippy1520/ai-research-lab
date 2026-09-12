@@ -7,6 +7,10 @@
   "changelog": [
     {
       "date": "2026-09-12",
+      "note": "Foundations ring: supervised learning, nets, backprop, CNN, transformers, attention, generative models, camera, stereo, flow, detection, segmentation, MDP, Q-learning, policy gradient, PID, kinematics, state estimation, teleop, proprioception, imitation learning, self-supervised reps, sequence models. Colors encode kind (legend on the page)."
+    },
+    {
+      "date": "2026-09-12",
       "note": "Unexplored neighbors: RT-1/2, OXE, Octo, GR00T N1.5, Gemini Robotics 2, Helix, WBC, CoTracker, MASt3R, Depth Anything, sim-to-real, offline RL, PPO/SAC, cross-embodiment, LIBERO, Cosmos, MuJoCo, NVIDIA GEAR, DeepMind Robotics, Dexterity, Persona, Foundation, Eagle 2.5, RDT-1B, VQ-BeT."
     },
     {
@@ -1034,6 +1038,212 @@
           "url": "https://arxiv.org/abs/2403.03954"
         }
       ]
+    },
+    {
+      "id": "foundations",
+      "label": "Foundations",
+      "kind": "domain",
+      "domain": "foundations",
+      "brief": "The first-year nodes. Transformers, cameras, MDPs, PID — everything later on this map is a specialization of one of these.",
+      "why": "Start here if the frontier papers are opaque. Green branch, same as Perception or Learning."
+    },
+    {
+      "id": "supervised",
+      "label": "Supervised learning",
+      "kind": "concept",
+      "domain": "foundations",
+      "brief": "Fit a map x→y from labeled pairs. Behavior cloning is this with y = expert action.",
+      "why": "Every LeRobot train call is still supervised learning until you add RL."
+    },
+    {
+      "id": "neural-nets",
+      "label": "Neural nets",
+      "kind": "concept",
+      "domain": "foundations",
+      "brief": "Composable differentiable functions. The universal substrate of VLAs, DINOv2, flow experts.",
+      "why": "Not optional. Everything gold or blue on this map is a neural net unless it says PID or BA."
+    },
+    {
+      "id": "backprop",
+      "label": "Backprop / SGD",
+      "kind": "method",
+      "domain": "foundations",
+      "brief": "Gradients through the net, stochastic updates. The optimizer is a dynamical system — see the curriculum module.",
+      "why": "GEN-1.5’s claim is interesting because one-shot skips this. Fine-tune still is this."
+    },
+    {
+      "id": "cnn",
+      "label": "CNNs",
+      "kind": "method",
+      "domain": "foundations",
+      "brief": "Weight-shared local filters. ResNet-18 in ACT, STLight’s entire backbone, wrist-cam towers before ViTs took over.",
+      "why": "If you still train ACT, you are training a CNN.",
+      "resources": [
+        {
+          "type": "paper",
+          "title": "ResNet",
+          "url": "https://arxiv.org/abs/1512.03385"
+        }
+      ]
+    },
+    {
+      "id": "transformers",
+      "label": "Transformers",
+      "kind": "method",
+      "domain": "foundations",
+      "brief": "Self-attention over tokens. Language, vision patches, action chunks, VGGT views — same block.",
+      "why": "The reason a VLA, a VLM, and VGGT can share a codebase.",
+      "resources": [
+        {
+          "type": "paper",
+          "title": "Attention Is All You Need",
+          "url": "https://arxiv.org/abs/1706.03762"
+        }
+      ]
+    },
+    {
+      "id": "attention",
+      "label": "Attention",
+      "kind": "concept",
+      "domain": "foundations",
+      "brief": "Query-key-value weighting. Cross-attention (SmolVLA features→expert) vs self-attention (VGGT AA, ACT decoder).",
+      "why": "When a paper says CA vs SA, this is the node."
+    },
+    {
+      "id": "generative",
+      "label": "Generative models",
+      "kind": "concept",
+      "domain": "foundations",
+      "brief": "Model p(x) or a transport to p(x): VAE, diffusion, flow matching. Action heads are generative models of motor commands.",
+      "why": "CVAE, Diffusion Policy, SmolVLA expert, VQ-BeT are four answers to this one idea."
+    },
+    {
+      "id": "camera-model",
+      "label": "Camera model",
+      "kind": "concept",
+      "domain": "foundations",
+      "brief": "Pinhole + intrinsics/extrinsics. g_i in VGGT is this. Wrist vs third-person is a camera-name problem because of this.",
+      "why": "3D from pixels starts here, not at DINOv2."
+    },
+    {
+      "id": "stereo",
+      "label": "Stereo / multi-view",
+      "kind": "concept",
+      "domain": "foundations",
+      "brief": "Two or more views → depth/pose via correspondence + geometry. COLMAP, DUSt3R, VGGT are learned or classical versions.",
+      "why": "The geometry VGGT is allowed to skip — you should still know it."
+    },
+    {
+      "id": "optical-flow",
+      "label": "Optical flow",
+      "kind": "concept",
+      "domain": "foundations",
+      "brief": "Dense 2D motion between frames. Ancestor of CoTracker and of video prediction (STLight).",
+      "why": "Tracking and STL both secretly start as flow."
+    },
+    {
+      "id": "detection",
+      "label": "Detection",
+      "kind": "concept",
+      "domain": "foundations",
+      "brief": "Boxes (or queries) around objects. YOLO, Detectors in Layer-1 pipelines. A VLA often skips explicit detection and eats pixels.",
+      "why": "Still the right first layer when you need a crop (glove conveyor, grasp affordance)."
+    },
+    {
+      "id": "segmentation",
+      "label": "Segmentation",
+      "kind": "concept",
+      "domain": "foundations",
+      "brief": "Per-pixel class or instance. SAM, YOLO-seg. Useful masks for point maps and for ‘what is the object’.",
+      "why": "VGGT point maps without a mask are a fog of background."
+    },
+    {
+      "id": "mdp",
+      "label": "MDP",
+      "kind": "concept",
+      "domain": "foundations",
+      "brief": "States, actions, reward, transition. The math of RL. Imitation pretends the reward is ‘match the demo.’",
+      "why": "Read this before PPO. Compounding error is an MDP occupancy problem."
+    },
+    {
+      "id": "q-learning",
+      "label": "Q-learning",
+      "kind": "method",
+      "domain": "foundations",
+      "brief": "Learn action-values, greedy policy. DQN is this with a CNN. Offline RL (CQL) is a conservative cousin.",
+      "why": "Value-based neighbor of policy gradients."
+    },
+    {
+      "id": "policy-gradient",
+      "label": "Policy gradient",
+      "kind": "method",
+      "domain": "foundations",
+      "brief": "Differentiate expected return w.r.t. π. PPO is the stable version Isaac Lab actually runs.",
+      "why": "WBC lower body lives here, not in a VLA decoder."
+    },
+    {
+      "id": "pid",
+      "label": "PID control",
+      "kind": "method",
+      "domain": "foundations",
+      "brief": "Error → effort with P, I, D terms. Joint-level loop under ACT/SmolVLA. The policy emits setpoints; PID tracks them.",
+      "why": "If the arm shakes, debug this before the transformer."
+    },
+    {
+      "id": "kinematics",
+      "label": "Kinematics",
+      "kind": "concept",
+      "domain": "foundations",
+      "brief": "FK: joints → pose. IK: pose → joints. ALOHA maps leader joints to follower joints and skips IK. Humanoid WBC does not.",
+      "why": "Action space choice (joint vs EE) is this node."
+    },
+    {
+      "id": "state-est",
+      "label": "State estimation",
+      "kind": "concept",
+      "domain": "foundations",
+      "brief": "Filter noisy sensors into a state (Kalman, particle, learned). Proprioception + vision fusion.",
+      "why": "Policies that ‘see joints’ assume this already ran."
+    },
+    {
+      "id": "teleop",
+      "label": "Teleoperation",
+      "kind": "concept",
+      "domain": "foundations",
+      "brief": "Human drives the robot; log (obs, action). The data engine for BC. ALOHA leader–follower is one hardware answer.",
+      "why": "No demos, no ACT. GEN-1.5 still wants a 3–12 s teleop clip."
+    },
+    {
+      "id": "proprio",
+      "label": "Proprioception",
+      "kind": "concept",
+      "domain": "foundations",
+      "brief": "The robot’s own joint angles, currents, tactile. The non-camera observation. ACT concatenates it; VLAs often tokenize it.",
+      "why": "Language + pixels without proprio is a puppet with no muscle sense."
+    },
+    {
+      "id": "il",
+      "label": "Imitation learning",
+      "kind": "concept",
+      "domain": "foundations",
+      "brief": "Learn from expert traces. BC is the naive case; DAgger is interactive; inverse RL infers a reward.",
+      "why": "Parent of behavior cloning on this map."
+    },
+    {
+      "id": "representation",
+      "label": "Self-supervised representation",
+      "kind": "concept",
+      "domain": "foundations",
+      "brief": "Learn features without labels: DINO, MAE, CLIP contrastive. Frozen towers in VLAs start here.",
+      "why": "DINOv2 is an instance. The idea is older and reusable."
+    },
+    {
+      "id": "seq-models",
+      "label": "Sequence models",
+      "kind": "concept",
+      "domain": "foundations",
+      "brief": "RNN/LSTM then transformers. PredRNN is the STL tax STLight refused. Action chunks are sequences.",
+      "why": "Time is a sequence problem before it is a VLA problem."
     }
   ],
   "edges": [
@@ -1606,6 +1816,306 @@
       "from": "gr00t",
       "to": "cross-embod",
       "rel": "humanoid"
+    },
+    {
+      "from": "embodied-ai",
+      "to": "foundations",
+      "rel": "includes"
+    },
+    {
+      "from": "foundations",
+      "to": "supervised",
+      "rel": "includes"
+    },
+    {
+      "from": "foundations",
+      "to": "neural-nets",
+      "rel": "includes"
+    },
+    {
+      "from": "foundations",
+      "to": "transformers",
+      "rel": "includes"
+    },
+    {
+      "from": "foundations",
+      "to": "cnn",
+      "rel": "includes"
+    },
+    {
+      "from": "foundations",
+      "to": "generative",
+      "rel": "includes"
+    },
+    {
+      "from": "foundations",
+      "to": "camera-model",
+      "rel": "includes"
+    },
+    {
+      "from": "foundations",
+      "to": "mdp",
+      "rel": "includes"
+    },
+    {
+      "from": "foundations",
+      "to": "pid",
+      "rel": "includes"
+    },
+    {
+      "from": "foundations",
+      "to": "kinematics",
+      "rel": "includes"
+    },
+    {
+      "from": "foundations",
+      "to": "teleop",
+      "rel": "includes"
+    },
+    {
+      "from": "foundations",
+      "to": "il",
+      "rel": "includes"
+    },
+    {
+      "from": "neural-nets",
+      "to": "backprop",
+      "rel": "trained-by"
+    },
+    {
+      "from": "neural-nets",
+      "to": "cnn",
+      "rel": "includes"
+    },
+    {
+      "from": "neural-nets",
+      "to": "transformers",
+      "rel": "includes"
+    },
+    {
+      "from": "transformers",
+      "to": "attention",
+      "rel": "uses"
+    },
+    {
+      "from": "supervised",
+      "to": "il",
+      "rel": "specializes"
+    },
+    {
+      "from": "il",
+      "to": "behavior-cloning",
+      "rel": "includes"
+    },
+    {
+      "from": "generative",
+      "to": "cvae",
+      "rel": "includes"
+    },
+    {
+      "from": "generative",
+      "to": "flow-matching",
+      "rel": "includes"
+    },
+    {
+      "from": "generative",
+      "to": "diffusion-policy",
+      "rel": "includes"
+    },
+    {
+      "from": "cnn",
+      "to": "act",
+      "rel": "vision-tower"
+    },
+    {
+      "from": "cnn",
+      "to": "stlight",
+      "rel": "backbone"
+    },
+    {
+      "from": "transformers",
+      "to": "act",
+      "rel": "policy"
+    },
+    {
+      "from": "transformers",
+      "to": "vggt",
+      "rel": "backbone"
+    },
+    {
+      "from": "transformers",
+      "to": "smolvla",
+      "rel": "backbone"
+    },
+    {
+      "from": "transformers",
+      "to": "rt2",
+      "rel": "backbone"
+    },
+    {
+      "from": "attention",
+      "to": "smolvla",
+      "rel": "CA-SA"
+    },
+    {
+      "from": "camera-model",
+      "to": "stereo",
+      "rel": "plus"
+    },
+    {
+      "from": "camera-model",
+      "to": "vggt",
+      "rel": "outputs"
+    },
+    {
+      "from": "stereo",
+      "to": "dust3r",
+      "rel": "learned"
+    },
+    {
+      "from": "stereo",
+      "to": "vggt",
+      "rel": "learned"
+    },
+    {
+      "from": "optical-flow",
+      "to": "cotracker",
+      "rel": "sparse"
+    },
+    {
+      "from": "optical-flow",
+      "to": "stlight",
+      "rel": "dense-future"
+    },
+    {
+      "from": "foundations",
+      "to": "optical-flow",
+      "rel": "includes"
+    },
+    {
+      "from": "foundations",
+      "to": "detection",
+      "rel": "includes"
+    },
+    {
+      "from": "foundations",
+      "to": "segmentation",
+      "rel": "includes"
+    },
+    {
+      "from": "perception",
+      "to": "detection",
+      "rel": "includes"
+    },
+    {
+      "from": "perception",
+      "to": "segmentation",
+      "rel": "includes"
+    },
+    {
+      "from": "mdp",
+      "to": "rl",
+      "rel": "formalism"
+    },
+    {
+      "from": "rl",
+      "to": "q-learning",
+      "rel": "includes"
+    },
+    {
+      "from": "rl",
+      "to": "policy-gradient",
+      "rel": "includes"
+    },
+    {
+      "from": "policy-gradient",
+      "to": "ppo-sac",
+      "rel": "includes"
+    },
+    {
+      "from": "q-learning",
+      "to": "offline-rl",
+      "rel": "cousin"
+    },
+    {
+      "from": "pid",
+      "to": "act",
+      "rel": "tracks"
+    },
+    {
+      "from": "kinematics",
+      "to": "wbc",
+      "rel": "uses"
+    },
+    {
+      "from": "kinematics",
+      "to": "aloha",
+      "rel": "joint-space"
+    },
+    {
+      "from": "teleop",
+      "to": "aloha",
+      "rel": "hardware"
+    },
+    {
+      "from": "teleop",
+      "to": "behavior-cloning",
+      "rel": "data-for"
+    },
+    {
+      "from": "proprio",
+      "to": "act",
+      "rel": "input"
+    },
+    {
+      "from": "foundations",
+      "to": "proprio",
+      "rel": "includes"
+    },
+    {
+      "from": "foundations",
+      "to": "state-est",
+      "rel": "includes"
+    },
+    {
+      "from": "state-est",
+      "to": "proprio",
+      "rel": "filters"
+    },
+    {
+      "from": "representation",
+      "to": "dinov2",
+      "rel": "instance"
+    },
+    {
+      "from": "foundations",
+      "to": "representation",
+      "rel": "includes"
+    },
+    {
+      "from": "foundations",
+      "to": "seq-models",
+      "rel": "includes"
+    },
+    {
+      "from": "seq-models",
+      "to": "stlight",
+      "rel": "cnn-instead"
+    },
+    {
+      "from": "seq-models",
+      "to": "action-chunking",
+      "rel": "chunks-are"
+    },
+    {
+      "from": "il",
+      "to": "compounding-error",
+      "rel": "fails-by"
+    },
+    {
+      "from": "detection",
+      "to": "segmentation",
+      "rel": "adjacent"
     }
   ]
 }

@@ -13,6 +13,15 @@
   let domainFilter = "all";
   let positions = new Map();
 
+  const KIND = {
+    hub: "dark — the field this map is about",
+    domain: "green — a branch of the field",
+    concept: "lilac — an idea, not a paper",
+    method: "gold — an algorithm you can implement",
+    paper: "blue — one specific paper",
+    framework: "terracotta — code or stack you run",
+    lab: "grey — a lab or company (jobs attach here)",
+  };
   const R = { hub: 28, domain: 20, default: 14 };
 
   function neighbors(id) {
@@ -160,7 +169,7 @@
     const relatedJobs = jobsFor(n);
     const intern = relatedJobs.filter((j) => j.seniority === "internship");
     panel.innerHTML = `
-      <div class="mm-kicker">${n.kind} · ${n.domain}</div>
+      <div class="mm-kicker">${KIND[n.kind] || n.kind} · ${n.domain}</div>
       <h2>${n.label}</h2>
       <p>${n.brief || ""}</p>
       ${n.why ? `<h3>Why it is on the map</h3><p>${n.why}</p>` : ""}
@@ -185,7 +194,8 @@
   }
 
   function chips() {
-    const domains = ["all", ...new Set(graph.nodes.map((n) => n.domain))];
+    const raw = [...new Set(graph.nodes.map((n) => n.domain))];
+    const domains = ["all", ...raw.filter((d) => d === "foundations"), ...raw.filter((d) => d !== "all" && d !== "foundations" && d !== "hub")];
     filters.innerHTML = "";
     domains.forEach((d) => {
       const b = document.createElement("button");
