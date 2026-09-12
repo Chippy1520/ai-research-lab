@@ -113,55 +113,69 @@
     if (world) world.setAttribute("transform", `translate(${view.x} ${view.y}) scale(${view.s})`);
   }
 
-  function layout() {
+  let home = new Map();
+
+  function layoutHome() {
     const W = Math.max(svg.clientWidth, 320);
     const H = Math.max(svg.clientHeight, 320);
-    const mobile = phone();
-    const cy = H / 2 + 8;
-    const f = byId[focus];
-    const children = kids[focus] || [];
-    const path = pathTo(focus);
-    const pos = new Map();
-    const left = mobile ? 56 : 88;
-    const step = Math.min(mobile ? 92 : 130, (W * 0.42) / Math.max(path.length, 1));
-    path.forEach((n, i) => {
-      const last = i === path.length - 1;
-      pos.set(n.id, {
-        x: left + i * step,
-        y: cy,
-        r: last ? (R[n.kind] || 18) + 6 : 14,
-        spine: true,
-        focus: last,
-      });
-    });
-    const fp = pos.get(focus) || { x: W * 0.45, y: cy, r: 28 };
-    const n = children.length;
-    const colX = fp.x + (mobile ? 118 : 188);
-    const gap = Math.min(64, Math.max(42, (H - 160) / Math.max(n, 1)));
-    const span = gap * Math.max(n - 1, 0);
-    children.forEach((c, i) => {
-      const t = n === 1 ? 0.5 : i / (n - 1);
-      const y = n === 1 ? cy : cy - span / 2 + i * gap;
-      const bow = Math.sin((t - 0.5) * Math.PI) * (mobile ? 18 : 36);
-      pos.set(c.id, { x: colX + bow, y, r: R[c.kind] || R.default });
-    });
+    const cx = W / 2;
+    const cy = H / 2;
+    const S = Math.min(W, H);
+    const ring = [0, S * 0.2, S * 0.35, S * 0.5, S * 0.6];
+    home = new Map();
+    const hubId = graph.center || "embodied-ai";
 
-    const parentId = f?.parent;
-    const ghosts = parentId
-      ? (kids[parentId] || []).filter((s) => s.id !== focus)
-      : [];
-    const pp = parentId ? pos.get(parentId) : null;
-    if (pp && ghosts.length) {
-      const gGap = Math.max(mobile ? 48 : 62, Math.min(96, (H - 80) / Math.max(ghosts.length, 1)));
-      const gSpan = gGap * Math.max(ghosts.length - 1, 0);
-      ghosts.forEach((s, i) => {
-        const t = ghosts.length === 1 ? 0.5 : i / (ghosts.length - 1);
-        const y = cy - gSpan / 2 + i * gGap;
-        const out = (mobile ? 36 : 72) + Math.sin(Math.abs(t - 0.5) * Math.PI) * (mobile ? 28 : 56);
-        pos.set(s.id, { x: pp.x - out, y, r: 12, ghost: true });
+    function walk(id, angle, sweep, depth) {
+      const n = byId[id];
+      if (!n) return;
+      const rad = ring[Math.min(depth, ring.length - 1)];
+      home.set(id, {
+        x: cx + Math.cos(angle) * rad,
+        y: cy + Math.sin(angle) * rad,
+        r: R[n.kind] || R.default,
+        a: angle,
+      });
+      const ch = kids[id] || [];
+      if (!ch.length) return;
+      if (depth === 0) {
+        ch.forEach((c, i) => {
+          const a = -Math.PI / 2 + (i * 2 * Math.PI) / ch.length;
+          walk(c.id, a, (2 * Math.PI) / ch.length, 1);
+        });
+        return;
+      }
+      const inner = sweep * 0.82;
+      ch.forEach((c, i) => {
+        const a = ch.length === 1 ? angle : angle - inner / 2 + (i * inner) / Math.max(ch.length - 1, 1);
+        walk(c.id, a, inner / Math.max(ch.length, 1), depth + 1);
       });
     }
-    return { pos, ghosts };
+    walk(hubId, 0, Math.PI * 2, 0);
+    home.set(hubId, { x: cx, y: cy, r: R.hub, a: 0 });
+  }
+
+  function fitHome() {
+    if (!home.size) return;
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    for (const p of home.values()) {
+      x0 = Math.min(x0, p.x - 36);
+      y0 = Math.min(y0, p.y - 36);
+      x1 = Math.max(x1, p.x + 36);
+      y1 = Math.max(y1, p.y + 44);
+    }
+    const W = svg.clientWidth || 900;
+    const H = svg.clientHeight || 640;
+    const s = Math.min(W / Math.max(x1 - x0, 1), H / Math.max(y1 - y0, 1)) * 0.9;
+    view.s = Math.min(1.35, Math.max(0.25, s));
+    view.x = W / 2 - ((x0 + x1) / 2) * view.s;
+    view.y = H / 2 - ((y0 + y1) / 2) * view.s;
+    applyView();
+  }
+
+  function isOpen(id) {
+    if (id === focus) return true;
+    if (byId[id]?.parent === focus) return true;
+    return pathTo(focus).some((n) => n.id === id);
   }
 
   function el(name, attrs) {
@@ -171,49 +185,34 @@
   }
 
   function draw() {
-    const { pos, ghosts } = layout();
     world = el("g");
     applyView();
-    const children = kids[focus] || [];
-    const path = pathTo(focus);
-    const fp = pos.get(focus);
-    const f = byId[focus];
-    const pp = f?.parent ? pos.get(f.parent) : null;
+    const open = new Set();
+    pathTo(focus).forEach((n) => open.add(n.id));
+    (kids[focus] || []).forEach((n) => open.add(n.id));
 
-    for (let i = 1; i < path.length; i++) {
-      const a = pos.get(path[i - 1].id);
-      const b = pos.get(path[i].id);
-      if (!a || !b) continue;
+    for (const n of graph.nodes) {
+      const p = n.parent;
+      if (!p || !home.has(n.id) || !home.has(p)) continue;
+      const a = home.get(p);
+      const b = home.get(n.id);
+      const live = open.has(n.id) && open.has(p);
       world.appendChild(el("path", {
-        class: "mm-edge spine",
+        class: "mm-edge" + (live ? (n.id === active ? " on" : " spine") : " ghost"),
         d: `M ${a.x} ${a.y} L ${b.x} ${b.y}`,
       }));
     }
-    for (const g of ghosts) {
-      const p = pos.get(g.id);
-      if (!pp || !p) continue;
-      world.appendChild(el("path", {
-        class: "mm-edge ghost",
-        d: `M ${pp.x} ${pp.y} L ${p.x} ${p.y}`,
-      }));
-    }
-    for (const c of children) {
-      const p = pos.get(c.id);
-      if (!fp || !p) continue;
-      const midX = (fp.x + p.x) / 2;
-      world.appendChild(el("path", {
-        class: "mm-edge" + (c.id === active ? " on" : ""),
-        d: `M ${fp.x} ${fp.y} C ${midX} ${fp.y}, ${midX} ${p.y}, ${p.x} ${p.y}`,
-      }));
-    }
 
-    const drawNode = (n, p) => {
+    const drawNode = (n) => {
+      const p = home.get(n.id);
+      if (!p) return;
+      const ghost = !open.has(n.id);
       const g = el("g", {
-        class: `mm-node ${n.kind}${n.id === active || p.focus ? " active" : ""}${p.spine && !p.focus ? " ancestor" : ""}${p.ghost ? " ghost" : ""}`,
+        class: `mm-node ${n.kind}${n.id === active || n.id === focus ? " active" : ""}${ghost ? " ghost" : ""}`,
         transform: `translate(${p.x} ${p.y})`,
       });
       g.dataset.id = n.id;
-      if (p.focus) {
+      if (n.id === focus) {
         g.appendChild(el("circle", {
           r: p.r + 6,
           fill: "none",
@@ -222,16 +221,19 @@
         }));
       }
       g.appendChild(el("circle", {
-        r: p.r,
-        fill: p.ghost ? "none" : (FILL[n.kind] || FILL.lab),
-        stroke: p.ghost ? "#9aa39a" : (STROKE[n.kind] || STROKE.lab),
-        "stroke-width": p.ghost ? 1.2 : p.focus ? 2.2 : 1.6,
-        "stroke-dasharray": p.ghost ? "3 3" : "",
+        r: ghost ? Math.max(8, p.r - 4) : p.r,
+        fill: ghost ? "none" : (FILL[n.kind] || FILL.lab),
+        stroke: ghost ? "#b5b0a6" : (STROKE[n.kind] || STROKE.lab),
+        "stroke-width": ghost ? 1.1 : n.id === focus ? 2.2 : 1.6,
+        "stroke-dasharray": ghost ? "3 3" : "",
       }));
-      const t = el("text", { y: p.r + 16 });
-      t.textContent = n.label;
-      g.appendChild(t);
-      if (!p.ghost) {
+      const labelDeepGhost = ghost && (n.layer || 0) >= 3;
+      if (!labelDeepGhost) {
+        const t = el("text", { y: (ghost ? Math.max(8, p.r - 4) : p.r) + 15 });
+        t.textContent = n.label;
+        g.appendChild(t);
+      }
+      if (!ghost) {
         g.addEventListener("click", (ev) => {
           ev.stopPropagation();
           onOrb(n.id);
@@ -240,11 +242,12 @@
       world.appendChild(g);
     };
 
-    path.forEach((n) => {
-      if (pos.has(n.id)) drawNode(n, pos.get(n.id));
-    });
-    for (const g of ghosts) drawNode(g, pos.get(g.id));
-    for (const c of children) drawNode(c, pos.get(c.id));
+    for (const n of graph.nodes) {
+      if (!open.has(n.id)) drawNode(n);
+    }
+    for (const n of graph.nodes) {
+      if (open.has(n.id)) drawNode(n);
+    }
 
     svg.replaceChildren(world);
     renderCrumb();
@@ -334,9 +337,6 @@
   function setFocus(id, open = true) {
     if (!byId[id]) return;
     focus = id;
-    view.x = 0;
-    view.y = 0;
-    view.s = 1;
     draw();
     syncNav();
     if (open) openPanel(id);
@@ -422,7 +422,11 @@
     }, 160);
   });
 
-  window.addEventListener("resize", () => draw());
+  window.addEventListener("resize", () => {
+    layoutHome();
+    fitHome();
+    draw();
+  });
 
   Promise.all([
     fetch("data/mindmap.json").then((r) => r.json()),
@@ -436,6 +440,8 @@
         requestAnimationFrame(start);
         return;
       }
+      layoutHome();
+      fitHome();
       setFocus(g.center || "embodied-ai");
       document.body.classList.remove("mm-sheet-open");
     };
