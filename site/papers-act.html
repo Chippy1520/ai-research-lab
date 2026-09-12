@@ -307,32 +307,7 @@
           </div>
         </div>
         <p class="kg-legend"><i style="background:#f1cfc4"></i>problems &nbsp;<i style="background:#f3ddb0"></i>foundations &nbsp;<i style="background:#c9dff0"></i>cousins &nbsp;<i style="background:#243028"></i>descendants</p>
-        <div class="knowledge-graph">teleop on cheap bimanual hardware (ALOHA)
-   leader–follower ViperX, joint-space mapping, 3D-printed handles
-        │
-        ▼
-demonstrations: 50 trajectories / ~10 minutes per task
-        │
-        ▼
-behavior cloning
-        │
-        ├─ compounding error ──► reduce effective horizon
-        │                         π(a_{t:t+k} | o_t)   (chunk size k)
-        │
-        ├─ human pauses / modes ──► CVAE over chunks
-        │                            train z, test z = 0
-        │
-        └─ jerky chunk boundaries ──► temporal ensembling
-                                      query every step
-                                      w_i = exp(−m i) on overlapping predictions
-        │
-        ▼
-ACT (~80M): ResNet-18 × cameras + transformer encoder/decoder
-        │
-        ▼
-LeRobot ACT policy  ──►  SmolVLA chunks (flow, not CVAE)
-                         Diffusion Policy chunks
-                         async stacks (SmolVLA §3.3)</div>
+        <p class="article-caption">The field-scale version of this tree is the <a href="mindmap.html">living mind map</a> (click ACT, chunking, CVAE, SmolVLA).</p>
         <figure class="figure-block">
           <div class="graph-stack">
             <div class="graph-level"><span class="kg-node gold">ALOHA teleop</span></div>

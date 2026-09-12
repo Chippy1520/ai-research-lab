@@ -101,6 +101,11 @@ module.
 
 Never replace a requested working artifact with a plan or an unexecuted scaffold.
 
+## Living mind map
+`intelligence/mindmap.json` + `site/mindmap.html`. Follow `intelligence/MINDMAP.md`.
+Clickable concept graph (embodied AI, RL, CV, VLAs, frameworks, labs). Daily cron may
+extend nodes; never delete; label first-party evals. Labs attach jobs from `jobs.json`.
+
 ## Paper reading guides
 When the user asks to add or deepen a paper companion (not CLIP-Meets-DINO, not
 FaultAdapt), follow `papers/ADDING_A_PAPER.md` and copy `site/papers-_template.html`.

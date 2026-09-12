@@ -66,6 +66,7 @@ The device-independent static dashboard is published at:
 - **Robotics intelligence:** https://chippy1520.github.io/ai-research-lab/
 - **AI research curriculum:** https://chippy1520.github.io/ai-research-lab/curriculum.html
 - **Paper reading guides:** https://chippy1520.github.io/ai-research-lab/papers.html
+- **Embodied AI mind map:** https://chippy1520.github.io/ai-research-lab/mindmap.html
 
 The public site preserves company search and filtering, the founding timeline, geographic
 clusters, official openings, early-career qualification excerpts, recurring hiring signals,

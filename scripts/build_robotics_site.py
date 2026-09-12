@@ -195,6 +195,9 @@ def build() -> dict[str, Any]:
     REPORT_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     shutil.copy2(ecosystem_path, DATA_DIR / "ecosystem.json")
     shutil.copy2(jobs_path, DATA_DIR / "jobs.json")
+    mindmap_path = INTELLIGENCE_DIR / "mindmap.json"
+    if mindmap_path.exists():
+        shutil.copy2(mindmap_path, DATA_DIR / "mindmap.json")
     with (DATA_DIR / "curriculum.json").open("w", encoding="utf-8") as handle:
         json.dump(curriculum, handle, indent=2, ensure_ascii=False)
         handle.write("\n")
