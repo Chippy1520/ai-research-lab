@@ -1,10 +1,14 @@
 {
   "version": 1,
-  "updated": "2026-09-12",
+  "updated": "2026-09-13",
   "title": "Embodied AI mind map",
   "center": "embodied-ai",
   "scope": "Perception, learning, policies, frameworks, and labs for physical intelligence. Hardware/materials only when they change the learning problem. Company nodes pull live jobs from the robotics intelligence desk.",
   "changelog": [
+    {
+      "date": "2026-09-13",
+      "note": "Every node: one oEmbed-live YouTube that covers the whole concept (playlist for domains/areas). Partial clips replaced. No video if none confirmed."
+    },
     {
       "date": "2026-09-12",
       "note": "Abstraction layers: parent + layer on every node; area clusters under each domain. View is a skill-tree drill-down, not a flat list."
@@ -51,6 +55,11 @@
       ],
       "resources": [
         {
+          "type": "video",
+          "title": "ETH Zurich — Frontiers of Embodied AI (Malik, Koltun, LeCun, Song)",
+          "url": "https://www.youtube.com/playlist?list=PLfjJj_IgRo7DWoamlTwlK7-4bZhNNNFgM"
+        },
+        {
           "type": "guide",
           "title": "Paper guides hub",
           "url": "papers.html"
@@ -78,8 +87,8 @@
       "resources": [
         {
           "type": "video",
-          "title": "Shree Nayar — Image formation / pinhole",
-          "url": "https://www.youtube.com/watch?v=_QjxbQKY4ds"
+          "title": "Stanford CS231n 2025 — Deep Learning for Computer Vision",
+          "url": "https://www.youtube.com/playlist?list=PLoROMvodv4rOmsNzYBMe0gJY2XS8AQg16"
         }
       ],
       "parent": "embodied-ai",
@@ -100,8 +109,8 @@
       "resources": [
         {
           "type": "video",
-          "title": "Abbeel — L1 MDPs (Deep RL overview)",
-          "url": "https://www.youtube.com/watch?v=2GwBez0D20A"
+          "title": "Berkeley CS285 2023 — Deep Reinforcement Learning (Levine)",
+          "url": "https://www.youtube.com/playlist?list=PL_iWQOsE6TfVYGEGiAOMaOzzv41Jfm_Ps"
         }
       ],
       "parent": "embodied-ai",
@@ -119,7 +128,13 @@
         "Layer skip / token prune",
         "Async chunk queues"
       ],
-      "resources": [],
+      "resources": [
+        {
+          "type": "video",
+          "title": "LeRobot Tech Talks — ACT, Diffusion Policy, OpenVLA, VQ-BeT",
+          "url": "https://www.youtube.com/playlist?list=PLo2EIpI_JMQtIjHHOOmdSCpvdn55--7gS"
+        }
+      ],
       "parent": "embodied-ai",
       "layer": 1
     },
@@ -138,8 +153,8 @@
       "resources": [
         {
           "type": "video",
-          "title": "DigiKey — What is ROS / ROS 2?",
-          "url": "https://www.youtube.com/watch?v=mjrxf8EFSb8"
+          "title": "Hugging Face — LeRobot tutorials (assemble → record → evaluate)",
+          "url": "https://www.youtube.com/playlist?list=PLo2EIpI_JMQu5zrDHe4NchRyumF2ynaUN"
         }
       ],
       "parent": "embodied-ai",
@@ -159,8 +174,8 @@
       "resources": [
         {
           "type": "video",
-          "title": "Figure — Introducing Helix",
-          "url": "https://www.youtube.com/watch?v=Z3yQHYNXPws"
+          "title": "ETH Zurich — Frontiers of Embodied AI (labs + research talks)",
+          "url": "https://www.youtube.com/playlist?list=PLfjJj_IgRo7DWoamlTwlK7-4bZhNNNFgM"
         }
       ],
       "parent": "embodied-ai",
@@ -176,8 +191,8 @@
       "resources": [
         {
           "type": "video",
-          "title": "MEGA-DAgger — imitation and compounding error",
-          "url": "https://www.youtube.com/watch?v=oC5vs51reVI"
+          "title": "LeRobot — ALOHA and ACT (imitation / behavior cloning on a real arm)",
+          "url": "https://www.youtube.com/watch?v=ft73x0LfGpM"
         },
         {
           "type": "paper",
@@ -198,8 +213,8 @@
       "resources": [
         {
           "type": "video",
-          "title": "MEGA-DAgger — imitation and compounding error",
-          "url": "https://www.youtube.com/watch?v=oC5vs51reVI"
+          "title": "LeRobot — ALOHA and ACT (chunking vs one-step BC compounding)",
+          "url": "https://www.youtube.com/watch?v=ft73x0LfGpM"
         },
         {
           "type": "paper",
@@ -225,8 +240,8 @@
       "resources": [
         {
           "type": "video",
-          "title": "ALOHA / ACT — action chunks",
-          "url": "https://www.youtube.com/watch?v=pN4Ig_aTSUo"
+          "title": "LeRobot — ALOHA and ACT",
+          "url": "https://www.youtube.com/watch?v=ft73x0LfGpM"
         },
         {
           "type": "guide",
@@ -274,8 +289,8 @@
       "resources": [
         {
           "type": "video",
-          "title": "ALOHA / ACT talk",
-          "url": "https://www.youtube.com/watch?v=pN4Ig_aTSUo"
+          "title": "LeRobot — ALOHA and ACT (temporal ensemble of overlapping chunks)",
+          "url": "https://www.youtube.com/watch?v=ft73x0LfGpM"
         },
         {
           "type": "guide",
@@ -318,7 +333,7 @@
       "resources": [
         {
           "type": "video",
-          "title": "Cheng Chi — Diffusion Policy (LeRobot / HF)",
+          "title": "Cheng Chi — Diffusion Policy (LeRobot)",
           "url": "https://www.youtube.com/watch?v=M03sZFfW-qU"
         },
         {
@@ -340,7 +355,7 @@
       "resources": [
         {
           "type": "video",
-          "title": "ALOHA — Learning Fine-Grained Bimanual Manipulation (ACT)",
+          "title": "ALOHA — Learning Fine-Grained Bimanual Manipulation (ACT paper video)",
           "url": "https://www.youtube.com/watch?v=pN4Ig_aTSUo"
         },
         {
@@ -372,7 +387,7 @@
       "resources": [
         {
           "type": "video",
-          "title": "SmolVLA paper walkthrough (hu-po)",
+          "title": "Hugging Face — SmolVLA (official)",
           "url": "https://www.youtube.com/watch?v=VbhL8_vVtVM"
         },
         {
@@ -403,6 +418,11 @@
       "why": "Read the tokenizer to see what flow matching is refusing.",
       "resources": [
         {
+          "type": "video",
+          "title": "Moo Jin Kim — OpenVLA (author talk)",
+          "url": "https://www.youtube.com/watch?v=-0s0v3q7mBk"
+        },
+        {
           "type": "paper",
           "title": "arXiv 2406.09246",
           "url": "https://arxiv.org/abs/2406.09246"
@@ -419,6 +439,11 @@
       "brief": "Physical Intelligence: Paligemma-scale VLM + diffusion/flow action expert. Cross-embodiment generalist. ~3–7× SmolVLA in params.",
       "why": "The industrial VLA recipe. GEN-1.5 and Skild S1 are the 2026 one-shot cousins.",
       "resources": [
+        {
+          "type": "video",
+          "title": "Physical Intelligence — π0: Our First Generalist Robotic Policy",
+          "url": "https://www.youtube.com/watch?v=a6Ix6Vzuk0c"
+        },
         {
           "type": "paper",
           "title": "arXiv 2410.24164",
@@ -464,6 +489,11 @@
       "brief": "Skild AI foundation model: long-horizon tasks from a single video prompt, in-context, no weight update. Company-reported ~66% per-step vs 9% baseline; trained with NVIDIA Isaac Lab / Cosmos. Cross-embodiment is the pitch.",
       "why": "Same 2026 one-shot cluster as GEN-1.5, different lab. Compare claims, don't merge them.",
       "resources": [
+        {
+          "type": "video",
+          "title": "Skild — Introducing S1",
+          "url": "https://www.youtube.com/watch?v=hr39FlEiCcQ"
+        },
         {
           "type": "news",
           "title": "S1 on NVIDIA infra (Sep 2026)",
@@ -511,7 +541,7 @@
       "resources": [
         {
           "type": "video",
-          "title": "DINOv2 from Meta AI",
+          "title": "Meta AI — DINOv2",
           "url": "https://www.youtube.com/watch?v=csEgtSh7jV4"
         },
         {
@@ -581,7 +611,7 @@
       "resources": [
         {
           "type": "video",
-          "title": "World Models explained (Ha & Schmidhuber lineage)",
+          "title": "David Ha / World Models lineage explained",
           "url": "https://www.youtube.com/watch?v=b1roEd6liWI"
         }
       ],
@@ -602,8 +632,8 @@
       "resources": [
         {
           "type": "video",
-          "title": "Abbeel — L1 MDPs (the RL framing)",
-          "url": "https://www.youtube.com/watch?v=2GwBez0D20A"
+          "title": "David Silver — Reinforcement Learning course",
+          "url": "https://www.youtube.com/playlist?list=PLEAYkSg4uSQ2S3rHUCqz6W1ZKybVICeSP"
         },
         {
           "type": "docs",
@@ -622,6 +652,11 @@
       "brief": "Hugging Face stack: LeRobotDataset, ACT, Diffusion, SmolVLA, π₀ ports, SO-100/101. Teleoperate → record → train → deploy with one CLI.",
       "why": "If you train a policy this year, you will touch this repo.",
       "resources": [
+        {
+          "type": "video",
+          "title": "Hugging Face — LeRobot tutorials",
+          "url": "https://www.youtube.com/playlist?list=PLo2EIpI_JMQu5zrDHe4NchRyumF2ynaUN"
+        },
         {
           "type": "code",
           "title": "github.com/huggingface/lerobot",
@@ -644,6 +679,11 @@
       "brief": "NVIDIA robot learning sim. Skild cites it for S1 experience. GPU-parallel RL and synthetic data.",
       "why": "The sim side of foundation-model pretraining when you don't have a factory fleet.",
       "resources": [
+        {
+          "type": "video",
+          "title": "NVIDIA — Isaac Lab Office Hours",
+          "url": "https://www.youtube.com/playlist?list=PL3jK4xNnlCVcnMqm4Lnqa5Bok4_iP5NsK"
+        },
         {
           "type": "docs",
           "title": "Isaac Lab",
@@ -683,6 +723,11 @@
       "brief": "Decouple RobotClient (pops actions at Δt) from PolicyServer (fills chunks when queue < g). SmolVLA: similar success, ~30% shorter task time (13.75s → 9.7s pick-place).",
       "why": "The systems paper hiding inside a VLA paper. Edge robots live or die here.",
       "resources": [
+        {
+          "type": "video",
+          "title": "Hugging Face — LeRobot tutorials (record/evaluate loop)",
+          "url": "https://www.youtube.com/playlist?list=PLo2EIpI_JMQu5zrDHe4NchRyumF2ynaUN"
+        },
         {
           "type": "guide",
           "title": "SmolVLA §3.3",
@@ -733,7 +778,7 @@
       "resources": [
         {
           "type": "video",
-          "title": "Generalist — Introducing GEN-1.5",
+          "title": "Generalist — Introducing GEN-1.5 (in-context physical prompting)",
           "url": "https://www.youtube.com/watch?v=1cllCVK-9lo"
         }
       ],
@@ -777,6 +822,11 @@
       "company_id": "apptronik",
       "resources": [
         {
+          "type": "video",
+          "title": "Apptronik — Robot Park / Apollo 2",
+          "url": "https://www.youtube.com/watch?v=iPyxwELiD9Q"
+        },
+        {
           "type": "jobs",
           "title": "Job listings",
           "url": "https://apptronik.com/careers/job-listings"
@@ -794,6 +844,11 @@
       "company_id": "agility-robotics",
       "resources": [
         {
+          "type": "video",
+          "title": "Agility — The Next Generation of Digit",
+          "url": "https://www.youtube.com/watch?v=rnFZAB9ogEE"
+        },
+        {
           "type": "company",
           "title": "agilityrobotics.com",
           "url": "https://www.agilityrobotics.com/"
@@ -810,6 +865,11 @@
       "brief": "π₀ / generalist policies, no humanoid hardware of their own. The model lab behind the industrial VLA recipe.",
       "company_id": "physical-intelligence",
       "resources": [
+        {
+          "type": "video",
+          "title": "Physical Intelligence — π0: Our First Generalist Robotic Policy",
+          "url": "https://www.youtube.com/watch?v=a6Ix6Vzuk0c"
+        },
         {
           "type": "company",
           "title": "physicalintelligence.company",
@@ -850,6 +910,11 @@
       "company_id": "skild-ai",
       "resources": [
         {
+          "type": "video",
+          "title": "Skild — Introducing S1",
+          "url": "https://www.youtube.com/watch?v=hr39FlEiCcQ"
+        },
+        {
           "type": "company",
           "title": "skild.ai",
           "url": "https://www.skild.ai/"
@@ -866,6 +931,11 @@
       "brief": "Open stack + SmolVLA. Not a humanoid company; it is the public training substrate.",
       "resources": [
         {
+          "type": "video",
+          "title": "Hugging Face — LeRobot tutorials",
+          "url": "https://www.youtube.com/playlist?list=PLo2EIpI_JMQu5zrDHe4NchRyumF2ynaUN"
+        },
+        {
           "type": "code",
           "title": "LeRobot",
           "url": "https://github.com/huggingface/lerobot"
@@ -881,7 +951,13 @@
       "domain": "labs",
       "brief": "Humanoid program inside a public company. End-to-end video-to-action claims; numbers are not independently benchmarked here. Valuation on the intel desk is whole-company market cap, not Optimus.",
       "company_id": "tesla-optimus",
-      "resources": [],
+      "resources": [
+        {
+          "type": "video",
+          "title": "Tesla — Optimus",
+          "url": "https://www.youtube.com/watch?v=cpraXaw7dyc"
+        }
+      ],
       "parent": "humanoids",
       "layer": 3
     },
@@ -909,7 +985,13 @@
       "domain": "labs",
       "brief": "NEO home humanoid, embodied-AI data collection. Norwegian-founded, US operations on the desk.",
       "company_id": "1x-technologies",
-      "resources": [],
+      "resources": [
+        {
+          "type": "video",
+          "title": "1X — Introducing NEO Beta",
+          "url": "https://www.youtube.com/watch?v=bUrLuUxv9gE"
+        }
+      ],
       "parent": "humanoids",
       "layer": 3
     },
@@ -921,6 +1003,11 @@
       "brief": "Google DeepMind 2023: fine-tune a web VLM to emit action tokens. Named the VLA. Closed, billions of params — the paper every later VLA is answering.",
       "why": "Without RT-2 there is no VLA node. SmolVLA, OpenVLA, and π₀ are size-and-openness replies.",
       "resources": [
+        {
+          "type": "video",
+          "title": "Yevgen Chebotar — RT-2: VLA models transfer web knowledge to control",
+          "url": "https://www.youtube.com/watch?v=o5ONDdbReAA"
+        },
         {
           "type": "paper",
           "title": "RT-2 · Brohan et al.",
@@ -939,6 +1026,11 @@
       "why": "The non-VLM baseline when someone claims we needed a 7B VLM.",
       "resources": [
         {
+          "type": "video",
+          "title": "Yevgen Chebotar — RT-1 then RT-2 (author talk)",
+          "url": "https://www.youtube.com/watch?v=o5ONDdbReAA"
+        },
+        {
           "type": "paper",
           "title": "RT-1",
           "url": "https://arxiv.org/abs/2212.06817"
@@ -955,6 +1047,11 @@
       "brief": "Pooled robot data: 21 institutions, ~22 embodiments, 1M+ trajectories, RLDS. Train set for RT-X, OpenVLA, Octo.",
       "why": "Cross-embodiment is a dataset problem first. Community LeRobot data is the cheap-arm cousin.",
       "resources": [
+        {
+          "type": "video",
+          "title": "Karl Pertsch — Open X-Embodiment, RT-X, and generalist policies (GRASP)",
+          "url": "https://www.youtube.com/watch?v=81PgFEH62Uw"
+        },
         {
           "type": "paper",
           "title": "Open X-Embodiment",
@@ -976,6 +1073,11 @@
       "why": "The small-from-scratch generalist before SmolVLA.",
       "resources": [
         {
+          "type": "video",
+          "title": "RAIL — Octo: an open-source generalist robot policy",
+          "url": "https://www.youtube.com/watch?v=99667VDGWMg"
+        },
+        {
           "type": "paper",
           "title": "Octo",
           "url": "https://arxiv.org/abs/2405.12213"
@@ -992,6 +1094,11 @@
       "brief": "NVIDIA GEAR, Jun 2025. Open humanoid foundation model. Eagle 2.5 VLM; NVIDIA-reported language following 46.6%→93.3% and success 43.3%→83% vs N1 on GR-1.",
       "why": "The open humanoid VLA we have not walked. Whole-body is a neighbor, not a footnote.",
       "resources": [
+        {
+          "type": "video",
+          "title": "NVIDIA — Isaac GR00T-Mimic",
+          "url": "https://www.youtube.com/watch?v=r24CiGLYFQo"
+        },
         {
           "type": "docs",
           "title": "GR00T N1.5",
@@ -1019,6 +1126,11 @@
       "why": "Tabletop VLAs stall on humanoids. This is the actuator-side neighbor.",
       "resources": [
         {
+          "type": "video",
+          "title": "Boston Dynamics Atlas — Partners in Parkour",
+          "url": "https://www.youtube.com/watch?v=tF4DML7FIWk"
+        },
+        {
           "type": "code",
           "title": "GR00T-WholeBodyControl",
           "url": "https://github.com/NVlabs/GR00T-WholeBodyControl"
@@ -1035,6 +1147,11 @@
       "brief": "DeepMind, Jul 2026. VLA for full humanoids and bi-arms; on-device variant adapts to a new body in hours; ER 2 for embodied reasoning. First-party demos. Same checkpoint on Apollo 2 and Franka.",
       "why": "Closed generalist we had not mapped. Contrast with GEN-1.5 one-shot and Helix onboard.",
       "resources": [
+        {
+          "type": "video",
+          "title": "Google DeepMind — Gemini Robotics (official playlist)",
+          "url": "https://www.youtube.com/playlist?list=PLqYmG7hTraZC4Mx6pEKr6FVJehafA7vWE"
+        },
         {
           "type": "blog",
           "title": "Gemini Robotics 2",
@@ -1098,6 +1215,11 @@
       "why": "Know this before quoting VGGT vs learned SfM.",
       "resources": [
         {
+          "type": "video",
+          "title": "Vincent Leroy — MASt3R (ECCV 5 min)",
+          "url": "https://www.youtube.com/watch?v=rJfWsxzX61g"
+        },
+        {
           "type": "paper",
           "title": "MASt3R",
           "url": "https://arxiv.org/abs/2406.09756"
@@ -1134,7 +1256,13 @@
         "GEN-1.5 sim-prompt replication on SO-100",
         "Isaac locomotion + LeRobot manipulation"
       ],
-      "resources": [],
+      "resources": [
+        {
+          "type": "video",
+          "title": "NVIDIA — Isaac Lab Office Hours (sim-to-real stack)",
+          "url": "https://www.youtube.com/playlist?list=PL3jK4xNnlCVcnMqm4Lnqa5Bok4_iP5NsK"
+        }
+      ],
       "parent": "xfer",
       "layer": 3
     },
@@ -1146,6 +1274,11 @@
       "brief": "Learn from a logged dataset without more env steps (IQL, CQL). The path after BC when failures are in the log.",
       "why": "Humanoid logs are too expensive to throw away as not demos.",
       "resources": [
+        {
+          "type": "video",
+          "title": "Berkeley CS285 — includes offline RL lectures",
+          "url": "https://www.youtube.com/playlist?list=PL_iWQOsE6TfVYGEGiAOMaOzzv41Jfm_Ps"
+        },
         {
           "type": "paper",
           "title": "IQL · Kostrikov et al.",
@@ -1182,7 +1315,13 @@
       "research_directions": [
         "How much of SmolVLA community data is same-embodiment"
       ],
-      "resources": [],
+      "resources": [
+        {
+          "type": "video",
+          "title": "Moo Jin Kim — OpenVLA (cross-robot OXE generalist)",
+          "url": "https://www.youtube.com/watch?v=-0s0v3q7mBk"
+        }
+      ],
       "parent": "embodiment",
       "layer": 3
     },
@@ -1205,6 +1344,11 @@
       "brief": "World-model / video-to-data stack Skild cites with Isaac for S1. Synthetic variety from video.",
       "why": "The data factory next to Isaac Lab, not a policy.",
       "resources": [
+        {
+          "type": "video",
+          "title": "NVIDIA — Meet Cosmos 3",
+          "url": "https://www.youtube.com/watch?v=-HfCFTvihjo"
+        },
         {
           "type": "docs",
           "title": "NVIDIA Cosmos",
@@ -1233,6 +1377,11 @@
       "brief": "GR00T, Isaac, Cosmos, SONIC WBC. The open-ish humanoid stack.",
       "resources": [
         {
+          "type": "video",
+          "title": "NVIDIA — Isaac GR00T-Mimic / GEAR",
+          "url": "https://www.youtube.com/watch?v=r24CiGLYFQo"
+        },
+        {
           "type": "docs",
           "title": "GEAR GR00T N1.5",
           "url": "https://research.nvidia.com/labs/gear/gr00t-n1_5/"
@@ -1248,6 +1397,11 @@
       "domain": "labs",
       "brief": "RT-1/2, Gemini Robotics 1→2, ER 2. Named the VLA. Closed weights; public blogs.",
       "resources": [
+        {
+          "type": "video",
+          "title": "Google DeepMind — Gemini Robotics (official playlist)",
+          "url": "https://www.youtube.com/playlist?list=PLqYmG7hTraZC4Mx6pEKr6FVJehafA7vWE"
+        },
         {
           "type": "blog",
           "title": "Gemini Robotics",
@@ -1265,6 +1419,11 @@
       "brief": "Industrial physical AI, container loading. On the intel desk. Manipulation in the wild, not a public VLA.",
       "company_id": "dexterity",
       "resources": [
+        {
+          "type": "video",
+          "title": "Dexterity — Introducing Mech",
+          "url": "https://www.youtube.com/watch?v=cNbGmvtKjuM"
+        },
         {
           "type": "company",
           "title": "dexterity.ai",
@@ -1332,6 +1491,11 @@
       "why": "The third generative head after CVAE and flow/diffusion.",
       "resources": [
         {
+          "type": "video",
+          "title": "VQ-BeT — LeRobot research presentation",
+          "url": "https://www.youtube.com/watch?v=V-zL7_jOo7w"
+        },
+        {
           "type": "paper",
           "title": "VQ-BeT",
           "url": "https://arxiv.org/abs/2403.03954"
@@ -1350,8 +1514,8 @@
       "resources": [
         {
           "type": "video",
-          "title": "3Blue1Brown — But what is a neural network?",
-          "url": "https://www.youtube.com/watch?v=aircAruvnKk"
+          "title": "3Blue1Brown — Neural networks (full series)",
+          "url": "https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi"
         }
       ],
       "parent": "embodied-ai",
@@ -1384,8 +1548,8 @@
       "resources": [
         {
           "type": "video",
-          "title": "3Blue1Brown — But what is a neural network?",
-          "url": "https://www.youtube.com/watch?v=aircAruvnKk"
+          "title": "3Blue1Brown — Neural networks (full series)",
+          "url": "https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi"
         }
       ],
       "parent": "rep-found",
@@ -1418,8 +1582,8 @@
       "resources": [
         {
           "type": "video",
-          "title": "3Blue1Brown — But what is a convolution?",
-          "url": "https://www.youtube.com/watch?v=KuXjwB4LzSA"
+          "title": "CS231n 2017 L5 — Convolutional Neural Networks",
+          "url": "https://www.youtube.com/watch?v=bNb2fEVKeEo"
         },
         {
           "type": "paper",
@@ -1479,8 +1643,8 @@
       "resources": [
         {
           "type": "video",
-          "title": "Outlier — Diffusion models, math explained",
-          "url": "https://www.youtube.com/watch?v=HoKDTa5jHvg"
+          "title": "Stanford CS231n 2017 L13 — Generative Models (Goodfellow)",
+          "url": "https://www.youtube.com/watch?v=5WoItGTWV54"
         }
       ],
       "parent": "rep-found",
@@ -1527,7 +1691,13 @@
       "domain": "perception",
       "brief": "Dense 2D motion between frames. Ancestor of CoTracker and of video prediction (STLight).",
       "why": "Tracking and STL both secretly start as flow.",
-      "resources": [],
+      "resources": [
+        {
+          "type": "video",
+          "title": "Shree Nayar — Optical Flow (First Principles overview)",
+          "url": "https://www.youtube.com/watch?v=lnXFcmLB7sM"
+        }
+      ],
       "parent": "track-motion",
       "layer": 3
     },
@@ -1541,8 +1711,8 @@
       "resources": [
         {
           "type": "video",
-          "title": "YOLO object detection explained",
-          "url": "https://www.youtube.com/watch?v=ag3DLKsl2vk"
+          "title": "CS231n 2017 L11 — Detection and Segmentation",
+          "url": "https://www.youtube.com/watch?v=nDPWywWRIRo"
         }
       ],
       "parent": "recog",
@@ -1558,8 +1728,8 @@
       "resources": [
         {
           "type": "video",
-          "title": "Explaining Segment Anything (SAM)",
-          "url": "https://www.youtube.com/watch?v=OhxJkqD1vuE"
+          "title": "CS231n 2017 L11 — Detection and Segmentation",
+          "url": "https://www.youtube.com/watch?v=nDPWywWRIRo"
         }
       ],
       "parent": "recog",
@@ -1575,8 +1745,8 @@
       "resources": [
         {
           "type": "video",
-          "title": "Abbeel — L1 MDPs",
-          "url": "https://www.youtube.com/watch?v=2GwBez0D20A"
+          "title": "David Silver L2 — Markov Decision Process",
+          "url": "https://www.youtube.com/watch?v=lfHX2hHRMVQ"
         }
       ],
       "parent": "decide-found",
@@ -1592,8 +1762,8 @@
       "resources": [
         {
           "type": "video",
-          "title": "Abbeel — L2 Deep Q-Learning",
-          "url": "https://www.youtube.com/watch?v=Psrhxy88zww"
+          "title": "David Silver L5 — Model-Free Control (Q-learning / SARSA)",
+          "url": "https://www.youtube.com/watch?v=0g4j2k_Ggc4"
         }
       ],
       "parent": "rl-family",
@@ -1609,8 +1779,8 @@
       "resources": [
         {
           "type": "video",
-          "title": "Abbeel — L3 Policy gradients",
-          "url": "https://www.youtube.com/watch?v=AKbX1Zvo7r8"
+          "title": "David Silver L7 — Policy Gradient Methods",
+          "url": "https://www.youtube.com/watch?v=KHZVXao4qXs"
         }
       ],
       "parent": "rl-family",
@@ -1643,7 +1813,7 @@
       "resources": [
         {
           "type": "video",
-          "title": "Modern Robotics Ch. 4 — forward kinematics",
+          "title": "Modern Robotics — Chapter 4 Forward Kinematics (Northwestern)",
           "url": "https://www.youtube.com/watch?v=cKHsil0V6Qk"
         }
       ],
@@ -1677,7 +1847,7 @@
       "resources": [
         {
           "type": "video",
-          "title": "Mobile ALOHA teleoperation",
+          "title": "Mobile ALOHA — teleoperation hardware",
           "url": "https://www.youtube.com/watch?v=HaaZ8ss-HP4"
         }
       ],
@@ -1705,8 +1875,8 @@
       "resources": [
         {
           "type": "video",
-          "title": "MEGA-DAgger — imitation learning",
-          "url": "https://www.youtube.com/watch?v=oC5vs51reVI"
+          "title": "LeRobot — ALOHA and ACT (imitation on a real arm)",
+          "url": "https://www.youtube.com/watch?v=ft73x0LfGpM"
         }
       ],
       "parent": "decide-found",
@@ -1722,7 +1892,7 @@
       "resources": [
         {
           "type": "video",
-          "title": "DINOv2 from Meta AI",
+          "title": "Meta AI — DINOv2 (self-supervised visual features)",
           "url": "https://www.youtube.com/watch?v=csEgtSh7jV4"
         }
       ],
@@ -1756,7 +1926,13 @@
       "brief": "Multi-view geometry, depth, and feed-forward 3D — what a policy uses instead of guessing in pixels.",
       "why": "VGGT, DUSt3R, MASt3R, and depth sit here, not as a flat list under Perception.",
       "research_directions": [],
-      "resources": []
+      "resources": [
+        {
+          "type": "video",
+          "title": "DUSt3R — dense unconstrained stereo 3D from image pairs (Leroy)",
+          "url": "https://www.youtube.com/watch?v=X1I7Z0V1JJc"
+        }
+      ]
     },
     {
       "id": "track-motion",
@@ -1768,7 +1944,13 @@
       "brief": "Correspondences over time: flow, point tracks, video motion.",
       "why": "A manipulator that loses the object between frames cannot close the loop.",
       "research_directions": [],
-      "resources": []
+      "resources": [
+        {
+          "type": "video",
+          "title": "CoTracker3 — tracking points through occlusion (Meta)",
+          "url": "https://www.youtube.com/watch?v=9PKmkbyrRFw"
+        }
+      ]
     },
     {
       "id": "recog",
@@ -1780,7 +1962,13 @@
       "brief": "What is in the image: detection, segmentation, self-supervised features.",
       "why": "DINOv2 / SAM-class features are the usual frozen backbone under VLAs.",
       "research_directions": [],
-      "resources": []
+      "resources": [
+        {
+          "type": "video",
+          "title": "CS231n 2017 L11 — Detection and Segmentation (Fei-Fei / Johnson)",
+          "url": "https://www.youtube.com/watch?v=nDPWywWRIRo"
+        }
+      ]
     },
     {
       "id": "imit",
@@ -1792,7 +1980,13 @@
       "brief": "Copy a demonstrator. The tax is compounding error; chunks and DAgger are the usual taxes paid.",
       "why": "ACT, BC, and action chunking are one family, not three unrelated nodes.",
       "research_directions": [],
-      "resources": []
+      "resources": [
+        {
+          "type": "video",
+          "title": "LeRobot — ALOHA and ACT (action chunking imitation)",
+          "url": "https://www.youtube.com/watch?v=ft73x0LfGpM"
+        }
+      ]
     },
     {
       "id": "rl-family",
@@ -1804,7 +1998,13 @@
       "brief": "Learn from reward or offline logs: Q, policy gradients, PPO/SAC.",
       "why": "Keeps MDPs, Q-learning, and PPO on one branch instead of a tall list.",
       "research_directions": [],
-      "resources": []
+      "resources": [
+        {
+          "type": "video",
+          "title": "David Silver — Reinforcement Learning course",
+          "url": "https://www.youtube.com/playlist?list=PLEAYkSg4uSQ2S3rHUCqz6W1ZKybVICeSP"
+        }
+      ]
     },
     {
       "id": "gen-world",
@@ -1816,7 +2016,13 @@
       "brief": "Predict the next state or the next action chunk in latent space (flow, diffusion, JEPA-class).",
       "why": "Flow matching and world models are the same abstraction: predict, don't classify.",
       "research_directions": [],
-      "resources": []
+      "resources": [
+        {
+          "type": "video",
+          "title": "Yann LeCun — World Models: Enabling the next AI revolution (ETH)",
+          "url": "https://www.youtube.com/watch?v=72Xj8k5WQX4"
+        }
+      ]
     },
     {
       "id": "xfer",
@@ -1828,7 +2034,13 @@
       "brief": "Move a skill across sim, robots, and one-shot prompts.",
       "why": "Sim-to-real and in-context physical prompting share a generalization problem.",
       "research_directions": [],
-      "resources": []
+      "resources": [
+        {
+          "type": "video",
+          "title": "Berkeley CS285 2023 — Deep RL (sim-to-real / transfer sits in this course)",
+          "url": "https://www.youtube.com/playlist?list=PL_iWQOsE6TfVYGEGiAOMaOzzv41Jfm_Ps"
+        }
+      ]
     },
     {
       "id": "opt-basics",
@@ -1840,7 +2052,13 @@
       "brief": "Supervised learning, backprop, attention, sequence models — the optimizer stack.",
       "why": "These are how you train, not what the robot is doing.",
       "research_directions": [],
-      "resources": []
+      "resources": [
+        {
+          "type": "video",
+          "title": "3Blue1Brown — Neural networks (full series)",
+          "url": "https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi"
+        }
+      ]
     },
     {
       "id": "chunked-pi",
@@ -1852,7 +2070,13 @@
       "brief": "Predict a horizon of actions, then ensemble or denoise. ACT, diffusion, VQ-BeT.",
       "why": "Temporal ensembling only makes sense next to the policies that emit chunks.",
       "research_directions": [],
-      "resources": []
+      "resources": [
+        {
+          "type": "video",
+          "title": "Cheng Chi — Diffusion Policy (LeRobot)",
+          "url": "https://www.youtube.com/watch?v=M03sZFfW-qU"
+        }
+      ]
     },
     {
       "id": "vla-family",
@@ -1864,7 +2088,13 @@
       "brief": "Condition a policy on language and cameras. RT, OpenVLA, SmolVLA, π₀, Helix.",
       "why": "The VLA cluster is one layer, the individual papers are the next.",
       "research_directions": [],
-      "resources": []
+      "resources": [
+        {
+          "type": "video",
+          "title": "Moo Jin Kim — OpenVLA (LeRobot; the open VLA recipe)",
+          "url": "https://www.youtube.com/watch?v=-0s0v3q7mBk"
+        }
+      ]
     },
     {
       "id": "robot-fm",
@@ -1876,7 +2106,13 @@
       "brief": "Large cross-embodiment models: GR00T, RDT, GEN-1.5, Skild S1.",
       "why": "These are labs' bets on one model, many bodies — not another ACT variant.",
       "research_directions": [],
-      "resources": []
+      "resources": [
+        {
+          "type": "video",
+          "title": "NVIDIA — Isaac GR00T-Mimic / foundation robot models",
+          "url": "https://www.youtube.com/watch?v=r24CiGLYFQo"
+        }
+      ]
     },
     {
       "id": "embodiment",
@@ -1888,7 +2124,13 @@
       "brief": "The same skill on different bodies; whole-body control when the base moves.",
       "why": "Cross-embodiment and WBC are why a VLA trained on a Franka fails on a humanoid.",
       "research_directions": [],
-      "resources": []
+      "resources": [
+        {
+          "type": "video",
+          "title": "Boston Dynamics Atlas — Partners in Parkour (whole-body loco-manipulation)",
+          "url": "https://www.youtube.com/watch?v=tF4DML7FIWk"
+        }
+      ]
     },
     {
       "id": "stacks",
@@ -1900,7 +2142,13 @@
       "brief": "LeRobot, ROS 2, async inference — the client/server the policy actually runs in.",
       "why": "A paper without a stack is not a robot.",
       "research_directions": [],
-      "resources": []
+      "resources": [
+        {
+          "type": "video",
+          "title": "Hugging Face — LeRobot tutorials",
+          "url": "https://www.youtube.com/playlist?list=PLo2EIpI_JMQu5zrDHe4NchRyumF2ynaUN"
+        }
+      ]
     },
     {
       "id": "sim-stack",
@@ -1912,7 +2160,13 @@
       "brief": "Isaac, MuJoCo/MJX, Cosmos — where you cheaply break things.",
       "why": "Sim is a systems choice, not a learning algorithm.",
       "research_directions": [],
-      "resources": []
+      "resources": [
+        {
+          "type": "video",
+          "title": "NVIDIA — Isaac Lab Office Hours",
+          "url": "https://www.youtube.com/playlist?list=PL3jK4xNnlCVcnMqm4Lnqa5Bok4_iP5NsK"
+        }
+      ]
     },
     {
       "id": "data-hw",
@@ -1924,7 +2178,13 @@
       "brief": "Datasets, teleop hardware, kinematics, proprioception.",
       "why": "OXE, ALOHA, and LIBERO are how data enters the tree.",
       "research_directions": [],
-      "resources": []
+      "resources": [
+        {
+          "type": "video",
+          "title": "Mobile ALOHA — low-cost bimanual teleop hardware + data",
+          "url": "https://www.youtube.com/watch?v=HaaZ8ss-HP4"
+        }
+      ]
     },
     {
       "id": "humanoids",
@@ -1936,7 +2196,13 @@
       "brief": "Companies shipping or demoing bipeds.",
       "why": "Jobs and product videos attach here, not on the VLA paper.",
       "research_directions": [],
-      "resources": []
+      "resources": [
+        {
+          "type": "video",
+          "title": "Figure — Introducing Helix (humanoid + VLA product)",
+          "url": "https://www.youtube.com/watch?v=Z3yQHYNXPws"
+        }
+      ]
     },
     {
       "id": "fm-labs",
@@ -1948,7 +2214,13 @@
       "brief": "Labs whose bet is a generalist policy, not a single form factor.",
       "why": "π-family, Skild, DeepMind Robotics, NVIDIA GEAR.",
       "research_directions": [],
-      "resources": []
+      "resources": [
+        {
+          "type": "video",
+          "title": "Physical Intelligence — π0: Our First Generalist Robotic Policy",
+          "url": "https://www.youtube.com/watch?v=a6Ix6Vzuk0c"
+        }
+      ]
     },
     {
       "id": "plat-labs",
@@ -1960,7 +2232,13 @@
       "brief": "Open stacks and smaller product labs (Hugging Face, Dexterity, Persona, Foundation).",
       "why": "LeRobot lives here as an institution, and as code under Systems.",
       "research_directions": [],
-      "resources": []
+      "resources": [
+        {
+          "type": "video",
+          "title": "Hugging Face — LeRobot tutorials",
+          "url": "https://www.youtube.com/playlist?list=PLo2EIpI_JMQu5zrDHe4NchRyumF2ynaUN"
+        }
+      ]
     },
     {
       "id": "rep-found",
@@ -1972,7 +2250,13 @@
       "brief": "Nets, conv, transformers, generative models — the first layer of the field.",
       "why": "Foundations stay frozen; this is how they nest without splitting them.",
       "research_directions": [],
-      "resources": []
+      "resources": [
+        {
+          "type": "video",
+          "title": "3Blue1Brown — Neural networks (full series)",
+          "url": "https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi"
+        }
+      ]
     },
     {
       "id": "sense-found",
@@ -1984,7 +2268,13 @@
       "brief": "The camera model. Everything in Perception assumes this.",
       "why": "One node, one layer, not mixed with VGGT.",
       "research_directions": [],
-      "resources": []
+      "resources": [
+        {
+          "type": "video",
+          "title": "Shree Nayar — Image formation / pinhole",
+          "url": "https://www.youtube.com/watch?v=_QjxbQKY4ds"
+        }
+      ]
     },
     {
       "id": "decide-found",
@@ -1996,7 +2286,13 @@
       "brief": "MDPs, PID, imitation as a problem statement.",
       "why": "The three primitive ways a body chooses an action.",
       "research_directions": [],
-      "resources": []
+      "resources": [
+        {
+          "type": "video",
+          "title": "David Silver L1 — Introduction to Reinforcement Learning (MDP framing)",
+          "url": "https://www.youtube.com/watch?v=2pWv7GOvuf0"
+        }
+      ]
     }
   ],
   "edges": [

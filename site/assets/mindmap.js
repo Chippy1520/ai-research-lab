@@ -86,9 +86,13 @@
     return [...s].map((i) => byId[i]).filter(Boolean);
   }
 
-  function ytId(url) {
-    const m = String(url).match(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{11})/);
-    return m ? m[1] : null;
+  function ytEmbed(url) {
+    const u = String(url);
+    const vid = u.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
+    const pl = u.match(/[?&]list=([A-Za-z0-9_-]+)/);
+    if (pl && !vid) return `videoseries?list=${pl[1]}`;
+    if (vid) return vid[1];
+    return null;
   }
 
   function jobsFor(node) {
@@ -330,7 +334,7 @@
     const res = n.resources || [];
     const vids = res.filter((r) => r.type === "video" || /youtu/.test(r.url || ""));
     const rest = res.filter((r) => !vids.includes(r));
-    const firstYt = vids.map((v) => ytId(v.url)).find(Boolean);
+    const firstYt = vids.map((v) => ytEmbed(v.url)).find(Boolean);
     const dirs = n.research_directions || [];
     const nb = neighbors(id).filter((x) => x.id !== n.parent && x.parent !== n.id);
     const childList = kids[id] || [];
