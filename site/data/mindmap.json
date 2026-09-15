@@ -1,10 +1,14 @@
 {
   "version": 1,
-  "updated": "2026-09-13",
+  "updated": "2026-09-15",
   "title": "Embodied AI mind map",
   "center": "embodied-ai",
   "scope": "Perception, learning, policies, frameworks, and labs for physical intelligence. Hardware/materials only when they change the learning problem. Company nodes pull live jobs from the robotics intelligence desk.",
   "changelog": [
+    {
+      "date": "2026-09-15",
+      "note": "PhysBrain 1.5 node. Patched ACT (UGR), flow matching (FMP/VGFM), world models (WLA³/DIDO/GLAM), one-shot (VLBiMan++), LIBERO (LIBERO-CTRL), NVIDIA GEAR (OSMO)."
+    },
     {
       "date": "2026-09-13",
       "note": "Every node: one oEmbed-live YouTube that covers the whole concept (playlist for domains/areas). Partial clips replaced. No video if none confirmed."
@@ -306,9 +310,19 @@
       "label": "Flow matching",
       "kind": "method",
       "domain": "learning",
-      "brief": "Regress a velocity field that transports noise to data along nearly straight ODE paths. Fewer function evaluations than diffusion.",
+      "brief": "Regress a velocity field that transports noise to data along nearly straight ODE paths. Fewer function evaluations than diffusion. Robot uses in 2026: π₀/SmolVLA action experts; VGFM (IROS 2026, arXiv 2609.14261) value-guides intermediate flow times without BPTT; FMP (arXiv 2609.15631) replaces AMP discriminators with an online OT+flow reward on Unitree G1.",
       "why": "SmolVLA's action expert is 0.75d because the path is short. Lipman et al. 2210.02747 is the paper.",
       "resources": [
+        {
+          "type": "paper",
+          "title": "Flow-Matched Motion Priors (arXiv 2609.15631)",
+          "url": "https://arxiv.org/abs/2609.15631"
+        },
+        {
+          "type": "paper",
+          "title": "VGFM — Value-Guided Flow Matching (arXiv 2609.14261)",
+          "url": "https://arxiv.org/abs/2609.14261"
+        },
         {
           "type": "video",
           "title": "Outlier — Flow matching explained",
@@ -321,7 +335,11 @@
         }
       ],
       "parent": "gen-world",
-      "layer": 3
+      "layer": 3,
+      "research_directions": [
+        "Value guidance at random flow times vs extra Euler steps at inference",
+        "Flow-matched motion priors vs AMP for humanoid walking from a default pose"
+      ]
     },
     {
       "id": "diffusion-policy",
@@ -350,9 +368,14 @@
       "label": "ACT",
       "kind": "paper",
       "domain": "policy",
-      "brief": "Zhao et al., RSS 2023. Chunk + CVAE + temporal ensemble on ALOHA. ~80M, 50 demos, fine bimanual contact. LeRobot's recommended first policy.",
+      "brief": "Zhao et al., RSS 2023. Chunk + CVAE + temporal ensemble on ALOHA. ~80M, 50 demos, fine bimanual contact. LeRobot's recommended first policy. Sep 2026: UGR (arXiv 2609.15840) adds a decoupled uncertainty head and residual-corrects only the most uncertain timesteps in the chunk — up to +13 pp vs ACT on four of five RoboTwin dual-arm tasks.",
       "why": "The design space later VLAs still live in.",
       "resources": [
+        {
+          "type": "paper",
+          "title": "UGR — Uncertainty-Guided Sparse Refinement for ACT (arXiv 2609.15840)",
+          "url": "https://arxiv.org/abs/2609.15840"
+        },
         {
           "type": "video",
           "title": "ALOHA — Learning Fine-Grained Bimanual Manipulation (ACT paper video)",
@@ -375,7 +398,11 @@
         }
       ],
       "parent": "chunked-pi",
-      "layer": 3
+      "layer": 3,
+      "research_directions": [
+        "Does sparse uncertainty refinement transfer from ACT to flow/VLA chunks?",
+        "Calibrate ACT hidden-state uncertainty on real SO-100 contact failures"
+      ]
     },
     {
       "id": "smolvla",
@@ -505,6 +532,33 @@
       "layer": 3
     },
     {
+      "id": "physbrain",
+      "label": "PhysBrain 1.5",
+      "kind": "paper",
+      "domain": "policy",
+      "brief": "DeepCybo, 14 Sep 2026. 8B physical foundation model: autoregressive next-token over language, end-effector motion, and dense visual targets. Embodied pretrain is entirely human interaction video; SFT mixes human demos, robot trajectories, and sim. First-party: 72.5 avg on 28 embodied-understanding benches (open-source SOTA; best on 14). Qualitative EE trajectories plus future RGB/depth/robot-mask. Treat numbers as first-party until replicated on a public robot.",
+      "why": "Open 8B understand→act→predict loop trained from human video, not a closed GEN/π/GR00T checkpoint. Neighbor of world-models and GEN-1.5 — do not merge them.",
+      "research_directions": [
+        "Independent real-robot success vs understanding-bench scores",
+        "Discrete EE tokens vs flow action experts on the same demos",
+        "Human-video-only pretrain vs OXE robot logs"
+      ],
+      "resources": [
+        {
+          "type": "paper",
+          "title": "PhysBrain 1.5 (arXiv 2609.14973)",
+          "url": "https://arxiv.org/abs/2609.14973"
+        },
+        {
+          "type": "docs",
+          "title": "Project page",
+          "url": "https://deepcybo-physai.github.io/PhysBrain-1.5/"
+        }
+      ],
+      "parent": "robot-fm",
+      "layer": 3
+    },
+    {
       "id": "vggt",
       "label": "VGGT",
       "kind": "paper",
@@ -602,13 +656,31 @@
       "label": "World models",
       "kind": "concept",
       "domain": "learning",
-      "brief": "Predict future observations (or latents) to plan. STL, video DMs, and some VLA 'imagination' heads sit here. STLight is the efficient CNN end; GEN-1.5's 30 s memory is the foundation-model end.",
+      "brief": "Predict future observations (or latents) to plan. STL, video DMs, and some VLA imagination heads sit here. STLight is the efficient CNN end; GEN-1.5's 30 s memory is the foundation-model end. Sep 2026: WLA³ learns world latent actions from human-video transitions (81.9% vs π₀.₅ 66.2% on six real tasks, first-party); DIDO distills multi-step world-action video models to one denoising step (99.0% LIBERO / 76.6% LIBERO-Plus, first-party); GLAM is a JEPA-style map-latent world model for ObjectNav.",
       "why": "A policy that can predict contact is halfway to recovering from it.",
       "research_directions": [
         "Wrist-cam STL as collision prior",
-        "Latent world models for humanoids"
+        "Latent world models for humanoids",
+        "One-step distilled WAMs vs multi-step video imagination under closed-loop latency",
+        "Human-video world-latent actions as VLA mid-training vs OXE-only",
+        "Map-token JEPA world models for mobile manipulation, not just ObjectNav"
       ],
       "resources": [
+        {
+          "type": "paper",
+          "title": "WLA³ — World Latent Action Modeling (arXiv 2609.15870)",
+          "url": "https://arxiv.org/abs/2609.15870"
+        },
+        {
+          "type": "paper",
+          "title": "DIDO — one-step world-action distillation (arXiv 2609.15570)",
+          "url": "https://arxiv.org/abs/2609.15570"
+        },
+        {
+          "type": "paper",
+          "title": "GLAM — latent world model over global map memory (arXiv 2609.14561)",
+          "url": "https://arxiv.org/abs/2609.14561"
+        },
         {
           "type": "video",
           "title": "David Ha / World Models lineage explained",
@@ -769,13 +841,20 @@
       "label": "One-shot physical prompting",
       "kind": "concept",
       "domain": "learning",
-      "brief": "Put a short sensorimotor demo in the model's context window; the robot attempts the task with no SGD. GEN-1.5's name for it; Skild S1's video prompt is the same cluster.",
+      "brief": "Put a short sensorimotor demo in the model's context window; the robot attempts the task with no SGD. GEN-1.5's name for it; Skild S1's video prompt is the same cluster. Sep 2026: VLBiMan++ (arXiv 2609.14310) starts from one human demo and claims transfer across task, object, scene, dual-arm embodiment, and long closed-loop perturbations — geometric adaptation, not a foundation-model prompt.",
       "why": "If this becomes real outside one lab, dataset size is no longer the only scaling law.",
       "research_directions": [
         "Public one-shot benchmark on SO-100",
-        "Prompt composition for long horizon"
+        "Prompt composition for long horizon",
+        "Geometric one-shot (VLBiMan++) vs in-context physical prompting (GEN-1.5 / S1)",
+        "Public one-shot bimanual protocol that is not lab-owned hardware"
       ],
       "resources": [
+        {
+          "type": "paper",
+          "title": "VLBiMan++ (arXiv 2609.14310)",
+          "url": "https://arxiv.org/abs/2609.14310"
+        },
         {
           "type": "video",
           "title": "Generalist — Introducing GEN-1.5 (in-context physical prompting)",
@@ -1330,11 +1409,21 @@
       "label": "LIBERO",
       "kind": "concept",
       "domain": "systems",
-      "brief": "Sim suite SmolVLA quotes (Spatial/Object/Goal/Long). Binary success, 10 trials/task. Not a real robot.",
+      "brief": "Sim suite SmolVLA quotes (Spatial/Object/Goal/Long). Binary success, 10 trials/task. Not a real robot. Sep 2026: LIBERO-CTRL (arXiv 2609.15940) pairs each initial state across single-axis and simultaneous perturbations; up to 34.5% of matched states change outcome under compound shifts, so single-axis VLA tables do not compose.",
       "why": "Every VLA percentage you will cite. Know the protocol first.",
-      "resources": [],
+      "resources": [
+        {
+          "type": "paper",
+          "title": "LIBERO-CTRL — compound robustness of VLAs (arXiv 2609.15940)",
+          "url": "https://arxiv.org/abs/2609.15940"
+        }
+      ],
       "parent": "data-hw",
-      "layer": 3
+      "layer": 3,
+      "research_directions": [
+        "Re-score published VLAs on LIBERO-CTRL paired compound shifts, not just LIBERO avg",
+        "Emergent failure vs compensated success as a reporting requirement"
+      ]
     },
     {
       "id": "cosmos",
@@ -1374,8 +1463,18 @@
       "label": "NVIDIA GEAR",
       "kind": "lab",
       "domain": "labs",
-      "brief": "GR00T, Isaac, Cosmos, SONIC WBC. The open-ish humanoid stack.",
+      "brief": "GR00T, Isaac, Cosmos, SONIC WBC. The open-ish humanoid stack. OSMO (NVIDIA, Apache-2.0) is the YAML orchestrator used internally for GR00T / Isaac Lab / Isaac Sim: one workflow across training GPUs, sim, and Jetson HIL.",
       "resources": [
+        {
+          "type": "docs",
+          "title": "NVIDIA OSMO",
+          "url": "https://developer.nvidia.com/osmo"
+        },
+        {
+          "type": "code",
+          "title": "NVIDIA/OSMO",
+          "url": "https://github.com/NVIDIA/OSMO"
+        },
         {
           "type": "video",
           "title": "NVIDIA — Isaac GR00T-Mimic / GEAR",
@@ -2103,7 +2202,7 @@
       "domain": "policy",
       "parent": "policy",
       "layer": 2,
-      "brief": "Large cross-embodiment models: GR00T, RDT, GEN-1.5, Skild S1.",
+      "brief": "Large cross-embodiment models: GR00T, RDT, GEN-1.5, Skild S1, PhysBrain 1.5.",
       "why": "These are labs' bets on one model, many bodies — not another ACT variant.",
       "research_directions": [],
       "resources": [
@@ -4060,6 +4159,21 @@
       "from": "foundations",
       "to": "decide-found",
       "rel": "contains"
+    },
+    {
+      "from": "robot-fm",
+      "to": "physbrain",
+      "rel": "contains"
+    },
+    {
+      "from": "policy",
+      "to": "physbrain",
+      "rel": "includes"
+    },
+    {
+      "from": "physbrain",
+      "to": "world-models",
+      "rel": "predicts"
     }
   ]
 }
