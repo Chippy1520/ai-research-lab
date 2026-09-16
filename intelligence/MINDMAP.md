@@ -2,7 +2,7 @@
 
 Canonical data: `intelligence/mindmap.json`  
 Live page: `site/mindmap.html` → https://chippy1520.github.io/ai-research-lab/mindmap.html  
-Renderer: **skill tree** (vanilla SVG). One layer on screen: focus orb in the centre, children on a ring, breadcrumb to go up. Not Mind Elixir, not a force graph, not a starfield.  
+Renderer: **radial knowledge graph** (vanilla SVG). Stable full-circle branch seats, solid parent edges, and blue dashed semantic cross-links around the selected node. Related nodes are clickable across branches; unrelated nodes remain silhouettes. Last-layer children fan out on selection. Not a force simulation.
 Storage: every node has `parent` + `layer` (0 hub → 1 domain → 2 area/cluster → 3+ notes). New nodes attach under an existing **area**, never as a 20th sibling of a domain.  
 Build copies the JSON into `site/data/mindmap.json`.
 

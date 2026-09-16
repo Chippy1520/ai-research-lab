@@ -88,6 +88,19 @@
     return [...s].map((i) => byId[i]).filter(Boolean);
   }
 
+  function relatedEdges(id) {
+    const pairs = new Map();
+    for (const edge of graph.edges) {
+      if (edge.from !== id && edge.to !== id) continue;
+      const from = byId[edge.from], to = byId[edge.to];
+      if (!from || !to || from.parent === to.id || to.parent === from.id || ["contains", "includes"].includes(edge.rel)) continue;
+      const other = edge.from === id ? edge.to : edge.from;
+      if (!pairs.has(other)) pairs.set(other, { other, claims: [] });
+      pairs.get(other).claims.push(`${from.label} → ${edge.rel.replaceAll("-", " ")} → ${to.label}`);
+    }
+    return [...pairs.values()];
+  }
+
   function ytEmbed(url) {
     const u = String(url);
     const vid = u.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
@@ -133,6 +146,19 @@
     return result;
   }
 
+  function personCard(person, claims, organization, member = false) {
+    const initials = person.name.split(/\s+/).map(s => s[0]).slice(0, 2).join("");
+    const linkedin = httpsUrl(person.linkedin_url);
+    const sources = [person, ...claims];
+    return `<article class="mm-person-card">
+      <header><span class="mm-avatar" aria-hidden="true">${escapeHtml(initials)}</span><div><span class="mm-person-kind">${member ? "Organization member" : "Contributor"}</span><h4>${escapeHtml(person.name)}</h4>${organization ? `<span class="mm-person-org">${publicLink(organization.url, organization.name)}</span>` : ""}</div></header>
+      <p class="mm-person-role">${escapeHtml(person.role)}</p>
+      <div class="mm-person-work"><strong>Connection to this work</strong><p>${member ? "Affiliation verified; individual authorship of this work is not established." : claims.map(c => escapeHtml(c.relationship)).join("<br>")}</p></div>
+      <div class="mm-person-actions">${linkedin ? `<a class="mm-linkedin" href="${escapeHtml(linkedin)}" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">in</span> View LinkedIn ↗</a>` : '<span class="mm-profile-missing">LinkedIn not verified</span>'}${publicLink(person.profile_url, "Research profile ↗")}</div>
+      <details class="mm-provenance"><summary>Sources & verification · ${escapeHtml(person.verified_on)}</summary>${sources.map(evidence).join("")}</details>
+    </article>`;
+  }
+
   function entityPanel(node) {
     const orgs = new Map(entities.organizations.map((o) => [o.id, o]));
     const people = new Map(entities.people.map((p) => [p.id, p]));
@@ -157,15 +183,14 @@
       return `<li>${orgTitle(orgs.get(id))}${claims.map((a) => `<div>${escapeHtml(a.relationship)}</div>${evidence(a)}`).join("")}${!claims.length ? '<div>Organization represented by this lab node; official website linked above.</div>' : ""}</li>`;
     }).join("");
     const contributions = entities.contributions.filter((c) => c.node_id === node.id && people.has(c.person_id) && sourced(people.get(c.person_id)) && sourced(c));
-    const personTitle = (p) => `${publicLink(p.profile_url, p.name)}${p.linkedin_url && httpsUrl(p.linkedin_url) ? ` · ${publicLink(p.linkedin_url, "LinkedIn")}` : ""}<div>${escapeHtml(p.role)}${orgs.has(p.organization_id) ? ` · ${publicLink(orgs.get(p.organization_id).url, orgs.get(p.organization_id).name)}` : ""}</div>`;
     const contributorIds = [...new Set(contributions.map((c) => c.person_id))];
     const memberRows = entities.people.filter((p) => directIds.has(p.organization_id) && !contributorIds.includes(p.id) && sourced(p)).slice(0, 6);
     return `<section class="mm-entities" aria-label="Organizations and contributors">
       <h3>Organizations & contributors</h3>
       ${orgRows ? `<ul class="mm-res">${orgRows}</ul>` : '<p class="mm-empty">No verified organization link yet</p>'}
       ${related.size ? `<h4>Related-work examples — not developers of this node</h4><ul class="mm-res">${[...related].map(([id, paths]) => `<li>${orgTitle(orgs.get(id))}${paths.map(({ via, association: a }) => `<div>Via ${mapLink(via)}: ${escapeHtml(a.relationship)}</div>${evidence(a)}`).join("")}</li>`).join("")}</ul>` : ""}
-      ${contributorIds.length ? `<h4>Documented contributions to this node</h4><ul class="mm-res">${contributorIds.map((id) => `<li>${personTitle(people.get(id))}${contributions.filter((c) => c.person_id === id).map((c) => `<div>${escapeHtml(c.relationship)}</div>${evidence(c)}`).join("")}</li>`).join("")}</ul>` : '<p class="mm-empty">No verified individual contribution recorded yet.</p>'}
-      ${memberRows.length ? `<h4>Organization members — not model authorship established</h4><ul class="mm-res">${memberRows.map((p) => `<li>${personTitle(p)}${evidence(p)}</li>`).join("")}</ul>` : ""}
+      ${contributorIds.length ? `<h4>People behind the work</h4><div class="mm-people">${contributorIds.map(id => personCard(people.get(id), contributions.filter(c => c.person_id === id), orgs.get(people.get(id).organization_id))).join("")}</div>` : '<p class="mm-empty">Individual contributors not verified yet.</p>'}
+      ${memberRows.length ? `<details class="mm-members"><summary>More from the organization · ${memberRows.length}</summary><div class="mm-people">${memberRows.map(p => personCard(p, [], orgs.get(p.organization_id), true)).join("")}</div></details>` : ""}
       ${careerEnabled ? `<p><a class="mm-private-link" href="http://127.0.0.1:8767/#node=${escapeHtml(encodeURIComponent(node.id))}" target="_blank" rel="noopener noreferrer">Open local/private career companion ↗</a><small class="mm-evidence">Local service required; no private data is loaded here.</small></p>` : ""}
     </section>`;
   }
@@ -186,6 +211,7 @@
     setFocus((kids[id] || []).length ? id : (node.parent || id), false);
     openPanel(id);
     draw();
+    camera();
     return true;
   }
 
@@ -214,12 +240,10 @@
   let home = new Map();
 
   function layoutHome() {
-    const W = Math.max(svg.clientWidth, 320);
-    const H = Math.max(svg.clientHeight, 320);
-    const cx = W / 2;
-    const cy = H / 2;
-    const S = Math.min(W, H);
-    const ring = [0, S * 0.2, S * 0.35, S * 0.5, S * 0.6];
+    // Stable world coordinates: resizing changes the camera, not the topology.
+    const cx = 650, cy = 650;
+    const ring = [0, 205, 370, 555, 720];
+    const weight = (id) => Math.max(2, (kids[id] || []).reduce((sum, child) => sum + weight(child.id), 0));
     home = new Map();
     const hubId = graph.center || "embodied-ai";
 
@@ -242,10 +266,19 @@
         });
         return;
       }
-      const inner = sweep * 0.82;
+      const inner = sweep * 0.94;
+      const total = ch.reduce((sum, child) => sum + weight(child.id), 0);
+      let start = angle - inner / 2;
       ch.forEach((c, i) => {
-        const a = ch.length === 1 ? angle : angle - inner / 2 + (i * inner) / Math.max(ch.length - 1, 1);
-        walk(c.id, a, inner / Math.max(ch.length, 1), depth + 1);
+        const share = inner * weight(c.id) / total;
+        walk(c.id, start + share / 2, share, depth + 1);
+        if (!(kids[c.id] || []).length) {
+          const p = home.get(c.id);
+          const radius = ring[Math.min(depth + 1, ring.length - 1)] + (i % 3) * 55;
+          p.x = cx + Math.cos(p.a) * radius;
+          p.y = cy + Math.sin(p.a) * radius;
+        }
+        start += share;
       });
     }
     walk(hubId, 0, Math.PI * 2, 0);
@@ -274,15 +307,13 @@
     const map = new Map(home);
     const origin = home.get(focus);
     const ch = kids[focus] || [];
-    if (!origin || ch.length < 2) return map;
+    // Keep hub/domain seats fixed. Only unpack the last layer of a cluster.
+    if (!origin || ch.length < 2 || ch.some(c => (kids[c.id] || []).length)) return map;
     const n = ch.length;
-    const gap = 92;
-    const rad = Math.max(120, (n * gap) / Math.PI);
-    const sweep = Math.min(Math.PI * 1.8, ((n - 1) * gap) / rad);
+    const rad = Math.max(210, (n * 125) / (2 * Math.PI));
     const base = origin.a ?? 0;
     ch.forEach((c, i) => {
-      const t = i / (n - 1);
-      const a = base - sweep / 2 + t * sweep;
+      const a = base + (i + 0.5) * 2 * Math.PI / n;
       map.set(c.id, {
         x: origin.x + Math.cos(a) * rad,
         y: origin.y + Math.sin(a) * rad,
@@ -319,7 +350,7 @@
       fitHome();
       return map;
     }
-    const ids = [focus, ...(kids[focus] || []).map((c) => c.id)];
+    const ids = [focus, active, ...(kids[focus] || []).map((c) => c.id), ...relatedEdges(active || focus).map(e => e.other)];
     const p = byId[focus]?.parent;
     if (p) ids.push(p);
     fitIds(map, ids);
@@ -339,6 +370,9 @@
     const open = new Set();
     pathTo(focus).forEach((n) => open.add(n.id));
     (kids[focus] || []).forEach((n) => open.add(n.id));
+    if (active) open.add(active);
+    const cross = relatedEdges(active || focus);
+    const related = new Set(cross.map(e => e.other));
 
     for (const n of graph.nodes) {
       const p = n.parent;
@@ -352,15 +386,44 @@
       }));
     }
 
+    // Reveal semantic connections only around the selected node, not all at once.
+    for (const edge of cross) {
+      const a = seat.get(active || focus), b = seat.get(edge.other);
+      if (!a || !b) continue;
+      const dx = b.x - a.x, dy = b.y - a.y;
+      const path = el("path", {
+        class: "mm-edge cross",
+        d: `M ${a.x} ${a.y} Q ${(a.x + b.x) / 2 - dy * 0.12} ${(a.y + b.y) / 2 + dx * 0.12} ${b.x} ${b.y}`,
+      });
+      const title = el("title");
+      title.textContent = edge.claims.join("\n");
+      path.appendChild(title);
+      path.dataset.from = active || focus;
+      path.dataset.to = edge.other;
+      world.appendChild(path);
+    }
+
     const drawNode = (n) => {
       const p = seat.get(n.id);
       if (!p) return;
-      const ghost = !open.has(n.id);
+      const ghost = !open.has(n.id) && !related.has(n.id);
       const g = el("g", {
         class: `mm-node ${n.kind}${n.id === active || n.id === focus ? " active" : ""}${ghost ? " ghost" : ""}`,
         transform: `translate(${p.x} ${p.y})`,
       });
       g.dataset.id = n.id;
+      if (related.has(n.id) && !open.has(n.id)) g.classList.add("related");
+      const title = el("title");
+      title.textContent = [n.label, ...cross.filter(e => e.other === n.id).flatMap(e => e.claims)].join("\n");
+      g.appendChild(title);
+      if (!ghost) {
+        g.setAttribute("role", "button");
+        g.setAttribute("tabindex", "0");
+        g.setAttribute("aria-label", n.label);
+        g.addEventListener("keydown", e => {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOrb(n.id); }
+        });
+      }
       if (n.id === focus) {
         g.appendChild(el("circle", {
           r: p.r + 6,
@@ -392,10 +455,10 @@
     };
 
     for (const n of graph.nodes) {
-      if (!open.has(n.id)) drawNode(n);
+      if (!open.has(n.id) && !related.has(n.id)) drawNode(n);
     }
     for (const n of graph.nodes) {
-      if (open.has(n.id)) drawNode(n);
+      if (open.has(n.id) || related.has(n.id)) drawNode(n);
     }
 
     svg.replaceChildren(world);
@@ -431,7 +494,6 @@
     const rest = res.filter((r) => !vids.includes(r));
     const firstYt = vids.map((v) => ytEmbed(v.url)).find(Boolean);
     const dirs = n.research_directions || [];
-    const nb = neighbors(id).filter((x) => x.id !== n.parent && x.parent !== n.id);
     const childList = kids[id] || [];
     const relatedJobs = jobsFor(n);
     const intern = relatedJobs.filter((j) => j.seniority === "internship");
@@ -446,8 +508,8 @@
       ${firstYt ? `<h3>Watch</h3><div class="mm-yt"><iframe src="https://www.youtube-nocookie.com/embed/${firstYt}" title="Lecture" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>` : ""}
       ${n.why ? `<h3>Why it is on the map</h3><p>${n.why}</p>` : ""}
       ${childList.length ? `<h3>Inside this layer</h3><ul class="mm-res">${childList.map((x) => `<li><a href="#" data-go="${x.id}">${x.label}</a> <small>${x.kind}</small></li>`).join("")}</ul>` : ""}
-      <h3>Linked</h3>
-      <ul class="mm-res">${nb.map((x) => `<li><a href="#" data-go="${x.id}">${x.label}</a> <small>${x.kind}</small></li>`).join("") || "<li class='mm-empty'>No extra links</li>"}</ul>
+      <h3>Cross-connections · ${relatedEdges(id).length}</h3>
+      <ul class="mm-res mm-relations">${relatedEdges(id).map(e => `<li>${mapLink(e.other)}<small>${e.claims.map(escapeHtml).join("<br>")}</small></li>`).join("") || "<li class='mm-empty'>No extra links</li>"}</ul>
       <h3>Resources</h3>
       <ul class="mm-res">${[...vids, ...rest].map((r) => `<li><a href="${r.url}">${r.title}</a></li>`).join("") || "<li class='mm-empty'>None yet</li>"}</ul>
       ${dirs.length ? `<h3>Research directions</h3><ul class="mm-res">${dirs.map((d) => `<li>${d}</li>`).join("")}</ul>` : ""}
@@ -488,18 +550,19 @@
   function setFocus(id, open = true) {
     if (!byId[id]) return;
     focus = id;
+    active = id;
     updateNodeUrl(id);
+    if (open) openPanel(id);
     draw();
     camera();
     syncNav();
-    if (open) openPanel(id);
   }
 
   function onOrb(id) {
     const n = byId[id];
     if (!n) return;
     if (id === focus) {
-      openPanel(id);
+      setFocus(id);
       return;
     }
     if (id === n.parent || (byId[focus] && id === byId[focus].parent)) {
@@ -508,9 +571,12 @@
     }
     if ((kids[id] || []).length) setFocus(id);
     else {
+      if (focus !== n.parent && byId[n.parent]) focus = n.parent;
       active = id;
       openPanel(id);
       draw();
+      camera();
+      syncNav();
     }
   }
 
@@ -565,13 +631,7 @@
       if (!q) return;
       const hit = graph.nodes.find((n) => n.label.toLowerCase().includes(q) || n.id.includes(q));
       if (!hit) return;
-      if ((kids[hit.id] || []).length) setFocus(hit.id);
-      else setFocus(hit.parent || hit.id);
-      if (!kids[hit.id]?.length) {
-        active = hit.id;
-        openPanel(hit.id);
-        draw();
-      }
+      onOrb(hit.id);
     }, 160);
   });
 

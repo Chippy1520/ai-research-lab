@@ -99,11 +99,11 @@
 .mm-edge.spine { stroke: #243028; stroke-width: 2; }
 .mm-edge.ghost { stroke: #c4bfb4; stroke-width: 1; stroke-dasharray: 4 4; opacity: .7; }
 .mm-node.ghost { pointer-events: none; }
-.mm-node.ghost text { fill: #9aa39a; font-weight: 500; }
+.mm-node.ghost text { fill: #899388; font-size: 13px; font-weight: 500; }
 .mm-node { cursor: pointer; }
 .mm-node.ancestor { opacity: .85; }
 .mm-node text {
-  font: 600 12px Manrope, system-ui, sans-serif;
+  font: 600 17px Manrope, system-ui, sans-serif;
   fill: #1b1f1c;
   text-anchor: middle;
   pointer-events: none;
@@ -211,6 +211,34 @@
 .mm-evidence { display: block; margin-top: 5px; color: #606660; font: 400 11px/1.6 "DM Mono", monospace; }
 .mm-private-link { font: 600 12px/1.5 Manrope, sans-serif; }
 .mm-entities a:focus-visible { outline: 2px solid #2d6a45; outline-offset: 3px; }
+
+.mm-edge.cross { stroke: #728ca0; stroke-width: 1.5; stroke-dasharray: 7 5; opacity: .85; }
+.mm-node.related circle { stroke: #547d98; stroke-width: 2; }
+.mm-node.related text { fill: #345e79; }
+.mm-node:focus-visible circle { stroke: #1b1f1c; stroke-width: 3; }
+.mm-relations small { display: block; color: #63736b; font: 11px/1.6 Manrope, sans-serif; margin-top: 4px; }
+.mm-legend .line-main, .mm-legend .line-cross { width: 20px; height: 0; border: 0; border-top: 2px solid #243028; border-radius: 0; }
+.mm-legend .line-cross { border-top: 2px dashed #728ca0; }
+.mm-people { display: grid; gap: 14px; margin-top: 12px; }
+.mm-person-card { padding: 16px; border: 1px solid #ddd8cc; border-radius: 12px; background: #fffefa; }
+.mm-person-card header { display: flex; align-items: center; gap: 12px; }
+.mm-avatar { display: grid; place-items: center; width: 44px; height: 44px; flex: 0 0 44px; border-radius: 50%; background: #dce8e4; color: #315245; font: 700 15px Manrope, sans-serif; }
+.mm-person-kind { color: #6a766c; text-transform: uppercase; letter-spacing: .07em; font: 10px 'DM Mono', monospace; }
+.mm-person-card h4 { margin: 3px 0 !important; color: #1b1f1c; font: 600 19px/1.2 'Source Serif 4', Georgia, serif; }
+.mm-person-org { font: 11px/1.4 Manrope, sans-serif; }
+.mm-person-card .mm-person-role { margin: 13px 0; font: 12px/1.65 Manrope, sans-serif; color: #576258; }
+.mm-person-work { border-left: 2px solid #abc5ac; padding-left: 10px; }
+.mm-person-work strong { font: 600 10px Manrope, sans-serif; text-transform: uppercase; letter-spacing: .04em; color: #54705c; }
+.mm-person-work p { margin: 4px 0 14px; font: 14px/1.5 'Source Serif 4', Georgia, serif; }
+.mm-person-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font: 11px Manrope, sans-serif; }
+.mm-person-actions a { text-decoration: none; }
+.mm-person-actions .mm-linkedin { display: inline-flex; align-items: center; gap: 7px; background: #0a66c2; color: white; padding: 9px 11px; border-radius: 6px; font-weight: 700; }
+.mm-linkedin span { font-weight: 800; font-size: 16px; }
+.mm-linkedin:hover { background: #084d92; }
+.mm-profile-missing { color: #7b786c; font-size: 10px; }
+.mm-provenance { margin-top: 14px; border-top: 1px solid #eee9de; padding-top: 10px; }
+.mm-provenance summary, .mm-members > summary { cursor: pointer; font: 11px/1.5 Manrope, sans-serif; color: #63736b; }
+.mm-members { margin-top: 16px; }
 
 @media (max-width: 860px) {
   .mm-shell {

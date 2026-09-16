@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="Embodied AI skill tree — drill into one layer at a time.">
+  <meta name="description" content="Embodied AI knowledge graph — explore main branches and cross-connections.">
   <meta name="theme-color" content="#f3f0e8">
   <title>Embodied AI mind map · AI Research Lab</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="assets/styles.css">
   <link rel="stylesheet" href="assets/curriculum.css">
   <link rel="stylesheet" href="assets/papers.css">
-  <link rel="stylesheet" href="assets/mindmap.css?v=entities1">
+  <link rel="stylesheet" href="assets/mindmap.css?v=graph2">
 </head>
 <body class="editorial mm-page">
   <header class="topbar editorial-nav">
@@ -34,7 +34,7 @@
         <input id="mm-search" type="search" placeholder="Find a node…" enterkeyhint="search" aria-label="Find a node">
       </div>
       <div id="mm-title" class="mm-title"></div>
-      <svg id="mm-svg" role="img" aria-label="Skill tree"></svg>
+      <svg id="mm-svg" role="img" aria-label="Embodied AI knowledge graph"></svg>
       <div class="mm-legend" aria-label="Color key">
         <span><i class="k-hub"></i>field</span>
         <span><i class="k-domain"></i>domain</span>
@@ -44,18 +44,20 @@
         <span><i class="k-paper"></i>paper</span>
         <span><i class="k-framework"></i>code</span>
         <span><i class="k-lab"></i>lab</span>
+        <span><i class="line-main"></i>main branch</span>
+        <span><i class="line-cross"></i>related</span>
       </div>
-      <p class="mm-hint">The full map stays put. Dashed nodes sit in their real places — open them through their parent.</p>
+      <p class="mm-hint">Solid lines: main branch. Blue dashed lines: selected node’s cross-connections. Click a related node to explore.</p>
     </div>
     <aside class="mm-panel" id="mm-panel" aria-live="polite">
       <button type="button" class="mm-sheet-bar" id="mm-sheet-toggle" aria-label="Expand or collapse details">
         <span class="mm-grip"></span>
       </button>
       <div class="mm-panel-body" id="mm-panel-body">
-        <p class="mm-empty">A skill tree: only this layer is on screen. Click a cluster to open the next abstraction.</p>
+        <p class="mm-empty">Explore a branch, then follow its related concepts across the map.</p>
       </div>
     </aside>
   </div>
-  <script src="assets/mindmap.js?v=entities1"></script>
+  <script src="assets/mindmap.js?v=graph2"></script>
 </body>
 </html>
