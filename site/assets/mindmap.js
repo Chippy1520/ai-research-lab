@@ -42,6 +42,8 @@
 
   let graph = { nodes: [], edges: [], center: "embodied-ai" };
   let jobs = { openings: [] };
+  let entities = { organizations: [], people: [], associations: [], contributions: [] };
+  const careerEnabled = new URLSearchParams(window.location.search).get("career") === "1";
   let byId = {};
   let kids = {};
   let focus = null;
@@ -93,6 +95,98 @@
     if (pl && !vid) return `videoseries?list=${pl[1]}`;
     if (vid) return vid[1];
     return null;
+  }
+
+  // Public facts only. Career state is never fetched by this page.
+  function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, (c) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+    }[c]));
+  }
+
+  function httpsUrl(value) {
+    try {
+      const url = new URL(value);
+      return url.protocol === "https:" && !url.username && !url.password ? url.href : null;
+    } catch { return null; }
+  }
+
+  function publicLink(url, label) {
+    const safe = httpsUrl(url);
+    return safe ? `<a href="${escapeHtml(safe)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>` : escapeHtml(label);
+  }
+
+  function evidence(record) {
+    return `<small class="mm-evidence">${(record.sources || []).map((s) => publicLink(s.url, s.title)).join(" · ")} · verified ${escapeHtml(record.verified_on)}</small>`;
+  }
+
+  function mapLink(id) {
+    const node = byId[id];
+    return node ? `<a href="#node=${escapeHtml(encodeURIComponent(id))}" data-go="${escapeHtml(id)}">${escapeHtml(node.label)}</a>` : escapeHtml(id);
+  }
+
+  function normalizeEntities(data) {
+    const result = {};
+    for (const key of ["organizations", "people", "associations", "contributions"]) {
+      result[key] = Array.isArray(data?.[key]) ? data[key].filter((x) => x && typeof x === "object") : [];
+    }
+    return result;
+  }
+
+  function entityPanel(node) {
+    const orgs = new Map(entities.organizations.map((o) => [o.id, o]));
+    const people = new Map(entities.people.map((p) => [p.id, p]));
+    const sourced = (r) => Array.isArray(r.sources) && r.sources.some((s) => httpsUrl(s.url)) && r.verified_on;
+    const direct = entities.associations.filter((a) => a.node_id === node.id && !a.via_node_id && orgs.has(a.organization_id) && sourced(a));
+    const labOrgs = entities.organizations.filter((o) => node.kind === "lab" && o.map_node_id === node.id);
+    const directIds = new Set([...direct.map((a) => a.organization_id), ...labOrgs.map((o) => o.id)]);
+    const orgTitle = (o) => `${publicLink(o.url, o.name)} <small>${escapeHtml(o.kind)}</small>${o.map_node_id && o.map_node_id !== node.id ? ` · ${mapLink(o.map_node_id)}` : ""}`;
+    const neighborIds = new Set(neighbors(node.id).map((n) => n.id));
+    const related = new Map();
+    for (const a of entities.associations) {
+      const via = a.node_id === node.id ? a.via_node_id : a.node_id;
+      if (!via || !neighborIds.has(via) || !orgs.has(a.organization_id) || directIds.has(a.organization_id) || !sourced(a)) continue;
+      // Never walk beyond one explicit graph edge, nor relay an indirect claim.
+      if (a.node_id !== node.id && a.via_node_id) continue;
+      if (!related.has(a.organization_id) && related.size < 4) related.set(a.organization_id, []);
+      const paths = related.get(a.organization_id);
+      if (paths && !paths.some((p) => p.via === via) && paths.length < 3) paths.push({ via, association: a });
+    }
+    const orgRows = [...directIds].map((id) => {
+      const claims = direct.filter((a) => a.organization_id === id);
+      return `<li>${orgTitle(orgs.get(id))}${claims.map((a) => `<div>${escapeHtml(a.relationship)}</div>${evidence(a)}`).join("")}${!claims.length ? '<div>Organization represented by this lab node; official website linked above.</div>' : ""}</li>`;
+    }).join("");
+    const contributions = entities.contributions.filter((c) => c.node_id === node.id && people.has(c.person_id) && sourced(people.get(c.person_id)) && sourced(c));
+    const personTitle = (p) => `${publicLink(p.profile_url, p.name)}${p.linkedin_url && httpsUrl(p.linkedin_url) ? ` · ${publicLink(p.linkedin_url, "LinkedIn")}` : ""}<div>${escapeHtml(p.role)}${orgs.has(p.organization_id) ? ` · ${publicLink(orgs.get(p.organization_id).url, orgs.get(p.organization_id).name)}` : ""}</div>`;
+    const contributorIds = [...new Set(contributions.map((c) => c.person_id))];
+    const memberRows = entities.people.filter((p) => directIds.has(p.organization_id) && !contributorIds.includes(p.id) && sourced(p)).slice(0, 6);
+    return `<section class="mm-entities" aria-label="Organizations and contributors">
+      <h3>Organizations & contributors</h3>
+      ${orgRows ? `<ul class="mm-res">${orgRows}</ul>` : '<p class="mm-empty">No verified organization link yet</p>'}
+      ${related.size ? `<h4>Related-work examples — not developers of this node</h4><ul class="mm-res">${[...related].map(([id, paths]) => `<li>${orgTitle(orgs.get(id))}${paths.map(({ via, association: a }) => `<div>Via ${mapLink(via)}: ${escapeHtml(a.relationship)}</div>${evidence(a)}`).join("")}</li>`).join("")}</ul>` : ""}
+      ${contributorIds.length ? `<h4>Documented contributions to this node</h4><ul class="mm-res">${contributorIds.map((id) => `<li>${personTitle(people.get(id))}${contributions.filter((c) => c.person_id === id).map((c) => `<div>${escapeHtml(c.relationship)}</div>${evidence(c)}`).join("")}</li>`).join("")}</ul>` : '<p class="mm-empty">No verified individual contribution recorded yet.</p>'}
+      ${memberRows.length ? `<h4>Organization members — not model authorship established</h4><ul class="mm-res">${memberRows.map((p) => `<li>${personTitle(p)}${evidence(p)}</li>`).join("")}</ul>` : ""}
+      ${careerEnabled ? `<p><a class="mm-private-link" href="http://127.0.0.1:8767/#node=${escapeHtml(encodeURIComponent(node.id))}" target="_blank" rel="noopener noreferrer">Open local/private career companion ↗</a><small class="mm-evidence">Local service required; no private data is loaded here.</small></p>` : ""}
+    </section>`;
+  }
+
+  function nodeFromHash() {
+    return new URLSearchParams(window.location.hash.slice(1)).get("node");
+  }
+
+  function updateNodeUrl(id) {
+    const hash = `#node=${encodeURIComponent(id)}`;
+    if (window.location.hash !== hash) window.history.replaceState(null, "", hash);
+  }
+
+  function selectLinkedNode() {
+    const id = nodeFromHash();
+    if (!id || !byId[id]) return false;
+    const node = byId[id];
+    setFocus((kids[id] || []).length ? id : (node.parent || id), false);
+    openPanel(id);
+    draw();
+    return true;
   }
 
   function jobsFor(node) {
@@ -331,6 +425,7 @@
     const n = byId[id];
     if (!n) return;
     active = id;
+    updateNodeUrl(id);
     const res = n.resources || [];
     const vids = res.filter((r) => r.type === "video" || /youtu/.test(r.url || ""));
     const rest = res.filter((r) => !vids.includes(r));
@@ -347,6 +442,7 @@
       <div class="mm-kicker">${KIND[n.kind] || n.kind} · layer ${n.layer ?? "—"}</div>
       <h2>${n.label}</h2>
       <p>${n.brief || ""}</p>
+      ${entityPanel(n)}
       ${firstYt ? `<h3>Watch</h3><div class="mm-yt"><iframe src="https://www.youtube-nocookie.com/embed/${firstYt}" title="Lecture" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>` : ""}
       ${n.why ? `<h3>Why it is on the map</h3><p>${n.why}</p>` : ""}
       ${childList.length ? `<h3>Inside this layer</h3><ul class="mm-res">${childList.map((x) => `<li><a href="#" data-go="${x.id}">${x.label}</a> <small>${x.kind}</small></li>`).join("")}</ul>` : ""}
@@ -392,6 +488,7 @@
   function setFocus(id, open = true) {
     if (!byId[id]) return;
     focus = id;
+    updateNodeUrl(id);
     draw();
     camera();
     syncNav();
@@ -484,12 +581,19 @@
     camera();
   });
 
+  window.addEventListener("hashchange", selectLinkedNode);
+
   Promise.all([
-    fetch("data/mindmap.json").then((r) => r.json()),
-    fetch("data/jobs.json").then((r) => r.json()).catch(() => ({ openings: [] })),
-  ]).then(([g, j]) => {
+    fetch("data/mindmap.json?v=entities1").then((r) => r.json()),
+    fetch("data/jobs.json?v=entities1").then((r) => r.json()).catch(() => ({ openings: [] })),
+    fetch("data/entities.json?v=entities1").then((r) => {
+      if (!r.ok) throw new Error("Entities unavailable");
+      return r.json();
+    }).catch(() => null),
+  ]).then(([g, j, e]) => {
     graph = g;
     jobs = j;
+    entities = normalizeEntities(e);
     index();
     const start = () => {
       if (svg.clientWidth < 40) {
@@ -498,11 +602,13 @@
       }
       layoutHome();
       fitHome();
-      setFocus(g.center || "embodied-ai");
-      document.body.classList.remove("mm-sheet-open");
+      if (!selectLinkedNode()) {
+        setFocus(g.center || "embodied-ai");
+        document.body.classList.remove("mm-sheet-open");
+      }
     };
     start();
   }).catch((err) => {
-    body.innerHTML = `<p>Failed to load mind map: ${err}</p>`;
+    body.innerHTML = `<p>Failed to load mind map: ${escapeHtml(err)}</p>`;
   });
 })();

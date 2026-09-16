@@ -205,6 +205,13 @@
 .mm-empty { color: #888; font: 400 15px/1.5 "Source Serif 4", Georgia, serif; }
 .mm-panel .mm-navbtn { margin-bottom: 8px; }
 
+/* Public provenance lives in the details panel; the SVG tree is unchanged. */
+.mm-entities { border-block: 1px solid #ddd8cc; margin-top: 18px; padding-bottom: 12px; overflow-wrap: anywhere; }
+.mm-entities h4 { margin: 18px 0 4px; color: #606660; font: 600 12px/1.5 Manrope, sans-serif; }
+.mm-evidence { display: block; margin-top: 5px; color: #606660; font: 400 11px/1.6 "DM Mono", monospace; }
+.mm-private-link { font: 600 12px/1.5 Manrope, sans-serif; }
+.mm-entities a:focus-visible { outline: 2px solid #2d6a45; outline-offset: 3px; }
+
 @media (max-width: 860px) {
   .mm-shell {
     grid-template-columns: 1fr;

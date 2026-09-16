@@ -43,3 +43,16 @@ Do not recode colors for “importance.” Filter chips are domains; fill is kin
 `id, label, kind (hub|domain|area|concept|method|paper|framework|lab), domain, parent, layer, brief, why?, research_directions[], resources[{type,title,url}], company_id?`
 
 Edges: `{from, to, rel}`.
+
+## Public organizations and contributors / private career preparation
+
+`intelligence/entities.json` is the public, dated provenance registry; the build exports it to `site/data/entities.json`. Its four collections are organizations, people, associations (node → organization), and contributions (node → person). Stable node IDs join it to the existing map without changing the tree layout.
+
+- Each person, association, and contribution includes primary `sources[{url,title}]` and `verified_on`. Prefer direct researcher/project pages; never guess a LinkedIn slug.
+- Separate current affiliations from publication-time affiliations. Company membership is not evidence of model authorship. Collective bylines remain collective.
+- Broad concepts have multiple related examples, not a single owner. The panel exposes at most one graph hop of related work and labels it separately from direct development claims.
+- Unresearched nodes say so explicitly. Initial coverage is Generalist/GEN-1.5, OpenVLA, SmolVLA and LeRobot—not a completed directory for every node.
+- Public records must contain no shortlist ranking, contact history, readiness, drafts, or personal project plans. The build rejects unknown fields; this structural check does not replace reviewing free-text fields for private material.
+- `#node=<id>` opens a node panel directly. Only explicit `?career=1` exposes an outbound link to a loopback-only private companion at `http://127.0.0.1:8767/#node=<id>`. The public page never fetches the local service.
+- The private companion and its records live outside this repository. Never import them into the public build or commit them. No automated messages or connection requests.
+- Validate with `python -m pytest tests/test_public_entities.py tests/test_static_site.py -q`, `node --check site/assets/mindmap.js`, and browser checks of the deep link, data render, missing coverage, and private-link opt-in.

@@ -178,6 +178,41 @@ def _build_curriculum_payload() -> dict[str, Any]:
     }
 
 
+PUBLIC_ENTITY_FIELDS = {
+    "organizations": {"id", "name", "kind", "url", "map_node_id"},
+    "people": {"id", "name", "role", "organization_id", "profile_url", "linkedin_url", "sources", "verified_on"},
+    "associations": {"node_id", "organization_id", "relationship", "via_node_id", "sources", "verified_on"},
+    "contributions": {"node_id", "person_id", "relationship", "sources", "verified_on"},
+}
+
+
+def _validate_public_entities(payload: dict[str, Any]) -> None:
+    """Fail closed on unknown fields instead of publishing private annotations."""
+    expected = {"schema_version", "updated_on", *PUBLIC_ENTITY_FIELDS}
+    if set(payload) != expected or payload.get("schema_version") != 1:
+        raise ValueError("Invalid public entities envelope")
+    for collection, allowed in PUBLIC_ENTITY_FIELDS.items():
+        records = payload[collection]
+        if not isinstance(records, list):
+            raise ValueError(f"Expected public entities list: {collection}")
+        for record in records:
+            if not isinstance(record, dict) or not set(record) <= allowed:
+                raise ValueError(f"Non-public entity fields in {collection}")
+            for key, value in record.items():
+                if key == "sources":
+                    if not isinstance(value, list) or any(
+                        not isinstance(source, dict)
+                        or set(source) != {"url", "title"}
+                        or any(not isinstance(text, str) for text in source.values())
+                        for source in value
+                    ):
+                        raise ValueError("Invalid public entity sources")
+                elif not isinstance(value, str):
+                    raise ValueError(f"Expected public entity text: {key}")
+    if not isinstance(payload["updated_on"], str):
+        raise ValueError("Expected public entities updated_on text")
+
+
 def build() -> dict[str, Any]:
     """Copy validated source data and create the static site manifest."""
     ecosystem_path = INTELLIGENCE_DIR / "ecosystem.json"
@@ -198,6 +233,13 @@ def build() -> dict[str, Any]:
     mindmap_path = INTELLIGENCE_DIR / "mindmap.json"
     if mindmap_path.exists():
         shutil.copy2(mindmap_path, DATA_DIR / "mindmap.json")
+    # Explicit public allowlist: never glob/copy local career companion files.
+    entities_path = INTELLIGENCE_DIR / "entities.json"
+    if entities_path.exists():
+        _validate_public_entities(_read_json(entities_path))
+        shutil.copy2(entities_path, DATA_DIR / "entities.json")
+    else:
+        (DATA_DIR / "entities.json").unlink(missing_ok=True)
     with (DATA_DIR / "curriculum.json").open("w", encoding="utf-8") as handle:
         json.dump(curriculum, handle, indent=2, ensure_ascii=False)
         handle.write("\n")
