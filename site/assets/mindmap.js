@@ -57,6 +57,13 @@
     return window.matchMedia("(max-width: 860px)").matches;
   }
 
+  function chromeTop() {
+    const heading = document.querySelector(".mm-heading");
+    const toolbar = document.querySelector(".mm-toolbar");
+    const anchor = heading && heading.offsetParent ? heading : toolbar;
+    return (anchor ? anchor.getBoundingClientRect().bottom : 56) + 12;
+  }
+
   function index() {
     byId = Object.fromEntries(graph.nodes.map((n) => [n.id, n]));
     kids = {};
@@ -150,11 +157,12 @@
     const initials = person.name.split(/\s+/).map(s => s[0]).slice(0, 2).join("");
     const linkedin = httpsUrl(person.linkedin_url);
     const sources = [person, ...claims];
+    const liIcon = '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.73V1.73C24 .77 23.21 0 22.23 0z"/></svg>';
     return `<article class="mm-person-card">
       <header><span class="mm-avatar" aria-hidden="true">${escapeHtml(initials)}</span><div><span class="mm-person-kind">${member ? "Organization member" : "Contributor"}</span><h4>${escapeHtml(person.name)}</h4>${organization ? `<span class="mm-person-org">${publicLink(organization.url, organization.name)}</span>` : ""}</div></header>
       <p class="mm-person-role">${escapeHtml(person.role)}</p>
       <div class="mm-person-work"><strong>Connection to this work</strong><p>${member ? "Affiliation verified; individual authorship of this work is not established." : claims.map(c => escapeHtml(c.relationship)).join("<br>")}</p></div>
-      <div class="mm-person-actions">${linkedin ? `<a class="mm-linkedin" href="${escapeHtml(linkedin)}" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">in</span> View LinkedIn ↗</a>` : '<span class="mm-profile-missing">LinkedIn not verified</span>'}${publicLink(person.profile_url, "Research profile ↗")}</div>
+      <div class="mm-person-actions">${linkedin ? `<a class="mm-linkedin" href="${escapeHtml(linkedin)}" target="_blank" rel="noopener noreferrer">${liIcon} LinkedIn</a>` : '<span class="mm-profile-missing">LinkedIn not verified</span>'}${publicLink(person.profile_url, "Research profile")}</div>
       <details class="mm-provenance"><summary>Sources & verification · ${escapeHtml(person.verified_on)}</summary>${sources.map(evidence).join("")}</details>
     </article>`;
   }
@@ -233,8 +241,42 @@
     return (jobs.openings || []).filter((o) => (o.company || "").toLowerCase().includes(key));
   }
 
-  function applyView() {
-    if (world) world.setAttribute("transform", `translate(${view.x} ${view.y}) scale(${view.s})`);
+  function applyView(arrange = true) {
+    if (!world) return;
+    world.setAttribute("transform", `translate(${view.x} ${view.y}) scale(${view.s})`);
+    world.querySelectorAll('.mm-node:not(.ghost) text').forEach(t => {
+      t.style.fontSize = `${Math.max(16, (phone() ? 13.5 : 13) / view.s)}px`;
+      t.style.strokeWidth = `${4 / view.s}px`;
+    });
+    world.querySelectorAll('.mm-hit').forEach(hit => hit.setAttribute('r', Math.max(24, 22 / view.s)));
+    if (arrange) arrangeLabels();
+  }
+
+  function arrangeLabels() {
+    // Labels may move; the graph seats and parent topology never do.
+    const labels = [...world.querySelectorAll('.mm-node:not(.ghost) text')];
+    labels.forEach(t => t.removeAttribute('transform'));
+    world.querySelectorAll('.mm-label-leader').forEach(line => line.remove());
+    const placed = [], rect = svg.getBoundingClientRect();
+    const top = chromeTop();
+    labels.sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
+    for (const t of labels) {
+      const b = t.getBoundingClientRect();
+      let dx = Math.max(rect.left + 12 - b.left, Math.min(0, rect.right - 12 - b.right)), dy = 0;
+      for (let i = 0; i < 40; i++) {
+        const offset = i ? Math.ceil(i / 2) * 15 * (i % 2 ? 1 : -1) : 0;
+        const candidate = { left: b.left + dx, right: b.right + dx, top: b.top + offset, bottom: b.bottom + offset };
+        if (candidate.top < top || candidate.bottom > rect.bottom - 72) continue;
+        if (placed.some(p => candidate.left < p.right + 6 && candidate.right > p.left - 6 && candidate.top < p.bottom + 5 && candidate.bottom > p.top - 5)) continue;
+        dy = offset; break;
+      }
+      t.setAttribute('transform', `translate(${dx / view.s} ${dy / view.s})`);
+      placed.push({ left: b.left + dx, right: b.right + dx, top: b.top + dy, bottom: b.bottom + dy });
+      if (Math.abs(dy) > 5 || Math.abs(dx) > 5) {
+        const line = el('line', { class: 'mm-label-leader', x1: 0, y1: 0, x2: dx / view.s, y2: (Number(t.getAttribute('y')) + dy / view.s), stroke: '#b3ac9a', 'stroke-width': .7 / view.s, 'pointer-events': 'none' });
+        t.parentNode.insertBefore(line, t);
+      }
+    }
   }
 
   let home = new Map();
@@ -345,16 +387,33 @@
   }
 
   function camera() {
-    const map = seats();
-    if (!focus || focus === (graph.center || "embodied-ai")) {
-      fitHome();
-      return map;
+    if (!world) return;
+    // Fit actual labels, not just circles; reserve space for the editorial chrome.
+    const rect = svg.getBoundingClientRect();
+    const top = chromeTop() - rect.top;
+    const W = Math.max(100, rect.width - 36);
+    const H = Math.max(120, rect.height - top - (phone() ? 68 : 84));
+    view.s = 1;
+    world.querySelectorAll('.mm-node text').forEach(t => t.removeAttribute('transform'));
+    world.querySelectorAll('.mm-label-leader').forEach(line => line.remove());
+    for (let i = 0; i < 8; i++) {
+      applyView(false);
+      let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+      let nodes = phone()
+        ? world.querySelectorAll('.mm-node:not(.ghost):not(.related)')
+        : world.querySelectorAll('.mm-node:not(.ghost)');
+      if (!nodes.length) nodes = world.querySelectorAll('.mm-node:not(.ghost)');
+      nodes.forEach(node => {
+        const b = node.getBBox(), m = node.transform.baseVal.getItem(0).matrix;
+        x0 = Math.min(x0, b.x + m.e); y0 = Math.min(y0, b.y + m.f);
+        x1 = Math.max(x1, b.x + b.width + m.e); y1 = Math.max(y1, b.y + b.height + m.f);
+      });
+      if (!Number.isFinite(x0)) return;
+      view.s = Math.min(1, W / (x1 - x0), H / (y1 - y0));
+      view.x = rect.width / 2 - (x0 + x1) / 2 * view.s;
+      view.y = top + H / 2 - (y0 + y1) / 2 * view.s;
     }
-    const ids = [focus, active, ...(kids[focus] || []).map((c) => c.id), ...relatedEdges(active || focus).map(e => e.other)];
-    const p = byId[focus]?.parent;
-    if (p) ids.push(p);
-    fitIds(map, ids);
-    return map;
+    applyView();
   }
 
   function el(name, attrs) {
@@ -417,6 +476,7 @@
       title.textContent = [n.label, ...cross.filter(e => e.other === n.id).flatMap(e => e.claims)].join("\n");
       g.appendChild(title);
       if (!ghost) {
+        g.appendChild(el('circle', { class: 'mm-hit', r: 24, fill: 'transparent', stroke: 'none' }));
         g.setAttribute("role", "button");
         g.setAttribute("tabindex", "0");
         g.setAttribute("aria-label", n.label);
@@ -442,12 +502,21 @@
       const labelDeepGhost = ghost && (n.layer || 0) >= 3;
       if (!labelDeepGhost) {
         const t = el("text", { y: (ghost ? Math.max(8, p.r - 4) : p.r) + 15 });
-        t.textContent = n.label;
+        const words = n.label.split(' '), lines = [''];
+        words.forEach(word => {
+          if ((lines[lines.length - 1] + ' ' + word).trim().length > 22 && lines[lines.length - 1]) lines.push('');
+          lines[lines.length - 1] = (lines[lines.length - 1] + ' ' + word).trim();
+        });
+        lines.forEach((line, i) => {
+          const span = el('tspan', { x: 0, dy: i ? '1.15em' : 0 });
+          span.textContent = line; t.appendChild(span);
+        });
         g.appendChild(t);
       }
       if (!ghost) {
         g.addEventListener("click", (ev) => {
           ev.stopPropagation();
+          if (dragged) return;
           onOrb(n.id);
         });
       }
@@ -497,7 +566,7 @@
     const childList = kids[id] || [];
     const relatedJobs = jobsFor(n);
     const intern = relatedJobs.filter((j) => j.seniority === "internship");
-    document.body.classList.add("mm-sheet-open");
+    document.getElementById('mm-sheet-label').textContent = n.label;
     const canUp = !!(n.parent && byId[n.parent]);
     body.innerHTML = `
       ${canUp ? `<p><button type="button" class="mm-navbtn" id="mm-panel-back">← Back</button></p>` : ""}
@@ -580,38 +649,86 @@
     }
   }
 
-  svg.addEventListener("pointerdown", (e) => {
-    if (e.target.closest(".mm-node")) return;
-    drag = { x: e.clientX - view.x, y: e.clientY - view.y, sx: e.clientX, sy: e.clientY };
-    dragged = false;
-    svg.setPointerCapture(e.pointerId);
+  const pointers = new Map();
+  let pinch = null;
+  const gesture = () => {
+    const [a, b] = [...pointers.values()];
+    return b ? { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2, d: Math.hypot(b.x - a.x, b.y - a.y) } : a;
+  };
+  function zoomAt(scale, x, y) {
+    const next = Math.min(3, Math.max(.08, scale));
+    view.x = x - (x - view.x) * next / view.s;
+    view.y = y - (y - view.y) * next / view.s;
+    view.s = next; applyView();
+  }
+  svg.addEventListener('pointerdown', e => {
+    if (e.button !== 0) return;
+    const rect = svg.getBoundingClientRect();
+    pointers.set(e.pointerId, { x: e.clientX - rect.left, y: e.clientY - rect.top });
+    if (pointers.size === 1) {
+      dragged = false;
+      drag = { ...gesture(), vx: view.x, vy: view.y, node: e.target.closest('.mm-node') };
+    } else { pinch = gesture(); dragged = true; }
+    // Capture on the original target so a stationary node tap retains its click target.
+    e.target.setPointerCapture(e.pointerId);
   });
-  svg.addEventListener("pointermove", (e) => {
-    if (!drag) return;
-    if (Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy) > 8) dragged = true;
-    view.x = e.clientX - drag.x;
-    view.y = e.clientY - drag.y;
+  svg.addEventListener('pointermove', e => {
+    if (!pointers.has(e.pointerId)) return;
+    const rect = svg.getBoundingClientRect();
+    pointers.set(e.pointerId, { x: e.clientX - rect.left, y: e.clientY - rect.top });
+    const g = gesture();
+    if (pointers.size > 1 && pinch) {
+      zoomAt(view.s * g.d / Math.max(1, pinch.d), pinch.x, pinch.y);
+      view.x += g.x - pinch.x; view.y += g.y - pinch.y;
+      pinch = g; dragged = true;
+    } else if (drag) {
+      if (Math.hypot(g.x - drag.x, g.y - drag.y) > 6) dragged = true;
+      if (dragged) { view.x = drag.vx + g.x - drag.x; view.y = drag.vy + g.y - drag.y; }
+    }
     applyView();
   });
-  svg.addEventListener("pointerup", () => {
-    if (drag && !dragged) goBack();
-    drag = null;
-  });
+  function endPointer(e) {
+    if (!pointers.has(e.pointerId)) return;
+    pointers.delete(e.pointerId);
+    if (!pointers.size && drag && !dragged && !drag.node && e.type === 'pointerup') goBack();
+    pinch = null;
+    drag = pointers.size ? { ...gesture(), vx: view.x, vy: view.y } : null;
+  }
+  ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(type => svg.addEventListener(type, endPointer));
   svg.addEventListener("wheel", (e) => {
     e.preventDefault();
-    const next = Math.min(2.4, Math.max(0.4, view.s * (e.deltaY > 0 ? 0.92 : 1.08)));
+    const next = view.s * (e.deltaY > 0 ? 0.92 : 1.08);
     const rect = svg.getBoundingClientRect();
     const px = e.clientX - rect.left;
     const py = e.clientY - rect.top;
-    const wx = (px - view.x) / view.s;
-    const wy = (py - view.y) / view.s;
-    view.s = next;
-    view.x = px - wx * view.s;
-    view.y = py - wy * view.s;
-    applyView();
+    zoomAt(next, px, py);
   }, { passive: false });
 
-  if (sheetToggle) sheetToggle.addEventListener("click", () => document.body.classList.toggle("mm-sheet-open"));
+  if (sheetToggle) {
+    let ignoreClick = false;
+    const onSheet = (e) => {
+      e.stopPropagation();
+      const open = document.body.classList.toggle("mm-sheet-open");
+      sheetToggle.setAttribute("aria-expanded", String(open));
+      const action = sheetToggle.querySelector(".mm-sheet-action");
+      if (action) action.textContent = open ? "Close ↓" : "Details ↑";
+      requestAnimationFrame(() => camera());
+    };
+    sheetToggle.addEventListener("click", (e) => {
+      if (ignoreClick) { e.preventDefault(); return; }
+      onSheet(e);
+    });
+    sheetToggle.addEventListener("touchend", (e) => {
+      e.preventDefault();
+      ignoreClick = true;
+      onSheet(e);
+      setTimeout(() => { ignoreClick = false; }, 80);
+    }, { passive: false });
+  }
+  document.getElementById('mm-fit').addEventListener('click', camera);
+  for (const [id, factor] of [['mm-zoom-in', 1.25], ['mm-zoom-out', .8]]) {
+    document.getElementById(id).addEventListener('click', () => zoomAt(view.s * factor, svg.clientWidth / 2, svg.clientHeight / 2));
+  }
   if (backBtn) backBtn.addEventListener("click", goBack);
   if (topBtn) topBtn.addEventListener("click", goTop);
   window.addEventListener("keydown", (e) => {
@@ -668,6 +785,7 @@
       }
     };
     start();
+    document.fonts.ready.then(camera);
   }).catch((err) => {
     body.innerHTML = `<p>Failed to load mind map: ${escapeHtml(err)}</p>`;
   });

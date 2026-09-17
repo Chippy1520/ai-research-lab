@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="assets/styles.css">
   <link rel="stylesheet" href="assets/curriculum.css">
   <link rel="stylesheet" href="assets/papers.css">
-  <link rel="stylesheet" href="assets/mindmap.css?v=graph2">
+  <link rel="stylesheet" href="assets/mindmap.css?v=atelier2">
 </head>
 <body class="editorial mm-page">
   <header class="topbar editorial-nav">
@@ -33,7 +33,7 @@
         <nav class="mm-crumb" id="mm-crumb" aria-label="Layer path"></nav>
         <input id="mm-search" type="search" placeholder="Find a node…" enterkeyhint="search" aria-label="Find a node">
       </div>
-      <div id="mm-title" class="mm-title"></div>
+      <div class="mm-heading"><span>Mind map</span><h1 id="mm-title" class="mm-title">Embodied AI</h1></div>
       <svg id="mm-svg" role="img" aria-label="Embodied AI knowledge graph"></svg>
       <div class="mm-legend" aria-label="Color key">
         <span><i class="k-hub"></i>field</span>
@@ -47,17 +47,22 @@
         <span><i class="line-main"></i>main branch</span>
         <span><i class="line-cross"></i>related</span>
       </div>
-      <p class="mm-hint">Solid lines: main branch. Blue dashed lines: selected node’s cross-connections. Click a related node to explore.</p>
+      <div class="mm-zoom" role="group" aria-label="Map camera">
+        <button type="button" id="mm-zoom-out" aria-label="Zoom out">−</button>
+        <button type="button" id="mm-fit" aria-label="Fit visible branch">Fit</button>
+        <button type="button" id="mm-zoom-in" aria-label="Zoom in">+</button>
+      </div>
+      <p class="mm-hint">Drag to pan · scroll or pinch to zoom</p>
     </div>
     <aside class="mm-panel" id="mm-panel" aria-live="polite">
-      <button type="button" class="mm-sheet-bar" id="mm-sheet-toggle" aria-label="Expand or collapse details">
-        <span class="mm-grip"></span>
+      <button type="button" class="mm-sheet-bar" id="mm-sheet-toggle" aria-label="Expand or collapse details" aria-controls="mm-panel-body" aria-expanded="false">
+        <span class="mm-grip"></span><span id="mm-sheet-label">Explore the field</span><span class="mm-sheet-action">Details ↑</span>
       </button>
       <div class="mm-panel-body" id="mm-panel-body">
         <p class="mm-empty">Explore a branch, then follow its related concepts across the map.</p>
       </div>
     </aside>
   </div>
-  <script src="assets/mindmap.js?v=graph2"></script>
+  <script src="assets/mindmap.js?v=atelier2"></script>
 </body>
 </html>
