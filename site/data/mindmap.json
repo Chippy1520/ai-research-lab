@@ -1,10 +1,14 @@
 {
   "version": 1,
-  "updated": "2026-09-15",
+  "updated": "2026-09-18",
   "title": "Embodied AI mind map",
   "center": "embodied-ai",
   "scope": "Perception, learning, policies, frameworks, and labs for physical intelligence. Hardware/materials only when they change the learning problem. Company nodes pull live jobs from the robotics intelligence desk.",
   "changelog": [
+    {
+      "date": "2026-09-18",
+      "note": "Helix 2.5 (Figure, 30-home zero-shot). Patched RL (Real-Time EXPO-FT), async inference (rMuscle), one-shot (GPT-Policy), world models + WBC (WholeBodyWAM/KINO), Isaac (agent SimReady), OpenVLA (ActionPiece), perception (ActiveScale)."
+    },
     {
       "date": "2026-09-15",
       "note": "PhysBrain 1.5 node. Patched ACT (UGR), flow matching (FMP/VGFM), world models (WLA³/DIDO/GLAM), one-shot (VLBiMan++), LIBERO (LIBERO-CTRL), NVIDIA GEAR (OSMO)."
@@ -82,13 +86,19 @@
       "label": "Perception",
       "kind": "domain",
       "domain": "perception",
-      "brief": "Turn pixels (and maybe depth) into geometry, semantics, and tracks the policy can condition on.",
+      "brief": "Turn pixels (and maybe depth) into geometry, semantics, and tracks the policy can condition on. 16 Sep 2026: ActiveScale (arXiv 2609.18514) adds historical video + per-frame pose tokens so a VLA can change viewpoint instead of guessing from a fixed camera.",
       "why": "A VLA that cannot see 3D structure or correspondences is guessing in image space.",
       "research_directions": [
         "Feed-forward multi-view 3D",
-        "Self-supervised ViT features as robot backbones"
+        "Self-supervised ViT features as robot backbones",
+        "Pose-supervised active perception vs extra cameras at train time"
       ],
       "resources": [
+        {
+          "type": "paper",
+          "title": "ActiveScale — Scaling Active Perception (arXiv 2609.18514)",
+          "url": "https://arxiv.org/abs/2609.18514"
+        },
         {
           "type": "video",
           "title": "Stanford CS231n 2025 — Deep Learning for Computer Vision",
@@ -441,9 +451,14 @@
       "label": "OpenVLA",
       "kind": "paper",
       "domain": "policy",
-      "brief": "Kim et al., 7B discrete action tokens on public robot data. The heavy open baseline SmolVLA is sized against.",
+      "brief": "Kim et al., 7B discrete action tokens on public robot data. The heavy open baseline SmolVLA is sized against. 16 Sep 2026: ActionPiece (arXiv 2609.18487) retrains the AR tokenizer with joint representation+quantization so physical action relationships survive decode — 94.8% LIBERO / 68.8% unseen LIBERO-Plus under a Qwen3-VL-4B policy (not OpenVLA weights; same discrete-token problem).",
       "why": "Read the tokenizer to see what flow matching is refusing.",
       "resources": [
+        {
+          "type": "paper",
+          "title": "ActionPiece — AR VLA action tokenization (arXiv 2609.18487)",
+          "url": "https://arxiv.org/abs/2609.18487"
+        },
         {
           "type": "video",
           "title": "Moo Jin Kim — OpenVLA (author talk)",
@@ -656,16 +671,22 @@
       "label": "World models",
       "kind": "concept",
       "domain": "learning",
-      "brief": "Predict future observations (or latents) to plan. STL, video DMs, and some VLA imagination heads sit here. STLight is the efficient CNN end; GEN-1.5's 30 s memory is the foundation-model end. Sep 2026: WLA³ learns world latent actions from human-video transitions (81.9% vs π₀.₅ 66.2% on six real tasks, first-party); DIDO distills multi-step world-action video models to one denoising step (99.0% LIBERO / 76.6% LIBERO-Plus, first-party); GLAM is a JEPA-style map-latent world model for ObjectNav.",
+      "brief": "Predict future observations (or latents) to plan. STL, video DMs, and some VLA imagination heads sit here. STLight is the efficient CNN end; GEN-1.5's 30 s memory is the foundation-model end. 16 Sep 2026: WholeBodyWAM (arXiv 2609.18197) pretrains a language-conditioned Motion Expert on UniMotion-4K (>4K hours of human/humanoid motion) then MoT-fuses it with video and action experts — a motion prior for humanoid world-action models, not another video DM. Earlier Sep 2026: WLA³ learns world latent actions from human-video transitions (81.9% vs π₀.₅ 66.2% on six real tasks, first-party); DIDO distills multi-step world-action video models to one denoising step (99.0% LIBERO / 76.6% LIBERO-Plus, first-party); GLAM is a JEPA-style map-latent world model for ObjectNav.",
       "why": "A policy that can predict contact is halfway to recovering from it.",
       "research_directions": [
         "Wrist-cam STL as collision prior",
         "Latent world models for humanoids",
         "One-step distilled WAMs vs multi-step video imagination under closed-loop latency",
         "Human-video world-latent actions as VLA mid-training vs OXE-only",
-        "Map-token JEPA world models for mobile manipulation, not just ObjectNav"
+        "Map-token JEPA world models for mobile manipulation, not just ObjectNav",
+        "Motion-prior WAMs (WholeBodyWAM) vs human-video latent actions (WLA³) under limited target-robot demos"
       ],
       "resources": [
+        {
+          "type": "paper",
+          "title": "WholeBodyWAM (arXiv 2609.18197)",
+          "url": "https://arxiv.org/abs/2609.18197"
+        },
         {
           "type": "paper",
           "title": "WLA³ — World Latent Action Modeling (arXiv 2609.15870)",
@@ -695,13 +716,19 @@
       "label": "Reinforcement learning",
       "kind": "concept",
       "domain": "learning",
-      "brief": "Learn from reward, not (only) demos. On real robots: expensive, unsafe, sample-hungry. Still the path for locomotion, recovery, and improving a cloned policy.",
+      "brief": "Learn from reward, not (only) demos. On real robots: expensive, unsafe, sample-hungry. Still the path for locomotion, recovery, and improving a cloned policy. 16 Sep 2026: Real-Time EXPO-FT (Dong, Hung, Sadigh, Finn; arXiv 2609.18207) RL-finetunes a delayed VLA by splitting slow chunk proposals from a fast edit policy; 10 min of online data lifts four dynamic real tasks 42%→97% (first-party), no human intervention.",
       "why": "Humanoid labs mix IL for manipulation with RL for balance. Don't pretend BC replaced RL.",
       "research_directions": [
         "Offline RL on teleop logs",
-        "RL fine-tune of a VLA action expert"
+        "RL fine-tune of a VLA action expert",
+        "Does Real-Time EXPO-FT's edit policy transfer from Kinetix/dynamic tabletop to SO-100 contact?"
       ],
       "resources": [
+        {
+          "type": "paper",
+          "title": "Real-Time EXPO-FT (arXiv 2609.18207)",
+          "url": "https://arxiv.org/abs/2609.18207"
+        },
         {
           "type": "video",
           "title": "David Silver — Reinforcement Learning course",
@@ -748,9 +775,14 @@
       "label": "Isaac Lab / Sim",
       "kind": "framework",
       "domain": "systems",
-      "brief": "NVIDIA robot learning sim. Skild cites it for S1 experience. GPU-parallel RL and synthetic data.",
+      "brief": "NVIDIA robot learning sim. Skild cites it for S1 experience. GPU-parallel RL and synthetic data. 16 Sep 2026: official blog on NemoClaw/Hermes agents that inspect Blender scenes, author OpenUSD physics/semantics, and SimReady-validate before Isaac Sim / Isaac Lab handoff — the bottleneck is a sim-ready world, not another policy.",
       "why": "The sim side of foundation-model pretraining when you don't have a factory fleet.",
       "resources": [
+        {
+          "type": "blog",
+          "title": "How to Use AI Agents to Prepare 3D Scenes for Simulation (NVIDIA, 16 Sep 2026)",
+          "url": "https://developer.nvidia.com/blog/how-to-use-ai-agents-to-prepare-3d-scenes-for-simulation/"
+        },
         {
           "type": "video",
           "title": "NVIDIA — Isaac Lab Office Hours",
@@ -792,9 +824,19 @@
       "label": "Async inference",
       "kind": "method",
       "domain": "systems",
-      "brief": "Decouple RobotClient (pops actions at Δt) from PolicyServer (fills chunks when queue < g). SmolVLA: similar success, ~30% shorter task time (13.75s → 9.7s pick-place).",
+      "brief": "Decouple RobotClient (pops actions at Δt) from PolicyServer (fills chunks when queue < g). SmolVLA: similar success, ~30% shorter task time (13.75s → 9.7s pick-place). 16 Sep 2026: rMuscle (arXiv 2609.19104) caches visual tokens and neuron activations across repeated executions — 1.29–1.42× on RTX 4090 and Jetson Thor without dropping real-robot success; Real-Time EXPO-FT (arXiv 2609.18207) RL-finetunes the same latency split.",
       "why": "The systems paper hiding inside a VLA paper. Edge robots live or die here.",
       "resources": [
+        {
+          "type": "paper",
+          "title": "rMuscle — muscle-memory VLA inference cache (arXiv 2609.19104)",
+          "url": "https://arxiv.org/abs/2609.19104"
+        },
+        {
+          "type": "paper",
+          "title": "Real-Time EXPO-FT (arXiv 2609.18207)",
+          "url": "https://arxiv.org/abs/2609.18207"
+        },
         {
           "type": "video",
           "title": "Hugging Face — LeRobot tutorials (record/evaluate loop)",
@@ -841,15 +883,21 @@
       "label": "One-shot physical prompting",
       "kind": "concept",
       "domain": "learning",
-      "brief": "Put a short sensorimotor demo in the model's context window; the robot attempts the task with no SGD. GEN-1.5's name for it; Skild S1's video prompt is the same cluster. Sep 2026: VLBiMan++ (arXiv 2609.14310) starts from one human demo and claims transfer across task, object, scene, dual-arm embodiment, and long closed-loop perturbations — geometric adaptation, not a foundation-model prompt.",
+      "brief": "Put a short sensorimotor demo in the model's context window; the robot attempts the task with no SGD. GEN-1.5's name for it; Skild S1's video prompt is the same cluster. Sep 2026: VLBiMan++ (arXiv 2609.14310) starts from one human demo and claims transfer across task, object, scene, dual-arm embodiment, and long closed-loop perturbations — geometric adaptation, not a foundation-model prompt. 16 Sep 2026: GPT-Policy (arXiv 2609.19138) compiles visual transitions into a commercial VLM agent (GPT-6 Astra) that proposes verified robot-tool actions with no gradient updates; human videos help even without robot action labels.",
       "why": "If this becomes real outside one lab, dataset size is no longer the only scaling law.",
       "research_directions": [
         "Public one-shot benchmark on SO-100",
         "Prompt composition for long horizon",
         "Geometric one-shot (VLBiMan++) vs in-context physical prompting (GEN-1.5 / S1)",
-        "Public one-shot bimanual protocol that is not lab-owned hardware"
+        "Public one-shot bimanual protocol that is not lab-owned hardware",
+        "VLM-agent ICL (GPT-Policy) vs native VLA context windows (GEN-1.5 / S1)"
       ],
       "resources": [
+        {
+          "type": "paper",
+          "title": "GPT-Policy — In-Context Robot Learning with VLM Agents (arXiv 2609.19138)",
+          "url": "https://arxiv.org/abs/2609.19138"
+        },
         {
           "type": "paper",
           "title": "VLBiMan++ (arXiv 2609.14310)",
@@ -869,10 +917,15 @@
       "label": "Figure AI",
       "kind": "lab",
       "domain": "labs",
-      "brief": "San Jose humanoid + Helix VLA. Series C $39B post-money (company, 2025-09-16). Industrial + home. Heavy intern pipeline on the desk.",
+      "brief": "San Jose humanoid + Helix VLA. Series C $39B post-money (company, 2025-09-16). Helix 2.5 (17 Sep 2026, first-party): Index-pretrained zero-shot whole-body work in 30 unseen homes. Industrial + home. Heavy intern pipeline on the desk.",
       "why": "Helix is a closed VLA; careers are the open artifact.",
       "company_id": "figure-ai",
       "resources": [
+        {
+          "type": "blog",
+          "title": "Helix 2.5 (Figure, 17 Sep 2026)",
+          "url": "https://www.figure.ai/news/helix-2-5-zero-shot-30-home-generalization"
+        },
         {
           "type": "video",
           "title": "Figure — Introducing Helix",
@@ -1201,9 +1254,19 @@
       "label": "Whole-body control",
       "kind": "concept",
       "domain": "policy",
-      "brief": "Lower-body RL + upper IK, or a learned high-rate controller under a VLA. NVIDIA SONIC / GR00T-WBC; Figure Helix System 0 (~1 kHz).",
+      "brief": "Lower-body RL + upper IK, or a learned high-rate controller under a VLA. NVIDIA SONIC / GR00T-WBC; Figure Helix System 0 (~1 kHz). 16 Sep 2026: KINO (arXiv 2609.18869) uses VLM-selected whole-body keyframes as the interface to an RL loco-manipulation policy (44%→92% with saliency sampling; Unitree G1); WholeBodyWAM (arXiv 2609.18197) pretrains a motion expert on 4K hours before target-robot WBC actions.",
       "why": "Tabletop VLAs stall on humanoids. This is the actuator-side neighbor.",
       "resources": [
+        {
+          "type": "paper",
+          "title": "KINO — keyframe VLM + WBC (arXiv 2609.18869)",
+          "url": "https://arxiv.org/abs/2609.18869"
+        },
+        {
+          "type": "paper",
+          "title": "WholeBodyWAM (arXiv 2609.18197)",
+          "url": "https://arxiv.org/abs/2609.18197"
+        },
         {
           "type": "video",
           "title": "Boston Dynamics Atlas — Partners in Parkour",
@@ -1242,13 +1305,23 @@
     },
     {
       "id": "helix",
-      "label": "Helix / Helix 02",
+      "label": "Helix / Helix 2.5",
       "kind": "paper",
       "domain": "policy",
-      "brief": "Figure in-house VLA. Helix: 7B VLM (S2) + visuomotor transformer (S1), onboard GPU. Helix 02 (Jan 2026): System 0 learned WBC, palm cameras + tactile. First-party.",
-      "why": "Vertical integration neighbor of π₀ (model-only) and SmolVLA (open).",
+      "brief": "Figure in-house VLA. Helix: 7B VLM (S2) + visuomotor transformer (S1). Helix 02 (Jan 2026): System 0 learned WBC. Helix 2.5 (17 Sep 2026): Index-pretrained whole-body policy; first-party 56% vs 9% zero-shot success on three long-horizon behaviors in 30 unseen Bay Area homes (no eval-home data); half the task-spec data of a Helix 02 behavior. Treat numbers as first-party.",
+      "why": "Vertical integration neighbor of π₀ (model-only) and SmolVLA (open). Helix 2.5 is the human-video-to-humanoid scaling claim.",
+      "research_directions": [
+        "Independent replication of 30-home zero-shot rates outside Figure homes",
+        "Index human-to-robot transfer scaling vs OXE robot-log pretraining",
+        "Whole-body self-correction as a pretraining effect vs extra System 0 capacity"
+      ],
       "company_id": "figure-ai",
       "resources": [
+        {
+          "type": "blog",
+          "title": "Helix 2.5 — Zero-Shot 30-Home Generalization (Figure, 17 Sep 2026)",
+          "url": "https://www.figure.ai/news/helix-2-5-zero-shot-30-home-generalization"
+        },
         {
           "type": "video",
           "title": "Figure — Introducing Helix",
@@ -4174,6 +4247,16 @@
       "from": "physbrain",
       "to": "world-models",
       "rel": "predicts"
+    },
+    {
+      "from": "rl",
+      "to": "async-infer",
+      "rel": "needs"
+    },
+    {
+      "from": "world-models",
+      "to": "wbc",
+      "rel": "priors"
     }
   ]
 }
