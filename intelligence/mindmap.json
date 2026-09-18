@@ -7,6 +7,10 @@
   "changelog": [
     {
       "date": "2026-09-18",
+      "note": "Patched action chunking (GeoAAC), flow matching (TraceFlow), world models (MoWAM), async inference (SkipVLA), sim-to-real (function-preserving R2S2R), cross-embodiment (LAM action-similarity), behavior cloning (HIL-UMI)."
+    },
+    {
+      "date": "2026-09-18",
       "note": "Helix 2.5 (Figure, 30-home zero-shot). Patched RL (Real-Time EXPO-FT), async inference (rMuscle), one-shot (GPT-Policy), world models + WBC (WholeBodyWAM/KINO), Isaac (agent SimReady), OpenVLA (ActionPiece), perception (ActiveScale)."
     },
     {
@@ -200,9 +204,18 @@
       "label": "Behavior cloning",
       "kind": "concept",
       "domain": "learning",
-      "brief": "Supervised map from observation to expert action. Fast to train, fails when the policy leaves the demo manifold — compounding error.",
+      "brief": "Supervised map from observation to expert action. Fast to train, fails when the policy leaves the demo manifold — compounding error. 17 Sep 2026: HIL-UMI (arXiv 2609.20659) runs DAgger-style VLA post-training on a handheld UMI without executing the policy on the robot — Energy Score collects OOD frames; first-party, beats HG-DAgger on Clean Up Table with lower per-frame collection time.",
       "why": "Every LeRobot ACT/SmolVLA fine-tune is still BC at heart.",
+      "research_directions": [
+        "Robot-free UMI Energy Score vs on-robot HG-DAgger for the same VLA checkpoint",
+        "Does advantage-conditioned BC on mixed UMI+base demos beat plain SFT on SO-100 contact?"
+      ],
       "resources": [
+        {
+          "type": "paper",
+          "title": "HIL-UMI — robot-free HIL post-training of VLAs (arXiv 2609.20659)",
+          "url": "https://arxiv.org/abs/2609.20659"
+        },
         {
           "type": "video",
           "title": "LeRobot — ALOHA and ACT (imitation / behavior cloning on a real arm)",
@@ -249,9 +262,18 @@
       "label": "Action chunking",
       "kind": "method",
       "domain": "learning",
-      "brief": "Predict k future joint commands at once, π(a_{t:t+k}|o_t). Effective horizon becomes T/k. Ablation in ACT: k=1 ~1% vs k=100 ~44% on the sim average.",
+      "brief": "Predict k future joint commands at once, π(a_{t:t+k}|o_t). Effective horizon becomes T/k. Ablation in ACT: k=1 ~1% vs k=100 ~44% on the sim average. 17 Sep 2026: GeoAAC (arXiv 2609.20776) reads Flow Matching denoising geometry to pick k per step with no extra training — GR00T N1.5 / π₀.₅; first-party up to +8.7 pp sim and 53.3%→74.4% real-world average.",
       "why": "SmolVLA, Diffusion Policy, and π₀ all still emit chunks. The fight moved to how the chunk is generated.",
+      "research_directions": [
+        "Does prefix-wise flow geometry beat a fixed k on SO-100 contact, not just LIBERO/RoboCasa?",
+        "GeoAAC adaptive horizon vs SmolVLA async queue threshold g"
+      ],
       "resources": [
+        {
+          "type": "paper",
+          "title": "GeoAAC — geometry-based adaptive action chunking (arXiv 2609.20776)",
+          "url": "https://arxiv.org/abs/2609.20776"
+        },
         {
           "type": "video",
           "title": "LeRobot — ALOHA and ACT",
@@ -320,9 +342,14 @@
       "label": "Flow matching",
       "kind": "method",
       "domain": "learning",
-      "brief": "Regress a velocity field that transports noise to data along nearly straight ODE paths. Fewer function evaluations than diffusion. Robot uses in 2026: π₀/SmolVLA action experts; VGFM (IROS 2026, arXiv 2609.14261) value-guides intermediate flow times without BPTT; FMP (arXiv 2609.15631) replaces AMP discriminators with an online OT+flow reward on Unitree G1.",
+      "brief": "Regress a velocity field that transports noise to data along nearly straight ODE paths. Fewer function evaluations than diffusion. Robot uses in 2026: π₀/SmolVLA action experts; VGFM (IROS 2026, arXiv 2609.14261) value-guides intermediate flow times without BPTT; FMP (arXiv 2609.15631) replaces AMP discriminators with an online OT+flow reward on Unitree G1. 17 Sep 2026: TraceFlow (arXiv 2609.20646) steers a frozen flow expert with a progress-aligned field from success and failure traces (one terminal bit; no weight update) — first-party 21→39/50 ordered packing, 47 after one stacking round.",
       "why": "SmolVLA's action expert is 0.75d because the path is short. Lipman et al. 2210.02747 is the paper.",
       "resources": [
+        {
+          "type": "paper",
+          "title": "TraceFlow — frozen flow-matching guidance from success/failure traces (arXiv 2609.20646)",
+          "url": "https://arxiv.org/abs/2609.20646"
+        },
         {
           "type": "paper",
           "title": "Flow-Matched Motion Priors (arXiv 2609.15631)",
@@ -348,7 +375,8 @@
       "layer": 3,
       "research_directions": [
         "Value guidance at random flow times vs extra Euler steps at inference",
-        "Flow-matched motion priors vs AMP for humanoid walking from a default pose"
+        "Flow-matched motion priors vs AMP for humanoid walking from a default pose",
+        "TraceFlow stacking from the robot's own failures vs extra critic/world-model guidance"
       ]
     },
     {
@@ -671,7 +699,7 @@
       "label": "World models",
       "kind": "concept",
       "domain": "learning",
-      "brief": "Predict future observations (or latents) to plan. STL, video DMs, and some VLA imagination heads sit here. STLight is the efficient CNN end; GEN-1.5's 30 s memory is the foundation-model end. 16 Sep 2026: WholeBodyWAM (arXiv 2609.18197) pretrains a language-conditioned Motion Expert on UniMotion-4K (>4K hours of human/humanoid motion) then MoT-fuses it with video and action experts — a motion prior for humanoid world-action models, not another video DM. Earlier Sep 2026: WLA³ learns world latent actions from human-video transitions (81.9% vs π₀.₅ 66.2% on six real tasks, first-party); DIDO distills multi-step world-action video models to one denoising step (99.0% LIBERO / 76.6% LIBERO-Plus, first-party); GLAM is a JEPA-style map-latent world model for ObjectNav.",
+      "brief": "Predict future observations (or latents) to plan. STL, video DMs, and some VLA imagination heads sit here. STLight is the efficient CNN end; GEN-1.5's 30 s memory is the foundation-model end. 17 Sep 2026: MoWAM (arXiv 2609.20709) drops future-video generation at inference for explicit robot-motion prediction (MoT; motion-aware candidate selection) — first-party higher real-world success and OOD robustness vs video WAMs. 16 Sep 2026: WholeBodyWAM (arXiv 2609.18197) pretrains a language-conditioned Motion Expert on UniMotion-4K (>4K hours of human/humanoid motion) then MoT-fuses it with video and action experts — a motion prior for humanoid world-action models, not another video DM. Earlier Sep 2026: WLA³ learns world latent actions from human-video transitions (81.9% vs π₀.₅ 66.2% on six real tasks, first-party); DIDO distills multi-step world-action video models to one denoising step (99.0% LIBERO / 76.6% LIBERO-Plus, first-party); GLAM is a JEPA-style map-latent world model for ObjectNav.",
       "why": "A policy that can predict contact is halfway to recovering from it.",
       "research_directions": [
         "Wrist-cam STL as collision prior",
@@ -679,9 +707,15 @@
         "One-step distilled WAMs vs multi-step video imagination under closed-loop latency",
         "Human-video world-latent actions as VLA mid-training vs OXE-only",
         "Map-token JEPA world models for mobile manipulation, not just ObjectNav",
-        "Motion-prior WAMs (WholeBodyWAM) vs human-video latent actions (WLA³) under limited target-robot demos"
+        "Motion-prior WAMs (WholeBodyWAM) vs human-video latent actions (WLA³) under limited target-robot demos",
+        "Explicit future-motion WAMs (MoWAM) vs one-step video distillation (DIDO) under closed-loop latency"
       ],
       "resources": [
+        {
+          "type": "paper",
+          "title": "MoWAM — explicit future motion for efficient WAMs (arXiv 2609.20709)",
+          "url": "https://arxiv.org/abs/2609.20709"
+        },
         {
           "type": "paper",
           "title": "WholeBodyWAM (arXiv 2609.18197)",
@@ -824,9 +858,18 @@
       "label": "Async inference",
       "kind": "method",
       "domain": "systems",
-      "brief": "Decouple RobotClient (pops actions at Δt) from PolicyServer (fills chunks when queue < g). SmolVLA: similar success, ~30% shorter task time (13.75s → 9.7s pick-place). 16 Sep 2026: rMuscle (arXiv 2609.19104) caches visual tokens and neuron activations across repeated executions — 1.29–1.42× on RTX 4090 and Jetson Thor without dropping real-robot success; Real-Time EXPO-FT (arXiv 2609.18207) RL-finetunes the same latency split.",
+      "brief": "Decouple RobotClient (pops actions at Δt) from PolicyServer (fills chunks when queue < g). SmolVLA: similar success, ~30% shorter task time (13.75s → 9.7s pick-place). 17 Sep 2026: SkipVLA (arXiv 2609.20648) runs a classical planner in free space and queries the VLA only for contact-rich skills — first-party up to 2.5× faster on LIBERO and a YAM arm at the same success rate. 16 Sep 2026: rMuscle (arXiv 2609.19104) caches visual tokens and neuron activations across repeated executions — 1.29–1.42× on RTX 4090 and Jetson Thor without dropping real-robot success; Real-Time EXPO-FT (arXiv 2609.18207) RL-finetunes the same latency split.",
       "why": "The systems paper hiding inside a VLA paper. Edge robots live or die here.",
+      "research_directions": [
+        "Planner-for-free-space (SkipVLA) vs muscle-memory cache (rMuscle) vs async chunk queues on the same VLA",
+        "Does SkipVLA's frozen-VLM pose predictor transfer from LIBERO pick-place to SO-100 contact?"
+      ],
       "resources": [
+        {
+          "type": "paper",
+          "title": "SkipVLA — skip VLA steps with classical planning (arXiv 2609.20648)",
+          "url": "https://arxiv.org/abs/2609.20648"
+        },
         {
           "type": "paper",
           "title": "rMuscle — muscle-memory VLA inference cache (arXiv 2609.19104)",
@@ -1402,13 +1445,19 @@
       "label": "Sim-to-real",
       "kind": "concept",
       "domain": "learning",
-      "brief": "Train in sim (Isaac, MuJoCo), run on metal. Domain randomization, residual RL, or GEN-1.5’s claim: sim demos as prompts with no sim in pretrain.",
+      "brief": "Train in sim (Isaac, MuJoCo), run on metal. Domain randomization, residual RL, or GEN-1.5’s claim: sim demos as prompts with no sim in pretrain. 16 Sep 2026: function-preserving Real-to-Sim-to-Real (arXiv 2609.18293) deforms reconstructed meshes under contact-interface constraints so synthetic demos stay physically valid — zero-shot real deployment, no teleop source trajectories.",
       "why": "Data multiplier when you do not own a factory.",
       "research_directions": [
         "GEN-1.5 sim-prompt replication on SO-100",
-        "Isaac locomotion + LeRobot manipulation"
+        "Isaac locomotion + LeRobot manipulation",
+        "Constraint-guided mesh deformation vs naive shape aug for contact-rich insertion"
       ],
       "resources": [
+        {
+          "type": "paper",
+          "title": "Function-preserving Real-to-Sim-to-Real (arXiv 2609.18293)",
+          "url": "https://arxiv.org/abs/2609.18293"
+        },
         {
           "type": "video",
           "title": "NVIDIA — Isaac Lab Office Hours (sim-to-real stack)",
@@ -1462,12 +1511,18 @@
       "label": "Cross-embodiment",
       "kind": "concept",
       "domain": "policy",
-      "brief": "One policy, many robot bodies. OXE’s bet; Skild omni-bodied; Gemini 2 few-hour adaptation; LeRobot’s shared schema.",
+      "brief": "One policy, many robot bodies. OXE’s bet; Skild omni-bodied; Gemini 2 few-hour adaptation; LeRobot’s shared schema. 17 Sep 2026: action-similarity supervision for latent-action models (arXiv 2609.19846) more than doubles RoboTwin 2.0 cross-embodiment success vs predicting GT actions (first-party; EE-space, cross-robot pairs).",
       "why": "Opposite of ACT-on-one-ALOHA. Why OXE, π₀, and S1 exist.",
       "research_directions": [
-        "How much of SmolVLA community data is same-embodiment"
+        "How much of SmolVLA community data is same-embodiment",
+        "LAM action-similarity vs auxiliary GT-action prediction for bimanual transfer"
       ],
       "resources": [
+        {
+          "type": "paper",
+          "title": "Action-similarity supervision for latent-action models (arXiv 2609.19846)",
+          "url": "https://arxiv.org/abs/2609.19846"
+        },
         {
           "type": "video",
           "title": "Moo Jin Kim — OpenVLA (cross-robot OXE generalist)",
