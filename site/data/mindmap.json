@@ -7,6 +7,10 @@
   "changelog": [
     {
       "date": "2026-09-18",
+      "note": "Patched world models (Agile-WAM/DexTouch-WM), flow matching (Agile-WAM), diffusion policy (Movement Trend Guidance), sim-to-real (ReShoot), geom-3d (FAMOS), WBC (LYRIC), VLA family (dexterous post-training), sequence models (Workspace Models)."
+    },
+    {
+      "date": "2026-09-18",
       "note": "Patched action chunking (GeoAAC), flow matching (TraceFlow), world models (MoWAM), async inference (SkipVLA), sim-to-real (function-preserving R2S2R), cross-embodiment (LAM action-similarity), behavior cloning (HIL-UMI)."
     },
     {
@@ -342,9 +346,14 @@
       "label": "Flow matching",
       "kind": "method",
       "domain": "learning",
-      "brief": "Regress a velocity field that transports noise to data along nearly straight ODE paths. Fewer function evaluations than diffusion. Robot uses in 2026: π₀/SmolVLA action experts; VGFM (IROS 2026, arXiv 2609.14261) value-guides intermediate flow times without BPTT; FMP (arXiv 2609.15631) replaces AMP discriminators with an online OT+flow reward on Unitree G1. 17 Sep 2026: TraceFlow (arXiv 2609.20646) steers a frozen flow expert with a progress-aligned field from success and failure traces (one terminal bit; no weight update) — first-party 21→39/50 ordered packing, 47 after one stacking round.",
+      "brief": "Regress a velocity field that transports noise to data along nearly straight ODE paths. Fewer function evaluations than diffusion. Robot uses in 2026: π₀/SmolVLA action experts; VGFM (IROS 2026, arXiv 2609.14261) value-guides intermediate flow times without BPTT; FMP (arXiv 2609.15631) replaces AMP discriminators with an online OT+flow reward on Unitree G1. 17 Sep 2026: Agile-WAM (arXiv 2609.20761) is direct vision-tactile-to-action flow matching that jointly emits action chunks and future vis/tactile latents — first-party 11.9 ms and +29.4% relative real success. TraceFlow (arXiv 2609.20646) steers a frozen flow expert from success/failure traces (one terminal bit; no weight update) — first-party 21→39/50 ordered packing.",
       "why": "SmolVLA's action expert is 0.75d because the path is short. Lipman et al. 2210.02747 is the paper.",
       "resources": [
+        {
+          "type": "paper",
+          "title": "Agile-WAM — vis-tactile-to-action flow matching (arXiv 2609.20761)",
+          "url": "https://arxiv.org/abs/2609.20761"
+        },
         {
           "type": "paper",
           "title": "TraceFlow — frozen flow-matching guidance from success/failure traces (arXiv 2609.20646)",
@@ -374,6 +383,7 @@
       "parent": "gen-world",
       "layer": 3,
       "research_directions": [
+        "Joint vis-tactile flow WAMs vs frozen-expert TraceFlow guidance on the same contact task",
         "Value guidance at random flow times vs extra Euler steps at inference",
         "Flow-matched motion priors vs AMP for humanoid walking from a default pose",
         "TraceFlow stacking from the robot's own failures vs extra critic/world-model guidance"
@@ -384,9 +394,14 @@
       "label": "Diffusion Policy",
       "kind": "paper",
       "domain": "policy",
-      "brief": "Chi et al.: denoise an action chunk. Same chunking instinct as ACT, different generative head. LeRobot ships it next to ACT.",
+      "brief": "Chi et al.: denoise an action chunk. Same chunking instinct as ACT, different generative head. LeRobot ships it next to ACT. 17 Sep 2026: Movement Trend Guidance (arXiv 2609.20669) conditions DP3 on a compact latent of interaction evolution (sparse future gripper states at train; latent-only at test, +3.52% params) — first-party 71.93% vs 37.08% LIBERO-40 and 72% vs 49% on five real tasks.",
       "why": "The other baseline you will actually train before a VLA.",
       "resources": [
+        {
+          "type": "paper",
+          "title": "Learning Foresight without Explicit Trajectories for 3D Diffusion Policies (arXiv 2609.20669)",
+          "url": "https://arxiv.org/abs/2609.20669"
+        },
         {
           "type": "video",
           "title": "Cheng Chi — Diffusion Policy (LeRobot)",
@@ -399,7 +414,10 @@
         }
       ],
       "parent": "chunked-pi",
-      "layer": 3
+      "layer": 3,
+      "research_directions": [
+        "Latent interaction-evolution (Movement Trend) vs extra point-cloud tokens on SO-100 contact"
+      ]
     },
     {
       "id": "act",
@@ -699,18 +717,28 @@
       "label": "World models",
       "kind": "concept",
       "domain": "learning",
-      "brief": "Predict future observations (or latents) to plan. STL, video DMs, and some VLA imagination heads sit here. STLight is the efficient CNN end; GEN-1.5's 30 s memory is the foundation-model end. 17 Sep 2026: MoWAM (arXiv 2609.20709) drops future-video generation at inference for explicit robot-motion prediction (MoT; motion-aware candidate selection) — first-party higher real-world success and OOD robustness vs video WAMs. 16 Sep 2026: WholeBodyWAM (arXiv 2609.18197) pretrains a language-conditioned Motion Expert on UniMotion-4K (>4K hours of human/humanoid motion) then MoT-fuses it with video and action experts — a motion prior for humanoid world-action models, not another video DM. Earlier Sep 2026: WLA³ learns world latent actions from human-video transitions (81.9% vs π₀.₅ 66.2% on six real tasks, first-party); DIDO distills multi-step world-action video models to one denoising step (99.0% LIBERO / 76.6% LIBERO-Plus, first-party); GLAM is a JEPA-style map-latent world model for ObjectNav.",
+      "brief": "Predict future observations (or latents) to plan. STL, video DMs, and some VLA imagination heads sit here. STLight is the efficient CNN end; GEN-1.5's 30 s memory is the foundation-model end. 17 Sep 2026: Agile-WAM (arXiv 2609.20761) flow-matches action chunks plus future vis/tactile latents at different horizons (vision far, touch next-frame) — first-party +29.4% relative real success at 11.9 ms, not a giant video backbone. DexTouch-WM (arXiv 2609.20649) scales the same contact prediction from human touch (0→100 h human, 5 h robot fixed). Earlier 17 Sep: MoWAM drops future-video generation at inference for explicit robot-motion prediction. 16 Sep: WholeBodyWAM pretrains a Motion Expert on UniMotion-4K (>4K h).",
       "why": "A policy that can predict contact is halfway to recovering from it.",
       "research_directions": [
+        "Human-touch world models (DexTouch-WM) vs robot-only tactile logs at fixed robot hours",
+        "Tactile WAMs (Agile-WAM 11.9 ms) vs video WAMs (MoWAM/DIDO) under contact-rich latency",
         "Wrist-cam STL as collision prior",
         "Latent world models for humanoids",
         "One-step distilled WAMs vs multi-step video imagination under closed-loop latency",
         "Human-video world-latent actions as VLA mid-training vs OXE-only",
-        "Map-token JEPA world models for mobile manipulation, not just ObjectNav",
-        "Motion-prior WAMs (WholeBodyWAM) vs human-video latent actions (WLA³) under limited target-robot demos",
-        "Explicit future-motion WAMs (MoWAM) vs one-step video distillation (DIDO) under closed-loop latency"
+        "Map-token JEPA world models for mobile manipulation, not just ObjectNav"
       ],
       "resources": [
+        {
+          "type": "paper",
+          "title": "Agile-WAM — agile tactile world-action model (arXiv 2609.20761)",
+          "url": "https://arxiv.org/abs/2609.20761"
+        },
+        {
+          "type": "paper",
+          "title": "DexTouch-WM — tactile world models from human touch (arXiv 2609.20649)",
+          "url": "https://arxiv.org/abs/2609.20649"
+        },
         {
           "type": "paper",
           "title": "MoWAM — explicit future motion for efficient WAMs (arXiv 2609.20709)",
@@ -1297,9 +1325,14 @@
       "label": "Whole-body control",
       "kind": "concept",
       "domain": "policy",
-      "brief": "Lower-body RL + upper IK, or a learned high-rate controller under a VLA. NVIDIA SONIC / GR00T-WBC; Figure Helix System 0 (~1 kHz). 16 Sep 2026: KINO (arXiv 2609.18869) uses VLM-selected whole-body keyframes as the interface to an RL loco-manipulation policy (44%→92% with saliency sampling; Unitree G1); WholeBodyWAM (arXiv 2609.18197) pretrains a motion expert on 4K hours before target-robot WBC actions.",
+      "brief": "Lower-body RL + upper IK, or a learned high-rate controller under a VLA. NVIDIA SONIC / GR00T-WBC; Figure Helix System 0 (~1 kHz). 17 Sep 2026: LYRIC (arXiv 2609.19688) is a generative flow-matching controller for language-driven contact-rich whole-body object interaction (planner + closed-loop action generator) — first-party 90.3% vs 74.2% held-out OMOMO vs the strongest kinematic-planner baseline. 16 Sep: KINO (arXiv 2609.18869) uses VLM-selected whole-body keyframes as the interface to an RL loco-manipulation policy (44%→92% with saliency sampling; Unitree G1).",
       "why": "Tabletop VLAs stall on humanoids. This is the actuator-side neighbor.",
       "resources": [
+        {
+          "type": "paper",
+          "title": "LYRIC — language-driven flow matching for whole-body object interaction (arXiv 2609.19688)",
+          "url": "https://arxiv.org/abs/2609.19688"
+        },
         {
           "type": "paper",
           "title": "KINO — keyframe VLM + WBC (arXiv 2609.18869)",
@@ -1322,7 +1355,10 @@
         }
       ],
       "parent": "embodiment",
-      "layer": 3
+      "layer": 3,
+      "research_directions": [
+        "Language-conditioned flow WBC (LYRIC) vs keyframe VLM+RL (KINO) on the same humanoid"
+      ]
     },
     {
       "id": "gemini-robotics",
@@ -1445,14 +1481,20 @@
       "label": "Sim-to-real",
       "kind": "concept",
       "domain": "learning",
-      "brief": "Train in sim (Isaac, MuJoCo), run on metal. Domain randomization, residual RL, or GEN-1.5’s claim: sim demos as prompts with no sim in pretrain. 16 Sep 2026: function-preserving Real-to-Sim-to-Real (arXiv 2609.18293) deforms reconstructed meshes under contact-interface constraints so synthetic demos stay physically valid — zero-shot real deployment, no teleop source trajectories.",
+      "brief": "Train in sim (Isaac, MuJoCo), run on metal. Domain randomization, residual RL, or GEN-1.5’s claim: sim demos as prompts with no sim in pretrain. 17 Sep 2026: ReShoot (arXiv 2609.19661) re-renders recorded demos under edited appearance (VLM caption + edge-conditioned video) and copies actions/proprio verbatim — first-party recolored object success 0%→42.9% / 47.5% on two real platforms with 43 and 100 source demos. 16 Sep: function-preserving Real-to-Sim-to-Real (arXiv 2609.18293) deforms reconstructed meshes under contact-interface constraints so synthetic demos stay physically valid.",
       "why": "Data multiplier when you do not own a factory.",
       "research_directions": [
+        "ReShoot appearance re-render vs extra teleop in each new visual context",
         "GEN-1.5 sim-prompt replication on SO-100",
         "Isaac locomotion + LeRobot manipulation",
         "Constraint-guided mesh deformation vs naive shape aug for contact-rich insertion"
       ],
       "resources": [
+        {
+          "type": "paper",
+          "title": "ReShoot — generative visual domain randomization of recorded demos (arXiv 2609.19661)",
+          "url": "https://arxiv.org/abs/2609.19661"
+        },
         {
           "type": "paper",
           "title": "Function-preserving Real-to-Sim-to-Real (arXiv 2609.18293)",
@@ -2131,9 +2173,14 @@
       "label": "Sequence models",
       "kind": "concept",
       "domain": "learning",
-      "brief": "RNN/LSTM then transformers. PredRNN is the STL tax STLight refused. Action chunks are sequences.",
+      "brief": "RNN/LSTM then transformers. PredRNN is the STL tax STLight refused. Action chunks are sequences. 17 Sep 2026: Workspace Models (arXiv 2609.20820, CoRL 2026) distill train-time VLM saliency into a lightweight workspace token so policies keep task memory without in-the-loop VLM queries — drop-in for observations; authors report better policy performance, not just cheaper memory.",
       "why": "Time is a sequence problem before it is a VLA problem.",
       "resources": [
+        {
+          "type": "paper",
+          "title": "Workspace Models — lightweight robotic memory via saliency distillation (arXiv 2609.20820)",
+          "url": "https://arxiv.org/abs/2609.20820"
+        },
         {
           "type": "video",
           "title": "Karpathy — RNNs, seq2seq, attention (CS231n)",
@@ -2141,7 +2188,10 @@
         }
       ],
       "parent": "opt-basics",
-      "layer": 3
+      "layer": 3,
+      "research_directions": [
+        "Workspace token vs full-history conditioning vs in-the-loop VLM memory on long-horizon SO-100"
+      ]
     },
     {
       "id": "geom-3d",
@@ -2150,10 +2200,17 @@
       "domain": "perception",
       "parent": "perception",
       "layer": 2,
-      "brief": "Multi-view geometry, depth, and feed-forward 3D — what a policy uses instead of guessing in pixels.",
+      "brief": "Multi-view geometry, depth, and feed-forward 3D — what a policy uses instead of guessing in pixels. 17 Sep 2026: FAMOS (arXiv 2609.20817) predicts movable-part segmentation and joint parameters from a sparse unordered set of partial point clouds (variable views, including one) — feed-forward articulation, not another VGGT clone.",
       "why": "VGGT, DUSt3R, MASt3R, and depth sit here, not as a flat list under Perception.",
-      "research_directions": [],
+      "research_directions": [
+        "Feed-forward articulation (FAMOS) vs VGGT static geometry as a manipulation prior"
+      ],
       "resources": [
+        {
+          "type": "paper",
+          "title": "FAMOS — feed-forward 3D articulation from sparse observations (arXiv 2609.20817)",
+          "url": "https://arxiv.org/abs/2609.20817"
+        },
         {
           "type": "video",
           "title": "DUSt3R — dense unconstrained stereo 3D from image pairs (Leroy)",
@@ -2312,10 +2369,17 @@
       "domain": "policy",
       "parent": "policy",
       "layer": 2,
-      "brief": "Condition a policy on language and cameras. RT, OpenVLA, SmolVLA, π₀, Helix.",
+      "brief": "Condition a policy on language and cameras. RT, OpenVLA, SmolVLA, π₀, Helix. 17 Sep 2026: high-DoF dexterous VLA post-training (arXiv 2609.19666) adds a temporal hand-action codec, buffered DAgger, and latent residual RL — first-party 100% on five real tasks (20 trials each) within the reported post-training budgets. Treat as first-party until replicated on a public hand.",
       "why": "The VLA cluster is one layer, the individual papers are the next.",
-      "research_directions": [],
+      "research_directions": [
+        "Hand-action codec + residual RL vs joint-space RL when adapting an open VLA to a dexterous hand"
+      ],
       "resources": [
+        {
+          "type": "paper",
+          "title": "Towards High-DoF Dexterous Manipulation through VLA Post-Training (arXiv 2609.19666)",
+          "url": "https://arxiv.org/abs/2609.19666"
+        },
         {
           "type": "video",
           "title": "Moo Jin Kim — OpenVLA (LeRobot; the open VLA recipe)",
