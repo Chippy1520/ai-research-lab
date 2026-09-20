@@ -9,36 +9,44 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "foundations", "concept"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: ["Curriculum/Lessons/Day 39 - Imitation Learning, DAgger & Inverse RL.md"]
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Imitation learning
 
-Learn from expert traces. BC is the naive case; DAgger is interactive; inverse RL infers a reward.
+> [!concept] Concept · Foundations · Layer 3
+> Learn from expert traces. BC is the naive case; DAgger is interactive; inverse RL infers a reward.
+>
+> **Why it belongs —** Parent of behavior cloning on this map.
 
-> **Why it belongs**
-> Parent of behavior cloning on this map.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/decide-found|↑ Decide & control]]
 
-- [[Mind Map/Nodes/decide-found|Decide & control]]
+> [!outgoing] Outgoing relationships
+> - **fails by →** [[Mind Map/Nodes/compounding-error|Compounding error]]
+> - **includes →** [[Mind Map/Nodes/behavior-cloning|Behavior cloning]]
+> - **trains →** [[Mind Map/Nodes/act|ACT]]
+> - **trains →** [[Mind Map/Nodes/smolvla|SmolVLA]]
 
-## Semantic connections
+> [!incoming] Incoming relationships
+> - **← includes —** [[Mind Map/Nodes/foundations|Foundations]]
+> - **← specializes —** [[Mind Map/Nodes/supervised|Supervised learning]]
+> - **← uses —** [[Mind Map/Nodes/1x|1X]]
+> - **← uses —** [[Mind Map/Nodes/dexterity|Dexterity]]
 
-- [[Mind Map/Nodes/1x|1X]] — uses
-- [[Mind Map/Nodes/act|ACT]] — trains
-- [[Mind Map/Nodes/behavior-cloning|Behavior cloning]] — includes
-- [[Mind Map/Nodes/compounding-error|Compounding error]] — fails-by
-- [[Mind Map/Nodes/decide-found|Decide & control]] — contains
-- [[Mind Map/Nodes/dexterity|Dexterity]] — uses
-- [[Mind Map/Nodes/foundations|Foundations]] — includes
-- [[Mind Map/Nodes/smolvla|SmolVLA]] — trains
-- [[Mind Map/Nodes/supervised|Supervised learning]] — specializes
+> [!study] Read and study
+> - [[Curriculum/Lessons/Day 39 - Imitation Learning, DAgger & Inverse RL|Day 39 - Imitation Learning, DAgger & Inverse RL]]
 
 ## Primary resources
 
 - **Video:** [LeRobot — ALOHA and ACT (imitation on a real arm)](https://www.youtube.com/watch?v=ft73x0LfGpM)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#il`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=il
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#il`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=il)

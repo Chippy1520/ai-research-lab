@@ -9,32 +9,35 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "perception", "paper"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: []
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # CoTracker
 
-Point tracking through occlusions. VGGT feeds T_i into CoTracker2 rather than inventing a tracker.
+> [!concept] Paper · Perception · Layer 3
+> Point tracking through occlusions. VGGT feeds T_i into CoTracker2 rather than inventing a tracker.
+>
+> **Why it belongs —** Correspondence as a robot skill (grasp, tape, cable).
 
-> **Why it belongs**
-> Correspondence as a robot skill (grasp, tape, cable).
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/track-motion|↑ Tracking & motion]]
 
-- [[Mind Map/Nodes/track-motion|Tracking & motion]]
-
-## Semantic connections
-
-- [[Mind Map/Nodes/optical-flow|Optical flow]] — sparse
-- [[Mind Map/Nodes/perception|Perception]] — includes
-- [[Mind Map/Nodes/track-motion|Tracking & motion]] — contains
-- [[Mind Map/Nodes/vggt|VGGT]] — uses
+> [!incoming] Incoming relationships
+> - **← includes —** [[Mind Map/Nodes/perception|Perception]]
+> - **← sparse —** [[Mind Map/Nodes/optical-flow|Optical flow]]
+> - **← uses —** [[Mind Map/Nodes/vggt|VGGT]]
 
 ## Primary resources
 
 - **Video:** [CoTracker3 — tracking under occlusion](https://www.youtube.com/watch?v=9PKmkbyrRFw)
 - **Paper:** [CoTracker](https://arxiv.org/abs/2307.07635)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#cotracker`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=cotracker
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#cotracker`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=cotracker)

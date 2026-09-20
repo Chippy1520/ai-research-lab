@@ -7,20 +7,30 @@ source: "site/papers-stlight.html"
 live_url: "https://chippy1520.github.io/ai-research-lab/papers-stlight.html"
 tags: ["paper", "reading-guide"]
 related_nodes: ["stlight", "transformers"]
+related_curriculum: ["Curriculum/Lessons/Day 23 - Vision Transformers & Patch Geometry.md"]
+cssclasses: ["research-note", "paper-note"]
 ---
+
+[[Home|Research Lab]]  /  [[Papers/Paper Guides|Paper Guides]]
 
 # STLight: future frames without the RNN tax
 
+> [!paper] Research reading guide
 > Complete reading guide for STLight (arXiv 2411.10198): fully convolutional spatio-temporal prediction, STLMixer, pixel shuffle, FLOPs vs ConvLSTM/PredRNN.
+>
+> **Concepts:** 2 · **Related curriculum notes:** 1
 
-- **Canonical guide:** `site/papers-stlight.html`
-- **Live guide:** https://chippy1520.github.io/ai-research-lab/papers-stlight.html
-- **Companion source:** `papers/stlight.md`
+> [!concepts] Connected concepts
+> - [[Mind Map/Nodes/stlight|STLight]]
+> - [[Mind Map/Nodes/transformers|Transformers]]
 
-## Connected concepts
+> [!study] Continue in the curriculum
+> - [[Curriculum/Lessons/Day 23 - Vision Transformers & Patch Geometry|Day 23 - Vision Transformers & Patch Geometry]]
 
-- [[Mind Map/Nodes/stlight|stlight]]
-- [[Mind Map/Nodes/transformers|transformers]]
+> [!source] Canonical and public versions
+> - Repository guide: `site/papers-stlight.html`
+> - [Open the published HTML guide](https://chippy1520.github.io/ai-research-lab/papers-stlight.html)
+> - Companion source: `papers/stlight.md`
 
 ---
 
@@ -28,45 +38,25 @@ related_nodes: ["stlight", "transformers"]
 
 You have seen the last $T$ frames of a bouncing digit (or a pedestrian, or a taxi-flow cell) and must emit the next $T'$. A ConvLSTM answers by unrolling one hidden state per past frame. STLight folds time into channels, mixes space–time with convolutions (no recurrence), and pixel-shuffles the future frames in one shot.
 
-01
+> [!example] Step 01 — You
+> **You:** You do not recap frame 1, then 2, then 3 as a sequence of hidden states (that is an RNN). You treat the last second as one space–time volume.
+>
+> **The paper:** Fold time into channels, $B\times(T\cdot C)\times H\times W$, then one convolution into space–time patches. Time is in the representation from layer one.
 
-#### You
+> [!example] Step 02 — You
+> **You:** Nearby: the ball’s current edge. Far: it will hit the opposite wall. Both matter, at once.
+>
+> **The paper:** STLMixer: compact kernel $k_{T_1}$ (local), dilated $k_{T_2}$ (distant), depth-wise mix along the temporal hidden dim $d$. No attention, no $d^2$ cost.
 
-You do not recap frame 1, then 2, then 3 as a sequence of hidden states (that is an RNN). You treat the last second as one space–time volume.
+> [!example] Step 03 — You
+> **You:** You sketch the entire next second in one go, not “frame 11, then 12, then 13” while waiting for yourself.
+>
+> **The paper:** Recurrent-free: pixel-shuffle the patches back to $T'$ frames in parallel. That is why FLOPs collapse versus PredRNN unrolls.
 
-#### The paper
-
-Fold time into channels, $B\times(T\cdot C)\times H\times W$, then one convolution into space–time patches. Time is in the representation from layer one.
-
-02
-
-#### You
-
-Nearby: the ball’s current edge. Far: it will hit the opposite wall. Both matter, at once.
-
-#### The paper
-
-STLMixer: compact kernel $k\_{T\_1}$ (local), dilated $k\_{T\_2}$ (distant), depth-wise mix along the temporal hidden dim $d$. No attention, no $d^2$ cost.
-
-03
-
-#### You
-
-You sketch the entire next second in one go, not “frame 11, then 12, then 13” while waiting for yourself.
-
-#### The paper
-
-Recurrent-free: pixel-shuffle the patches back to $T'$ frames in parallel. That is why FLOPs collapse versus PredRNN unrolls.
-
-04
-
-#### You
-
-If you learned bouncing in one city, you can still guess bouncing in another — the skill was the motion, not the wallpaper.
-
-#### The paper
-
-Train on KITTI, test on Caltech. The paper’s generalization plot is this transfer, at 0.1M–15M parameters.
+> [!example] Step 04 — You
+> **You:** If you learned bouncing in one city, you can still guess bouncing in another — the skill was the motion, not the wallpaper.
+>
+> **The paper:** Train on KITTI, test on Caltech. The paper’s generalization plot is this transfer, at 0.1M–15M parameters.
 
 ConvLSTM unrolls one step per past frame. STLight is a feed-forward CNN over a space–time volume. The rest of the guide is kernels, tensor shapes, and the FLOPs table.
 
@@ -163,11 +153,23 @@ STLight’s bet: those two CNN failures are *representation* failures, not proof
 fully convolutional
 no attention
 joint space–time
-SOTA / fewer FLOPsPast T framesB × T × C × H × W↓ fold time into channelsOne conv → patchesp×p, hidden d, optional overlap↓ STLMixer × deLocal kT1Dilated kT2Temporal mix in d↓ pixel shuffle + 1×1Future T′ frames
+SOTA / fewer FLOPs
+
+> [!flow] Architecture / data flow
+> **Past T frames** — B × T × C × H × W
+> ↓ fold time into channels
+> **One conv → patches** — p×p, hidden d, optional overlap
+> ↓ STLMixer × de
+> **Local k T1** + **Dilated k T2** + **Temporal mix in d**
+> ↓ pixel shuffle + 1×1
+> **Future T′ frames**
 
 Figure. STLight never unrolls an RNN. Time lives in the patch from layer one.
 
-3Blue1Brown, “But what is a neural network?” If convolution-as-feature-extractor is fuzzy, start here before ConvLSTM vs mixer.
+> [!video] But what is a neural network?
+> [Watch video](https://www.youtube.com/watch?v=aircAruvnKk)
+>
+> 3Blue1Brown, “But what is a neural network?” If convolution-as-feature-extractor is fuzzy, start here before ConvLSTM vs mixer.
 
 ### Prerequisites
 
@@ -211,46 +213,42 @@ no attention
 
 RNN family  recurrent-free cousins  decode trick
 
-STL task: X ∈ R^{T×C×H×W} → Y ∈ R^{T'×C×H×W}
+```text
+STL task: X ∈ R^{T×C×H×W}  →  Y ∈ R^{T'×C×H×W}
 recurrent family
-ConvLSTM → PredRNN → PredRNN++ → MIM → E3D-LSTM → MAU
-honest Markov, expensive sequential unroll
+  ConvLSTM → PredRNN → PredRNN++ → MIM → E3D-LSTM → MAU
+  honest Markov, expensive sequential unroll
 recurrent-free family
-SimVP (IncepU translator)
-├─ TAU (temporal attention)
-└─ SimVP + ViT / MLP-Mixer / ConvMixer / ConvNeXt
+  SimVP (IncepU translator)
+    ├─ TAU (temporal attention)
+    └─ SimVP + ViT / MLP-Mixer / ConvMixer / ConvNeXt
 STLight (this paper) — still recurrent-free, but joint space–time
-(1) rearrange T into channels: B×(T·C)×H×W
-(2) one conv → patches p×p with hidden time dim d
-(3) STLMixer × de
-(a) compact kernel k\_T1 local intra-patch spatial
-(b) dilated kernel k\_T2 distant patches
-(c) depth-wise mix temporal dim inside the patch
-skip from de/3 → 2de/3
-(4) pixel shuffle restore H,W
-(5) 1×1 conv + reshape to T'
+  (1) rearrange T into channels: B×(T·C)×H×W
+  (2) one conv → patches p×p with hidden time dim d
+  (3) STLMixer × de
+        (a) compact kernel k_T1   local intra-patch spatial
+        (b) dilated kernel k_T2   distant patches
+        (c) depth-wise mix        temporal dim inside the patch
+      skip from de/3 → 2de/3
+  (4) pixel shuffle restore H,W
+  (5) 1×1 conv + reshape to T'
 train: MSE only
-eval: MMNIST, TaxiBJ, KTH (10→20/40), KITTI→Caltech generalizationConvLSTM / PredRNN
-SimVP / TAU↓ RNN tax vs weak clocksfold T into channels
-space–time patch↓ STLMixerlocal
-dilated
-temporal d↓ pixel shufflefuture T′ frames
+eval: MMNIST, TaxiBJ, KTH (10→20/40), KITTI→Caltech generalization
+```
 
-#### Spatial → Temporal → Spatial
+> [!graph] Concept flow
+> **ConvLSTM / PredRNN · SimVP / TAU**
+> ↓ RNN tax vs weak clocks
+> **fold T into channels · space–time patch**
+> ↓ STLMixer
+> **local · dilated · temporal d**
+> ↓ pixel shuffle
+> **future T′ frames**
 
-1. CNN each frame alone
-2. RNN steps through time
-3. Decode pixels
-
-Honest Markov. Expensive unroll.
-
-#### Joint space–time (STLight)
-
-1. Time in the patch from layer 1
-2. Mixer, no recurrence
-3. Shuffle the future out in parallel
-
-SOTA, fraction of the FLOPs.
+| Alternative | Representation and consequence |
+|---|---|
+| **Spatial → Temporal → Spatial** | Spatial → Temporal → Spatial CNN each frame alone RNN steps through time Decode pixels Honest Markov. Expensive unroll. |
+| **Joint space–time (STLight)** | Joint space–time (STLight) Time in the patch from layer 1 Mixer, no recurrence Shuffle the future out in parallel SOTA, fraction of the FLOPs. |
 
 ### Problem definition
 
@@ -367,7 +365,7 @@ If $H$ is not divisible by $p$, you cannot shuffle cleanly. That is why the pape
 
   #### [Real-Time Single Image Super-Resolution · Shi et al.](https://arxiv.org/abs/1609.05158)
 
-  Video: But what is a neural network? — https://www.youtube.com/embed/aircAruvnKk
+  PixelShuffle. Why the decoder has almost no parameters.
 
 ### Primary sources
 

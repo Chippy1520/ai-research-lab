@@ -9,35 +9,31 @@ layer: 2
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "perception", "area"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: []
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Tracking & motion
 
-Correspondences over time: flow, point tracks, video motion.
+> [!concept] Area · Perception · Layer 2
+> Correspondences over time: flow, point tracks, video motion.
+>
+> **Why it belongs —** A manipulator that loses the object between frames cannot close the loop.
 
-> **Why it belongs**
-> A manipulator that loses the object between frames cannot close the loop.
+## Knowledge neighborhood
 
-## Parent
-
-- [[Mind Map/Nodes/perception|Perception]]
-
-## Children
-
-- [[Mind Map/Nodes/cotracker|CoTracker]]
-- [[Mind Map/Nodes/optical-flow|Optical flow]]
-
-## Semantic connections
-
-- [[Mind Map/Nodes/cotracker|CoTracker]] — contains
-- [[Mind Map/Nodes/optical-flow|Optical flow]] — contains
-- [[Mind Map/Nodes/perception|Perception]] — contains
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/perception|↑ Perception]]
+> - [[Mind Map/Nodes/cotracker|↓ CoTracker]]
+> - [[Mind Map/Nodes/optical-flow|↓ Optical flow]]
 
 ## Primary resources
 
 - **Video:** [CoTracker3 — tracking points through occlusion (Meta)](https://www.youtube.com/watch?v=9PKmkbyrRFw)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#track-motion`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=track-motion
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#track-motion`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=track-motion)

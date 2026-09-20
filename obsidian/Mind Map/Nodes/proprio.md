@@ -9,29 +9,34 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "systems", "concept"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: []
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Proprioception
 
-The robot’s own joint angles, currents, tactile. The non-camera observation. ACT concatenates it; VLAs often tokenize it.
+> [!concept] Concept · Systems · Layer 3
+> The robot’s own joint angles, currents, tactile. The non-camera observation. ACT concatenates it; VLAs often tokenize it.
+>
+> **Why it belongs —** Language + pixels without proprio is a puppet with no muscle sense.
 
-> **Why it belongs**
-> Language + pixels without proprio is a puppet with no muscle sense.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/data-hw|↑ Data & bodies]]
 
-- [[Mind Map/Nodes/data-hw|Data & bodies]]
+> [!outgoing] Outgoing relationships
+> - **feedback →** [[Mind Map/Nodes/pid|PID control]]
+> - **input →** [[Mind Map/Nodes/act|ACT]]
+> - **input →** [[Mind Map/Nodes/smolvla|SmolVLA]]
 
-## Semantic connections
+> [!incoming] Incoming relationships
+> - **← filters —** [[Mind Map/Nodes/state-est|State estimation]]
+> - **← includes —** [[Mind Map/Nodes/foundations|Foundations]]
 
-- [[Mind Map/Nodes/act|ACT]] — input
-- [[Mind Map/Nodes/data-hw|Data & bodies]] — contains
-- [[Mind Map/Nodes/foundations|Foundations]] — includes
-- [[Mind Map/Nodes/pid|PID control]] — feedback
-- [[Mind Map/Nodes/smolvla|SmolVLA]] — input
-- [[Mind Map/Nodes/state-est|State estimation]] — filters
-
-## Source
-
-- Canonical record: `intelligence/mindmap.json#proprio`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=proprio
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#proprio`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=proprio)

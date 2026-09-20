@@ -9,33 +9,30 @@ layer: 2
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "foundations", "area"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: []
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Sensing
 
-The camera model. Everything in Perception assumes this.
+> [!concept] Area · Foundations · Layer 2
+> The camera model. Everything in Perception assumes this.
+>
+> **Why it belongs —** One node, one layer, not mixed with VGGT.
 
-> **Why it belongs**
-> One node, one layer, not mixed with VGGT.
+## Knowledge neighborhood
 
-## Parent
-
-- [[Mind Map/Nodes/foundations|Foundations]]
-
-## Children
-
-- [[Mind Map/Nodes/camera-model|Camera model]]
-
-## Semantic connections
-
-- [[Mind Map/Nodes/camera-model|Camera model]] — contains
-- [[Mind Map/Nodes/foundations|Foundations]] — contains
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/foundations|↑ Foundations]]
+> - [[Mind Map/Nodes/camera-model|↓ Camera model]]
 
 ## Primary resources
 
 - **Video:** [Shree Nayar — Image formation / pinhole](https://www.youtube.com/watch?v=_QjxbQKY4ds)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#sense-found`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=sense-found
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#sense-found`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=sense-found)

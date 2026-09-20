@@ -5,17 +5,21 @@ aliases: ["Toyota Research Institute"]
 organization_id: "tri"
 organization_kind: "research institute"
 source: "intelligence/entities.json"
-tags: ["organization", "research institute"]
+tags: ["organization", "research-institute"]
+cssclasses: ["research-note", "organization-note"]
+related_concepts: ["Mind Map/Nodes/openvla.md"]
 ---
+
+[[Home|Research Lab]]  /  [[Organizations/Organizations|Organizations]]
 
 # Toyota Research Institute
 
-- **Official site:** https://www.tri.global/
+> [!organization] Research Institute
+> [Official site](https://www.tri.global/)
 
-## Verified associations
+> [!concepts] Connected research
+> - [[Mind Map/Nodes/openvla|OpenVLA]]
 
-- [[Mind Map/Nodes/openvla|openvla]] — Research affiliation of OpenVLA co-authors in the 2024 project author list; not exclusive ownership. _(verified 2026-09-16)_
 
-
-> [!privacy]
-> Public organizational record only. Career preparation and outreach remain private and outside this repository.
+> [!privacy] Public record boundary
+> Career preparation and outreach remain private and outside this repository.

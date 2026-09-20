@@ -9,39 +9,36 @@ layer: 2
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "learning", "area"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: ["Curriculum/Lessons/Day 39 - Imitation Learning, DAgger & Inverse RL.md"]
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Imitation
 
-Copy a demonstrator. The tax is compounding error; chunks and DAgger are the usual taxes paid.
+> [!concept] Area · Learning · Layer 2
+> Copy a demonstrator. The tax is compounding error; chunks and DAgger are the usual taxes paid.
+>
+> **Why it belongs —** ACT, BC, and action chunking are one family, not three unrelated nodes.
 
-> **Why it belongs**
-> ACT, BC, and action chunking are one family, not three unrelated nodes.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/learning|↑ Learning]]
+> - [[Mind Map/Nodes/action-chunking|↓ Action chunking]]
+> - [[Mind Map/Nodes/behavior-cloning|↓ Behavior cloning]]
+> - [[Mind Map/Nodes/compounding-error|↓ Compounding error]]
+> - [[Mind Map/Nodes/cvae|↓ CVAE over chunks]]
 
-- [[Mind Map/Nodes/learning|Learning]]
-
-## Children
-
-- [[Mind Map/Nodes/action-chunking|Action chunking]]
-- [[Mind Map/Nodes/behavior-cloning|Behavior cloning]]
-- [[Mind Map/Nodes/compounding-error|Compounding error]]
-- [[Mind Map/Nodes/cvae|CVAE over chunks]]
-
-## Semantic connections
-
-- [[Mind Map/Nodes/action-chunking|Action chunking]] — contains
-- [[Mind Map/Nodes/behavior-cloning|Behavior cloning]] — contains
-- [[Mind Map/Nodes/compounding-error|Compounding error]] — contains
-- [[Mind Map/Nodes/cvae|CVAE over chunks]] — contains
-- [[Mind Map/Nodes/learning|Learning]] — contains
+> [!study] Read and study
+> - [[Curriculum/Lessons/Day 39 - Imitation Learning, DAgger & Inverse RL|Day 39 - Imitation Learning, DAgger & Inverse RL]]
 
 ## Primary resources
 
 - **Video:** [LeRobot — ALOHA and ACT (action chunking imitation)](https://www.youtube.com/watch?v=ft73x0LfGpM)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#imit`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=imit
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#imit`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=imit)

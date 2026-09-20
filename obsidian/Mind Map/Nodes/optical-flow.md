@@ -9,31 +9,39 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "perception", "concept"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: ["Curriculum/Lessons/Day 35 - Video Motion- Optical Flow, Tracking & Temporal Models.md"]
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Optical flow
 
-Dense 2D motion between frames. Ancestor of CoTracker and of video prediction (STLight).
+> [!concept] Concept · Perception · Layer 3
+> Dense 2D motion between frames. Ancestor of CoTracker and of video prediction (STLight).
+>
+> **Why it belongs —** Tracking and STL both secretly start as flow.
 
-> **Why it belongs**
-> Tracking and STL both secretly start as flow.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/track-motion|↑ Tracking & motion]]
 
-- [[Mind Map/Nodes/track-motion|Tracking & motion]]
+> [!outgoing] Outgoing relationships
+> - **dense future →** [[Mind Map/Nodes/stlight|STLight]]
+> - **sparse →** [[Mind Map/Nodes/cotracker|CoTracker]]
 
-## Semantic connections
+> [!incoming] Incoming relationships
+> - **← includes —** [[Mind Map/Nodes/foundations|Foundations]]
 
-- [[Mind Map/Nodes/cotracker|CoTracker]] — sparse
-- [[Mind Map/Nodes/foundations|Foundations]] — includes
-- [[Mind Map/Nodes/stlight|STLight]] — dense-future
-- [[Mind Map/Nodes/track-motion|Tracking & motion]] — contains
+> [!study] Read and study
+> - [[Curriculum/Lessons/Day 35 - Video Motion- Optical Flow, Tracking & Temporal Models|Day 35 - Video Motion- Optical Flow, Tracking & Temporal Models]]
 
 ## Primary resources
 
 - **Video:** [Shree Nayar — Optical Flow (First Principles overview)](https://www.youtube.com/watch?v=lnXFcmLB7sM)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#optical-flow`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=optical-flow
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#optical-flow`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=optical-flow)

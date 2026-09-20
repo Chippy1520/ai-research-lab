@@ -9,27 +9,30 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "systems", "framework"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: []
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # MuJoCo / MJX
 
-Contact-rich sim. ACT cube/insertion lives here. GPU MJX is the academic Isaac cousin.
+> [!concept] Framework · Systems · Layer 3
+> Contact-rich sim. ACT cube/insertion lives here. GPU MJX is the academic Isaac cousin.
+>
+> **Why it belongs —** If you ablate k on ACT, you are in MuJoCo.
 
-> **Why it belongs**
-> If you ablate k on ACT, you are in MuJoCo.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/sim-stack|↑ Simulation]]
 
-- [[Mind Map/Nodes/sim-stack|Simulation]]
+> [!incoming] Incoming relationships
+> - **← from —** [[Mind Map/Nodes/sim2real|Sim-to-real]]
+> - **← includes —** [[Mind Map/Nodes/systems|Systems]]
+> - **← sim in —** [[Mind Map/Nodes/act|ACT]]
 
-## Semantic connections
-
-- [[Mind Map/Nodes/act|ACT]] — sim-in
-- [[Mind Map/Nodes/sim2real|Sim-to-real]] — from
-- [[Mind Map/Nodes/sim-stack|Simulation]] — contains
-- [[Mind Map/Nodes/systems|Systems]] — includes
-
-## Source
-
-- Canonical record: `intelligence/mindmap.json#mujoco`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=mujoco
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#mujoco`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=mujoco)

@@ -7,20 +7,33 @@ source: "site/papers-ijepa.html"
 live_url: "https://chippy1520.github.io/ai-research-lab/papers-ijepa.html"
 tags: ["paper", "reading-guide"]
 related_nodes: ["representation", "world-models"]
+related_curriculum: ["Curriculum/Lessons/Day 07 - Information Theory & Representation.md", "Curriculum/Lessons/Day 26 - Self-Supervised Visual Representation Learning.md", "Curriculum/Lessons/Day 42 - World Models & Latent Imagination.md", "Curriculum/Lessons/Day 46 - Causal Representation Learning & Invariance.md"]
+cssclasses: ["research-note", "paper-note"]
 ---
+
+[[Home|Research Lab]]  /  [[Papers/Paper Guides|Paper Guides]]
 
 # I-JEPA: predict embeddings of masked blocks, not their pixels
 
+> [!paper] Research reading guide
 > Complete reading guide for I-JEPA (Assran et al., CVPR 2023, arXiv 2301.08243): predict target-block embeddings from a context block, no SimCLR augmentations.
+>
+> **Concepts:** 2 · **Related curriculum notes:** 4
 
-- **Canonical guide:** `site/papers-ijepa.html`
-- **Live guide:** https://chippy1520.github.io/ai-research-lab/papers-ijepa.html
-- **Companion source:** `papers/ijepa.md`
+> [!concepts] Connected concepts
+> - [[Mind Map/Nodes/representation|Self-supervised representation]]
+> - [[Mind Map/Nodes/world-models|World models]]
 
-## Connected concepts
+> [!study] Continue in the curriculum
+> - [[Curriculum/Lessons/Day 07 - Information Theory & Representation|Day 07 - Information Theory & Representation]]
+> - [[Curriculum/Lessons/Day 26 - Self-Supervised Visual Representation Learning|Day 26 - Self-Supervised Visual Representation Learning]]
+> - [[Curriculum/Lessons/Day 42 - World Models & Latent Imagination|Day 42 - World Models & Latent Imagination]]
+> - [[Curriculum/Lessons/Day 46 - Causal Representation Learning & Invariance|Day 46 - Causal Representation Learning & Invariance]]
 
-- [[Mind Map/Nodes/representation|representation]]
-- [[Mind Map/Nodes/world-models|world-models]]
+> [!source] Canonical and public versions
+> - Repository guide: `site/papers-ijepa.html`
+> - [Open the published HTML guide](https://chippy1520.github.io/ai-research-lab/papers-ijepa.html)
+> - Companion source: `papers/ijepa.md`
 
 ---
 
@@ -28,45 +41,25 @@ related_nodes: ["representation", "world-models"]
 
 A notebook covers a dog’s head in a photo. MAE would train a decoder to fill in those pixels. You do not need the fur. You need the fact “dog head, this pose.” I-JEPA trains a predictor to match the target encoder’s embeddings $E(y)$ on the covered blocks, not a reconstruction of $y$.
 
-01
+> [!example] Step 01 — You
+> **You:** You look at everything that is not covered: body, leash, grass, the way the neck is aimed.
+>
+> **The paper:** Context encoder (ViT) sees only the visible patches. No mask tokens inside the encoder — they would leak “something is missing here.”
 
-#### You
+> [!example] Step 02 — You
+> **You:** You are told where to guess: “the rectangle over the neck.” Without a location you would not know whether to predict a head or a tail.
+>
+> **The paper:** Predictor is a narrow ViT. It gets context tokens plus positional tokens $z$ for the target block’s location.
 
-You look at everything that is *not* covered: body, leash, grass, the way the neck is aimed.
+> [!example] Step 03 — You
+> **You:** Your answer is the identity and pose of the hidden part, not an RGB crop of it.
+>
+> **The paper:** Loss is in representation space . Targets come from a target encoder (EMA of the context encoder) run on the full image; you read off the tokens in the target block.
 
-#### The paper
-
-**Context encoder** (ViT) sees only the visible patches. No mask tokens inside the encoder — they would leak “something is missing here.”
-
-02
-
-#### You
-
-You are told *where* to guess: “the rectangle over the neck.” Without a location you would not know whether to predict a head or a tail.
-
-#### The paper
-
-**Predictor** is a narrow ViT. It gets context tokens plus positional tokens $z$ for the target block’s location.
-
-03
-
-#### You
-
-Your answer is the identity and pose of the hidden part, not an RGB crop of it.
-
-#### The paper
-
-Loss is in **representation space**. Targets come from a **target encoder** (EMA of the context encoder) run on the full image; you read off the tokens in the target block.
-
-04
-
-#### You
-
-You guess several covered regions, not one pixel-wide slit. A slit is texture. A block is an object part.
-
-#### The paper
-
-**Multi-block masking:** four target blocks with scale $(0.15, 0.2)$, then a big context block scale $(0.85, 1.0)$ with those targets punched out. Small random MAE masks fail this test.
+> [!example] Step 04 — You
+> **You:** You guess several covered regions, not one pixel-wide slit. A slit is texture. A block is an object part.
+>
+> **The paper:** Multi-block masking: four target blocks with scale $(0.15, 0.2)$, then a big context block scale $(0.85, 1.0)$ with those targets punched out. Small random MAE masks fail this test.
 
 The mapping *is* the architecture: context ViT → predictor-with-positions → EMA target tokens. No colour jitter was required for you to know it was a dog head. That is the point of dropping SimCLR augmentations.
 
@@ -169,21 +162,15 @@ Not a world model of time. Not an agent. Not “beats DINO.” Not hierarchical 
 
 ## The engineering tension
 
-#### MAE
+| Alternative | Representation and consequence |
+|---|---|
+| **MAE** | MAE Mask 75% of patches, decode RGB. Travels to video. Linear probe is mediocre because the encoder kept texture the decoder needed. |
+| **I-JEPA** | I-JEPA Mask large semantic blocks, predict EMA embeddings. Same “no augmentation list” as MAE. Linear probe jumps (ViT-H/14: 79.3 vs MAE 77.2) at a fraction of the GPU hours. |
 
-Mask 75% of patches, decode RGB. Travels to video. Linear probe is mediocre because the encoder kept texture the decoder needed.
-
-#### I-JEPA
-
-Mask large semantic blocks, predict EMA embeddings. Same “no augmentation list” as MAE. Linear probe jumps (ViT-H/14: 79.3 vs MAE 77.2) at a fraction of the GPU hours.
-
-#### DINO / SimCLR
-
-Two views, make embeddings equal. Needs colour jitter, crops, maybe multi-crop. Semantics are great; counting/depth suffer; the recipe is image-specific.
-
-#### I-JEPA
-
-One view, predict other *places* in the same image. Invariances are learned only if they help prediction. Depth and counting stay in the representation.
+| Alternative | Representation and consequence |
+|---|---|
+| **DINO / SimCLR** | DINO / SimCLR Two views, make embeddings equal. Needs colour jitter, crops, maybe multi-crop. Semantics are great; counting/depth suffer; the recipe is image-specific. |
+| **I-JEPA** | I-JEPA One view, predict other places in the same image. Invariances are learned only if they help prediction. Depth and counting stay in the representation. |
 
 ## Prerequisites
 
@@ -208,34 +195,52 @@ One view, predict other *places* in the same image. Invariances are learned only
 
    Read [[Papers/JEPA|LeCun 2022]] until Figure 2 of this paper is obvious.
 
-Why this video: the ViT is a transformer on patches. Not a recap of I-JEPA.
+> [!video] 3Blue1Brown — Transformers
+> [Watch video](https://www.youtube.com/watch?v=wjZofJX0v4M)
+>
+> Why this video: the ViT is a transformer on patches. Not a recap of I-JEPA.
 
-The invariance-family cousin. Useful so you can feel what I-JEPA is refusing (view augmentations) and what it still wants (semantic frozen features).
+> [!video] DINOv2 — self-supervised ViT features
+> [Watch video](https://www.youtube.com/watch?v=csEgtSh7jV4)
+>
+> The invariance-family cousin. Useful so you can feel what I-JEPA is refusing (view augmentations) and what it still wants (semantic frozen features).
 
 ## Knowledge graph
 
+```text
 LeCun JEPA 2022
-│
-├─ MAE (mask, pixel loss)
-├─ BYOL (EMA teacher)
-└─ ViT
-│
-▼
-I-JEPA
-├─ multi-block mask
-├─ context ViT
-└─ predictor + z
-│
-▼
-V-JEPAJEPA 2022
-MAE
-BYOL EMA↓context encoder
-predictor + z
-EMA target↓I-JEPA (this paper)
+   │
+   ├─ MAE (mask, pixel loss)
+   ├─ BYOL (EMA teacher)
+   └─ ViT
+          │
+          ▼
+       I-JEPA
+          ├─ multi-block mask
+          ├─ context ViT
+          └─ predictor + z
+                │
+                ▼
+             V-JEPA
+```
+
+> [!graph] Concept flow
+> **JEPA 2022 · MAE · BYOL EMA**
+> ↓
+> **context encoder · predictor + z · EMA target**
+> ↓
+> **I-JEPA (this paper)**
 
 ## Architecture
 
-Image patches224², patch 16 or 14↓ sample 4 target blocks + 1 contextContext encoder ViTvisible patches onlyTarget encoder ViTEMA, full image, stop-grad↓ + positional tokens zPredictor (narrow ViT)emits one vector per target patch↓ L2‖P − Ē(target tokens)‖²
+> [!flow] Architecture / data flow
+> **Image patches** — 224², patch 16 or 14
+> ↓ sample 4 target blocks + 1 context
+> **Context encoder ViT** — visible patches only + **Target encoder ViT** — EMA, full image, stop-grad
+> ↓ + positional tokens z
+> **Predictor (narrow ViT)** — emits one vector per target patch
+> ↓ L2
+> **‖P − Ē(target tokens)‖²**
 
 ## Multi-block masking
 
@@ -266,7 +271,7 @@ ViT-B/16, $224\times 224$ → $14\times 14 = 196$ patches, $d=768$. Sample a tar
 
 ## Study plan
 
-Video: DINOv2 — self-supervised ViT features — https://www.youtube.com/embed/csEgtSh7jV4
+80 minutes: case (10) → Figure 2 cartoons + Figure 3 (20) → Table 1 protocol and numbers (15) → Figure 4 masking + §9 (15) → §6 counting/depth vs DINO (10) → open [[Papers/V-JEPA|V-JEPA]] (10). Hold the PDF on Figure 3 the whole time.
 
 ## Primary sources
 

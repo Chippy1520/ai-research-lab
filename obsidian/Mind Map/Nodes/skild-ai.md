@@ -9,32 +9,37 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "labs", "lab"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: []
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Skild AI
 
-Omni-bodied foundation models. S1: video-prompt long-horizon tasks. Isaac Lab + Cosmos for experience.
+> [!concept] Lab · Labs · Layer 3
+> Omni-bodied foundation models. S1: video-prompt long-horizon tasks. Isaac Lab + Cosmos for experience.
+>
+> **Why it belongs —** No rationale recorded yet.
 
-> **Why it belongs**
-> No rationale recorded yet.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/fm-labs|↑ Foundation-model labs]]
 
-- [[Mind Map/Nodes/fm-labs|Foundation-model labs]]
+> [!outgoing] Outgoing relationships
+> - **ships →** [[Mind Map/Nodes/skild-s1|Skild S1]]
 
-## Semantic connections
-
-- [[Mind Map/Nodes/fm-labs|Foundation-model labs]] — contains
-- [[Mind Map/Nodes/labs|Labs & companies]] — includes
-- [[Mind Map/Nodes/skild-s1|Skild S1]] — from
-- [[Mind Map/Nodes/skild-s1|Skild S1]] — ships
+> [!incoming] Incoming relationships
+> - **← from —** [[Mind Map/Nodes/skild-s1|Skild S1]]
+> - **← includes —** [[Mind Map/Nodes/labs|Labs & companies]]
 
 ## Primary resources
 
 - **Video:** [Skild — Introducing S1](https://www.youtube.com/watch?v=hr39FlEiCcQ)
 - **Company:** [skild.ai](https://www.skild.ai/)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#skild-ai`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=skild-ai
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#skild-ai`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=skild-ai)

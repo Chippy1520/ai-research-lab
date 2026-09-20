@@ -9,39 +9,33 @@ layer: 2
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "policy", "area"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: []
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Chunked policies
 
-Predict a horizon of actions, then ensemble or denoise. ACT, diffusion, VQ-BeT.
+> [!concept] Area · Policy · Layer 2
+> Predict a horizon of actions, then ensemble or denoise. ACT, diffusion, VQ-BeT.
+>
+> **Why it belongs —** Temporal ensembling only makes sense next to the policies that emit chunks.
 
-> **Why it belongs**
-> Temporal ensembling only makes sense next to the policies that emit chunks.
+## Knowledge neighborhood
 
-## Parent
-
-- [[Mind Map/Nodes/policy|Policies / VLA]]
-
-## Children
-
-- [[Mind Map/Nodes/act|ACT]]
-- [[Mind Map/Nodes/diffusion-policy|Diffusion Policy]]
-- [[Mind Map/Nodes/temporal-ensembling|Temporal ensembling]]
-- [[Mind Map/Nodes/vqbet|VQ-BeT]]
-
-## Semantic connections
-
-- [[Mind Map/Nodes/act|ACT]] — contains
-- [[Mind Map/Nodes/diffusion-policy|Diffusion Policy]] — contains
-- [[Mind Map/Nodes/policy|Policies / VLA]] — contains
-- [[Mind Map/Nodes/temporal-ensembling|Temporal ensembling]] — contains
-- [[Mind Map/Nodes/vqbet|VQ-BeT]] — contains
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/policy|↑ Policies / VLA]]
+> - [[Mind Map/Nodes/act|↓ ACT]]
+> - [[Mind Map/Nodes/diffusion-policy|↓ Diffusion Policy]]
+> - [[Mind Map/Nodes/temporal-ensembling|↓ Temporal ensembling]]
+> - [[Mind Map/Nodes/vqbet|↓ VQ-BeT]]
 
 ## Primary resources
 
 - **Video:** [Cheng Chi — Diffusion Policy (LeRobot)](https://www.youtube.com/watch?v=M03sZFfW-qU)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#chunked-pi`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=chunked-pi
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#chunked-pi`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=chunked-pi)

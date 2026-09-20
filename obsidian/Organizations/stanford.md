@@ -6,21 +6,24 @@ organization_id: "stanford"
 organization_kind: "university"
 source: "intelligence/entities.json"
 tags: ["organization", "university"]
+cssclasses: ["research-note", "organization-note"]
+related_concepts: ["Mind Map/Nodes/openvla.md"]
 ---
+
+[[Home|Research Lab]]  /  [[Organizations/Organizations|Organizations]]
 
 # Stanford University
 
-- **Official site:** https://www.stanford.edu/
+> [!organization] University
+> [Official site](https://www.stanford.edu/)
 
-## Verified public people
+> [!concepts] Connected research
+> - [[Mind Map/Nodes/openvla|OpenVLA]]
 
-- [[Contacts/moojin-kim|Moo Jin Kim]]
-- [[Contacts/ethan-foster|Ethan Foster]]
-
-## Verified associations
-
-- [[Mind Map/Nodes/openvla|openvla]] — Research affiliation of several OpenVLA authors in the 2024 project author list; not exclusive ownership. _(verified 2026-09-16)_
+> [!people] Verified public people
+> - [[Contacts/moojin-kim|Moo Jin Kim]]
+> - [[Contacts/ethan-foster|Ethan Foster]]
 
 
-> [!privacy]
-> Public organizational record only. Career preparation and outreach remain private and outside this repository.
+> [!privacy] Public record boundary
+> Career preparation and outreach remain private and outside this repository.

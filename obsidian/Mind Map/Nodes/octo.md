@@ -9,33 +9,38 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "policy", "paper"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: []
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Octo
 
-Berkeley open transformer (~93M) on OXE, no giant VLM. Fast to fine-tune. SmolVLA sim tables still quote it.
+> [!concept] Paper · Policy · Layer 3
+> Berkeley open transformer (~93M) on OXE, no giant VLM. Fast to fine-tune. SmolVLA sim tables still quote it.
+>
+> **Why it belongs —** The small-from-scratch generalist before SmolVLA.
 
-> **Why it belongs**
-> The small-from-scratch generalist before SmolVLA.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/vla-family|↑ Vision-language-action]]
 
-- [[Mind Map/Nodes/vla-family|Vision-language-action]]
+> [!outgoing] Outgoing relationships
+> - **is →** [[Mind Map/Nodes/transformers|Transformers]]
+> - **trained on →** [[Mind Map/Nodes/oxe|Open X-Embodiment]]
 
-## Semantic connections
-
-- [[Mind Map/Nodes/oxe|Open X-Embodiment]] — trained-on
-- [[Mind Map/Nodes/policy|Policies / VLA]] — includes
-- [[Mind Map/Nodes/smolvla|SmolVLA]] — compared-to
-- [[Mind Map/Nodes/transformers|Transformers]] — is
-- [[Mind Map/Nodes/vla-family|Vision-language-action]] — contains
+> [!incoming] Incoming relationships
+> - **← compared to —** [[Mind Map/Nodes/smolvla|SmolVLA]]
+> - **← includes —** [[Mind Map/Nodes/policy|Policies / VLA]]
 
 ## Primary resources
 
 - **Video:** [RAIL — Octo: an open-source generalist robot policy](https://www.youtube.com/watch?v=99667VDGWMg)
 - **Paper:** [Octo](https://arxiv.org/abs/2405.12213)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#octo`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=octo
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#octo`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=octo)

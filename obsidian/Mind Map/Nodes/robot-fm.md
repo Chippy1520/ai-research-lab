@@ -9,41 +9,34 @@ layer: 2
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "policy", "area"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: []
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Robot foundation models
 
-Large cross-embodiment models: GR00T, RDT, GEN-1.5, Skild S1, PhysBrain 1.5.
+> [!concept] Area · Policy · Layer 2
+> Large cross-embodiment models: GR00T, RDT, GEN-1.5, Skild S1, PhysBrain 1.5.
+>
+> **Why it belongs —** These are labs' bets on one model, many bodies — not another ACT variant.
 
-> **Why it belongs**
-> These are labs' bets on one model, many bodies — not another ACT variant.
+## Knowledge neighborhood
 
-## Parent
-
-- [[Mind Map/Nodes/policy|Policies / VLA]]
-
-## Children
-
-- [[Mind Map/Nodes/gen15|GEN-1.5]]
-- [[Mind Map/Nodes/gr00t|GR00T N1.5]]
-- [[Mind Map/Nodes/physbrain|PhysBrain 1.5]]
-- [[Mind Map/Nodes/rdt|RDT-1B]]
-- [[Mind Map/Nodes/skild-s1|Skild S1]]
-
-## Semantic connections
-
-- [[Mind Map/Nodes/gen15|GEN-1.5]] — contains
-- [[Mind Map/Nodes/gr00t|GR00T N1.5]] — contains
-- [[Mind Map/Nodes/physbrain|PhysBrain 1.5]] — contains
-- [[Mind Map/Nodes/policy|Policies / VLA]] — contains
-- [[Mind Map/Nodes/rdt|RDT-1B]] — contains
-- [[Mind Map/Nodes/skild-s1|Skild S1]] — contains
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/policy|↑ Policies / VLA]]
+> - [[Mind Map/Nodes/gen15|↓ GEN-1.5]]
+> - [[Mind Map/Nodes/gr00t|↓ GR00T N1.5]]
+> - [[Mind Map/Nodes/physbrain|↓ PhysBrain 1.5]]
+> - [[Mind Map/Nodes/rdt|↓ RDT-1B]]
+> - [[Mind Map/Nodes/skild-s1|↓ Skild S1]]
 
 ## Primary resources
 
 - **Video:** [NVIDIA — Isaac GR00T-Mimic / foundation robot models](https://www.youtube.com/watch?v=r24CiGLYFQo)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#robot-fm`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=robot-fm
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#robot-fm`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=robot-fm)

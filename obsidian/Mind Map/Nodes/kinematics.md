@@ -9,33 +9,41 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "systems", "concept"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: ["Curriculum/Lessons/Day 45 - Robot Kinematics, Dynamics & Operational-Space Control.md"]
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Kinematics
 
-FK: joints → pose. IK: pose → joints. ALOHA maps leader joints to follower joints and skips IK. Humanoid WBC does not.
+> [!concept] Concept · Systems · Layer 3
+> FK: joints → pose. IK: pose → joints. ALOHA maps leader joints to follower joints and skips IK. Humanoid WBC does not.
+>
+> **Why it belongs —** Action space choice (joint vs EE) is this node.
 
-> **Why it belongs**
-> Action space choice (joint vs EE) is this node.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/data-hw|↑ Data & bodies]]
 
-- [[Mind Map/Nodes/data-hw|Data & bodies]]
+> [!outgoing] Outgoing relationships
+> - **joint space →** [[Mind Map/Nodes/aloha|ALOHA / SO-100]]
+> - **uses →** [[Mind Map/Nodes/wbc|Whole-body control]]
 
-## Semantic connections
+> [!incoming] Incoming relationships
+> - **← exposes —** [[Mind Map/Nodes/ros2|ROS 2]]
+> - **← includes —** [[Mind Map/Nodes/foundations|Foundations]]
+> - **← plus —** [[Mind Map/Nodes/pid|PID control]]
 
-- [[Mind Map/Nodes/aloha|ALOHA / SO-100]] — joint-space
-- [[Mind Map/Nodes/data-hw|Data & bodies]] — contains
-- [[Mind Map/Nodes/foundations|Foundations]] — includes
-- [[Mind Map/Nodes/pid|PID control]] — plus
-- [[Mind Map/Nodes/ros2|ROS 2]] — exposes
-- [[Mind Map/Nodes/wbc|Whole-body control]] — uses
+> [!study] Read and study
+> - [[Curriculum/Lessons/Day 45 - Robot Kinematics, Dynamics & Operational-Space Control|Day 45 - Robot Kinematics, Dynamics & Operational-Space Control]]
 
 ## Primary resources
 
 - **Video:** [Modern Robotics — Chapter 4 Forward Kinematics (Northwestern)](https://www.youtube.com/watch?v=cKHsil0V6Qk)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#kinematics`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=kinematics
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#kinematics`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=kinematics)

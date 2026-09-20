@@ -9,32 +9,37 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "labs", "lab"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: []
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Agility Robotics
 
-Digit for logistics. More deployed biped-hours than most humanoid startups. Perception + locomotion stack, not a public VLA.
+> [!concept] Lab · Labs · Layer 3
+> Digit for logistics. More deployed biped-hours than most humanoid startups. Perception + locomotion stack, not a public VLA.
+>
+> **Why it belongs —** No rationale recorded yet.
 
-> **Why it belongs**
-> No rationale recorded yet.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/humanoids|↑ Humanoids]]
 
-- [[Mind Map/Nodes/humanoids|Humanoids]]
+> [!outgoing] Outgoing relationships
+> - **locomotion →** [[Mind Map/Nodes/rl|Reinforcement learning]]
+> - **needs →** [[Mind Map/Nodes/wbc|Whole-body control]]
 
-## Semantic connections
-
-- [[Mind Map/Nodes/humanoids|Humanoids]] — contains
-- [[Mind Map/Nodes/labs|Labs & companies]] — includes
-- [[Mind Map/Nodes/rl|Reinforcement learning]] — locomotion
-- [[Mind Map/Nodes/wbc|Whole-body control]] — needs
+> [!incoming] Incoming relationships
+> - **← includes —** [[Mind Map/Nodes/labs|Labs & companies]]
 
 ## Primary resources
 
 - **Video:** [Agility — The Next Generation of Digit](https://www.youtube.com/watch?v=rnFZAB9ogEE)
 - **Company:** [agilityrobotics.com](https://www.agilityrobotics.com/)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#agility`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=agility
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#agility`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=agility)

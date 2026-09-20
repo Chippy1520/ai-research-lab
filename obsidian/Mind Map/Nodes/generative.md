@@ -9,36 +9,44 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "foundations", "concept"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: ["Curriculum/Lessons/Day 41 - Generative Vision- Latent Diffusion & Controllable Synthesis.md"]
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Generative models
 
-Model p(x) or a transport to p(x): VAE, diffusion, flow matching. Action heads are generative models of motor commands.
+> [!concept] Concept · Foundations · Layer 3
+> Model p(x) or a transport to p(x): VAE, diffusion, flow matching. Action heads are generative models of motor commands.
+>
+> **Why it belongs —** CVAE, Diffusion Policy, SmolVLA expert, VQ-BeT are four answers to this one idea.
 
-> **Why it belongs**
-> CVAE, Diffusion Policy, SmolVLA expert, VQ-BeT are four answers to this one idea.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/rep-found|↑ Representations]]
 
-- [[Mind Map/Nodes/rep-found|Representations]]
+> [!outgoing] Outgoing relationships
+> - **includes →** [[Mind Map/Nodes/cvae|CVAE over chunks]]
+> - **includes →** [[Mind Map/Nodes/diffusion-policy|Diffusion Policy]]
+> - **includes →** [[Mind Map/Nodes/flow-matching|Flow matching]]
 
-## Semantic connections
+> [!incoming] Incoming relationships
+> - **← flow —** [[Mind Map/Nodes/smolvla|SmolVLA]]
+> - **← includes —** [[Mind Map/Nodes/foundations|Foundations]]
+> - **← is a —** [[Mind Map/Nodes/cvae|CVAE over chunks]]
+> - **← is a —** [[Mind Map/Nodes/diffusion-policy|Diffusion Policy]]
+> - **← often —** [[Mind Map/Nodes/world-models|World models]]
 
-- [[Mind Map/Nodes/cvae|CVAE over chunks]] — includes
-- [[Mind Map/Nodes/cvae|CVAE over chunks]] — is-a
-- [[Mind Map/Nodes/diffusion-policy|Diffusion Policy]] — includes
-- [[Mind Map/Nodes/diffusion-policy|Diffusion Policy]] — is-a
-- [[Mind Map/Nodes/flow-matching|Flow matching]] — includes
-- [[Mind Map/Nodes/foundations|Foundations]] — includes
-- [[Mind Map/Nodes/rep-found|Representations]] — contains
-- [[Mind Map/Nodes/smolvla|SmolVLA]] — flow
-- [[Mind Map/Nodes/world-models|World models]] — often
+> [!study] Read and study
+> - [[Curriculum/Lessons/Day 41 - Generative Vision- Latent Diffusion & Controllable Synthesis|Day 41 - Generative Vision- Latent Diffusion & Controllable Synthesis]]
 
 ## Primary resources
 
 - **Video:** [Stanford CS231n 2017 L13 — Generative Models (Goodfellow)](https://www.youtube.com/watch?v=5WoItGTWV54)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#generative`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=generative
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#generative`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=generative)

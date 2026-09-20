@@ -9,31 +9,36 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "learning", "method"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: []
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Policy gradient
 
-Differentiate expected return w.r.t. π. PPO is the stable version Isaac Lab actually runs.
+> [!concept] Method · Learning · Layer 3
+> Differentiate expected return w.r.t. π. PPO is the stable version Isaac Lab actually runs.
+>
+> **Why it belongs —** WBC lower body lives here, not in a VLA decoder.
 
-> **Why it belongs**
-> WBC lower body lives here, not in a VLA decoder.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/rl-family|↑ Reinforcement learning]]
 
-- [[Mind Map/Nodes/rl-family|Reinforcement learning]]
+> [!outgoing] Outgoing relationships
+> - **default →** [[Mind Map/Nodes/isaac|Isaac Lab / Sim]]
+> - **includes →** [[Mind Map/Nodes/ppo-sac|PPO / SAC]]
 
-## Semantic connections
-
-- [[Mind Map/Nodes/isaac|Isaac Lab / Sim]] — default
-- [[Mind Map/Nodes/ppo-sac|PPO / SAC]] — includes
-- [[Mind Map/Nodes/rl|Reinforcement learning]] — includes
-- [[Mind Map/Nodes/rl-family|Reinforcement learning]] — contains
+> [!incoming] Incoming relationships
+> - **← includes —** [[Mind Map/Nodes/rl|Reinforcement learning]]
 
 ## Primary resources
 
 - **Video:** [David Silver L7 — Policy Gradient Methods](https://www.youtube.com/watch?v=KHZVXao4qXs)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#policy-gradient`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=policy-gradient
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#policy-gradient`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=policy-gradient)

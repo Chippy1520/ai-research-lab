@@ -7,16 +7,29 @@ cycle: 21
 domain: "Embodied AI & RL Robotics"
 stage: "Frontier"
 status: "planned"
-source: "curriculum_plan.json"
-tags: ["curriculum", "Embodied AI & RL Robotics", "Frontier"]
+source: ["curriculum_plan.json"]
+tags: ["curriculum", "embodied-ai-rl-robotics", "frontier"]
+cssclasses: ["research-note", "curriculum-note"]
+related_concepts: ["Mind Map/Nodes/systems.md", "Mind Map/Nodes/policy.md"]
+related_papers: []
 ---
+
+[[Home|Research Lab]]  /  [[Curriculum/Curriculum|Curriculum]]
 
 # Day 63 — Safe RL, Constraints, Shielding & Human Oversight
 
-- **Domain:** Embodied AI & RL Robotics
-- **Cycle:** 21
-- **Stage:** Frontier
-- **Content policy:** Research and write only when this day becomes current.
+> [!curriculum] Embodied AI & RL Robotics · Frontier
+> **Cycle 21** · **status: planned**
+> Research and write only when this day becomes current.
+
+> [!sequence] Learning sequence
+> - [[Curriculum/Lessons/Day 62 - Adversarial Robustness, OOD Detection & Model Editing|← Day 62]]
+> - [[Curriculum/Curriculum|Curriculum map]]
+> - [[Curriculum/Lessons/Day 64 - Neural Operators, Scientific ML & Differentiable Simulation|Day 64 →]]
+
+> [!concepts] Knowledge-graph concepts
+> - [[Mind Map/Nodes/systems|Systems]]
+> - [[Mind Map/Nodes/policy|Policies / VLA]]
 
 ## Foundation threads
 

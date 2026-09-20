@@ -3,7 +3,11 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from pathlib import Path
+
+import yaml
+from bs4 import BeautifulSoup
 
 from scripts.build_obsidian_vault import PAPER_SPECS, VAULT, build, validate_vault
 
@@ -70,7 +74,15 @@ def test_reading_theme_and_plugins_are_configured():
     homepage = json.loads((VAULT / ".obsidian/plugins/homepage/data.json").read_text(encoding="utf-8"))
     css = (VAULT / ".obsidian/snippets/research-lab.css").read_text(encoding="utf-8")
     assert appearance["cssTheme"] == "Minimal"
-    assert {"obsidian-style-settings", "obsidian-minimal-settings", "homepage"} <= set(enabled)
+    assert {
+        "obsidian-style-settings", "obsidian-minimal-settings", "homepage",
+        "dataview", "omnisearch", "table-editor-obsidian", "templater-obsidian", "voice-scribe",
+    } <= set(enabled)
+    dataview = json.loads((VAULT / ".obsidian/plugins/dataview/data.json").read_text(encoding="utf-8"))
+    templater = json.loads((VAULT / ".obsidian/plugins/templater-obsidian/data.json").read_text(encoding="utf-8"))
+    assert dataview["enableDataviewJs"] is False
+    assert dataview["enableInlineDataviewJs"] is False
+    assert templater["templates_folder"] == "_Templates"
     assert homepage["homepages"]["Main Homepage"]["value"] == "Home"
     assert homepage["homepages"]["Main Homepage"]["view"] == "Reading view"
     assert "@settings" in css and "--research-reading-width" in css
@@ -79,11 +91,15 @@ def test_reading_theme_and_plugins_are_configured():
 def test_full_paper_guides_are_present_and_connected():
     for slug, spec in PAPER_SPECS.items():
         note = (VAULT / "Papers" / f"{spec['title']}.md").read_text(encoding="utf-8")
+        source = BeautifulSoup((ROOT / "site" / f"papers-{slug}.html").read_text(encoding="utf-8"), "html.parser")
         assert "type: \"paper-guide\"" in note
         assert f"site/papers-{slug}.html" in note
-        assert "## Connected concepts" in note
+        assert "Connected concepts" in note
         assert "## The paper" in note or "paper, in order" in note.lower()
         assert len(note) > 3_000
+        assert "OBSMD" not in note
+        assert "**1**step" not in note
+        assert note.count("[!video]") == len(source.find_all("iframe"))
 
 
 def test_contacts_preserve_public_privacy_boundary():
@@ -102,6 +118,48 @@ def test_home_exposes_each_research_surface():
     for target in (
         "Mind Map/Embodied AI", "Papers/Paper Guides", "Curriculum/Curriculum",
         "Robotics Intelligence/Robotics Intelligence", "Contacts/Contacts",
-        "Organizations/Organizations", "Reports/Daily Reports",
+        "Organizations/Organizations", "Reports/Daily Reports", "Lectures/Lecture Notes",
     ):
         assert f"[[{target}" in home
+
+
+def test_directional_graph_relations_and_normalized_tags():
+    act = (VAULT / "Mind Map/Nodes/act.md").read_text(encoding="utf-8")
+    chunking = (VAULT / "Mind Map/Nodes/action-chunking.md").read_text(encoding="utf-8")
+    assert "[!outgoing] Outgoing relationships" in chunking
+    assert "**implemented in →** [[Mind Map/Nodes/act|ACT]]" in chunking
+    assert "[!incoming] Incoming relationships" in act
+    assert "**← implemented in —** [[Mind Map/Nodes/action-chunking|Action chunking]]" in act
+
+    tag_pattern = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+    for path in VAULT.rglob("*.md"):
+        text = path.read_text(encoding="utf-8")
+        if not text.startswith("---\n"):
+            continue
+        metadata = yaml.safe_load(text.split("---\n", 2)[1]) or {}
+        tags = metadata.get("tags", [])
+        assert len(tags) == len(set(tags)), path
+        assert all(tag_pattern.fullmatch(tag) for tag in tags), (path, tags)
+
+
+def test_authored_curriculum_and_lecture_capture_are_preserved():
+    lesson = (VAULT / "Curriculum/Lessons/Day 01 - Optimization Dynamics & AdamW.md").read_text(encoding="utf-8")
+    assert "modules/module_01.py" in lesson
+    assert "[!lesson] Authored technical lesson" in lesson
+    assert "### 15 · Video masterclasses and source ledger" in lesson
+    assert lesson.count("### ") >= 15
+
+    lecture_hub = (VAULT / "Lectures/Lecture Notes.md").read_text(encoding="utf-8")
+    lecture_template = (VAULT / "_Templates/Lecture Note.md").read_text(encoding="utf-8")
+    concept_template = (VAULT / "_Templates/Lecture Concept.md").read_text(encoding="utf-8")
+    assert "Voice Scribe" in lecture_hub
+    assert "FROM \"Lectures/Notes\"" in lecture_hub
+    assert "## Transcript and recording" in lecture_template
+    assert "## Failure modes and boundaries" in concept_template
+
+
+def test_jobs_are_grouped_into_readable_company_sections():
+    jobs = (VAULT / "Robotics Intelligence/Current Openings.md").read_text(encoding="utf-8")
+    assert "[!current] Early-career roles" in jobs
+    assert "## [[Organizations/agility-robotics|Agility Robotics]]" in jobs
+    assert jobs.count("| Role | Location | Seniority | Last seen |") >= 3

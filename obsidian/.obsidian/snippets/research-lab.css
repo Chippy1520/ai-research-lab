@@ -95,3 +95,104 @@ settings:
 .markdown-rendered .callout[data-callout="important"] { --callout-color: 78, 109, 90; }
 .markdown-rendered .callout[data-callout="tip"] { --callout-color: 174, 121, 64; }
 .markdown-rendered .callout-title { font-family: Georgia, "Times New Roman", serif; }
+
+/* A semantic visual language shared by every generated note family. */
+.callout[data-callout="home"] { --callout-color: 45, 74, 62; --callout-icon: lucide-library-big; }
+.callout[data-callout="graph"] { --callout-color: 65, 104, 125; --callout-icon: lucide-orbit; }
+.callout[data-callout="concept"] { --callout-color: 78, 109, 90; --callout-icon: lucide-network; }
+.callout[data-callout="paper"] { --callout-color: 45, 112, 100; --callout-icon: lucide-book-open-text; }
+.callout[data-callout="curriculum"] { --callout-color: 204, 153, 78; --callout-icon: lucide-graduation-cap; }
+.callout[data-callout="person"] { --callout-color: 168, 130, 174; --callout-icon: lucide-user-round; }
+.callout[data-callout="organization"] { --callout-color: 173, 119, 78; --callout-icon: lucide-building-2; }
+.callout[data-callout="intelligence"],
+.callout[data-callout="report"] { --callout-color: 132, 104, 144; --callout-icon: lucide-radar; }
+.callout[data-callout="jobs"] { --callout-color: 145, 112, 48; --callout-icon: lucide-briefcase-business; }
+.callout[data-callout="signal"],
+.callout[data-callout="skill"] { --callout-color: 174, 121, 64; --callout-icon: lucide-activity; }
+.callout[data-callout="evidence"] { --callout-color: 55, 112, 108; --callout-icon: lucide-badge-check; }
+.callout[data-callout="source"],
+.callout[data-callout="method"] { --callout-color: 102, 104, 99; --callout-icon: lucide-file-check-2; }
+.callout[data-callout="privacy"] { --callout-color: 137, 103, 83; --callout-icon: lucide-shield; }
+.callout[data-callout="current"] { --callout-color: 174, 121, 64; --callout-icon: lucide-map-pin-check; }
+.callout[data-callout="profile"] { --callout-color: 88, 108, 145; --callout-icon: lucide-contact-round; }
+.callout[data-callout="lecture"] { --callout-color: 105, 88, 146; --callout-icon: lucide-presentation; }
+.callout[data-callout="recording"] { --callout-color: 164, 78, 92; --callout-icon: lucide-audio-lines; }
+.callout[data-callout="question"] { --callout-color: 174, 121, 64; --callout-icon: lucide-circle-help; }
+.callout[data-callout="summary"] { --callout-color: 55, 112, 108; --callout-icon: lucide-notebook-tabs; }
+.callout[data-callout="hierarchy"] { --callout-color: 88, 113, 91; --callout-icon: lucide-git-branch; }
+.callout[data-callout="outgoing"] { --callout-color: 62, 111, 142; --callout-icon: lucide-arrow-up-right; }
+.callout[data-callout="incoming"] { --callout-color: 132, 104, 144; --callout-icon: lucide-arrow-down-left; }
+.callout[data-callout="sequence"],
+.callout[data-callout="prerequisite"] { --callout-color: 105, 117, 132; --callout-icon: lucide-route; }
+
+.callout[data-callout="map"],
+.callout[data-callout="links"],
+.callout[data-callout="study"],
+.callout[data-callout="concepts"],
+.callout[data-callout="library"],
+.callout[data-callout="people"],
+.callout[data-callout="organizations"],
+.callout[data-callout="desks"],
+.callout[data-callout="reports"],
+.callout[data-callout="sequence"],
+.callout[data-callout="prerequisite"],
+.callout[data-callout="hierarchy"] {
+  --callout-color: 78, 109, 90;
+  --callout-icon: lucide-layout-grid-2;
+  background: color-mix(in srgb, rgb(var(--callout-color)) 5%, var(--background-primary));
+}
+.callout[data-callout="map"] .callout-content > ul,
+.callout[data-callout="links"] .callout-content > ul,
+.callout[data-callout="study"] .callout-content > ul,
+.callout[data-callout="concepts"] .callout-content > ul,
+.callout[data-callout="library"] .callout-content > ul,
+.callout[data-callout="people"] .callout-content > ul,
+.callout[data-callout="organizations"] .callout-content > ul,
+.callout[data-callout="desks"] .callout-content > ul,
+.callout[data-callout="reports"] .callout-content > ul,
+.callout[data-callout="sequence"] .callout-content > ul,
+.callout[data-callout="prerequisite"] .callout-content > ul,
+.callout[data-callout="hierarchy"] .callout-content > ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: .55rem;
+  list-style: none;
+  padding-left: 0;
+}
+.callout[data-callout="map"] .callout-content > ul > li,
+.callout[data-callout="links"] .callout-content > ul > li,
+.callout[data-callout="study"] .callout-content > ul > li,
+.callout[data-callout="concepts"] .callout-content > ul > li,
+.callout[data-callout="library"] .callout-content > ul > li,
+.callout[data-callout="people"] .callout-content > ul > li,
+.callout[data-callout="organizations"] .callout-content > ul > li,
+.callout[data-callout="desks"] .callout-content > ul > li,
+.callout[data-callout="reports"] .callout-content > ul > li,
+.callout[data-callout="sequence"] .callout-content > ul > li,
+.callout[data-callout="prerequisite"] .callout-content > ul > li,
+.callout[data-callout="hierarchy"] .callout-content > ul > li {
+  margin: 0;
+  padding: .65rem .75rem;
+  border: 1px solid color-mix(in srgb, rgb(var(--callout-color)) 22%, var(--background-modifier-border));
+  border-radius: 8px;
+  background: color-mix(in srgb, rgb(var(--callout-color)) 4%, var(--background-primary));
+}
+.research-note .callout { border: 1px solid color-mix(in srgb, rgb(var(--callout-color)) 20%, transparent); }
+.research-note .callout-title { font-size: 1.02em; letter-spacing: .01em; }
+.research-note .callout-content > :last-child { margin-bottom: 0; }
+.paper-note .markdown-rendered img {
+  display: block;
+  max-height: 34rem;
+  margin: 1.4rem auto .6rem;
+  box-shadow: 0 8px 26px rgb(40 35 26 / 9%);
+}
+.paper-note .markdown-rendered h2 { margin-top: 3.2rem; }
+.curriculum-hub .markdown-rendered table,
+.jobs-note .markdown-rendered table { font-size: .92em; }
+.home-note .markdown-rendered table td:first-child { font-weight: 650; color: var(--research-accent); }
+.report-note .markdown-rendered h2 { border-bottom: 1px solid var(--background-modifier-border); padding-bottom: .25em; }
+@media (max-width: 700px) {
+  :root { --research-reading-width: 100%; }
+  .callout .callout-content > ul { grid-template-columns: 1fr !important; }
+  .markdown-rendered table { font-size: .88em; }
+}

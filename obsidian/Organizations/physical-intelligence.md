@@ -6,32 +6,39 @@ organization_id: "physical-intelligence"
 organization_kind: "company"
 source: "intelligence/entities.json"
 tags: ["organization", "company"]
+cssclasses: ["research-note", "organization-note"]
+related_concepts: ["Mind Map/Nodes/robot-fm.md", "Mind Map/Nodes/physical-intelligence.md", "Mind Map/Nodes/cross-embod.md", "Mind Map/Nodes/embodied-ai.md"]
 ---
+
+[[Home|Research Lab]]  /  [[Organizations/Organizations|Organizations]]
 
 # Physical Intelligence
 
-Generalist robot foundation models and cross-embodiment policies rather than a proprietary humanoid hardware platform.
+> [!organization] Embodied-AI platform
+> Generalist robot foundation models and cross-embodiment policies rather than a proprietary humanoid hardware platform.
 
-## Ecosystem observation
+| Founded | Location | Stage |
+|---|---|---|
+| 2024 | San Francisco, CA · Bay Area | Late-stage private research company; model and data scaling |
 
-- **Founded:** 2024
-- **Location:** San Francisco, CA · Bay Area
-- **Category:** Embodied-AI platform
-- **Stage:** Late-stage private research company; model and data scaling
-- **Valuation observation:** $5.6B (Completed private financing, 2025-11-20)
-- **Careers:** https://www.pi.website/join-us
-
-> [!note]
+> [!signal] Verified market observation
+> **Valuation:** $5.6B — Completed private financing, 2025-11-20
 > Bloomberg reported the completed $600M financing at $5.6B. Later reports of talks around $11B are excluded until a completed round is verified.
+> **Careers:** [Official careers page](https://www.pi.website/join-us)
 
-## Verified public people
+> [!concepts] Connected research
+> - [[Mind Map/Nodes/robot-fm|Robot foundation models]]
+> - [[Mind Map/Nodes/physical-intelligence|Physical Intelligence]]
+> - [[Mind Map/Nodes/cross-embod|Cross-embodiment]]
+> - [[Mind Map/Nodes/embodied-ai|Embodied AI]]
 
-- [[Contacts/karl-pertsch|Karl Pertsch]]
+> [!people] Verified public people
+> - [[Contacts/karl-pertsch|Karl Pertsch]]
 
-## Sources
+## Source ledger
 
 - [Physical Intelligence official site](https://www.pi.website/) — accessed 2026-09-01
 - [Physical Intelligence raises $600M to advance robot foundation models](https://www.therobotreport.com/physical-intelligence-raises-600m-advance-robot-foundation-models/) — 2025-11-25
 
-> [!privacy]
-> Public organizational record only. Career preparation and outreach remain private and outside this repository.
+> [!privacy] Public record boundary
+> Career preparation and outreach remain private and outside this repository.

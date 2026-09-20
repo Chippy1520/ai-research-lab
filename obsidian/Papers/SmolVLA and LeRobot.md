@@ -7,22 +7,32 @@ source: "site/papers-smolvla.html"
 live_url: "https://chippy1520.github.io/ai-research-lab/papers-smolvla.html"
 tags: ["paper", "reading-guide"]
 related_nodes: ["smolvla", "lerobot", "flow-matching", "async-infer"]
+related_curriculum: ["Curriculum/Lessons/Day 31 - Flow Matching & Optimal-Transport Paths.md"]
+cssclasses: ["research-note", "paper-note"]
 ---
+
+[[Home|Research Lab]]  /  [[Papers/Paper Guides|Paper Guides]]
 
 # SmolVLA: a 450M-parameter VLA you can actually train
 
+> [!paper] Research reading guide
 > Complete reading guide for SmolVLA (arXiv 2506.01844) and LeRobot: prerequisites, knowledge graph, architecture, flow matching, asynchronous inference.
+>
+> **Concepts:** 4 · **Related curriculum notes:** 1
 
-- **Canonical guide:** `site/papers-smolvla.html`
-- **Live guide:** https://chippy1520.github.io/ai-research-lab/papers-smolvla.html
-- **Companion source:** `papers/smolvla-lerobot.md`
+> [!concepts] Connected concepts
+> - [[Mind Map/Nodes/smolvla|SmolVLA]]
+> - [[Mind Map/Nodes/lerobot|LeRobot]]
+> - [[Mind Map/Nodes/flow-matching|Flow matching]]
+> - [[Mind Map/Nodes/async-infer|Async inference]]
 
-## Connected concepts
+> [!study] Continue in the curriculum
+> - [[Curriculum/Lessons/Day 31 - Flow Matching & Optimal-Transport Paths|Day 31 - Flow Matching & Optimal-Transport Paths]]
 
-- [[Mind Map/Nodes/smolvla|smolvla]]
-- [[Mind Map/Nodes/lerobot|lerobot]]
-- [[Mind Map/Nodes/flow-matching|flow-matching]]
-- [[Mind Map/Nodes/async-infer|async-infer]]
+> [!source] Canonical and public versions
+> - Repository guide: `site/papers-smolvla.html`
+> - [Open the published HTML guide](https://chippy1520.github.io/ai-research-lab/papers-smolvla.html)
+> - Companion source: `papers/smolvla-lerobot.md`
 
 ---
 
@@ -30,55 +40,30 @@ related_nodes: ["smolvla", "lerobot", "flow-matching", "async-infer"]
 
 A cheap tabletop arm, two webcams, joint angles, instruction “put the red cube in the bowl.” SmolVLA fuses those streams in a VLM, flow-matches a chunk of future actions, and runs the policy asynchronously so the arm does not stall while the next chunk is computed.
 
-01
+> [!example] Step 01 — You
+> **You:** Look at the overhead camera, glance at the wrist camera, hear the sentence, notice where the arm currently is.
+>
+> **The paper:** Three input streams: RGB views (64 tokens each), language tokens, one proprioception token. SmolVLM-2 fuses them.
 
-#### You
+> [!example] Step 02 — You
+> **You:** You do not plan the next 20 milliseconds. You plan a short sequence: reach, pinch, lift, move, open. Then you look again.
+>
+> **The paper:** The action expert emits a chunk $A_t=(a_t,\ldots,a_{t+n})$, not a single joint command. Same idea as ACT, generated with flow matching.
 
-Look at the overhead camera, glance at the wrist camera, hear the sentence, notice where the arm currently is.
+> [!example] Step 03 — You
+> **You:** You do not freeze mid-reach while composing the next phrase. Your hand keeps moving; the next plan forms in parallel.
+>
+> **The paper:** Asynchronous inference: RobotClient drains the queue while PolicyServer computes the next chunk. Threshold $g$ is “start computing the next chunk when the current one is half executed.”
 
-#### The paper
+> [!example] Step 04 — You
+> **You:** You learned this from watching other people on similar kitchen tables, not from a factory with ten thousand hours of proprietary video.
+>
+> **The paper:** Pretrain on public LeRobot community datasets (<30k episodes), with camera names forced into a consistent order.
 
-Three input streams: RGB views (64 tokens each), language tokens, one proprioception token. SmolVLM-2 fuses them.
-
-02
-
-#### You
-
-You do not plan the next 20 milliseconds. You plan a short sequence: reach, pinch, lift, move, open. Then you look again.
-
-#### The paper
-
-The action expert emits a *chunk* $A\_t=(a\_t,\ldots,a\_{t+n})$, not a single joint command. Same idea as ACT, generated with flow matching.
-
-03
-
-#### You
-
-You do not freeze mid-reach while composing the next phrase. Your hand keeps moving; the next plan forms in parallel.
-
-#### The paper
-
-Asynchronous inference: RobotClient drains the queue while PolicyServer computes the next chunk. Threshold $g$ is “start computing the next chunk when the current one is half executed.”
-
-04
-
-#### You
-
-You learned this from watching other people on similar kitchen tables, not from a factory with ten thousand hours of proprietary video.
-
-#### The paper
-
-Pretrain on public LeRobot community datasets (<30k episodes), with camera names forced into a consistent order.
-
-05
-
-#### You
-
-You do not reread the entire manual every grasp. Once you have the gist of the scene, you stop overthinking and just move.
-
-#### The paper
-
-Skip the last $L-N$ VLM layers ($N=L/2$). Intermediate features are enough to condition the expert.
+> [!example] Step 05 — You
+> **You:** You do not reread the entire manual every grasp. Once you have the gist of the scene, you stop overthinking and just move.
+>
+> **The paper:** Skip the last $L-N$ VLM layers ($N=L/2$). Intermediate features are enough to condition the expert.
 
 That mapping *is* the architecture. The rest of this guide is the same five steps with the paper’s notation, diagrams, and numbers attached.
 
@@ -120,7 +105,11 @@ Two modules: compact pretrained VLM + action expert with flow matching. Inputs: 
 
 Backbone is SmolVLM-2 (SigLIP vision + SmolLM2 decoder), chosen because it already handles multi-image/video. Images go through the vision encoder with token shuffling; they drop tiling and keep a global image plus pixel-shuffle, **64 visual tokens per frame**. Language is tokenized. Sensorimotor state is a linear projection to **one token**. Concatenate, run the language decoder, condition the expert on those features.
 
-**64**visual / camera**L**language**1**state↓ concat → SmolLM2 decoder (first N layers)VLM features→action expert 0.75d→chunk at…at+n
+`64 visual / camera → L language → 1 state`
+
+↓ concat → SmolLM2 decoder (first N layers)
+
+`VLM features → action expert 0.75d → chunk a t …a t+n`
 
 Figure 1 as tokens. Count the 64. The state is one vector, not a sequence.
 
@@ -146,13 +135,10 @@ Robot pretraining data is still orders of magnitude smaller than language. Datas
 
 **Camera names.** `images.laptop` might be top, wrist, or side. They manually map views to `OBS_IMAGE_1/2/3` (top, wrist, side) and drop extras. Inconsistent camera order hurt this data regime; consistent order helped. They flag future VLM-based remapping or collection guidelines.
 
-#### As uploaded
-
-`images.laptop` / `phone` / `cam2` — same string, different viewpoint.
-
-#### After remap
-
-`OBS_IMAGE_1` top · `_2` wrist · `_3` side. Extras dropped.
+| Alternative | Representation and consequence |
+|---|---|
+| **As uploaded** | As uploaded images.laptop / phone / cam2 — same string, different viewpoint. |
+| **After remap** | After remap OBS_IMAGE_1 top · _2 wrist · _3 side. Extras dropped. |
 
 ### §3.3 Asynchronous inference
 
@@ -176,7 +162,9 @@ Figure 3: small $g$ → idle gaps; $g\approx 1$ → almost continuous infer. The
 
 Queue at $g=0.7$: grey already executed, green still to run, gold = fire a new infer.
 
-sync pick-place**13.75s**async pick-place**9.7s**
+- sync pick-place — 13.75s
+
+- async pick-place — 9.7s
 
 ### §4 Experiments — protocol first
 
@@ -200,7 +188,9 @@ LIBERO: Spatial / Object / Goal / Long, 10 tasks each, dataset `physical-intelli
 
 **Table 5.** Community pretraining is load-bearing: 51.7 → 78.3 average on the three SO-100 tasks. Multitask finetuning adds more. Do not cite 78.3 without this ablation.
 
-no community pt**51.7**with pretrain**78.3**
+- no community pt — 51.7
+
+- with pretrain — 78.3
 
 SO-100 average. The headline number is the green bar, not a from-scratch VLA.
 
@@ -228,7 +218,16 @@ Do not confuse this SmolVLA (Hugging Face / LeRobot, arXiv 2506.01844, ~450M, co
 1 GPU train
 flow matching
 async stack
-<30k episodesCamerasRGB views → 64 tokens eachLanguagetask instruction tokensProprio1 projected state token↓SmolVLM-2 (first N = L/2 layers)SigLIP vision + SmolLM2 decoder · last layers skipped↓ features conditionAction expertinterleaved CA / causal SA · width 0.75d · flow matching↓Action chunk At = (at … at+n)async queue on the robot · PolicyServer can be remote
+<30k episodes
+
+> [!flow] Architecture / data flow
+> **Cameras** — RGB views → 64 tokens each + **Language** — task instruction tokens + **Proprio** — 1 projected state token
+> ↓
+> **SmolVLM-2 (first N = L/2 layers)** — SigLIP vision + SmolLM2 decoder · last layers skipped
+> ↓ features condition
+> **Action expert** — interleaved CA / causal SA · width 0.75d · flow matching
+> ↓
+> **Action chunk A t = (a t … a t+n )** — async queue on the robot · PolicyServer can be remote
 
 Figure. SmolVLA datapath. Green is perception, lilac is motor generation, ink is what the arm actually executes.
 
@@ -247,7 +246,11 @@ Backspan only what the paper uses. You do not need a full VLM course before sect
 
    A VLM is a vision encoder (here SigLIP) whose tokens are consumed by a language decoder (here SmolLM2). SmolVLM-2 is already trained for multi-image / video. SmolVLA does not train a VLM from scratch; it *conditions an action expert on VLM features*. If you have never seen cross-attention from a decoder onto encoder keys/values, stop and draw that before §3.1.
 
-   Watch if attention is rusty. 3Blue1Brown, “Transformers (how LLMs work) explained visually.” Then come back to SigLIP tokens feeding SmolLM2.
+> [!video] 3Blue1Brown: Transformers, the tech behind LLMs
+> [Watch video](https://www.youtube.com/watch?v=wjZofJX0v4M)
+>
+> Watch if attention is rusty. 3Blue1Brown, “Transformers (how LLMs work) explained visually.” Then come back to SigLIP tokens feeding SmolLM2.
+
 3. **03**
 
    #### Continuous actions vs tokenized actions
@@ -259,7 +262,11 @@ Backspan only what the paper uses. You do not need a full VLM course before sect
 
    Diffusion learns a score $\nabla \log p\_t$. Flow matching learns a velocity field $u\_t$ that transports noise $x\_0 \sim \mathcal{N}(0,I)$ to data $x\_1$ along (approximately) straight paths $x\_t = (1-t)x\_0 + t x\_1$. Training is an $L\_2$ regression onto that velocity. Inference is an ODE. Fewer steps than diffusion, which matters when you must emit 50 actions inside a control cycle.
 
-   Outlier, “Flow Matching | Explanation + PyTorch Implementation” (22 min). Watch the first ~6 minutes for the straight-path picture SmolVLA uses.
+> [!video] Flow Matching explanation and PyTorch implementation
+> [Watch video](https://www.youtube.com/watch?v=7cMzfkWFWhI)
+>
+> Outlier, “Flow Matching | Explanation + PyTorch Implementation” (22 min). Watch the first ~6 minutes for the straight-path picture SmolVLA uses.
+
 5. **05**
 
    #### Real-time control as a queue, not a function call
@@ -280,13 +287,23 @@ g=0.7 queue
 
 foundations  method pieces  problems it solves  heavier VLAs it refuses
 
+```text
 supervised BC → compounding error → ACT chunks
 VLM (SigLIP+SmolLM2) → skip L−N → features → flow expert
 community data + camera hygiene → async RobotClient/PolicyServer
-evaluate: SO-100/101, LIBERO, Meta-Worldbehavior cloning↓ compounding errorsingle-step BC
-action chunks (ACT)↓ + language + visionSmolVLM-2
-flow expert
-community data↓SmolVLA + async queue↓SO-100 / LIBERO
+evaluate: SO-100/101, LIBERO, Meta-World
+```
+
+> [!graph] Concept flow
+> **behavior cloning**
+> ↓ compounding error
+> **single-step BC · action chunks (ACT)**
+> ↓ + language + vision
+> **SmolVLM-2 · flow expert · community data**
+> ↓
+> **SmolVLA + async queue**
+> ↓
+> **SO-100 / LIBERO**
 
 Directed graph of the paper. Each arrow is a dependency SmolVLA actually uses, not a generic ML taxonomy.
 
@@ -341,12 +358,8 @@ Flow-matching regression. Compare to a diffusion denoising score-matching loss: 
 
 **Why flow matching rather than diffusion or CVAE?**
 
-noise
-action chunk
-
-diffusion (curved score path)
-
-flow matching (almost-straight ODE)
+> [!diagram] Straight flow-matching path versus wiggly diffusion path
+> noise · action chunk · diffusion (curved score path) · flow matching (almost-straight ODE)
 
 Same endpoints. Fewer function evaluations on the green path — what you need when a 50-step chunk has to land inside a control cycle.
 
@@ -379,21 +392,10 @@ Idle gaps vanish when $ g \ge (\mathbb{E}[\ell\_S]/\Delta t)/n $, where $\ell\_S
 
 Reported real-robot effect: similar success rate to sync, about **30% shorter wall-clock task time**, because the arm stops waiting. Do not read this as “the model is 30% more accurate.”
 
-#### Synchronous chunk
-
-1. Predict 50 steps
-2. Arm idle while GPU thinks
-3. Execute, then think again
-
-Cheap. Laggy. Blind every n steps.
-
-#### Async (this paper)
-
-1. Arm drains the queue
-2. At g, fire a non-blocking infer
-3. Blend the new chunk on arrival
-
-Same success, ~30% shorter task time.
+| Alternative | Representation and consequence |
+|---|---|
+| **Synchronous chunk** | Synchronous chunk Predict 50 steps Arm idle while GPU thinks Execute, then think again Cheap. Laggy. Blind every n steps. |
+| **Async (this paper)** | Async (this paper) Arm drains the queue At g, fire a non-blocking infer Blend the new chunk on arrival Same success, ~30% shorter task time. |
 
 Ensembling every tick (ACT) is a third pane: smooth, but the GPU must keep up.
 
@@ -418,7 +420,17 @@ Numbers below are the ones the paper and the accompanying communications actuall
 | Real SO-100/101 (pick, stack, sort) | ~78.3% average | ACT ~80M: 48.3%; $\pi\_0$ 3.5B: 61.7% |
 | Async vs sync (real) | Similar success, ~30% faster task time | Sync SmolVLA |
 
-LIBERO · SmolVLA 0.45B**87%**LIBERO · π₀ 3.3B**86%**LIBERO · OpenVLA 7B**77%**Real · SmolVLA**78%**Real · π₀ 3.5B**62%**Real · ACT 80M**48%**
+- LIBERO · SmolVLA 0.45B — 87%
+
+- LIBERO · π₀ 3.3B — 86%
+
+- LIBERO · OpenVLA 7B — 77%
+
+- Real · SmolVLA — 78%
+
+- Real · π₀ 3.5B — 62%
+
+- Real · ACT 80M — 48%
 
 Same evaluation suite as the paper/blog. Green is SmolVLA. Do not mix sim bars with real bars into one average.
 
@@ -432,9 +444,15 @@ How to think about this table:
 
 SmolVLA is a policy class inside Hugging Face LeRobot. The paper without the library is a PDF; the library without the paper is ACT/diffusion recipes. Together they are the thing you can run.
 
-Hugging Face, LeRobot Tutorial #4 — Record Dataset (Simon Alibert). The data path SmolVLA fine-tunes on.
+> [!video] LeRobot Tutorial #4: Record Dataset
+> [Watch video](https://www.youtube.com/watch?v=n_Ljp_xuFEM)
+>
+> Hugging Face, LeRobot Tutorial #4 — Record Dataset (Simon Alibert). The data path SmolVLA fine-tunes on.
 
-Hugging Face, LeRobot Tutorial #7 — Assemble and Calibrate SO-100. The cheap arm in the real-world table.
+> [!video] Assemble and Calibrate SO-100
+> [Watch video](https://www.youtube.com/watch?v=FioA2oeFZ5I)
+>
+> Hugging Face, LeRobot Tutorial #7 — Assemble and Calibrate SO-100. The cheap arm in the real-world table.
 
 - Install extra: `pip install "lerobot[smolvla]"`.
 - Base weights: `lerobot/smolvla_base` (~450M, safetensors).
@@ -506,7 +524,7 @@ These are the nodes the graph is standing on. Primary papers only. Our ACT guide
 
 ### Primary sources
 
-Video: Assemble and Calibrate SO-100 — https://www.youtube.com/embed/FioA2oeFZ5I
+Use these, not secondary explainers, as authority.
 
 - Paper: [arXiv:2506.01844](https://arxiv.org/abs/2506.01844) — Shukor et al., 2 Jun 2025.
 - HTML: [ar5iv HTML](https://ar5iv.labs.arxiv.org/html/2506.01844).

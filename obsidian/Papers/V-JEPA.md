@@ -7,20 +7,33 @@ source: "site/papers-vjepa.html"
 live_url: "https://chippy1520.github.io/ai-research-lab/papers-vjepa.html"
 tags: ["paper", "reading-guide"]
 related_nodes: ["representation", "world-models"]
+related_curriculum: ["Curriculum/Lessons/Day 07 - Information Theory & Representation.md", "Curriculum/Lessons/Day 26 - Self-Supervised Visual Representation Learning.md", "Curriculum/Lessons/Day 42 - World Models & Latent Imagination.md", "Curriculum/Lessons/Day 46 - Causal Representation Learning & Invariance.md"]
+cssclasses: ["research-note", "paper-note"]
 ---
+
+[[Home|Research Lab]]  /  [[Papers/Paper Guides|Paper Guides]]
 
 # V-JEPA: predict the next motion in feature space, from video only
 
+> [!paper] Research reading guide
 > Complete reading guide for V-JEPA (Bardes et al., arXiv 2404.08471): feature prediction as a stand-alone objective for video representations.
+>
+> **Concepts:** 2 · **Related curriculum notes:** 4
 
-- **Canonical guide:** `site/papers-vjepa.html`
-- **Live guide:** https://chippy1520.github.io/ai-research-lab/papers-vjepa.html
-- **Companion source:** `papers/vjepa.md`
+> [!concepts] Connected concepts
+> - [[Mind Map/Nodes/representation|Self-supervised representation]]
+> - [[Mind Map/Nodes/world-models|World models]]
 
-## Connected concepts
+> [!study] Continue in the curriculum
+> - [[Curriculum/Lessons/Day 07 - Information Theory & Representation|Day 07 - Information Theory & Representation]]
+> - [[Curriculum/Lessons/Day 26 - Self-Supervised Visual Representation Learning|Day 26 - Self-Supervised Visual Representation Learning]]
+> - [[Curriculum/Lessons/Day 42 - World Models & Latent Imagination|Day 42 - World Models & Latent Imagination]]
+> - [[Curriculum/Lessons/Day 46 - Causal Representation Learning & Invariance|Day 46 - Causal Representation Learning & Invariance]]
 
-- [[Mind Map/Nodes/representation|representation]]
-- [[Mind Map/Nodes/world-models|world-models]]
+> [!source] Canonical and public versions
+> - Repository guide: `site/papers-vjepa.html`
+> - [Open the published HTML guide](https://chippy1520.github.io/ai-research-lab/papers-vjepa.html)
+> - Companion source: `papers/vjepa.md`
 
 ---
 
@@ -28,45 +41,25 @@ related_nodes: ["representation", "world-models"]
 
 A clip: kettle, mug, arm. For a few frames a sleeve occludes the mug. A video MAE would reconstruct those pixels. The question that matters on Something-Something-v2 is whether the pour continues (push vs pull), which lives in the motion of $E(y)$. V-JEPA masks a space–time tube and predicts those embeddings; it never decodes RGB.
 
-01
+> [!example] Step 01 — You
+> **You:** You watch the visible parts of the clip as one moving picture, not 16 unrelated JPEGs.
+>
+> **The paper:** Video is tube-tokenised (space–time patches). The encoder is a ViT over those tokens. No frozen DINO image encoder is allowed — the abstract forbids it.
 
-#### You
+> [!example] Step 02 — You
+> **You:** Someone covers the mug for a moment. You still know the pour is happening there .
+>
+> **The paper:** Mask a spatio-temporal region $y$. Context $x$ is the rest. Predictor $P_\phi(E_\theta(x), \Delta_y)$ is told the missing coordinates via $z \leftarrow \Delta_y$.
 
-You watch the visible parts of the clip as one moving picture, not 16 unrelated JPEGs.
+> [!example] Step 03 — You
+> **You:** Your prediction is that liquid is still going into the mug, not an inpainted RGB of the hidden frames.
+>
+> **The paper:** L1 in feature space against an EMA teacher $\bar{E}_\theta(y)$ with stop-gradient. Eq. (1) in the PDF. L1, not I-JEPA’s L2 — they say L1 was more stable on video.
 
-#### The paper
-
-Video is tube-tokenised (space–time patches). The encoder is a ViT over those tokens. No frozen DINO image encoder is allowed — the abstract forbids it.
-
-02
-
-#### You
-
-Someone covers the mug for a moment. You still know the pour is happening *there*.
-
-#### The paper
-
-Mask a spatio-temporal region $y$. Context $x$ is the rest. Predictor $P\_\phi(E\_\theta(x), \Delta\_y)$ is told the missing coordinates via $z \leftarrow \Delta\_y$.
-
-03
-
-#### You
-
-Your prediction is that liquid is still going into the mug, not an inpainted RGB of the hidden frames.
-
-#### The paper
-
-L1 in feature space against an EMA teacher $\bar{E}\_\theta(y)$ with stop-gradient. Eq. (1) in the PDF. L1, not I-JEPA’s L2 — they say L1 was more stable on video.
-
-04
-
-#### You
-
-Later, without retraining your eyes, you can both name the action (Kinetics) and tell pushing from pulling (SSv2), and even recognise a still (ImageNet).
-
-#### The paper
-
-**Frozen backbone** + attentive probe. Figure 1’s whole point: one encoder, motion *and* appearance, no end-to-end fine-tune required to make the claim.
+> [!example] Step 04 — You
+> **You:** Later, without retraining your eyes, you can both name the action (Kinetics) and tell pushing from pulling (SSv2), and even recognise a still (ImageNet).
+>
+> **The paper:** Frozen backbone + attentive probe. Figure 1’s whole point: one encoder, motion and appearance, no end-to-end fine-tune required to make the claim.
 
 The mapping *is* the method: mask a tube, predict $E(y)$, evaluate the frozen encoder. A video MAE can look sharp and still lose SSv2, because the loss rewarded pixel texture instead of motion in $E(\cdot)$.
 
@@ -144,21 +137,15 @@ No robot. No LLM alignment. No 1M-hour dataset yet. Not “beats every video fou
 
 ## The engineering tension
 
-#### Video MAE
+| Alternative | Representation and consequence |
+|---|---|
+| **Video MAE** | Video MAE Reconstruct masked RGB tubes. Need long schedules. Frozen probe sees a texture specialist. SSv2 (push vs pull) suffers. |
+| **V-JEPA** | V-JEPA Reconstruct masked features . Shorter schedule. Frozen backbone keeps motion. SSv2 72.2 with ViT-H/16, still 81.9 on K400. |
 
-Reconstruct masked RGB tubes. Need long schedules. Frozen probe sees a texture specialist. SSv2 (push vs pull) suffers.
-
-#### V-JEPA
-
-Reconstruct masked *features*. Shorter schedule. Frozen backbone keeps motion. SSv2 72.2 with ViT-H/16, still 81.9 on K400.
-
-#### Frozen DINOv2 on video
-
-Excellent “what.” Weak “how it moved.” Kinetics can be solved as a bag of objects. SSv2 cannot.
-
-#### Train on video, predict features
-
-One encoder for both axes in Figure 1. That is why they forbid a pretrained image encoder in the abstract.
+| Alternative | Representation and consequence |
+|---|---|
+| **Frozen DINOv2 on video** | Frozen DINOv2 on video Excellent “what.” Weak “how it moved.” Kinetics can be solved as a bag of objects. SSv2 cannot. |
+| **Train on video, predict features** | Train on video, predict features One encoder for both axes in Figure 1. That is why they forbid a pretrained image encoder in the abstract. |
 
 ## Prerequisites
 
@@ -178,32 +165,51 @@ One encoder for both axes in Figure 1. That is why they forbid a pretrained imag
 
    If you only compare fine-tunes, pixel models look closer. The paper’s claim is the frozen column.
 
-Prerequisite: attention, not a V-JEPA recap. The video ViT is this mechanism on tube tokens.
+> [!video] 3Blue1Brown — Attention in transformers
+> [Watch video](https://www.youtube.com/watch?v=eMlx5fFNoYc)
+>
+> Prerequisite: attention, not a V-JEPA recap. The video ViT is this mechanism on tube tokens.
 
-World-model intuition. V-JEPA is still only the encoder+predictor, not the actor. The actor arrives in V-JEPA 2-AC.
+> [!video] World Models explained
+> [Watch video](https://www.youtube.com/watch?v=b1roEd6liWI)
+>
+> World-model intuition. V-JEPA is still only the encoder+predictor, not the actor. The actor arrives in V-JEPA 2-AC.
 
 ## Knowledge graph
 
+```text
 I-JEPA (images)
-│
-├─ VideoMAE tokenisation (tubes)
-├─ BYOL EMA + L1
-└─ 2M unlabeled clips
-│
-▼
-V-JEPA
-├─ frozen K400 / SSv2 / IN1K
-└─ predictor as primitive dynamics
-│
-▼
-V-JEPA 2I-JEPA
-VideoMAE tubes↓L1 + EMA
-multi-block tubes
-frozen probe↓V-JEPA (this paper)
+   │
+   ├─ VideoMAE tokenisation (tubes)
+   ├─ BYOL EMA + L1
+   └─ 2M unlabeled clips
+          │
+          ▼
+       V-JEPA
+          ├─ frozen K400 / SSv2 / IN1K
+          └─ predictor as primitive dynamics
+                │
+                ▼
+             V-JEPA 2
+```
+
+> [!graph] Concept flow
+> **I-JEPA · VideoMAE tubes**
+> ↓
+> **L1 + EMA · multi-block tubes · frozen probe**
+> ↓
+> **V-JEPA (this paper)**
 
 ## Architecture
 
-Clip → space–time tokens2M public videos↓ mask tubes y, keep context xE\_θ(x)Ē\_θ(y) EMA, sg↓ z = ΔyP\_φ(E(x), z)↓ L1frozen E\_θ → K400 / SSv2 / IN1K
+> [!flow] Architecture / data flow
+> **Clip → space–time tokens** — 2M public videos
+> ↓ mask tubes y, keep context x
+> **E_θ(x)** + **Ē_θ(y) EMA, sg**
+> ↓ z = Δy
+> **P_φ(E(x), z)**
+> ↓ L1
+> **frozen E_θ → K400 / SSv2 / IN1K**
 
 ## Results, honestly
 
@@ -228,7 +234,7 @@ Take 16 frames at 224². Tube tokens $2\times 16\times 16$ pixels → about $8\t
 
 ## Study plan
 
-Video: World Models explained — https://www.youtube.com/embed/b1roEd6liWI
+80 minutes: coffee case (10) → Eq. (1) and why L1+EMA (15) → Figure 1 scatter (10) → abstract triple + frozen vs fine-tune (20) → masking samples (10) → [[Papers/V-JEPA 2|V-JEPA 2]] planning teaser (15).
 
 ## Primary sources
 

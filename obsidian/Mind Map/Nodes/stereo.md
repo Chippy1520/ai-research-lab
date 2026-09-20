@@ -9,32 +9,37 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "perception", "concept"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: []
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Stereo / multi-view
 
-Two or more views → depth/pose via correspondence + geometry. COLMAP, DUSt3R, VGGT are learned or classical versions.
+> [!concept] Concept · Perception · Layer 3
+> Two or more views → depth/pose via correspondence + geometry. COLMAP, DUSt3R, VGGT are learned or classical versions.
+>
+> **Why it belongs —** The geometry VGGT is allowed to skip — you should still know it.
 
-> **Why it belongs**
-> The geometry VGGT is allowed to skip — you should still know it.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/geom-3d|↑ Geometry & 3D]]
 
-- [[Mind Map/Nodes/geom-3d|Geometry & 3D]]
+> [!outgoing] Outgoing relationships
+> - **learned →** [[Mind Map/Nodes/dust3r|DUSt3R]]
+> - **learned →** [[Mind Map/Nodes/vggt|VGGT]]
+> - **needs →** [[Mind Map/Nodes/camera-model|Camera model]]
 
-## Semantic connections
-
-- [[Mind Map/Nodes/camera-model|Camera model]] — plus
-- [[Mind Map/Nodes/camera-model|Camera model]] — needs
-- [[Mind Map/Nodes/dust3r|DUSt3R]] — learned
-- [[Mind Map/Nodes/geom-3d|Geometry & 3D]] — contains
-- [[Mind Map/Nodes/vggt|VGGT]] — learned
+> [!incoming] Incoming relationships
+> - **← plus —** [[Mind Map/Nodes/camera-model|Camera model]]
 
 ## Primary resources
 
 - **Video:** [Shree Nayar — Simple stereo](https://www.youtube.com/watch?v=hUVyDabn1Mg)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#stereo`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=stereo
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#stereo`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=stereo)

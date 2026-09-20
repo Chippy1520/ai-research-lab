@@ -9,37 +9,42 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "policy", "paper"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: []
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Skild S1
 
-Skild AI foundation model: long-horizon tasks from a single video prompt, in-context, no weight update. Company-reported ~66% per-step vs 9% baseline; trained with NVIDIA Isaac Lab / Cosmos. Cross-embodiment is the pitch.
+> [!concept] Paper · Policy · Layer 3
+> Skild AI foundation model: long-horizon tasks from a single video prompt, in-context, no weight update. Company-reported ~66% per-step vs 9% baseline; trained with NVIDIA Isaac Lab / Cosmos. Cross-embodiment is the pitch.
+>
+> **Why it belongs —** Same 2026 one-shot cluster as GEN-1.5, different lab. Compare claims, don't merge them.
 
-> **Why it belongs**
-> Same 2026 one-shot cluster as GEN-1.5, different lab. Compare claims, don't merge them.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/robot-fm|↑ Robot foundation models]]
 
-- [[Mind Map/Nodes/robot-fm|Robot foundation models]]
+> [!outgoing] Outgoing relationships
+> - **claims →** [[Mind Map/Nodes/cross-embod|Cross-embodiment]]
+> - **from →** [[Mind Map/Nodes/skild-ai|Skild AI]]
+> - **trained with →** [[Mind Map/Nodes/isaac|Isaac Lab / Sim]]
+> - **uses →** [[Mind Map/Nodes/cosmos|NVIDIA Cosmos]]
+> - **uses →** [[Mind Map/Nodes/transformers|Transformers]]
 
-## Semantic connections
-
-- [[Mind Map/Nodes/cross-embod|Cross-embodiment]] — claims
-- [[Mind Map/Nodes/isaac|Isaac Lab / Sim]] — trained-with
-- [[Mind Map/Nodes/cosmos|NVIDIA Cosmos]] — uses
-- [[Mind Map/Nodes/one-shot|One-shot physical prompting]] — claimed-by
-- [[Mind Map/Nodes/policy|Policies / VLA]] — includes
-- [[Mind Map/Nodes/robot-fm|Robot foundation models]] — contains
-- [[Mind Map/Nodes/skild-ai|Skild AI]] — from
-- [[Mind Map/Nodes/skild-ai|Skild AI]] — ships
-- [[Mind Map/Nodes/transformers|Transformers]] — uses
+> [!incoming] Incoming relationships
+> - **← claimed by —** [[Mind Map/Nodes/one-shot|One-shot physical prompting]]
+> - **← includes —** [[Mind Map/Nodes/policy|Policies / VLA]]
+> - **← ships —** [[Mind Map/Nodes/skild-ai|Skild AI]]
 
 ## Primary resources
 
 - **Video:** [Skild — Introducing S1](https://www.youtube.com/watch?v=hr39FlEiCcQ)
 - **News:** [S1 on NVIDIA infra (Sep 2026)](https://iottechnews.com/news/skild-trains-s1-robot-physical-ai-model-on-nvidia-infrastructure/)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#skild-s1`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=skild-s1
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#skild-s1`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=skild-s1)

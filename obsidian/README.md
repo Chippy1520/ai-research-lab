@@ -2,6 +2,7 @@
 generated_by: "build_obsidian_vault.py"
 type: "documentation"
 tags: ["obsidian", "maintenance"]
+cssclasses: ["research-note", "documentation-note"]
 ---
 # Obsidian research vault
 
@@ -9,13 +10,21 @@ Open this **`obsidian/` directory** as an Obsidian vault. Start at `Home.md`.
 
 ## Install the reading tools
 
-The vault uses a compatibility-pinned Minimal theme plus Style Settings, Minimal Theme Settings, and Homepage:
+The vault uses a compatibility-pinned Minimal theme and a deliberately small plugin stack:
+
+- **Style Settings + Minimal Theme Settings + Homepage** — editorial presentation and a stable landing page
+- **Dataview + Omnisearch + Advanced Tables** — structured indexes, retrieval, and comfortable Markdown authoring
+- **Templater + Voice Scribe** — lecture templates and local, on-device Whisper transcription
 
 ```bash
 python scripts/install_obsidian_reading_tools.py
 ```
 
-Third-party theme/plugin code is installed locally under `.obsidian/` and ignored by Git. The tracked configuration enables the plugins and opens `Home.md` in Reading View.
+Third-party theme/plugin code is installed locally under `.obsidian/` and ignored by Git. The tracked configuration enables the plugins and opens `Home.md` in Reading View. Release assets are version-pinned and checksum-verified by the installer.
+
+## Lecture capture
+
+Start at `Lectures/Lecture Notes.md`. Templater is preconfigured to use `_Templates/`; Voice Scribe downloads its Whisper model on first use and then transcribes locally. Use the lecture template for capture, the concept template for reusable ideas, and deliberate wikilinks to build the graph. Recording permission remains the user's responsibility.
 
 ## Rebuild
 

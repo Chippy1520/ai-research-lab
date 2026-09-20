@@ -7,20 +7,33 @@ source: "site/papers-vjepa2.html"
 live_url: "https://chippy1520.github.io/ai-research-lab/papers-vjepa2.html"
 tags: ["paper", "reading-guide"]
 related_nodes: ["representation", "world-models"]
+related_curriculum: ["Curriculum/Lessons/Day 07 - Information Theory & Representation.md", "Curriculum/Lessons/Day 26 - Self-Supervised Visual Representation Learning.md", "Curriculum/Lessons/Day 42 - World Models & Latent Imagination.md", "Curriculum/Lessons/Day 46 - Causal Representation Learning & Invariance.md"]
+cssclasses: ["research-note", "paper-note"]
 ---
+
+[[Home|Research Lab]]  /  [[Papers/Paper Guides|Paper Guides]]
 
 # V-JEPA 2: watch a million hours, then plan a grasp in latent space
 
+> [!paper] Research reading guide
 > Complete reading guide for V-JEPA 2 (Assran et al., arXiv 2506.09985): 1M-hour video JEPA, action-conditioned world model, zero-shot Franka planning.
+>
+> **Concepts:** 2 · **Related curriculum notes:** 4
 
-- **Canonical guide:** `site/papers-vjepa2.html`
-- **Live guide:** https://chippy1520.github.io/ai-research-lab/papers-vjepa2.html
-- **Companion source:** `papers/vjepa2.md`
+> [!concepts] Connected concepts
+> - [[Mind Map/Nodes/representation|Self-supervised representation]]
+> - [[Mind Map/Nodes/world-models|World models]]
 
-## Connected concepts
+> [!study] Continue in the curriculum
+> - [[Curriculum/Lessons/Day 07 - Information Theory & Representation|Day 07 - Information Theory & Representation]]
+> - [[Curriculum/Lessons/Day 26 - Self-Supervised Visual Representation Learning|Day 26 - Self-Supervised Visual Representation Learning]]
+> - [[Curriculum/Lessons/Day 42 - World Models & Latent Imagination|Day 42 - World Models & Latent Imagination]]
+> - [[Curriculum/Lessons/Day 46 - Causal Representation Learning & Invariance|Day 46 - Causal Representation Learning & Invariance]]
 
-- [[Mind Map/Nodes/representation|representation]]
-- [[Mind Map/Nodes/world-models|world-models]]
+> [!source] Canonical and public versions
+> - Repository guide: `site/papers-vjepa2.html`
+> - [Open the published HTML guide](https://chippy1520.github.io/ai-research-lab/papers-vjepa2.html)
+> - Companion source: `papers/vjepa2.md`
 
 ---
 
@@ -28,45 +41,25 @@ related_nodes: ["representation", "world-models"]
 
 Stage 1: action-free JEPA on >1 million hours of internet video — the encoder $E$ learns $P(E(x),z)\approx E(y)$ with no robot. Stage 2: freeze $E$, train a 300M action-conditioned predictor on <62 hours of unlabeled Droid. At test: image goal $g$, sample action chunks, roll the latents, pick the chunk whose predicted embedding is closest to $E(g)$, execute $a\_0$ (MPC). No task reward, no data from the test Franka.
 
-01
+> [!example] Step 01 — You
+> **You:** Years of watching: objects persist, hands grasp, liquids pour. You were not labelled.
+>
+> **The paper:** Stage 1 — V-JEPA 2. Action-free mask-denoising JEPA on >1M hours of internet video plus images. Encoder up to ~1B parameters. Same game as V-JEPA, scaled.
 
-#### You
+> [!example] Step 02 — You
+> **You:** A weekend of actually moving: if I send this joint command, the scene changes like that .
+>
+> **The paper:** Stage 2 — V-JEPA 2-AC. Freeze $E$. Train a 300M block-causal transformer that predicts the next frame’s embedding given past embeddings and the action. <62 hours of unlabeled Droid robot video. No reward.
 
-Years of watching: objects persist, hands grasp, liquids pour. You were not labelled.
+> [!example] Step 03 — You
+> **You:** Someone shows a goal photo. You mentally try reaches until the imagined view looks like the photo.
+>
+> **The paper:** Planning. Sample action sequences, roll out $\hat{s}_{t+1}=P(\hat{s}_t, a_t)$ in latent space, score distance to $E(\text{goal image})$, pick the best first action (MPC). Figure of the loop: vjepa2-mpc.png .
 
-#### The paper
-
-**Stage 1 — V-JEPA 2.** Action-free mask-denoising JEPA on >1M hours of internet video plus images. Encoder up to ~1B parameters. Same game as V-JEPA, scaled.
-
-02
-
-#### You
-
-A weekend of actually moving: if I send this joint command, the scene changes like *that*.
-
-#### The paper
-
-**Stage 2 — V-JEPA 2-AC.** Freeze $E$. Train a 300M block-causal transformer that predicts the *next frame’s embedding* given past embeddings and the action. <62 hours of unlabeled Droid robot video. No reward.
-
-03
-
-#### You
-
-Someone shows a goal photo. You mentally try reaches until the imagined view looks like the photo.
-
-#### The paper
-
-**Planning.** Sample action sequences, roll out $\hat{s}\_{t+1}=P(\hat{s}\_t, a\_t)$ in latent space, score distance to $E(\text{goal image})$, pick the best first action (MPC). Figure of the loop: `vjepa2-mpc.png`.
-
-04
-
-#### You
-
-You do this in a new building, with a mug the weekend never contained, without a new round of practice.
-
-#### The paper
-
-Zero-shot Franka, two labs, novel objects. No data from those robots, no task-specific training. Prehensile grasp / pick-and-place from a monocular RGB camera.
+> [!example] Step 04 — You
+> **You:** You do this in a new building, with a mug the weekend never contained, without a new round of practice.
+>
+> **The paper:** Zero-shot Franka, two labs, novel objects. No data from those robots, no task-specific training. Prehensile grasp / pick-and-place from a monocular RGB camera.
 
 The mapping *is* the two-stage training: watch the world at internet scale, then fit a cheap action-conditioned predictor on a little interaction, then plan. That is LeCun 2022’s actor, finally on hardware — with an image goal instead of his intrinsic cost module.
 
@@ -172,21 +165,15 @@ Not a VLA (no language in the control loop). Not reward-free in LeCun’s intrin
 
 ## The engineering tension
 
-#### Train a world model only on robot hours
+| Alternative | Representation and consequence |
+|---|---|
+| **Train a world model only on robot hours** | Train a world model only on robot hours Droid is tens of hours, not a childhood. The visual system never sees a mug that was not in the lab. Planning is then overfitting to that room. |
+| **Internet video, then a little Droid** | Internet video, then a little Droid $E$ already knows objects and motion. AC only has to learn how Franka-like actions move that latent. 62 hours become plausible. |
 
-Droid is tens of hours, not a childhood. The visual system never sees a mug that was not in the lab. Planning is then overfitting to that room.
-
-#### Internet video, then a little Droid
-
-$E$ already knows objects and motion. AC only has to learn how Franka-like actions move that latent. 62 hours become plausible.
-
-#### Plan by generating video
-
-Each candidate action sequence is a video. Too slow for MPC at control rate. Also wastes capacity on unneeded pixels.
-
-#### Plan in $E(\cdot)$
-
-Rollouts are transformer steps on embeddings. Goal score is a latent distance. That is why a 300M $P$ can sit in a control loop.
+| Alternative | Representation and consequence |
+|---|---|
+| **Plan by generating video** | Plan by generating video Each candidate action sequence is a video. Too slow for MPC at control rate. Also wastes capacity on unneeded pixels. |
+| **Plan in $E(\cdot)$** | Plan in $E(\cdot)$ Rollouts are transformer steps on embeddings. Goal score is a latent distance. That is why a 300M $P$ can sit in a control loop. |
 
 ## Prerequisites
 
@@ -206,34 +193,57 @@ Rollouts are transformer steps on embeddings. Goal score is a latent distance. T
 
    Ha & Schmidhuber: learn $s\_{t+1}=f(s\_t,a\_t)$, plan inside it. JEPA removes the pixel decoder.
 
-Prerequisite: imagine-then-act. V-JEPA 2-AC is that loop with $f$ in embedding space.
+> [!video] World Models explained
+> [Watch video](https://www.youtube.com/watch?v=b1roEd6liWI)
+>
+> Prerequisite: imagine-then-act. V-JEPA 2-AC is that loop with $f$ in embedding space.
 
-The AC predictor is a block-causal transformer. This is the mechanism, not a recap of the paper.
+> [!video] 3Blue1Brown — Transformers
+> [Watch video](https://www.youtube.com/watch?v=wjZofJX0v4M)
+>
+> The AC predictor is a block-causal transformer. This is the mechanism, not a recap of the paper.
 
 ## Knowledge graph
 
+```text
 LeCun JEPA 2022
-│
-├─ I-JEPA → V-JEPA
-│ │
-│ ▼
-│ V-JEPA 2 encoder (1M hours)
-│ │
-│ ├─ probes (SSv2, EK100)
-│ ├─ + LLM (VideoQA)
-│ └─ freeze
-│ │
-│ ▼
-│ V-JEPA 2-AC (62 h Droid)
-│ │
-│ ▼
-│ MPC on Franka
-└─ Ha world models / MPCV-JEPA1M h video↓V-JEPA 2 encoder↓probes / VQA
-AC predictor↓zero-shot Franka MPC
+   │
+   ├─ I-JEPA → V-JEPA
+   │         │
+   │         ▼
+   │      V-JEPA 2 encoder  (1M hours)
+   │         │
+   │         ├─ probes (SSv2, EK100)
+   │         ├─ + LLM  (VideoQA)
+   │         └─ freeze
+   │              │
+   │              ▼
+   │         V-JEPA 2-AC  (62 h Droid)
+   │              │
+   │              ▼
+   │         MPC on Franka
+   └─ Ha world models / MPC
+```
+
+> [!graph] Concept flow
+> **V-JEPA · 1M h video**
+> ↓
+> **V-JEPA 2 encoder**
+> ↓
+> **probes / VQA · AC predictor**
+> ↓
+> **zero-shot Franka MPC**
 
 ## Two-stage architecture
 
-Internet video >1M haction-free↓ mask-denoise JEPAEncoder E up to 1Bfrozen after stage 1↓Attentive probes+ 8B LLMAC predictor 300Mblock-causal, Droid 62 h↓ image goalMPC → Franka
+> [!flow] Architecture / data flow
+> **Internet video >1M h** — action-free
+> ↓ mask-denoise JEPA
+> **Encoder E up to 1B** — frozen after stage 1
+> ↓
+> **Attentive probes** + **+ 8B LLM** + **AC predictor 300M** — block-causal, Droid 62 h
+> ↓ image goal
+> **MPC → Franka**
 
 ## Planning / MPC
 
@@ -266,7 +276,7 @@ Stage 1: 16-frame clip, tube tokens, mask, L1 in $E$, as V-JEPA, but the data lo
 
 ## Study plan
 
-Video: 3Blue1Brown — Transformers — https://www.youtube.com/embed/wjZofJX0v4M
+90 minutes: Franka mug case (10) → Figure 1 flowchart until the three branches are distinct (10) → §2 scaling vs V-JEPA (15) → §3 AC + MPC diagram (20) → §4 limitations with the success table (15) → abstract numbers for SSv2 / EK100 / VQA, each with protocol (15) → skim [[Papers/JEPA|LeCun 2022]] six-module list and mark which boxes are still empty (5).
 
 ## Primary sources
 

@@ -7,8 +7,10 @@ be rebuilt safely; hand-written notes without that marker are left untouched.
 """
 from __future__ import annotations
 
+import ast
 import json
 import re
+import textwrap
 from collections import defaultdict
 from pathlib import Path
 from typing import Any, Iterable
@@ -49,7 +51,16 @@ def yaml_scalar(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False)
 
 
+def normalize_tag(value: Any) -> str:
+    tag = re.sub(r"[^a-z0-9]+", "-", str(value).strip().lower()).strip("-")
+    return tag or "untagged"
+
+
 def frontmatter(**fields: Any) -> str:
+    if "tags" in fields:
+        fields["tags"] = list(dict.fromkeys(normalize_tag(tag) for tag in fields["tags"]))
+    if "aliases" in fields:
+        fields["aliases"] = list(dict.fromkeys(fields["aliases"]))
     ordered = {"generated_by": GENERATOR, **fields}
     lines = ["---"]
     for key, value in ordered.items():
@@ -68,8 +79,18 @@ def safe_filename(name: str) -> str:
 def write(relative: str, content: str) -> Path:
     path = VAULT / relative
     path.parent.mkdir(parents=True, exist_ok=True)
-    normalized = content.replace("\r\n", "\n").rstrip() + "\n"
+    normalized = "\n".join(content.splitlines()).rstrip() + "\n"
     path.write_text(normalized, encoding="utf-8")
+    return path
+
+
+def write_template(relative: str, content: str) -> Path:
+    """Write a managed Templater source without marking created user notes as generated."""
+    marker = f'<%* /* generated_by: "{GENERATOR}" */ -%>\n'
+    path = VAULT / relative
+    path.parent.mkdir(parents=True, exist_ok=True)
+    normalized = "\n".join(content.splitlines()).rstrip() + "\n"
+    path.write_text(marker + normalized, encoding="utf-8")
     return path
 
 
@@ -89,6 +110,47 @@ def markdown_link(title: str, url: str) -> str:
 
 def table_cell(value: Any) -> str:
     return str(value if value is not None else "—").replace("|", "\\|").replace("\n", " ")
+
+
+def nav(section_path: str, section_label: str) -> str:
+    """Compact breadcrumb shared by every generated note family."""
+    return f"{wiki('Home.md', 'Research Lab')}  /  {wiki(section_path, section_label)}"
+
+
+def callout(kind: str, title: str, body: Iterable[str]) -> list[str]:
+    """Render a native Obsidian callout without coupling notes to a plugin."""
+    lines = [f"> [!{kind}] {title}"]
+    rows = list(body)
+    if not rows:
+        return lines
+    for row in rows:
+        lines.append(">" if not row else f"> {row}")
+    return lines
+
+
+def link_callout(title: str, items: Iterable[tuple[str, str]], kind: str = "links") -> list[str]:
+    rows = [f"- {wiki(path, label)}" for path, label in items]
+    return callout(kind, title, rows or ["No linked records yet."])
+
+
+def normalized_text(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", value.lower()).strip()
+
+
+def related_node_ids(text: str, nodes: list[dict[str, Any]], *, roots: Iterable[str] = (), limit: int = 8) -> list[str]:
+    """Match explicit concept names, then add stable domain roots."""
+    haystack = f" {normalized_text(text)} "
+    scored: list[tuple[int, str]] = []
+    for node in nodes:
+        candidates = {normalized_text(node["label"]), normalized_text(node["id"])}
+        hits = [candidate for candidate in candidates if len(candidate) >= 3 and f" {candidate} " in haystack]
+        if hits:
+            scored.append((max(len(hit) for hit in hits), node["id"]))
+    ordered = [node_id for _, node_id in sorted(scored, key=lambda item: (-item[0], item[1]))]
+    for node_id in roots:
+        if node_id not in ordered:
+            ordered.append(node_id)
+    return ordered[:limit]
 
 
 def clean_generated_files() -> None:
@@ -126,7 +188,25 @@ def build_settings() -> None:
             "canvas": True, "footnotes": True, "properties": True, "bookmarks": True,
             "bases": True, "webviewer": False,
         },
-        ".obsidian/community-plugins.json": ["obsidian-style-settings", "obsidian-minimal-settings", "homepage"],
+        ".obsidian/community-plugins.json": [
+            "obsidian-style-settings", "obsidian-minimal-settings", "homepage",
+            "dataview", "omnisearch", "table-editor-obsidian",
+            "templater-obsidian", "voice-scribe",
+        ],
+        ".obsidian/plugins/dataview/data.json": {
+            "enableDataviewJs": False, "enableInlineDataview": True,
+            "enableInlineDataviewJs": False, "refreshEnabled": True,
+        },
+        ".obsidian/plugins/templater-obsidian/data.json": {
+            "data_version": 2, "command_timeout": 5, "templates_folder": "_Templates",
+            "templates_pairs": [], "trigger_on_file_creation_mode": "none",
+            "auto_jump_to_cursor": False, "jump_to_cursor_after_file_name": False,
+            "shell_path": "", "user_scripts_folder": "", "folder_templates": [],
+            "file_templates": [], "syntax_highlighting": True,
+            "syntax_highlighting_mobile": False, "enabled_templates_hotkeys": [],
+            "startup_templates": [], "intellisense_render": "1",
+            "ignore_folders_on_creation": [],
+        },
         ".obsidian/plugins/homepage/data.json": {
             "version": 4,
             "homepages": {
@@ -151,6 +231,7 @@ def build_settings() -> None:
                 {"query": "path:Contacts", "color": {"a": 1, "rgb": 11043118}},
                 {"query": "path:Organizations", "color": {"a": 1, "rgb": 11369038}},
                 {"query": "path:Reports", "color": {"a": 1, "rgb": 9470064}},
+                {"query": "path:Lectures", "color": {"a": 1, "rgb": 6904466}},
             ],
             "collapse-display": False, "showArrow": False, "textFadeMultiplier": 0,
             "nodeSizeMultiplier": 1.15, "lineSizeMultiplier": 0.85,
@@ -266,6 +347,107 @@ settings:
 .markdown-rendered .callout[data-callout="important"] { --callout-color: 78, 109, 90; }
 .markdown-rendered .callout[data-callout="tip"] { --callout-color: 174, 121, 64; }
 .markdown-rendered .callout-title { font-family: Georgia, "Times New Roman", serif; }
+
+/* A semantic visual language shared by every generated note family. */
+.callout[data-callout="home"] { --callout-color: 45, 74, 62; --callout-icon: lucide-library-big; }
+.callout[data-callout="graph"] { --callout-color: 65, 104, 125; --callout-icon: lucide-orbit; }
+.callout[data-callout="concept"] { --callout-color: 78, 109, 90; --callout-icon: lucide-network; }
+.callout[data-callout="paper"] { --callout-color: 45, 112, 100; --callout-icon: lucide-book-open-text; }
+.callout[data-callout="curriculum"] { --callout-color: 204, 153, 78; --callout-icon: lucide-graduation-cap; }
+.callout[data-callout="person"] { --callout-color: 168, 130, 174; --callout-icon: lucide-user-round; }
+.callout[data-callout="organization"] { --callout-color: 173, 119, 78; --callout-icon: lucide-building-2; }
+.callout[data-callout="intelligence"],
+.callout[data-callout="report"] { --callout-color: 132, 104, 144; --callout-icon: lucide-radar; }
+.callout[data-callout="jobs"] { --callout-color: 145, 112, 48; --callout-icon: lucide-briefcase-business; }
+.callout[data-callout="signal"],
+.callout[data-callout="skill"] { --callout-color: 174, 121, 64; --callout-icon: lucide-activity; }
+.callout[data-callout="evidence"] { --callout-color: 55, 112, 108; --callout-icon: lucide-badge-check; }
+.callout[data-callout="source"],
+.callout[data-callout="method"] { --callout-color: 102, 104, 99; --callout-icon: lucide-file-check-2; }
+.callout[data-callout="privacy"] { --callout-color: 137, 103, 83; --callout-icon: lucide-shield; }
+.callout[data-callout="current"] { --callout-color: 174, 121, 64; --callout-icon: lucide-map-pin-check; }
+.callout[data-callout="profile"] { --callout-color: 88, 108, 145; --callout-icon: lucide-contact-round; }
+.callout[data-callout="lecture"] { --callout-color: 105, 88, 146; --callout-icon: lucide-presentation; }
+.callout[data-callout="recording"] { --callout-color: 164, 78, 92; --callout-icon: lucide-audio-lines; }
+.callout[data-callout="question"] { --callout-color: 174, 121, 64; --callout-icon: lucide-circle-help; }
+.callout[data-callout="summary"] { --callout-color: 55, 112, 108; --callout-icon: lucide-notebook-tabs; }
+.callout[data-callout="hierarchy"] { --callout-color: 88, 113, 91; --callout-icon: lucide-git-branch; }
+.callout[data-callout="outgoing"] { --callout-color: 62, 111, 142; --callout-icon: lucide-arrow-up-right; }
+.callout[data-callout="incoming"] { --callout-color: 132, 104, 144; --callout-icon: lucide-arrow-down-left; }
+.callout[data-callout="sequence"],
+.callout[data-callout="prerequisite"] { --callout-color: 105, 117, 132; --callout-icon: lucide-route; }
+
+.callout[data-callout="map"],
+.callout[data-callout="links"],
+.callout[data-callout="study"],
+.callout[data-callout="concepts"],
+.callout[data-callout="library"],
+.callout[data-callout="people"],
+.callout[data-callout="organizations"],
+.callout[data-callout="desks"],
+.callout[data-callout="reports"],
+.callout[data-callout="sequence"],
+.callout[data-callout="prerequisite"],
+.callout[data-callout="hierarchy"] {
+  --callout-color: 78, 109, 90;
+  --callout-icon: lucide-layout-grid-2;
+  background: color-mix(in srgb, rgb(var(--callout-color)) 5%, var(--background-primary));
+}
+.callout[data-callout="map"] .callout-content > ul,
+.callout[data-callout="links"] .callout-content > ul,
+.callout[data-callout="study"] .callout-content > ul,
+.callout[data-callout="concepts"] .callout-content > ul,
+.callout[data-callout="library"] .callout-content > ul,
+.callout[data-callout="people"] .callout-content > ul,
+.callout[data-callout="organizations"] .callout-content > ul,
+.callout[data-callout="desks"] .callout-content > ul,
+.callout[data-callout="reports"] .callout-content > ul,
+.callout[data-callout="sequence"] .callout-content > ul,
+.callout[data-callout="prerequisite"] .callout-content > ul,
+.callout[data-callout="hierarchy"] .callout-content > ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: .55rem;
+  list-style: none;
+  padding-left: 0;
+}
+.callout[data-callout="map"] .callout-content > ul > li,
+.callout[data-callout="links"] .callout-content > ul > li,
+.callout[data-callout="study"] .callout-content > ul > li,
+.callout[data-callout="concepts"] .callout-content > ul > li,
+.callout[data-callout="library"] .callout-content > ul > li,
+.callout[data-callout="people"] .callout-content > ul > li,
+.callout[data-callout="organizations"] .callout-content > ul > li,
+.callout[data-callout="desks"] .callout-content > ul > li,
+.callout[data-callout="reports"] .callout-content > ul > li,
+.callout[data-callout="sequence"] .callout-content > ul > li,
+.callout[data-callout="prerequisite"] .callout-content > ul > li,
+.callout[data-callout="hierarchy"] .callout-content > ul > li {
+  margin: 0;
+  padding: .65rem .75rem;
+  border: 1px solid color-mix(in srgb, rgb(var(--callout-color)) 22%, var(--background-modifier-border));
+  border-radius: 8px;
+  background: color-mix(in srgb, rgb(var(--callout-color)) 4%, var(--background-primary));
+}
+.research-note .callout { border: 1px solid color-mix(in srgb, rgb(var(--callout-color)) 20%, transparent); }
+.research-note .callout-title { font-size: 1.02em; letter-spacing: .01em; }
+.research-note .callout-content > :last-child { margin-bottom: 0; }
+.paper-note .markdown-rendered img {
+  display: block;
+  max-height: 34rem;
+  margin: 1.4rem auto .6rem;
+  box-shadow: 0 8px 26px rgb(40 35 26 / 9%);
+}
+.paper-note .markdown-rendered h2 { margin-top: 3.2rem; }
+.curriculum-hub .markdown-rendered table,
+.jobs-note .markdown-rendered table { font-size: .92em; }
+.home-note .markdown-rendered table td:first-child { font-weight: 650; color: var(--research-accent); }
+.report-note .markdown-rendered h2 { border-bottom: 1px solid var(--background-modifier-border); padding-bottom: .25em; }
+@media (max-width: 700px) {
+  :root { --research-reading-width: 100%; }
+  .callout .callout-content > ul { grid-template-columns: 1fr !important; }
+  .markdown-rendered table { font-size: .88em; }
+}
 """
     path = VAULT / ".obsidian/snippets/research-lab.css"
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -281,13 +463,22 @@ def build_mindmap() -> dict[str, str]:
     nodes = data["nodes"]
     by_id = {node["id"]: node for node in nodes}
     children: dict[str, list[dict[str, Any]]] = defaultdict(list)
-    neighbors: dict[str, list[tuple[str, str]]] = defaultdict(list)
+    outgoing: dict[str, list[tuple[str, str]]] = defaultdict(list)
+    incoming: dict[str, list[tuple[str, str]]] = defaultdict(list)
     for node in nodes:
         if node.get("parent"):
             children[node["parent"]].append(node)
     for edge in data["edges"]:
-        neighbors[edge["from"]].append((edge["to"], edge["rel"]))
-        neighbors[edge["to"]].append((edge["from"], edge["rel"]))
+        source_id, target_id, relation = edge["from"], edge["to"], edge["rel"]
+        # Parent/child membership already has an explicit hierarchy section. Do
+        # not duplicate the same structural edge as a semantic relationship.
+        if (
+            by_id.get(target_id, {}).get("parent") == source_id
+            or by_id.get(source_id, {}).get("parent") == target_id
+        ) and relation in {"contains", "includes"}:
+            continue
+        outgoing[source_id].append((target_id, relation))
+        incoming[target_id].append((source_id, relation))
 
     entities = load_json("intelligence/entities.json")
     orgs = {item["id"]: item for item in entities["organizations"]}
@@ -299,42 +490,86 @@ def build_mindmap() -> dict[str, str]:
     for item in entities["contributions"]:
         contributions[item["node_id"]].append(item)
 
-    paths: dict[str, str] = {}
+    paper_links: dict[str, list[tuple[str, str]]] = defaultdict(list)
+    for spec in PAPER_SPECS.values():
+        for node_id in spec["nodes"]:
+            paper_links[node_id].append((f"Papers/{spec['title']}.md", spec["title"]))
+
+    curriculum_links: dict[str, list[tuple[str, str]]] = defaultdict(list)
+    plan = load_json("curriculum_plan.json")
+    domain_roots = {
+        "Machine Learning": ("learning",),
+        "Computer Vision": ("perception",),
+        "Embodied AI & RL Robotics": ("policy", "systems"),
+    }
+    for lesson in plan["lessons"]:
+        day = int(lesson["day"])
+        title = f"Day {day:02d} - {safe_filename(lesson['topic'])}"
+        text = " ".join([lesson["topic"], *lesson.get("foundation_threads", [])])
+        related_ids = related_node_ids(text, nodes, roots=domain_roots.get(lesson["domain"], ()), limit=6)
+        for node_id in related_ids:
+            curriculum_links[node_id].append((f"Curriculum/Lessons/{title}.md", title))
+
+    paths = {node["id"]: node_path(node["id"]) for node in nodes}
     for node in nodes:
-        paths[node["id"]] = node_path(node["id"])
+        parent = node.get("parent")
+        hierarchy: list[tuple[str, str]] = []
+        if parent and parent in by_id:
+            hierarchy.append((node_path(parent), f"↑ {by_id[parent]['label']}"))
+        hierarchy.extend(
+            (node_path(child["id"]), f"↓ {child['label']}")
+            for child in sorted(children.get(node["id"], []), key=lambda item: item["label"].lower())
+        )
+        outbound = sorted(outgoing.get(node["id"], []), key=lambda item: (item[1], by_id[item[0]]["label"].lower()))
+        inbound = sorted(incoming.get(node["id"], []), key=lambda item: (item[1], by_id[item[0]]["label"].lower()))
+        evidence_links = [*paper_links.get(node["id"], []), *curriculum_links.get(node["id"], [])[:6]]
         lines = [
             frontmatter(
                 type="mindmap-node", aliases=[node["label"]], node_id=node["id"],
                 kind=node["kind"], domain=node["domain"], layer=node["layer"],
-                source="intelligence/mindmap.json", updated=data["updated"], tags=["mindmap", node["domain"], node["kind"]],
+                source="intelligence/mindmap.json", updated=data["updated"],
+                tags=["mindmap", node["domain"], node["kind"]],
+                cssclasses=["research-note", "concept-note"],
+                related_papers=[path for path, _ in paper_links.get(node["id"], [])],
+                related_curriculum=[path for path, _ in curriculum_links.get(node["id"], [])[:6]],
             ),
-            f"# {node['label']}", "", node.get("brief", "No brief recorded."), "", "> **Why it belongs**", f"> {node.get('why', 'No rationale recorded yet.')}", "",
+            nav("Mind Map/Embodied AI.md", "Knowledge Graph"), "",
+            f"# {node['label']}", "",
+            *callout(
+                "concept",
+                f"{node['kind'].replace('-', ' ').title()} · {node['domain'].replace('-', ' ').title()} · Layer {node['layer']}",
+                [node.get("brief", "No brief recorded."), "", f"**Why it belongs —** {node.get('why', 'No rationale recorded yet.')}"],
+            ), "",
+            "## Knowledge neighborhood", "",
+            *link_callout("Hierarchy", hierarchy, "hierarchy"), "",
         ]
-        parent = node.get("parent")
-        if parent and parent in by_id:
-            lines.extend(["## Parent", "", f"- {wiki(node_path(parent), by_id[parent]['label'])}", ""])
-        child_rows = sorted(children.get(node["id"], []), key=lambda item: item["label"].lower())
-        if child_rows:
-            lines.extend(["## Children", "", bullet_links((node_path(c["id"]), c["label"]) for c in child_rows), ""])
+        if outbound:
+            lines.extend(callout(
+                "outgoing", "Outgoing relationships",
+                [f"- **{relation.replace('-', ' ')} →** {wiki(node_path(other_id), by_id[other_id]['label'])}" for other_id, relation in outbound],
+            ))
+            lines.append("")
+        if inbound:
+            lines.extend(callout(
+                "incoming", "Incoming relationships",
+                [f"- **← {relation.replace('-', ' ')} —** {wiki(node_path(other_id), by_id[other_id]['label'])}" for other_id, relation in inbound],
+            ))
+            lines.append("")
+        if evidence_links:
+            lines.extend([*link_callout("Read and study", evidence_links, "study"), ""])
         if node.get("research_directions"):
             lines.extend(["## Research directions", "", *[f"- {item}" for item in node["research_directions"]], ""])
-        related = sorted(neighbors.get(node["id"], []), key=lambda item: by_id[item[0]]["label"].lower())
-        if related:
-            lines.extend(["## Semantic connections", ""])
-            for other_id, relation in related:
-                lines.append(f"- {wiki(node_path(other_id), by_id[other_id]['label'])} — {relation}")
-            lines.append("")
-        if associations.get(node["id"]) or contributions.get(node["id"]):
-            lines.extend(["## Verified public provenance", ""])
-            for item in associations.get(node["id"], []):
-                org = orgs[item["organization_id"]]
-                org_link = wiki(f"Organizations/{org['id']}.md", org["name"])
-                lines.append(f"- {org_link} — {item['relationship']} _(verified {item['verified_on']})_")
-            for item in contributions.get(node["id"], []):
-                person = people[item["person_id"]]
-                person_link = wiki(f"Contacts/{person['id']}.md", person["name"])
-                lines.append(f"- {person_link} — {item['relationship']} _(verified {item['verified_on']})_")
-            lines.append("")
+        provenance: list[str] = []
+        for item in associations.get(node["id"], []):
+            org = orgs[item["organization_id"]]
+            org_link = wiki(f"Organizations/{org['id']}.md", org["name"])
+            provenance.append(f"- {org_link} — {item['relationship']} _(verified {item['verified_on']})_")
+        for item in contributions.get(node["id"], []):
+            person = people[item["person_id"]]
+            person_link = wiki(f"Contacts/{person['id']}.md", person["name"])
+            provenance.append(f"- {person_link} — {item['relationship']} _(verified {item['verified_on']})_")
+        if provenance:
+            lines.extend([*callout("evidence", "Verified public provenance", provenance), ""])
         if node.get("resources"):
             lines.extend(["## Primary resources", ""])
             for resource in node["resources"]:
@@ -343,21 +578,32 @@ def build_mindmap() -> dict[str, str]:
                     url = f"{LIVE_ROOT}/{url.lstrip('/')}"
                 lines.append(f"- **{resource['type'].title()}:** {markdown_link(resource['title'], url)}")
             lines.append("")
-        lines.extend(["## Source", "", f"- Canonical record: `intelligence/mindmap.json#{node['id']}`", f"- Live graph: {LIVE_ROOT}/mindmap.html#node={node['id']}"])
+        live_graph_url = f"{LIVE_ROOT}/mindmap.html#node={node['id']}"
+        lines.extend(callout(
+            "source", "Source record",
+            [f"- Canonical: `intelligence/mindmap.json#{node['id']}`", f"- {markdown_link('Open the public graph', live_graph_url)}"],
+        ))
         write(paths[node["id"]], "\n".join(lines))
 
-    domains = sorted((n for n in nodes if n["layer"] == 1), key=lambda item: item["label"])
+    domains = sorted((node for node in nodes if node["layer"] == 1), key=lambda item: item["label"])
     overview = [
-        frontmatter(type="map-of-content", aliases=["Embodied AI Mind Map", "Embodied AI Knowledge Graph"], tags=["moc", "mindmap"], source="intelligence/mindmap.json"),
-        "# Embodied AI Knowledge Graph", "", data["scope"], "",
-        f"> [!abstract] Native graph", f"> **{len(nodes)} concepts** · **{len(data['edges'])} semantic relationships** · canonical data updated **{data['updated']}**", ">", "> Open **Graph View** from the left ribbon or command palette. Select any concept and use its local graph for a focused neighborhood.", "",
-        "## Branches", "", bullet_links((node_path(n["id"]), n["label"]) for n in domains), "",
-        "## How to read it", "",
-        "- Solid note links encode parent and child hierarchy.",
-        "- Each concept note lists selected semantic cross-links, people, organizations, and primary sources.",
-        "- Global Graph View shows the whole research system; Local Graph shows the neighborhood of the current note.",
-        "- Colors are assigned by research surface in `.obsidian/graph.json`.",
-        "- Canonical concepts remain in `intelligence/mindmap.json`; rebuild after source changes.", "",
+        frontmatter(
+            type="map-of-content", aliases=["Embodied AI Mind Map", "Embodied AI Knowledge Graph"],
+            tags=["moc", "mindmap"], source="intelligence/mindmap.json",
+            cssclasses=["research-note", "hub-note", "graph-hub"],
+        ),
+        nav("Mind Map/Embodied AI.md", "Knowledge Graph"), "",
+        "# Embodied AI Knowledge Graph", "",
+        *callout(
+            "graph", "The research system",
+            [data["scope"], "", f"**{len(nodes)} concepts** · **{len(data['edges'])} semantic relationships** · updated **{data['updated']}**"],
+        ), "",
+        *link_callout("Enter through a branch", ((node_path(node["id"]), node["label"]) for node in domains), "map"), "",
+        "## How to navigate", "",
+        "1. Open **Graph View** for the whole research system.",
+        "2. Open a concept's **Local Graph** for one- or two-hop context.",
+        "3. Follow **Read and study** to move from a concept into papers and curriculum.",
+        "4. Follow provenance links to the people and organizations behind the work.", "",
         "## Recent evolution", "",
     ]
     for item in reversed(data.get("changelog", [])[-10:]):
@@ -368,12 +614,125 @@ def build_mindmap() -> dict[str, str]:
 
 def prepare_article(article: Tag, paper_file_map: dict[str, str]) -> str:
     clone = BeautifulSoup(str(article), "html.parser")
-    for iframe in clone.find_all("iframe"):
+    blocks: dict[str, str] = {}
+
+    def text(element: Tag | None) -> str:
+        return re.sub(r"\s+", " ", element.get_text(" ", strip=True)).strip() if element else ""
+
+    def stash(element: Tag, markdown: str) -> None:
+        marker = f"OBSMDZ{len(blocks):03d}Z"
+        blocks[marker] = markdown.strip()
+        element.replace_with(marker)
+
+    # Preserve rich visual structures as readable, portable Markdown instead of
+    # flattening nested HTML into concatenated text.
+    for figure in list(clone.select("figure.video-embed")):
+        iframe = figure.find("iframe")
+        if not iframe:
+            continue
+        src = iframe.get("src", "")
+        watch_url = src.replace("youtube.com/embed/", "youtube.com/watch?v=")
+        title = iframe.get("title", "Video")
+        caption = text(figure.find("figcaption"))
+        body = [f"> [!video] {title}", f"> [Watch video]({watch_url})"]
+        if caption:
+            body.extend([">", f"> {caption}"])
+        stash(figure, "\n".join(body))
+
+    for step in list(clone.select(".case-step")):
+        number = text(step.select_one(".n"))
+        human = step.select_one(".human")
+        model = step.select_one(".model")
+        human_title = text(human.find(["h3", "h4"])) if human else "You"
+        model_title = text(model.find(["h3", "h4"])) if model else "The paper"
+        human_body = text(human.find("p")) if human else ""
+        model_body = text(model.find("p")) if model else ""
+        stash(step, "\n".join([
+            f"> [!example] Step {number} — {human_title}",
+            f"> **{human_title}:** {human_body}",
+            ">",
+            f"> **{model_title}:** {model_body}",
+        ]))
+
+    for comparison in list(clone.select(".compare")):
+        panes = comparison.select(":scope > .pane")
+        rows = []
+        for pane in panes:
+            heading = text(pane.find(["h3", "h4"])) or "Alternative"
+            token_rows = []
+            for token_row in pane.select(".token-row"):
+                tokens = [text(token) for token in token_row.select(".token")]
+                token_rows.append(" → ".join(filter(None, tokens)))
+                token_row.decompose()
+            detail = text(pane)
+            if token_rows:
+                detail = " · ".join([*token_rows, detail]).strip(" ·")
+            rows.append((heading, detail))
+        if rows:
+            table = ["| Alternative | Representation and consequence |", "|---|---|"]
+            table.extend(f"| **{table_cell(name)}** | {table_cell(detail)} |" for name, detail in rows)
+            stash(comparison, "\n".join(table))
+
+    for architecture in list(clone.select(".arch")):
+        flow = ["> [!flow] Architecture / data flow"]
+        for child in architecture.find_all(recursive=False):
+            child_classes = set(child.get("class", []))
+            if "arch-row" in child_classes:
+                boxes = []
+                for box in child.select(":scope > .arch-box"):
+                    small = box.find("small")
+                    detail = text(small)
+                    if small:
+                        small.decompose()
+                    label = text(box)
+                    boxes.append(f"**{label}**" + (f" — {detail}" if detail else ""))
+                if boxes:
+                    flow.append("> " + " + ".join(boxes))
+            elif "arch-down" in child_classes:
+                flow.append(f"> {text(child)}")
+        stash(architecture, "\n".join(flow))
+
+    for graph in list(clone.select(".graph-stack")):
+        lines = ["> [!graph] Concept flow"]
+        for child in graph.find_all(recursive=False):
+            child_classes = set(child.get("class", []))
+            if "graph-level" in child_classes:
+                nodes = [text(node) for node in child.select(".kg-node")]
+                if nodes:
+                    lines.append("> **" + " · ".join(nodes) + "**")
+            elif "graph-v" in child_classes:
+                lines.append(f"> {text(child)}")
+        stash(graph, "\n".join(lines))
+
+    for graph in list(clone.select(".knowledge-graph")):
+        raw = graph.get_text("\n", strip=False).strip("\n")
+        raw = re.sub(r"\n[ \t]*\n", "\n", raw)
+        stash(graph, f"```text\n{raw}\n```")
+
+    for row in list(clone.select(".bar-row")):
+        direct = [text(child) for child in row.find_all(recursive=False) if "bar-track" not in child.get("class", [])]
+        direct = [value for value in direct if value]
+        stash(row, "- " + " — ".join(direct))
+
+    for token_row in list(clone.select(".token-row")):
+        tokens = [text(token) for token in token_row.select(".token")]
+        stash(token_row, "`" + " → ".join(filter(None, tokens)) + "`")
+
+    for svg in list(clone.find_all("svg")):
+        label = svg.get("aria-label") or svg.get("title") or "Paper diagram"
+        labels = " · ".join(dict.fromkeys(filter(None, (text(node) for node in svg.find_all("text")))))
+        body = [f"> [!diagram] {label}"]
+        if labels:
+            body.append(f"> {labels}")
+        stash(svg, "\n".join(body))
+
+    # Catch any iframe not enclosed by the paper's video figure component.
+    for iframe in list(clone.find_all("iframe")):
         src = iframe.get("src", "")
         title = iframe.get("title", "Video")
-        iframe.replace_with(clone.new_tag("p"))
-        replacement = clone.find_all("p")[-1]
-        replacement.string = f"Video: {title} — {src}"
+        watch_url = src.replace("youtube.com/embed/", "youtube.com/watch?v=")
+        stash(iframe, f"> [!video] {title}\n> [Watch video]({watch_url})")
+
     for anchor in clone.find_all("a"):
         href = anchor.get("href", "")
         file_name = href.split("#", 1)[0]
@@ -383,6 +742,8 @@ def prepare_article(article: Tag, paper_file_map: dict[str, str]) -> str:
         elif href and not href.startswith(("http://", "https://", "#")):
             anchor["href"] = f"{LIVE_ROOT}/{href.lstrip('/')}"
     markdown = html_to_markdown(str(clone), heading_style="ATX", bullets="-", strip=["article", "div", "span"])
+    for marker, block in blocks.items():
+        markdown = markdown.replace(marker, f"\n\n{block}\n\n")
     markdown = re.sub(r"[ \t]+\n", "\n", markdown)
     markdown = re.sub(r"\n{3,}", "\n\n", markdown)
     markdown = markdown.replace("\\[", "$$\n").replace("\\]", "\n$$")
@@ -391,6 +752,23 @@ def prepare_article(article: Tag, paper_file_map: dict[str, str]) -> str:
 
 def build_papers(node_paths: dict[str, str]) -> dict[str, str]:
     paper_file_map = {f"papers-{slug}.html": slug for slug in PAPER_SPECS}
+    mindmap = load_json("intelligence/mindmap.json")
+    nodes = mindmap["nodes"]
+    node_labels = {node["id"]: node["label"] for node in nodes}
+    plan = load_json("curriculum_plan.json")
+    domain_roots = {
+        "Machine Learning": ("learning",),
+        "Computer Vision": ("perception",),
+        "Embodied AI & RL Robotics": ("policy", "systems"),
+    }
+    lesson_nodes: list[tuple[str, str, set[str]]] = []
+    for lesson in plan["lessons"]:
+        day = int(lesson["day"])
+        title = f"Day {day:02d} - {safe_filename(lesson['topic'])}"
+        text = " ".join([lesson["topic"], *lesson.get("foundation_threads", [])])
+        ids = set(related_node_ids(text, nodes, roots=domain_roots.get(lesson["domain"], ()), limit=6))
+        lesson_nodes.append((f"Curriculum/Lessons/{title}.md", title, ids))
+
     output_paths: dict[str, str] = {}
     for slug, spec in PAPER_SPECS.items():
         html_path = ROOT / "site" / f"papers-{slug}.html"
@@ -402,41 +780,67 @@ def build_papers(node_paths: dict[str, str]) -> dict[str, str]:
         title = spec["title"]
         display_title = header_title.get_text(" ", strip=True) if header_title else title
         description = soup.find("meta", attrs={"name": "description"})
+        summary = description["content"] if description and description.get("content") else "Complete technical reading guide."
         aliases = [title]
         if display_title != title:
             aliases.append(display_title)
         related_nodes = [node_id for node_id in spec["nodes"] if node_id in node_paths]
+        curriculum = [(path, label) for path, label, ids in lesson_nodes if ids.intersection(related_nodes)][:8]
         lines = [
             frontmatter(
                 type="paper-guide", aliases=aliases, paper_slug=slug, source=f"site/papers-{slug}.html",
                 live_url=f"{LIVE_ROOT}/papers-{slug}.html", tags=["paper", "reading-guide"],
-                related_nodes=related_nodes,
+                related_nodes=related_nodes, related_curriculum=[path for path, _ in curriculum],
+                cssclasses=["research-note", "paper-note"],
             ),
+            nav("Papers/Paper Guides.md", "Paper Guides"), "",
             f"# {display_title}", "",
+            *callout(
+                "paper", "Research reading guide",
+                [summary, "", f"**Concepts:** {len(related_nodes)} · **Related curriculum notes:** {len(curriculum)}"],
+            ), "",
+            *link_callout(
+                "Connected concepts",
+                ((node_paths[node_id], node_labels.get(node_id, node_id)) for node_id in related_nodes),
+                "concepts",
+            ), "",
         ]
-        if description and description.get("content"):
-            lines.extend([f"> {description['content']}", ""])
+        if curriculum:
+            lines.extend([*link_callout("Continue in the curriculum", curriculum, "study"), ""])
         lines.extend([
-            f"- **Canonical guide:** `site/papers-{slug}.html`",
-            f"- **Live guide:** {LIVE_ROOT}/papers-{slug}.html",
-            f"- **Companion source:** `papers/{spec['source']}`", "",
-            "## Connected concepts", "",
-            bullet_links((node_paths[node_id], node_id) for node_id in related_nodes), "",
-            "---", "", prepare_article(article, paper_file_map),
+            *callout(
+                "source", "Canonical and public versions",
+                [
+                    f"- Repository guide: `site/papers-{slug}.html`",
+                    f"- {markdown_link('Open the published HTML guide', f'{LIVE_ROOT}/papers-{slug}.html')}",
+                    f"- Companion source: `papers/{spec['source']}`",
+                ],
+            ), "", "---", "", prepare_article(article, paper_file_map),
         ])
         relative = f"Papers/{title}.md"
         output_paths[slug] = relative
         write(relative, "\n".join(lines))
     index = [
-        frontmatter(type="map-of-content", aliases=["Paper Reading Guides"], tags=["moc", "papers"]),
+        frontmatter(
+            type="map-of-content", aliases=["Paper Reading Guides"], tags=["moc", "papers"],
+            cssclasses=["research-note", "hub-note", "papers-hub"],
+        ),
+        nav("Papers/Paper Guides.md", "Paper Guides"), "",
         "# Paper Reading Guides", "",
-        "Self-contained Obsidian companions generated from the canonical editorial HTML guides.", "",
-        f"> {len(output_paths)} guides. CLIP-Meets-DINO and FaultAdapt remain intentionally excluded.", "",
-        "## Guides", "", bullet_links((path, PAPER_SPECS[slug]["title"]) for slug, path in output_paths.items()), "",
+        *callout(
+            "paper", "From human intuition to model mechanism",
+            [
+                "Self-contained companions generated from the canonical editorial HTML guides.",
+                "", f"**{len(output_paths)} complete guides** · CLIP-Meets-DINO and FaultAdapt remain intentionally excluded.",
+            ],
+        ), "",
+        *link_callout("Reading library", ((path, PAPER_SPECS[slug]["title"]) for slug, path in output_paths.items()), "library"), "",
         "## Editorial protocol", "",
-        "- Human case study first.", "- Walk through the PDF in order.", "- Name the model mechanism precisely.",
-        "- Keep results tied to their evaluation protocol.", "- Use primary sources; distinguish established results from active hypotheses.", "",
-        f"Public hub: {LIVE_ROOT}/papers.html",
+        "1. Begin with the human case study and prerequisites.",
+        "2. Walk through the paper in its original order.",
+        "3. Name the model mechanism precisely.",
+        "4. Tie results to their evaluation protocol and separate evidence from hypotheses.", "",
+        markdown_link("Open the public paper hub", f"{LIVE_ROOT}/papers.html"),
     ]
     write("Papers/Paper Guides.md", "\n".join(index))
     return output_paths
@@ -470,93 +874,166 @@ def build_contacts(node_paths: dict[str, str]) -> tuple[dict[str, str], dict[str
     org_paths = {org_id: f"Organizations/{org_id}.md" for org_id in organizations}
     person_paths = {person_id: f"Contacts/{person_id}.md" for person_id in people}
 
+    mindmap_nodes = load_json("intelligence/mindmap.json")["nodes"]
+    node_labels = {node["id"]: node["label"] for node in mindmap_nodes}
+
     for person_id, person in people.items():
+        org_id = person.get("organization_id")
+        affiliation = organizations.get(org_id) if org_id else None
         lines = [
             frontmatter(
                 type="public-contact", aliases=[person["name"]], contact_id=person_id,
-                organization_id=person.get("organization_id"), verified_on=person["verified_on"],
+                organization_id=org_id, verified_on=person["verified_on"],
                 source="intelligence/entities.json", tags=["contact", "public-record"],
+                cssclasses=["research-note", "person-note"],
             ),
-            f"# {person['name']}", "", person["role"], "",
+            nav("Contacts/Contacts.md", "Research Contacts"), "",
+            f"# {person['name']}", "",
+            *callout(
+                "person", person["role"],
+                [
+                    f"**Affiliation:** {wiki(org_paths[org_id], affiliation['name']) if affiliation else 'Independent / not recorded'}",
+                    f"**Public record verified:** {person['verified_on']}",
+                ],
+            ), "",
         ]
-        org_id = person.get("organization_id")
-        if org_id and org_id in organizations:
-            lines.extend(["## Current public affiliation", "", f"- {wiki(org_paths[org_id], organizations[org_id]['name'])}", ""])
-        lines.extend(["## Public profiles", "", f"- {markdown_link('Research profile', person['profile_url'])}"])
+        contributions = []
+        for item in contrib_by_person.get(person_id, []):
+            if item["node_id"] in node_paths:
+                label = node_labels.get(item["node_id"], item["node_id"])
+                contributions.append(
+                    f"- {wiki(node_paths[item['node_id']], label)} — {item['relationship']} _(verified {item['verified_on']})_"
+                )
+        if contributions:
+            lines.extend([*callout("evidence", "Verified contributions", contributions), ""])
+        profiles = [f"- {markdown_link('Research profile', person['profile_url'])}"]
         if person.get("linkedin_url"):
-            lines.append(f"- {markdown_link('Verified LinkedIn', person['linkedin_url'])}")
-        lines.append("")
-        if contrib_by_person.get(person_id):
-            lines.extend(["## Verified contributions", ""])
-            for item in contrib_by_person[person_id]:
-                if item["node_id"] in node_paths:
-                    lines.append(f"- {wiki(node_paths[item['node_id']], item['node_id'])} — {item['relationship']} _(verified {item['verified_on']})_")
-            lines.append("")
-        lines.extend(["## Source ledger", ""])
+            profiles.append(f"- {markdown_link('Verified LinkedIn', person['linkedin_url'])}")
+        lines.extend([*callout("profile", "Public profiles", profiles), "", "## Source ledger", ""])
         for source in person["sources"]:
             lines.append(f"- {markdown_link(source['title'], source['url'])}")
-        lines.extend(["", "> [!privacy]", "> Public provenance only. No outreach ranking, contact history, private notes, or message drafts belong in this repository."])
+        lines.extend(["", *callout(
+            "privacy", "Public provenance boundary",
+            ["No outreach ranking, contact history, private notes, or message drafts belong in this repository."],
+        )])
         write(person_paths[person_id], "\n".join(lines))
 
     for org_id, org in organizations.items():
         company = ecosystem_orgs.get(org_id)
+        concept_rows = []
+        if org.get("map_node_id") in node_paths:
+            concept_rows.append((node_paths[org["map_node_id"]], node_labels.get(org["map_node_id"], org["name"])))
+        for item in assoc_by_org.get(org_id, []):
+            if item["node_id"] in node_paths:
+                concept_rows.append((node_paths[item["node_id"]], node_labels.get(item["node_id"], item["node_id"])))
+        organization_text = " ".join([
+            org["name"],
+            company.get("focus", "") if company else "",
+            company.get("category", "") if company else "",
+        ])
+        for node_id in related_node_ids(organization_text, mindmap_nodes, limit=4):
+            if node_id in node_paths:
+                concept_rows.append((node_paths[node_id], node_labels[node_id]))
+        concept_rows = list(dict.fromkeys(concept_rows))
         lines = [
             frontmatter(
                 type="organization", aliases=[org["name"]], organization_id=org_id,
-                organization_kind=org.get("kind", "company"), source="intelligence/entities.json" if org_id in provenance_orgs else "intelligence/ecosystem.json",
+                organization_kind=org.get("kind", "company"),
+                source="intelligence/entities.json" if org_id in provenance_orgs else "intelligence/ecosystem.json",
                 tags=["organization", org.get("kind", "company")],
+                cssclasses=["research-note", "organization-note"],
+                related_concepts=[path for path, _ in concept_rows],
             ),
+            nav("Organizations/Organizations.md", "Organizations"), "",
             f"# {org['name']}", "",
         ]
         if company:
             lines.extend([
-                company["focus"], "", "## Ecosystem observation", "",
-                f"- **Founded:** {company['founded']}", f"- **Location:** {company['hq_city']}, {company['hq_state']} · {company['cluster']}",
-                f"- **Category:** {company['category']}", f"- **Stage:** {company['stage']}",
-                f"- **Valuation observation:** {company['valuation_label']} ({company['valuation_type']}, {company['valuation_as_of']})",
-                f"- **Careers:** {company['careers_url']}", "",
-                "> [!note]", f"> {company['valuation_note']}", "",
+                *callout("organization", company["category"], [company["focus"]]), "",
+                "| Founded | Location | Stage |", "|---|---|---|",
+                f"| {company['founded']} | {company['hq_city']}, {company['hq_state']} · {company['cluster']} | {company['stage']} |", "",
+                *callout(
+                    "signal", "Verified market observation",
+                    [
+                        f"**Valuation:** {company['valuation_label']} — {company['valuation_type']}, {company['valuation_as_of']}",
+                        company["valuation_note"],
+                        f"**Careers:** {markdown_link('Official careers page', company['careers_url'])}",
+                    ],
+                ), "",
             ])
         elif org.get("url"):
-            lines.extend([f"- **Official site:** {org['url']}", ""])
-        if org.get("map_node_id") in node_paths:
-            lines.extend(["## Mind-map presence", "", f"- {wiki(node_paths[org['map_node_id']], org['name'])}", ""])
+            lines.extend([*callout("organization", org.get("kind", "Organization").replace("-", " ").title(), [markdown_link("Official site", org["url"])]), ""])
+        if concept_rows:
+            lines.extend([*link_callout("Connected research", concept_rows, "concepts"), ""])
         if people_by_org.get(org_id):
-            lines.extend(["## Verified public people", "", bullet_links((person_paths[p["id"]], p["name"]) for p in people_by_org[org_id]), ""])
-        if assoc_by_org.get(org_id):
-            lines.extend(["## Verified associations", ""])
-            for item in assoc_by_org[org_id]:
-                if item["node_id"] in node_paths:
-                    lines.append(f"- {wiki(node_paths[item['node_id']], item['node_id'])} — {item['relationship']} _(verified {item['verified_on']})_")
-            lines.append("")
+            lines.extend([*link_callout(
+                "Verified public people",
+                ((person_paths[person["id"]], person["name"]) for person in people_by_org[org_id]),
+                "people",
+            ), ""])
         company_jobs = jobs_by_company.get(org["name"], [])
         if company_jobs:
-            lines.extend(["## Current tracked openings", "", f"{len(company_jobs)} openings in the dated official-board snapshot.", ""])
-            for opening in sorted(company_jobs, key=lambda item: item["title"])[:12]:
-                lines.append(f"- {markdown_link(opening['title'], opening['url'])} — {opening['location']}")
+            job_rows = [
+                f"- {markdown_link(opening['title'], opening['url'])} — {opening['location']}"
+                for opening in sorted(company_jobs, key=lambda item: item["title"])[:12]
+            ]
             if len(company_jobs) > 12:
-                lines.append(f"- …and {len(company_jobs) - 12} more in {wiki('Robotics Intelligence/Current Openings.md', 'Current Openings')}.")
-            lines.append("")
+                job_rows.append(f"- …and {len(company_jobs) - 12} more in {wiki('Robotics Intelligence/Current Openings.md', 'Current Openings')}.")
+            lines.extend([*callout("jobs", f"{len(company_jobs)} tracked openings", job_rows), ""])
         if company and company.get("sources"):
-            lines.extend(["## Sources", ""])
+            lines.extend(["## Source ledger", ""])
             for source in company["sources"]:
                 lines.append(f"- {markdown_link(source['title'], source['url'])} — {source.get('date', '')}")
-        lines.extend(["", "> [!privacy]", "> Public organizational record only. Career preparation and outreach remain private and outside this repository."])
+        lines.extend(["", *callout(
+            "privacy", "Public record boundary",
+            ["Career preparation and outreach remain private and outside this repository."],
+        )])
         write(org_paths[org_id], "\n".join(lines))
 
     contacts_index = [
-        frontmatter(type="map-of-content", aliases=["Research Contacts"], tags=["moc", "contacts"], source="intelligence/entities.json"),
-        "# Research Contacts", "", "Verified public researchers and contributors connected to work on the embodied-AI map.", "",
-        f"> Coverage is intentionally incomplete: {len(people)} verified people as of **{entities['updated_on']}**. Absence is not evidence of non-contribution.", "",
-        "## People", "", bullet_links((person_paths[p["id"]], p["name"]) for p in sorted(people.values(), key=lambda item: item["name"])), "",
-        "## Boundary", "", "This public vault contains provenance, not a networking CRM. Private prioritization, outreach, and follow-up records stay outside the repository.",
+        frontmatter(
+            type="map-of-content", aliases=["Research Contacts"], tags=["moc", "contacts"],
+            source="intelligence/entities.json", cssclasses=["research-note", "hub-note", "contacts-hub"],
+        ),
+        nav("Contacts/Contacts.md", "Research Contacts"), "",
+        "# Research Contacts", "",
+        *callout(
+            "person", "People behind the research",
+            [
+                "Verified public researchers and contributors connected to the knowledge graph.",
+                "", f"**{len(people)} verified public records** · updated **{entities['updated_on']}**",
+            ],
+        ), "",
+        *link_callout(
+            "People directory",
+            ((person_paths[person["id"]], person["name"]) for person in sorted(people.values(), key=lambda item: item["name"])),
+            "people",
+        ), "",
+        *callout(
+            "privacy", "Boundary",
+            ["This is public provenance, not a networking CRM. Private prioritization, outreach, and follow-up records stay outside the repository."],
+        ),
     ]
     write("Contacts/Contacts.md", "\n".join(contacts_index))
+
+    by_kind: dict[str, list[tuple[str, str]]] = defaultdict(list)
+    for org_id, org in organizations.items():
+        kind = org.get("kind", "company").replace("-", " ").title()
+        by_kind[kind].append((org_paths[org_id], org["name"]))
     organizations_index = [
-        frontmatter(type="map-of-content", aliases=["Organizations"], tags=["moc", "organizations"]),
-        "# Organizations", "", "Research organizations and robotics companies represented in the public intelligence sources.", "",
-        "## Directory", "", bullet_links((org_paths[org_id], organizations[org_id]["name"]) for org_id in sorted(organizations, key=lambda oid: organizations[oid]["name"])),
+        frontmatter(
+            type="map-of-content", aliases=["Organizations"], tags=["moc", "organizations"],
+            cssclasses=["research-note", "hub-note", "organizations-hub"],
+        ),
+        nav("Organizations/Organizations.md", "Organizations"), "",
+        "# Organizations", "",
+        *callout(
+            "organization", "Labs, universities, and robotics companies",
+            ["Distinct public records connected to concepts, people, jobs, and intelligence reports.", "", f"**{len(organizations)} tracked organizations**"],
+        ), "",
     ]
+    for kind in sorted(by_kind):
+        organizations_index.extend([*link_callout(kind, sorted(by_kind[kind], key=lambda item: item[1]), "organizations"), ""])
     write("Organizations/Organizations.md", "\n".join(organizations_index))
     return person_paths, org_paths
 
@@ -565,120 +1042,696 @@ def build_robotics_intelligence(org_paths: dict[str, str]) -> None:
     ecosystem = load_json("intelligence/ecosystem.json")
     jobs = load_json("intelligence/jobs.json")
     companies = sorted(ecosystem["companies"], key=lambda item: item["name"])
+    company_paths = {company["name"]: org_paths.get(company["company_id"]) for company in companies}
     overview = [
-        frontmatter(type="map-of-content", aliases=["Robotics Intelligence"], tags=["moc", "robotics-intelligence"], as_of=ecosystem["as_of"]),
-        "# Robotics Intelligence", "", ecosystem["scope"], "", f"> Ecosystem observations as of **{ecosystem['as_of']}**; jobs last checked **{jobs['last_checked']}**.", "",
-        "## Desks", "", f"- {wiki('Robotics Intelligence/Current Openings.md', 'Current Openings')}", f"- {wiki('Robotics Intelligence/Skill Signals.md', 'Recurring Skill Signals')}", f"- {wiki('Reports/Daily Reports.md', 'Dated Intelligence Reports')}", "",
-        "## Companies", "", bullet_links((org_paths[c["company_id"]], c["name"]) for c in companies if c["company_id"] in org_paths), "",
-        "## Methodology", "", f"> {ecosystem['funding_methodology']}", "", f"> {ecosystem['valuation_methodology']}",
+        frontmatter(
+            type="map-of-content", aliases=["Robotics Intelligence"], tags=["moc", "robotics-intelligence"],
+            as_of=ecosystem["as_of"], cssclasses=["research-note", "hub-note", "intelligence-hub"],
+        ),
+        nav("Robotics Intelligence/Robotics Intelligence.md", "Robotics Intelligence"), "",
+        "# Robotics Intelligence", "",
+        *callout(
+            "intelligence", "Evidence before narrative",
+            [ecosystem["scope"], "", f"**Ecosystem:** {ecosystem['as_of']} · **jobs checked:** {jobs['last_checked']}"],
+        ), "",
+        *link_callout(
+            "Intelligence desks",
+            [
+                ("Robotics Intelligence/Current Openings.md", "Current Openings"),
+                ("Robotics Intelligence/Skill Signals.md", "Recurring Skill Signals"),
+                ("Reports/Daily Reports.md", "Dated Intelligence Reports"),
+            ],
+            "desks",
+        ), "",
+        *link_callout(
+            "Tracked companies",
+            ((org_paths[company["company_id"]], company["name"]) for company in companies if company["company_id"] in org_paths),
+            "organizations",
+        ), "",
+        *callout("method", "Methodology", [ecosystem["funding_methodology"], "", ecosystem["valuation_methodology"]]),
     ]
     write("Robotics Intelligence/Robotics Intelligence.md", "\n".join(overview))
 
-    openings = [
-        frontmatter(type="dataset-view", aliases=["Current Robotics Openings"], tags=["jobs", "robotics-intelligence"], last_checked=jobs["last_checked"]),
-        "# Current Openings", "", jobs["methodology"], "", f"> Snapshot contains **{len(jobs['openings'])}** openings; always verify the official page before acting.", "",
-        "| Company | Role | Location | Seniority | Last seen |", "|---|---|---|---|---|",
+    sorted_openings = sorted(jobs["openings"], key=lambda row: (row["company"], row["title"]))
+    by_company: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for item in sorted_openings:
+        by_company[item["company"]].append(item)
+    early_career = [
+        item for item in sorted_openings
+        if str(item.get("seniority", "")).lower() in {"internship", "new grad", "entry level"}
     ]
-    for item in sorted(jobs["openings"], key=lambda row: (row["company"], row["title"])):
-        role = markdown_link(table_cell(item["title"]), item["url"])
-        openings.append(f"| {table_cell(item['company'])} | {role} | {table_cell(item['location'])} | {table_cell(item['seniority'])} | {table_cell(item['last_seen'])} |")
+    openings = [
+        frontmatter(
+            type="dataset-view", aliases=["Current Robotics Openings"], tags=["jobs", "robotics-intelligence"],
+            last_checked=jobs["last_checked"], cssclasses=["research-note", "dataset-note", "jobs-note"],
+        ),
+        nav("Robotics Intelligence/Robotics Intelligence.md", "Robotics Intelligence"), "",
+        "# Current Openings", "",
+        *callout(
+            "jobs", "Official-board snapshot",
+            [jobs["methodology"], "", f"**{len(sorted_openings)} openings** · checked **{jobs['last_checked']}** · always verify the official page"],
+        ), "",
+    ]
+    if early_career:
+        early_rows = [
+            f"- **{item['company']} —** {markdown_link(item['title'], item['url'])} · {item['location']}"
+            for item in early_career
+        ]
+        openings.extend([*callout("current", f"Early-career roles · {len(early_career)}", early_rows), ""])
+    for company_name, company_openings in sorted(by_company.items()):
+        company_heading = wiki(company_paths[company_name], company_name) if company_paths.get(company_name) else company_name
+        openings.extend([
+            f"## {company_heading} · {len(company_openings)}", "",
+            "| Role | Location | Seniority | Last seen |", "|---|---|---|---|",
+        ])
+        for item in company_openings:
+            role = markdown_link(table_cell(item["title"]), item["url"])
+            openings.append(f"| {role} | {table_cell(item['location'])} | {table_cell(item['seniority'])} | {table_cell(item['last_seen'])} |")
+        openings.append("")
     write("Robotics Intelligence/Current Openings.md", "\n".join(openings))
 
     signals = [
-        frontmatter(type="dataset-view", aliases=["Robotics Skill Signals"], tags=["skills", "robotics-intelligence"], last_checked=jobs["last_checked"]),
-        "# Recurring Skill Signals", "", "Repeated requirements across official boards, kept distinct from personal outreach or private planning.", "",
+        frontmatter(
+            type="dataset-view", aliases=["Robotics Skill Signals"], tags=["skills", "robotics-intelligence"],
+            last_checked=jobs["last_checked"], cssclasses=["research-note", "dataset-note", "signals-note"],
+        ),
+        nav("Robotics Intelligence/Robotics Intelligence.md", "Robotics Intelligence"), "",
+        "# Recurring Skill Signals", "",
+        *callout(
+            "signal", "Repeated requirements, not career advice",
+            ["Patterns across official boards, kept distinct from personal outreach and private planning.", "", f"**{len(jobs['requirement_signals'])} tracked signals** · checked **{jobs['last_checked']}**"],
+        ), "",
     ]
     for signal in jobs["requirement_signals"]:
         signals.extend([
-            f"## {signal['skill']}", "", f"- **Category:** {signal['category']}",
-            f"- **Evidence:** {signal['evidence']}", f"- **Portfolio response:** {signal['portfolio_response']}", "",
+            *callout(
+                "skill", signal["skill"],
+                [f"**Category:** {signal['category']}", f"**Evidence:** {signal['evidence']}", f"**Portfolio response:** {signal['portfolio_response']}"],
+            ), "",
         ])
     write("Robotics Intelligence/Skill Signals.md", "\n".join(signals))
 
 
-def build_curriculum() -> None:
+def extract_streamlit_article(source: Path) -> str:
+    """Export literal Streamlit teaching prose to durable Markdown.
+
+    Interactive widgets and generated plots remain in the app; headings, prose,
+    equations, code, cautions, captions, and literal video links become part of
+    the corresponding Obsidian lesson.
+    """
+    tree = ast.parse(source.read_text(encoding="utf-8"))
+    article = next(
+        (node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == "_render_article"),
+        None,
+    )
+    if article is None:
+        return ""
+
+    def literal(node: ast.AST) -> Any | None:
+        try:
+            return ast.literal_eval(node)
+        except (ValueError, TypeError, SyntaxError):
+            return None
+
+    functions = {
+        node.name: node for node in tree.body if isinstance(node, ast.FunctionDef)
+    }
+
+    def streamlit_calls(function: ast.FunctionDef, seen: set[str] | None = None) -> list[ast.Call]:
+        seen = set(seen or ())
+        if function.name in seen:
+            return []
+        seen.add(function.name)
+        candidates = sorted(
+            (node for node in ast.walk(function) if isinstance(node, ast.Call)),
+            key=lambda node: (node.lineno, node.col_offset),
+        )
+        result: list[ast.Call] = []
+        for call_node in candidates:
+            if (
+                isinstance(call_node.func, ast.Attribute)
+                and isinstance(call_node.func.value, ast.Name)
+                and call_node.func.value.id == "st"
+            ):
+                result.append(call_node)
+            elif isinstance(call_node.func, ast.Name) and call_node.func.id in functions:
+                helper = functions[call_node.func.id]
+                if helper.name.startswith("_render_"):
+                    result.extend(streamlit_calls(helper, seen))
+        return result
+
+    rendered: list[str] = []
+    calls = streamlit_calls(article)
+    for node in calls:
+        method = node.func.attr
+        if not node.args:
+            continue
+        value = literal(node.args[0])
+        if not isinstance(value, str):
+            continue
+        value = textwrap.dedent(value).strip()
+        if not value:
+            continue
+        if method == "header":
+            rendered.extend([f"## {value}", ""])
+        elif method == "subheader":
+            rendered.extend([f"### {value}", ""])
+        elif method == "markdown":
+            if re.search(r"<[A-Za-z][^>]*>", value):
+                value = html_to_markdown(value, heading_style="ATX", bullets="-", strip=["div", "span"]).strip()
+                value = value.replace("  \n", "\\\n")
+            rendered.extend([value, ""])
+        elif method == "latex":
+            rendered.extend(["$$", value, "$$", ""])
+        elif method == "code":
+            language = ""
+            for keyword in node.keywords:
+                if keyword.arg == "language":
+                    candidate = literal(keyword.value)
+                    if isinstance(candidate, str):
+                        language = candidate
+            rendered.extend([f"```{language}", value, "```", ""])
+        elif method == "caption":
+            rendered.extend([f"*{value}*", ""])
+        elif method in {"info", "warning"}:
+            rendered.extend([*callout(method, method.title(), value.splitlines()), ""])
+        elif method == "video":
+            rendered.extend([f"> [!video] Lecture companion\n> [Open video]({value})", ""])
+    markdown = "\n".join(rendered)
+    markdown = re.sub(r"\n{3,}", "\n\n", markdown)
+    return markdown.strip()
+
+
+def build_curriculum(node_paths: dict[str, str]) -> None:
     plan = load_json("curriculum_plan.json")
     state = load_json("curriculum_state.json")
     learning = load_json("learning_log.json")
+    mindmap = load_json("intelligence/mindmap.json")
+    nodes = mindmap["nodes"]
+    node_labels = {node["id"]: node["label"] for node in nodes}
     entries = {item["day"]: item for item in learning["entries"]}
-    lesson_links: list[tuple[str, str]] = []
+    domain_roots = {
+        "Machine Learning": ("learning",),
+        "Computer Vision": ("perception",),
+        "Embodied AI & RL Robotics": ("policy", "systems"),
+    }
+    lessons_by_day: dict[int, tuple[dict[str, Any], str, str]] = {}
+    related_by_day: dict[int, list[str]] = {}
     for lesson in plan["lessons"]:
         day = int(lesson["day"])
         title = f"Day {day:02d} - {safe_filename(lesson['topic'])}"
         relative = f"Curriculum/Lessons/{title}.md"
-        lesson_links.append((relative, title))
+        lessons_by_day[day] = (lesson, relative, title)
+        text = " ".join([lesson["topic"], *lesson.get("foundation_threads", [])])
+        related_by_day[day] = related_node_ids(text, nodes, roots=domain_roots.get(lesson["domain"], ()), limit=6)
+
+    papers_by_node: dict[str, list[tuple[str, str]]] = defaultdict(list)
+    for spec in PAPER_SPECS.values():
+        for node_id in spec["nodes"]:
+            papers_by_node[node_id].append((f"Papers/{spec['title']}.md", spec["title"]))
+
+    for day, (lesson, relative, _) in lessons_by_day.items():
         record = entries.get(day)
+        related_ids = related_by_day[day]
+        related_concepts = [(node_paths[node_id], node_labels[node_id]) for node_id in related_ids if node_id in node_paths]
+        related_papers = list(dict.fromkeys(
+            paper for node_id in related_ids for paper in papers_by_node.get(node_id, [])
+        ))[:6]
+        previous_link = lessons_by_day.get(day - 1)
+        next_link = lessons_by_day.get(day + 1)
+        sequence_links = []
+        if previous_link:
+            sequence_links.append((previous_link[1], f"← Day {day - 1:02d}"))
+        sequence_links.append(("Curriculum/Curriculum.md", "Curriculum map"))
+        if next_link:
+            sequence_links.append((next_link[1], f"Day {day + 1:02d} →"))
+        status = record["status"] if record else lesson["status"]
+        module_source = ROOT / "modules" / f"module_{day:02d}.py"
+        authored_content = extract_streamlit_article(module_source) if module_source.exists() else ""
+        canonical_sources = ["curriculum_plan.json"]
+        if authored_content:
+            canonical_sources.append(f"modules/{module_source.name}")
         lines = [
             frontmatter(
                 type="curriculum-lesson", aliases=[lesson["topic"]], day=day, cycle=lesson["cycle"],
-                domain=lesson["domain"], stage=lesson["stage"], status=record["status"] if record else lesson["status"],
-                source="curriculum_plan.json", tags=["curriculum", lesson["domain"], lesson["stage"]],
+                domain=lesson["domain"], stage=lesson["stage"], status=status,
+                source=canonical_sources, tags=["curriculum", lesson["domain"], lesson["stage"]],
+                cssclasses=["research-note", "curriculum-note"],
+                related_concepts=[path for path, _ in related_concepts],
+                related_papers=[path for path, _ in related_papers],
             ),
-            f"# Day {day:02d} — {lesson['topic']}", "", f"- **Domain:** {lesson['domain']}", f"- **Cycle:** {lesson['cycle']}", f"- **Stage:** {lesson['stage']}",
-            f"- **Content policy:** {lesson['content_policy']}", "", "## Foundation threads", "",
-            *[f"- {item}" for item in lesson.get("foundation_threads", [])], "",
+            nav("Curriculum/Curriculum.md", "Curriculum"), "",
+            f"# Day {day:02d} — {lesson['topic']}", "",
+            *callout(
+                "curriculum", f"{lesson['domain']} · {lesson['stage']}",
+                [
+                    f"**Cycle {lesson['cycle']}** · **status: {status}**",
+                    lesson["content_policy"],
+                ],
+            ), "",
+            *link_callout("Learning sequence", sequence_links, "sequence"), "",
         ]
+        if related_concepts:
+            lines.extend([*link_callout("Knowledge-graph concepts", related_concepts, "concepts"), ""])
+        if related_papers:
+            lines.extend([*link_callout("Paper companions", related_papers, "study"), ""])
+        lines.extend(["## Foundation threads", "", *[f"- {item}" for item in lesson.get("foundation_threads", [])], ""])
         prerequisites = lesson.get("prerequisites", [])
         if prerequisites:
-            lines.extend(["## Prerequisites", "", *[f"- Day {int(item):02d}" if isinstance(item, int) else f"- {item}" for item in prerequisites], ""])
+            prerequisite_links = []
+            for item in prerequisites:
+                if isinstance(item, int) and item in lessons_by_day:
+                    prerequisite_links.append((lessons_by_day[item][1], lessons_by_day[item][2]))
+                else:
+                    prerequisite_links.append(("Curriculum/Curriculum.md", str(item)))
+            lines.extend([*link_callout("Prerequisites", prerequisite_links, "prerequisite"), ""])
         if record:
-            lines.extend(["## Learning record", "", f"- **Status:** {record['status']}", f"- **Confidence:** {record.get('confidence') or 'Not recorded'}", f"- **Minutes:** {record.get('minutes_spent') or 'Not recorded'}", f"- **Revisit:** {record.get('revisit', False)}", ""])
+            lines.extend([
+                "## Learning record", "",
+                "| Status | Confidence | Minutes | Revisit |", "|---|---|---|---|",
+                f"| {record['status']} | {record.get('confidence') or 'Not recorded'} | {record.get('minutes_spent') or 'Not recorded'} | {'Yes' if record.get('revisit', False) else 'No'} |", "",
+            ])
             if record.get("notes"):
                 lines.extend([record["notes"], ""])
         if day == state["current_day"]:
-            lines.extend(["> [!important]", "> This is the current due lesson. Generate or deepen it just in time rather than pre-authoring future modules."])
+            lines.extend([*callout(
+                "current", "Current due lesson",
+                ["Generate or deepen this lesson just in time rather than pre-authoring future modules."],
+            ), ""])
+        if authored_content:
+            lines.extend([
+                "---", "",
+                *callout(
+                    "lesson", "Authored technical lesson",
+                    [
+                        "The complete static chapter is exported from the canonical Streamlit module.",
+                        "Interactive plots and controls remain available in the research-lab application.",
+                    ],
+                ), "",
+                authored_content, "",
+            ])
         write(relative, "\n".join(lines))
-    by_cycle: dict[Any, list[tuple[str, str]]] = defaultdict(list)
-    for lesson, link in zip(plan["lessons"], lesson_links):
-        by_cycle[lesson["cycle"]].append(link)
+
+    domains = plan["policy"]["rotation"]
+    by_cycle: dict[Any, dict[str, tuple[str, str]]] = defaultdict(dict)
+    for lesson, relative, title in lessons_by_day.values():
+        by_cycle[lesson["cycle"]][lesson["domain"]] = (relative, title)
+    current = lessons_by_day[state["current_day"]]
     overview = [
-        frontmatter(type="map-of-content", aliases=["AI Research Curriculum"], tags=["moc", "curriculum"], updated=plan["updated_on"]),
-        "# AI Research Curriculum", "", "Machine Learning → Computer Vision → Embodied AI & RL Robotics, maintained as a perpetual rolling horizon.", "",
-        f"> Current due day: **{state['current_day']}** · mapped roadmap entries: **{len(plan['lessons'])}** · terminal day: **none**.", "",
+        frontmatter(
+            type="map-of-content", aliases=["AI Research Curriculum"], tags=["moc", "curriculum"],
+            updated=plan["updated_on"], cssclasses=["research-note", "hub-note", "curriculum-hub"],
+        ),
+        nav("Curriculum/Curriculum.md", "Curriculum"), "",
+        "# AI Research Curriculum", "",
+        *callout(
+            "curriculum", "A perpetual ML → CV → Embodied AI spiral",
+            [
+                plan["policy"]["coverage"], "",
+                f"**Current:** {wiki(current[1], current[2])} · **{len(plan['lessons'])} mapped lessons** · no terminal day",
+            ],
+        ), "",
+        "## Roadmap", "",
+        f"| Cycle | {domains[0]} | {domains[1]} | {domains[2]} |",
+        "|---:|---|---|---|",
     ]
     for cycle in sorted(by_cycle):
-        overview.extend([f"## Cycle {cycle}", "", bullet_links(by_cycle[cycle]), ""])
+        cells = [wiki(*by_cycle[cycle][domain]) if domain in by_cycle[cycle] else "—" for domain in domains]
+        overview.append(f"| {cycle} | {' | '.join(cells)} |")
+    overview.extend([
+        "", *callout(
+            "method", "Rolling-horizon policy",
+            [plan["horizon_policy"]["extension_rule"], plan["policy"]["frontier_refresh"], plan["policy"]["archive"]],
+        ),
+    ])
     write("Curriculum/Curriculum.md", "\n".join(overview))
 
 
-def build_reports() -> None:
+def build_reports(node_paths: dict[str, str], org_paths: dict[str, str]) -> None:
     source_dir = ROOT / "intelligence" / "reports"
     reports = sorted(source_dir.glob("*.md"), reverse=True)
+    mindmap = load_json("intelligence/mindmap.json")
+    nodes = mindmap["nodes"]
+    node_labels = {node["id"]: node["label"] for node in nodes}
+    entities = load_json("intelligence/entities.json")
+    ecosystem = load_json("intelligence/ecosystem.json")
+    organization_names = {item["id"]: item["name"] for item in entities["organizations"]}
+    organization_names.update({item["company_id"]: item["name"] for item in ecosystem["companies"]})
+    paper_by_node: dict[str, list[tuple[str, str]]] = defaultdict(list)
+    for spec in PAPER_SPECS.values():
+        for node_id in spec["nodes"]:
+            paper_by_node[node_id].append((f"Papers/{spec['title']}.md", spec["title"]))
+
     links = []
-    for source in reports:
+    for index, source in enumerate(reports):
         title = source.stem
         relative = f"Reports/{title}.md"
         links.append((relative, title))
-        body = source.read_text(encoding="utf-8")
-        write(relative, frontmatter(type="intelligence-report", report_date=title, source=f"intelligence/reports/{source.name}", tags=["report", "robotics-intelligence"]) + body)
-    index = [
-        frontmatter(type="map-of-content", aliases=["Daily Intelligence Reports"], tags=["moc", "reports"]),
-        "# Daily Intelligence Reports", "", "Dated, source-led observations. Quiet/no-change days remain explicit rather than being filled with speculation.", "",
-        bullet_links(links),
+        body = source.read_text(encoding="utf-8").strip()
+        related_ids = related_node_ids(body, nodes, limit=10)
+        related_concepts = [(node_paths[node_id], node_labels[node_id]) for node_id in related_ids if node_id in node_paths]
+        body_lower = body.lower()
+        related_orgs = [
+            (org_paths[org_id], name)
+            for org_id, name in sorted(organization_names.items(), key=lambda item: item[1])
+            if org_id in org_paths and name.lower() in body_lower
+        ]
+        related_papers = list(dict.fromkeys(
+            paper for node_id in related_ids for paper in paper_by_node.get(node_id, [])
+        ))
+        first_line, separator, remainder = body.partition("\n")
+        heading = first_line if first_line.startswith("# ") else f"# Intelligence Report — {title}"
+        report_body = remainder if separator and first_line.startswith("# ") else body
+        sequence = []
+        if index + 1 < len(reports):
+            sequence.append((f"Reports/{reports[index + 1].stem}.md", "← Older"))
+        sequence.append(("Reports/Daily Reports.md", "Report archive"))
+        if index > 0:
+            sequence.append((f"Reports/{reports[index - 1].stem}.md", "Newer →"))
+        note = [
+            frontmatter(
+                type="intelligence-report", report_date=title, source=f"intelligence/reports/{source.name}",
+                tags=["report", "robotics-intelligence"], cssclasses=["research-note", "report-note"],
+                related_concepts=[path for path, _ in related_concepts],
+                related_organizations=[path for path, _ in related_orgs],
+            ),
+            nav("Reports/Daily Reports.md", "Daily Reports"), "", heading, "",
+            *callout(
+                "report", f"Source-led intelligence · {title}",
+                [f"**{len(related_orgs)} organizations** · **{len(related_concepts)} concepts** connected to the wider vault"],
+            ), "",
+            *link_callout("Report sequence", sequence, "sequence"), "",
+        ]
+        if related_orgs:
+            note.extend([*link_callout("Organizations in this report", related_orgs, "organizations"), ""])
+        if related_concepts:
+            note.extend([*link_callout("Research concepts", related_concepts, "concepts"), ""])
+        if related_papers:
+            note.extend([*link_callout("Paper companions", related_papers, "study"), ""])
+        note.extend(["---", "", report_body])
+        write(relative, "\n".join(note))
+    index_note = [
+        frontmatter(
+            type="map-of-content", aliases=["Daily Intelligence Reports"], tags=["moc", "reports"],
+            cssclasses=["research-note", "hub-note", "reports-hub"],
+        ),
+        nav("Reports/Daily Reports.md", "Daily Reports"), "",
+        "# Daily Intelligence Reports", "",
+        *callout(
+            "report", "Dated evidence, including quiet days",
+            ["Source-led observations. No-change days remain explicit rather than being filled with speculation.", "", f"**{len(links)} archived reports**"],
+        ), "",
+        *link_callout("Report archive", links, "reports"),
     ]
-    write("Reports/Daily Reports.md", "\n".join(index))
+    write("Reports/Daily Reports.md", "\n".join(index_note))
+
+
+def build_lectures() -> None:
+    hub = [
+        frontmatter(
+            type="map-of-content", aliases=["Lecture Notes"], tags=["moc", "lectures"],
+            cssclasses=["research-note", "hub-note", "lecture-hub"],
+        ),
+        nav("Lectures/Lecture Notes.md", "Lectures"), "",
+        "# Lecture Notes", "",
+        *callout(
+            "lecture", "Capture → transcribe → distill → connect",
+            [
+                "Record the lecture locally, preserve the raw transcript, then turn only durable ideas into linked concept notes.",
+                "", "The graph is built from deliberate links—not from auto-linking every word in a transcript.",
+            ],
+        ), "",
+        *link_callout(
+            "Lecture workspace",
+            [("Lectures/Courses.md", "Courses"), ("Lectures/Concepts.md", "Lecture concepts"), ("_Templates/Lecture Note.md", "Lecture-note template"), ("_Templates/Lecture Concept.md", "Concept template")],
+            "map",
+        ), "",
+        "## Capture workflow", "",
+        "1. Run **Templater: Create new note from template** and choose **Lecture Note**.",
+        "2. Fill the course, module, lecturer, and status properties.",
+        "3. Start **Voice Scribe: Record voice note**. Keep the audio embed and transcript in the lecture note.",
+        "4. During class, write only cues, equations, diagrams, and questions under **Live notes**.",
+        "5. After class, distill the mechanism and worked examples; create atomic concept notes only for reusable ideas.",
+        "6. Link each concept back to its source lecture, related concepts, papers, and curriculum notes.", "",
+        *callout(
+            "privacy", "Local transcription boundary",
+            [
+                "Voice Scribe runs Whisper on-device after a one-time model download. No API key is required.",
+                "Do not record a lecture unless the instructor and institutional rules permit it.",
+            ],
+        ), "",
+        "## All lecture notes", "",
+        "```dataview",
+        "TABLE WITHOUT ID file.link AS \"Lecture\", course AS \"Course\", module AS \"Module\", date AS \"Date\", status AS \"Status\"",
+        "FROM \"Lectures/Notes\"",
+        "WHERE type = \"lecture-note\"",
+        "SORT date DESC",
+        "```", "",
+        "## Review queue", "",
+        "```dataview",
+        "TABLE WITHOUT ID file.link AS \"Lecture\", course AS \"Course\", status AS \"Status\"",
+        "FROM \"Lectures/Notes\"",
+        "WHERE type = \"lecture-note\" AND status != \"distilled\"",
+        "SORT date ASC",
+        "```",
+    ]
+    write("Lectures/Lecture Notes.md", "\n".join(hub))
+
+    courses = [
+        frontmatter(type="map-of-content", aliases=["Courses"], tags=["moc", "lectures", "courses"], cssclasses=["research-note", "hub-note", "course-hub"]),
+        nav("Lectures/Lecture Notes.md", "Lectures"), "", "# Courses", "",
+        *callout("lecture", "Course-level maps", ["A course hub should connect lectures in sequence and expose the concepts that recur across them."]), "",
+        "```dataview",
+        "TABLE WITHOUT ID rows.file.link AS \"Lectures\"",
+        "FROM \"Lectures/Notes\"",
+        "WHERE type = \"lecture-note\" AND course",
+        "GROUP BY course",
+        "SORT key ASC",
+        "```", "",
+        *callout("method", "Create a course hub", ["Use the **Course Hub** template, then give every lecture in that course the exact same `course` property."]),
+    ]
+    write("Lectures/Courses.md", "\n".join(courses))
+
+    concepts = [
+        frontmatter(type="map-of-content", aliases=["Lecture Concepts"], tags=["moc", "lectures", "concepts"], cssclasses=["research-note", "hub-note", "lecture-concepts-hub"]),
+        nav("Lectures/Lecture Notes.md", "Lectures"), "", "# Lecture Concepts", "",
+        *callout("concept", "Atomic, reusable understanding", ["Create a concept note when an idea has its own mechanism, equation, failure mode, or reusable explanation—not merely because a term appeared in a transcript."]), "",
+        "```dataview",
+        "TABLE WITHOUT ID file.link AS \"Concept\", course AS \"Course\", confidence AS \"Confidence\", source_lectures AS \"Source lectures\"",
+        "FROM \"Lectures/Concepts\"",
+        "WHERE type = \"lecture-concept\"",
+        "SORT file.name ASC",
+        "```", "",
+        *callout("graph", "Build a useful local graph", ["Link each concept to one source lecture, one broader concept or course hub, and—when real—one paper, curriculum lesson, or neighboring concept."]),
+    ]
+    write("Lectures/Concepts.md", "\n".join(concepts))
+
+    write_template("_Templates/Lecture Note.md", '''---
+type: lecture-note
+aliases: ["<% tp.file.title %>"]
+date: "<% tp.date.now('YYYY-MM-DD') %>"
+course: ""
+module: ""
+lecturer: ""
+status: captured
+source_audio: ""
+related_concepts: []
+related_papers: []
+tags: [lecture]
+cssclasses: [research-note, lecture-note]
+---
+
+[[Home|Research Lab]]  /  [[Lectures/Lecture Notes|Lectures]]
+
+# <% tp.file.title %>
+
+> [!lecture] Course · Module · Date
+> Fill the properties first. Keep raw capture separate from distilled understanding.
+
+> [!sequence] Learning sequence
+> - Previous lecture:
+> - [[Lectures/Lecture Notes|Lecture index]]
+> - Next lecture:
+
+## Learning objectives
+
+-
+
+## Live notes
+
+> [!tip] Capture selectively
+> Record equations, diagrams, examples, claims, and questions. Let Voice Scribe preserve the spoken detail.
+
+## Core concepts and links
+
+- Create or link atomic notes under `Lectures/Concepts/`.
+
+## Mechanism
+
+Explain what transforms into what, in order.
+
+## Equations and assumptions
+
+$$
+
+$$
+
+## Worked example
+
+## Evidence and caveats
+
+## Open questions
+
+- [ ]
+
+## Distilled summary
+
+> [!summary] Five-minute reconstruction
+> Write this only after processing the lecture.
+
+## Transcript and recording
+
+> [!recording] Raw source
+> Use **Voice Scribe** here. Preserve the audio embed and transcript; do not mistake the transcript for the final note.
+''')
+
+    write_template("_Templates/Lecture Concept.md", '''---
+type: lecture-concept
+aliases: ["<% tp.file.title %>"]
+course: ""
+confidence: seed
+source_lectures: []
+related_concepts: []
+related_papers: []
+tags: [lecture-concept]
+cssclasses: [research-note, lecture-concept-note]
+---
+
+[[Home|Research Lab]]  /  [[Lectures/Concepts|Lecture Concepts]]
+
+# <% tp.file.title %>
+
+> [!concept] One reusable idea
+> State the idea precisely enough that it can stand outside the source lecture.
+
+## Definition
+
+## Intuition
+
+## Mechanism
+
+1.
+
+## Equations and assumptions
+
+## Worked example
+
+## Failure modes and boundaries
+
+## Connections
+
+- **Broader concept:**
+- **Neighboring concept:**
+- **Source lecture:**
+- **Paper or curriculum link:**
+
+## Retrieval check
+
+> [!question] Can I reconstruct it?
+> Write one question whose answer requires the mechanism, not just the definition.
+''')
+
+    write_template("_Templates/Course Hub.md", '''---
+type: course-hub
+aliases: ["<% tp.file.title %>"]
+course: "<% tp.file.title %>"
+semester: ""
+instructor: ""
+tags: [course, lectures]
+cssclasses: [research-note, hub-note, course-note]
+---
+
+[[Home|Research Lab]]  /  [[Lectures/Courses|Courses]]
+
+# <% tp.file.title %>
+
+> [!lecture] Course map
+> Scope, sequence, recurring mechanisms, and unresolved questions.
+
+## Course objectives
+
+## Lecture sequence
+
+```dataview
+TABLE WITHOUT ID file.link AS "Lecture", module AS "Module", date AS "Date", status AS "Status"
+FROM "Lectures/Notes"
+WHERE type = "lecture-note" AND course = this.course
+SORT date ASC
+```
+
+## Concept network
+
+```dataview
+TABLE WITHOUT ID file.link AS "Concept", confidence AS "Confidence", source_lectures AS "Sources"
+FROM "Lectures/Concepts"
+WHERE type = "lecture-concept" AND course = this.course
+SORT file.name ASC
+```
+
+## Recurring mechanisms
+
+## Open questions
+''')
 
 
 def build_home() -> None:
+    surfaces = [
+        ("Mind Map/Embodied AI.md", "Embodied AI Knowledge Graph"),
+        ("Papers/Paper Guides.md", "Paper Reading Guides"),
+        ("Curriculum/Curriculum.md", "Research Curriculum"),
+        ("Robotics Intelligence/Robotics Intelligence.md", "Robotics Intelligence"),
+        ("Contacts/Contacts.md", "Research Contacts"),
+        ("Organizations/Organizations.md", "Organizations"),
+        ("Reports/Daily Reports.md", "Daily Intelligence Reports"),
+        ("Lectures/Lecture Notes.md", "Lecture Notes & Knowledge Graphs"),
+    ]
     home = [
-        frontmatter(type="home", aliases=["AI Research Lab"], tags=["home", "moc"]),
-        "# AI Research Lab", "", "A linked Obsidian workspace for the curriculum, embodied-AI concept map, paper companions, public provenance, and dated robotics intelligence.", "",
-        "> [!important] Canonical sources", "> This vault is generated from the repository's JSON, HTML, and Markdown sources. Edit canonical files, then run `python scripts/build_obsidian_vault.py`.", "",
-        "## Research surfaces", "",
-        f"- {wiki('Mind Map/Embodied AI.md', 'Embodied AI Knowledge Graph')} — 113 concepts and their semantic relationships",
-        f"- {wiki('Papers/Paper Guides.md', 'Paper Reading Guides')} — full guides converted from canonical editorial HTML",
-        f"- {wiki('Curriculum/Curriculum.md', 'Research Curriculum')} — the rolling ML → CV → EAI roadmap",
-        f"- {wiki('Robotics Intelligence/Robotics Intelligence.md', 'Robotics Intelligence')} — ecosystem, jobs, and repeated skill signals",
-        f"- {wiki('Contacts/Contacts.md', 'Research Contacts')} — verified public contributors only",
-        f"- {wiki('Organizations/Organizations.md', 'Organizations')} — labs, universities, and robotics companies",
-        f"- {wiki('Reports/Daily Reports.md', 'Daily Intelligence Reports')} — archived source-led briefs", "",
-        "## Navigate with Graph View", "",
-        "> [!tip] Graph-first navigation", "> Open **Graph View** from the left ribbon or command palette. Colors separate concepts, papers, curriculum, people, organizations, and reports.", ">", "> For a quieter view, open a note's **Local Graph** and adjust depth to one or two hops.", "",
-        "## Reading setup", "",
-        "- **Minimal** provides the restrained editorial base theme.",
-        "- **Minimal Theme Settings** and **Style Settings** expose typography, line width, and accent controls.",
-        "- **Homepage** opens this note directly in Reading View.", "",
-        "## Working rule", "", "Private career preparation and outreach do not enter this public repository. Contacts here are verified public provenance, not a CRM.",
+        frontmatter(
+            type="home", aliases=["AI Research Lab"], tags=["home", "moc"],
+            cssclasses=["research-note", "hub-note", "home-note"],
+        ),
+        "# AI Research Lab", "",
+        *callout(
+            "home", "One research system, several evidence layers",
+            [
+                "Concepts explain the field; papers explain mechanisms; curriculum schedules learning; people and organizations provide provenance; reports track change.",
+                "", "Every surface remains distinct, but meaningful links connect them in the native Obsidian graph.",
+            ],
+        ), "",
+        *link_callout("Research surfaces", surfaces, "map"), "",
+        "## How the vault connects", "",
+        "| From | Follow links to | Why |", "|---|---|---|",
+        "| Concepts | Papers, curriculum, people, organizations | Move from an idea to evidence and study |",
+        "| Papers | Concepts and curriculum | Place mechanisms inside the wider field |",
+        "| Curriculum | Concepts, papers, prerequisites, adjacent days | Learn in sequence without losing context |",
+        "| Organizations | Concepts, people, jobs, reports | Separate institutions while retaining provenance |",
+        "| Reports | Organizations, concepts, papers, dated neighbors | Turn daily observations into cumulative knowledge |",
+        "| Lectures | Course hubs, atomic concepts, papers, curriculum | Convert captured speech into durable understanding |", "",
+        *callout(
+            "graph", "Navigate with native Graph View",
+            [
+                "Open **Graph View** for the complete system. Colors separate research surfaces.",
+                "Open a note's **Local Graph** at depth one or two for a readable neighborhood.",
+            ],
+        ), "",
+        *callout(
+            "source", "Canonical-source rule",
+            ["The vault is generated from repository JSON, HTML, and Markdown. Edit canonical sources, then run `python scripts/build_obsidian_vault.py`."],
+        ), "",
+        *callout(
+            "privacy", "Public/private boundary",
+            ["Contacts are verified public provenance, not a CRM. Private career preparation, outreach, and follow-up remain outside this repository."],
+        ),
     ]
     write("Home.md", "\n".join(home))
     readme = f"""# Obsidian research vault
@@ -687,13 +1740,21 @@ Open this **`obsidian/` directory** as an Obsidian vault. Start at `Home.md`.
 
 ## Install the reading tools
 
-The vault uses a compatibility-pinned Minimal theme plus Style Settings, Minimal Theme Settings, and Homepage:
+The vault uses a compatibility-pinned Minimal theme and a deliberately small plugin stack:
+
+- **Style Settings + Minimal Theme Settings + Homepage** — editorial presentation and a stable landing page
+- **Dataview + Omnisearch + Advanced Tables** — structured indexes, retrieval, and comfortable Markdown authoring
+- **Templater + Voice Scribe** — lecture templates and local, on-device Whisper transcription
 
 ```bash
 python scripts/install_obsidian_reading_tools.py
 ```
 
-Third-party theme/plugin code is installed locally under `.obsidian/` and ignored by Git. The tracked configuration enables the plugins and opens `Home.md` in Reading View.
+Third-party theme/plugin code is installed locally under `.obsidian/` and ignored by Git. The tracked configuration enables the plugins and opens `Home.md` in Reading View. Release assets are version-pinned and checksum-verified by the installer.
+
+## Lecture capture
+
+Start at `Lectures/Lecture Notes.md`. Templater is preconfigured to use `_Templates/`; Voice Scribe downloads its Whisper model on first use and then transcribes locally. Use the lecture template for capture, the concept template for reusable ideas, and deliberate wikilinks to build the graph. Recording permission remains the user's responsibility.
 
 ## Rebuild
 
@@ -716,7 +1777,7 @@ Generated Markdown files carry `generated_by: {GENERATOR}`. The builder only rem
 
 This repository is public. The Contacts area contains only verified public provenance from `entities.json`. Never add rankings, contact history, outreach drafts, readiness notes, or follow-up plans here.
 """
-    write("README.md", frontmatter(type="documentation", tags=["obsidian", "maintenance"]) + readme)
+    write("README.md", frontmatter(type="documentation", tags=["obsidian", "maintenance"], cssclasses=["research-note", "documentation-note"]) + readme)
 
 
 def validate_vault() -> dict[str, int]:
@@ -759,8 +1820,9 @@ def build() -> dict[str, int]:
     build_papers(node_paths)
     _, org_paths = build_contacts(node_paths)
     build_robotics_intelligence(org_paths)
-    build_curriculum()
-    build_reports()
+    build_curriculum(node_paths)
+    build_reports(node_paths, org_paths)
+    build_lectures()
     build_home()
     return validate_vault()
 

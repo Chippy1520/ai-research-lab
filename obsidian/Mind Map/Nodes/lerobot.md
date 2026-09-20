@@ -9,34 +9,42 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "systems", "framework"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: ["Papers/SmolVLA and LeRobot.md"]
+related_curriculum: []
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # LeRobot
 
-Hugging Face stack: LeRobotDataset, ACT, Diffusion, SmolVLA, π₀ ports, SO-100/101. Teleoperate → record → train → deploy with one CLI.
+> [!concept] Framework · Systems · Layer 3
+> Hugging Face stack: LeRobotDataset, ACT, Diffusion, SmolVLA, π₀ ports, SO-100/101. Teleoperate → record → train → deploy with one CLI.
+>
+> **Why it belongs —** If you train a policy this year, you will touch this repo.
 
-> **Why it belongs**
-> If you train a policy this year, you will touch this repo.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/stacks|↑ Software stacks]]
 
-- [[Mind Map/Nodes/stacks|Software stacks]]
+> [!outgoing] Outgoing relationships
+> - **from →** [[Mind Map/Nodes/huggingface|Hugging Face / LeRobot]]
 
-## Semantic connections
+> [!incoming] Incoming relationships
+> - **← in —** [[Mind Map/Nodes/libero|LIBERO]]
+> - **← includes —** [[Mind Map/Nodes/systems|Systems]]
+> - **← maintains —** [[Mind Map/Nodes/huggingface|Hugging Face / LeRobot]]
+> - **← policy class —** [[Mind Map/Nodes/vqbet|VQ-BeT]]
+> - **← related —** [[Mind Map/Nodes/rdt|RDT-1B]]
+> - **← ships in —** [[Mind Map/Nodes/act|ACT]]
+> - **← ships in —** [[Mind Map/Nodes/smolvla|SmolVLA]]
 
-- [[Mind Map/Nodes/act|ACT]] — ships-in
-- [[Mind Map/Nodes/huggingface|Hugging Face / LeRobot]] — maintains
-- [[Mind Map/Nodes/huggingface|Hugging Face / LeRobot]] — from
-- [[Mind Map/Nodes/libero|LIBERO]] — in
-- [[Mind Map/Nodes/rdt|RDT-1B]] — related
-- [[Mind Map/Nodes/smolvla|SmolVLA]] — ships-in
-- [[Mind Map/Nodes/stacks|Software stacks]] — contains
-- [[Mind Map/Nodes/systems|Systems]] — includes
-- [[Mind Map/Nodes/vqbet|VQ-BeT]] — policy-class
+> [!study] Read and study
+> - [[Papers/SmolVLA and LeRobot|SmolVLA and LeRobot]]
 
-## Verified public provenance
-
-- [[Organizations/hugging-face|Hugging Face]] — Hosts the LeRobot framework used by the SmolVLA release; community participation is not employee status. _(verified 2026-09-16)_
+> [!evidence] Verified public provenance
+> - [[Organizations/hugging-face|Hugging Face]] — Hosts the LeRobot framework used by the SmolVLA release; community participation is not employee status. _(verified 2026-09-16)_
 
 ## Primary resources
 
@@ -44,7 +52,6 @@ Hugging Face stack: LeRobotDataset, ACT, Diffusion, SmolVLA, π₀ ports, SO-100
 - **Code:** [github.com/huggingface/lerobot](https://github.com/huggingface/lerobot)
 - **Docs:** [LeRobot docs](https://huggingface.co/docs/lerobot)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#lerobot`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=lerobot
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#lerobot`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=lerobot)

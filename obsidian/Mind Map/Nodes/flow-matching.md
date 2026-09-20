@@ -9,18 +9,35 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "learning", "method"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: ["Papers/SmolVLA and LeRobot.md"]
+related_curriculum: ["Curriculum/Lessons/Day 31 - Flow Matching & Optimal-Transport Paths.md"]
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Flow matching
 
-Regress a velocity field that transports noise to data along nearly straight ODE paths. Fewer function evaluations than diffusion. Robot uses in 2026: π₀/SmolVLA action experts; VGFM (IROS 2026, arXiv 2609.14261) value-guides intermediate flow times without BPTT; FMP (arXiv 2609.15631) replaces AMP discriminators with an online OT+flow reward on Unitree G1. 17 Sep 2026: Agile-WAM (arXiv 2609.20761) is direct vision-tactile-to-action flow matching that jointly emits action chunks and future vis/tactile latents — first-party 11.9 ms and +29.4% relative real success. TraceFlow (arXiv 2609.20646) steers a frozen flow expert from success/failure traces (one terminal bit; no weight update) — first-party 21→39/50 ordered packing.
+> [!concept] Method · Learning · Layer 3
+> Regress a velocity field that transports noise to data along nearly straight ODE paths. Fewer function evaluations than diffusion. Robot uses in 2026: π₀/SmolVLA action experts; VGFM (IROS 2026, arXiv 2609.14261) value-guides intermediate flow times without BPTT; FMP (arXiv 2609.15631) replaces AMP discriminators with an online OT+flow reward on Unitree G1. 17 Sep 2026: Agile-WAM (arXiv 2609.20761) is direct vision-tactile-to-action flow matching that jointly emits action chunks and future vis/tactile latents — first-party 11.9 ms and +29.4% relative real success. TraceFlow (arXiv 2609.20646) steers a frozen flow expert from success/failure traces (one terminal bit; no weight update) — first-party 21→39/50 ordered packing.
+>
+> **Why it belongs —** SmolVLA's action expert is 0.75d because the path is short. Lipman et al. 2210.02747 is the paper.
 
-> **Why it belongs**
-> SmolVLA's action expert is 0.75d because the path is short. Lipman et al. 2210.02747 is the paper.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/gen-world|↑ World models & generation]]
 
-- [[Mind Map/Nodes/gen-world|World models & generation]]
+> [!outgoing] Outgoing relationships
+> - **expert →** [[Mind Map/Nodes/smolvla|SmolVLA]]
+
+> [!incoming] Incoming relationships
+> - **← expert —** [[Mind Map/Nodes/pi0|π₀]]
+> - **← includes —** [[Mind Map/Nodes/generative|Generative models]]
+
+> [!study] Read and study
+> - [[Papers/SmolVLA and LeRobot|SmolVLA and LeRobot]]
+> - [[Curriculum/Lessons/Day 31 - Flow Matching & Optimal-Transport Paths|Day 31 - Flow Matching & Optimal-Transport Paths]]
 
 ## Research directions
 
@@ -28,13 +45,6 @@ Regress a velocity field that transports noise to data along nearly straight ODE
 - Value guidance at random flow times vs extra Euler steps at inference
 - Flow-matched motion priors vs AMP for humanoid walking from a default pose
 - TraceFlow stacking from the robot's own failures vs extra critic/world-model guidance
-
-## Semantic connections
-
-- [[Mind Map/Nodes/generative|Generative models]] — includes
-- [[Mind Map/Nodes/smolvla|SmolVLA]] — expert
-- [[Mind Map/Nodes/gen-world|World models & generation]] — contains
-- [[Mind Map/Nodes/pi0|π₀]] — expert
 
 ## Primary resources
 
@@ -45,7 +55,6 @@ Regress a velocity field that transports noise to data along nearly straight ODE
 - **Video:** [Outlier — Flow matching explained](https://www.youtube.com/watch?v=7cMzfkWFWhI)
 - **Paper:** [Flow Matching for Generative Modeling](https://arxiv.org/abs/2210.02747)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#flow-matching`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=flow-matching
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#flow-matching`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=flow-matching)

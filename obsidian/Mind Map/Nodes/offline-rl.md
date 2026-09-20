@@ -9,33 +9,41 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "learning", "method"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: ["Curriculum/Lessons/Day 36 - Offline RL, Behavior Regularization & Dataset Shift.md"]
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Offline RL
 
-Learn from a logged dataset without more env steps (IQL, CQL). The path after BC when failures are in the log.
+> [!concept] Method · Learning · Layer 3
+> Learn from a logged dataset without more env steps (IQL, CQL). The path after BC when failures are in the log.
+>
+> **Why it belongs —** Humanoid logs are too expensive to throw away as not demos.
 
-> **Why it belongs**
-> Humanoid logs are too expensive to throw away as not demos.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/rl-family|↑ Reinforcement learning]]
 
-- [[Mind Map/Nodes/rl-family|Reinforcement learning]]
+> [!outgoing] Outgoing relationships
+> - **could use →** [[Mind Map/Nodes/oxe|Open X-Embodiment]]
 
-## Semantic connections
+> [!incoming] Incoming relationships
+> - **← cousin —** [[Mind Map/Nodes/q-learning|Q-learning]]
+> - **← includes —** [[Mind Map/Nodes/learning|Learning]]
+> - **← includes —** [[Mind Map/Nodes/rl|Reinforcement learning]]
 
-- [[Mind Map/Nodes/learning|Learning]] — includes
-- [[Mind Map/Nodes/oxe|Open X-Embodiment]] — could-use
-- [[Mind Map/Nodes/q-learning|Q-learning]] — cousin
-- [[Mind Map/Nodes/rl|Reinforcement learning]] — includes
-- [[Mind Map/Nodes/rl-family|Reinforcement learning]] — contains
+> [!study] Read and study
+> - [[Curriculum/Lessons/Day 36 - Offline RL, Behavior Regularization & Dataset Shift|Day 36 - Offline RL, Behavior Regularization & Dataset Shift]]
 
 ## Primary resources
 
 - **Video:** [Berkeley CS285 — includes offline RL lectures](https://www.youtube.com/playlist?list=PL_iWQOsE6TfVYGEGiAOMaOzzv41Jfm_Ps)
 - **Paper:** [IQL · Kostrikov et al.](https://arxiv.org/abs/2110.06169)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#offline-rl`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=offline-rl
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#offline-rl`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=offline-rl)

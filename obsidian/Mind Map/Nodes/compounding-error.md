@@ -9,25 +9,31 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "learning", "concept"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: []
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Compounding error
 
-A slightly wrong action, integrated at 30–50 Hz, puts the robot in states no demonstration showed. Horizon length is the enemy.
+> [!concept] Concept · Learning · Layer 3
+> A slightly wrong action, integrated at 30–50 Hz, puts the robot in states no demonstration showed. Horizon length is the enemy.
+>
+> **Why it belongs —** ACT's chunk size k is a horizon hack. DAgger is an interactive-relabel hack. GEN-1.5 tries to skip both with in-context demos.
 
-> **Why it belongs**
-> ACT's chunk size k is a horizon hack. DAgger is an interactive-relabel hack. GEN-1.5 tries to skip both with in-context demos.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/imit|↑ Imitation]]
 
-- [[Mind Map/Nodes/imit|Imitation]]
+> [!outgoing] Outgoing relationships
+> - **mitigated by →** [[Mind Map/Nodes/action-chunking|Action chunking]]
 
-## Semantic connections
-
-- [[Mind Map/Nodes/action-chunking|Action chunking]] — mitigated-by
-- [[Mind Map/Nodes/behavior-cloning|Behavior cloning]] — fails-by
-- [[Mind Map/Nodes/imit|Imitation]] — contains
-- [[Mind Map/Nodes/il|Imitation learning]] — fails-by
+> [!incoming] Incoming relationships
+> - **← fails by —** [[Mind Map/Nodes/behavior-cloning|Behavior cloning]]
+> - **← fails by —** [[Mind Map/Nodes/il|Imitation learning]]
 
 ## Primary resources
 
@@ -35,7 +41,6 @@ A slightly wrong action, integrated at 30–50 Hz, puts the robot in states no d
 - **Paper:** [DAgger · Ross et al.](https://arxiv.org/abs/1011.0686)
 - **Guide:** [ACT guide](https://chippy1520.github.io/ai-research-lab/papers-act.html)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#compounding-error`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=compounding-error
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#compounding-error`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=compounding-error)

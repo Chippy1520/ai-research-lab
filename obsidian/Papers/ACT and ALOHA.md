@@ -7,20 +7,27 @@ source: "site/papers-act.html"
 live_url: "https://chippy1520.github.io/ai-research-lab/papers-act.html"
 tags: ["paper", "reading-guide"]
 related_nodes: ["act", "action-chunking"]
+related_curriculum: []
+cssclasses: ["research-note", "paper-note"]
 ---
+
+[[Home|Research Lab]]  /  [[Papers/Paper Guides|Paper Guides]]
 
 # ACT: compounding error is a horizon problem
 
+> [!paper] Research reading guide
 > Complete reading guide for ACT / ALOHA (Zhao et al., RSS 2023, arXiv 2304.13705): compounding error, action chunking, CVAE, temporal ensembling.
+>
+> **Concepts:** 2 · **Related curriculum notes:** 0
 
-- **Canonical guide:** `site/papers-act.html`
-- **Live guide:** https://chippy1520.github.io/ai-research-lab/papers-act.html
-- **Companion source:** `papers/act.md`
+> [!concepts] Connected concepts
+> - [[Mind Map/Nodes/act|ACT]]
+> - [[Mind Map/Nodes/action-chunking|Action chunking]]
 
-## Connected concepts
-
-- [[Mind Map/Nodes/act|act]]
-- [[Mind Map/Nodes/action-chunking|action-chunking]]
+> [!source] Canonical and public versions
+> - Repository guide: `site/papers-act.html`
+> - [Open the published HTML guide](https://chippy1520.github.io/ai-research-lab/papers-act.html)
+> - Companion source: `papers/act.md`
 
 ---
 
@@ -28,55 +35,30 @@ related_nodes: ["act", "action-chunking"]
 
 The cup is on the table. A policy that emits one joint command per 20 ms, independently, compounds a 1% error into a state no demonstration ever showed. ACT instead predicts a chunk of $k$ future joint targets from one observation, samples one mode of that chunk with a CVAE, and averages overlapping forecasts of the same $a\_t$ (temporal ensembling).
 
-01
+> [!example] Step 01 — You
+> **You:** Look at the cup from a few angles, feel where your wrists are.
+>
+> **The paper:** Four RGB cameras through ResNet-18, plus joint positions. Pixel-to-action, no object CAD.
 
-#### You
+> [!example] Step 02 — You
+> **You:** Commit to a short sequence: tip it, nest it, pry the lid. You do not re-choose every millimetre. A 1% twitch, repeated, knocks the cup over — compounding error.
+>
+> **The paper:** Predict $k$ future joint targets at once, $\pi(a_{t:t+k}\mid s_t)$. Effective horizon $\div k$. Ablation: 1% success at $k=1$, 44% at $k=100$.
 
-Look at the cup from a few angles, feel where your wrists are.
+> [!example] Step 03 — You
+> **You:** There are two decent ways to pry. You pick one style and stick with it. Averaging both motions puts a finger through the lid.
+>
+> **The paper:** CVAE over chunks. Train with a style latent $z$. At test, $z=0$ — one coherent trajectory, not the mushy mean of two.
 
-#### The paper
+> [!example] Step 04 — You
+> **You:** As you move, you keep a running blend of “what I already committed to” and “what I see now,” instead of jerking to a brand-new plan every two seconds.
+>
+> **The paper:** Temporal ensembling: query every tick, average overlapping forecasts of the same $a_t$ with $w_i=\exp(-m i)$.
 
-Four RGB cameras through ResNet-18, plus joint positions. Pixel-to-action, no object CAD.
-
-02
-
-#### You
-
-Commit to a short sequence: tip it, nest it, pry the lid. You do not re-choose every millimetre. A 1% twitch, repeated, knocks the cup over — compounding error.
-
-#### The paper
-
-Predict $k$ future joint targets at once, $\pi(a\_{t:t+k}\mid s\_t)$. Effective horizon $\div k$. Ablation: 1% success at $k=1$, 44% at $k=100$.
-
-03
-
-#### You
-
-There are two decent ways to pry. You pick one style and stick with it. Averaging both motions puts a finger through the lid.
-
-#### The paper
-
-CVAE over chunks. Train with a style latent $z$. At test, $z=0$ — one coherent trajectory, not the mushy mean of two.
-
-04
-
-#### You
-
-As you move, you keep a running blend of “what I already committed to” and “what I see now,” instead of jerking to a brand-new plan every two seconds.
-
-#### The paper
-
-Temporal ensembling: query every tick, average overlapping forecasts of the *same* $a\_t$ with $w\_i=\exp(-m i)$.
-
-05
-
-#### You
-
-You learned this from watching someone do it about fifty times, not from a warehouse of expert corrections (DAgger) that would ruin the teleop.
-
-#### The paper
-
-~50 demonstrations / ~10 minutes. Offline only. ALOHA is the cheap stage those demos were collected on.
+> [!example] Step 05 — You
+> **You:** You learned this from watching someone do it about fifty times, not from a warehouse of expert corrections (DAgger) that would ruin the teleop.
+>
+> **The paper:** ~50 demonstrations / ~10 minutes. Offline only. ALOHA is the cheap stage those demos were collected on.
 
 Every later VLA that “predicts action chunks” is citing this case study, whether or not it names ACT. SmolVLA keeps 02 and replaces 03–04 with flow matching and an async queue.
 
@@ -120,27 +102,17 @@ Collect demos → train to predict future action sequence from current obs → a
 
 Neuroscience “action chunking”: grasp-the-wrapper is one unit, not 50 independent joint commands. Fix chunk size $k$: every $k$ steps, observe, emit $k$ actions, execute. Effective horizon of a $T$-step task becomes $T/k$. Policy is $\pi\_\theta(a\_{t:t+k}\mid s\_t)$ not $\pi\_\theta(a\_t\mid s\_t)$.
 
-#### π(at | st)
-
-**1**step**1****1**× T
-
-Horizon = T. 1% ablation.
-
-#### π(at:t+k | st)
-
-**k**chunk**k**
-
-Horizon = T/k. 44% at k=100.
+| Alternative | Representation and consequence |
+|---|---|
+| **π(a t \| s t )** | 1 step → 1 → 1 → × T · π(a t \| s t ) Horizon = T. 1% ablation. |
+| **π(a t:t+k \| s t )** | k chunk → k · π(a t:t+k \| s t ) Horizon = T/k. 44% at k=100. |
 
 Chunking also models non-Markov human pauses: a single-step policy cannot condition on “we are in the middle of a hesitation.”
 
 Naive chunk = open-loop for $k$ steps (jerky at boundaries). Fix: query every timestep, dump overlapping predictions into buffers $\mathcal{B}[t:t+k]$, apply $a\_t=\sum\_i w\_i A\_t[i]/\sum\_i w\_i$ with $w\_i=\exp(-m\cdot i)$ (Algorithm 2). Newer predictions weigh more.
 
-chunk at t
-chunk at t+1 (heavier)
-chunk at t+2 (heaviest)
-
-now
+> [!diagram] Overlapping chunks with exponential weights
+> chunk at t · chunk at t+1 (heavier) · chunk at t+2 (heaviest) · now
 
 The dashed line is the action you actually send: weighted average of every chunk that covers “now.”
 
@@ -194,7 +166,14 @@ ACT’s answers are, respectively: predict $k$ actions at once (horizon $\div k$
 ~80M
 chunk size k
 CVAE · z=0 at test
-50 demos4 RGB camerasResNet-18 eachJoints14-DoF bimanualzstyle latent · 0 at eval↓ transformer encoderTransformer decoderemits k joint-target vectors↓Naive chunkopen-loop for k steps+ temporal ensemblequery every tick · exp weights
+50 demos
+
+> [!flow] Architecture / data flow
+> **4 RGB cameras** — ResNet-18 each + **Joints** — 14-DoF bimanual + **z** — style latent · 0 at eval
+> ↓ transformer encoder
+> **Transformer decoder** — emits k joint-target vectors
+> ↓
+> **Naive chunk** — open-loop for k steps + **+ temporal ensemble** — query every tick · exp weights
 
 Figure. ACT datapath. Ensembling is inference-only; training still sees whole chunks.
 
@@ -221,7 +200,10 @@ Figure. ACT datapath. Ensembling is inference-only; training still sees whole ch
 
    Encoder $q(z\mid a\_{t:t+k}, o\_t)$ → Gaussian. Decoder $p(a\_{t:t+k}\mid o\_t, z)$. Loss = reconstruction + $\beta\,\mathrm{KL}(q\|p(z))$. At test time drop the encoder, set $z=0$ (prior mean). You get a deterministic policy that was trained as if it were generative — a useful hack when you want multimodality during learning and a single good trajectory at eval.
 
-   Deepia, “Variational Autoencoders | Generative AI Animated.” Map this onto ACT: encoder sees the chunk, decoder is the policy, z is clamped to 0 on the robot.
+> [!video] Variational Autoencoders animated
+> [Watch video](https://www.youtube.com/watch?v=qJeaCHQ1k2w)
+>
+> Deepia, “Variational Autoencoders | Generative AI Animated.” Map this onto ACT: encoder sees the chunk, decoder is the policy, z is clamped to 0 on the robot.
 
 ### Knowledge graph
 
@@ -239,21 +221,21 @@ problems  foundations  cousins  descendants
 
 The field-scale version of this tree is the [living mind map](https://chippy1520.github.io/ai-research-lab/mindmap.html) (click ACT, chunking, CVAE, SmolVLA).
 
-ALOHA teleop↓ 50 demoscompounding error
-human modes / pauses
-jerky chunk edges↓ three fixeschunk k
-CVAE · z=0
-temporal ensemble↓ACT in LeRobot
+> [!graph] Concept flow
+> **ALOHA teleop**
+> ↓ 50 demos
+> **compounding error · human modes / pauses · jerky chunk edges**
+> ↓ three fixes
+> **chunk k · CVAE · z=0 · temporal ensemble**
+> ↓
+> **ACT in LeRobot**
 
 Three problems, three modules. Later VLAs keep the chunk and swap the other two.
 
-#### Single-step BC (k=1)
-
-Error grows. 1% ablation success.
-
-#### Chunked (k=100)
-
-Horizon ÷ k. 44% on the same ablation.
+| Alternative | Representation and consequence |
+|---|---|
+| **Single-step BC (k=1)** | Single-step BC (k=1) Error grows. 1% ablation success. |
+| **Chunked (k=100)** | Chunked (k=100) Horizon ÷ k. 44% on the same ablation. |
 
 Bars are error magnitude over time, schematic. The numbers are the paper’s k-ablation, ensembling off.
 
@@ -275,7 +257,11 @@ $$\pi\_\theta(a\_{t:t+k}\mid s\_t)\quad\text{instead of}\quad\pi\_\theta(a\_t\mi
 
 Effective horizon of a $T$-step task becomes $T/k$. Ablation (simulated cube transfer / bimanual insertion, averaged, ensembling off): **1% success at $k=1$**, **44% at $k=100$**, then a decline at $k=200$ and $400$ as the policy becomes too open-loop. Chunk size is a bias–variance dial, not a magic constant. Typical real-robot operating point in follow-on work: $k=50$–$100$ (about 1–2 seconds at 50 Hz).
 
-k = 1**1%**k = 100**44%**k = 200+**drops**
+- k = 1 — 1%
+
+- k = 100 — 44%
+
+- k = 200+ — drops
 
 Paper ablation, ensembling off. Too small k → compounding error. Too large k → open-loop drift.
 
@@ -301,13 +287,10 @@ Humans are stochastic where precision does not matter and precise where it does.
 
 If your task is unimodal and low-precision, the CVAE is overhead. If your task is “pry a lid,” it is load-bearing. LeRobot still ships this as the default ACT.
 
-#### Train
-
-Encoder sees the chunk + proprio, predicts $(\mu,\sigma)$ of $z$. Decoder reconstructs the chunk from images, joints, and $z$. L1 + $\beta$ KL.
-
-#### Test
-
-Throw the encoder away. Set $z=\mathbf{0}$. One coherent style, not the average of two prying motions.
+| Alternative | Representation and consequence |
+|---|---|
+| **Train** | Train Encoder sees the chunk + proprio, predicts $(\mu,\sigma)$ of $z$. Decoder reconstructs the chunk from images, joints, and $z$. L1 + $\beta$ KL. |
+| **Test** | Test Throw the encoder away. Set $z=\mathbf{0}$. One coherent style, not the average of two prying motions. |
 
 ### Architecture (Figure 2 of the paper)
 
@@ -332,9 +315,15 @@ LeRobot’s docs call ACT the first policy to train: fast, light, 50-demo territ
 
 Practical LeRobot notes (from the official ACT page, not folklore): ResNet-18 backbone, transformer over cameras + joints + latent, L1 + KL, $z=0$ at eval, temporal ensembling on. Watch the LeRobot team’s ACT tutorial before your first train run.
 
-Trelis Research — train ACT on SO-101 with LeRobot (includes KL / style discussion). Pair with HF Tutorial #4 for recording.
+> [!video] Train an ACT Policy for the SO-101 with LeRobot
+> [Watch video](https://www.youtube.com/watch?v=-tkEMLOLEwo)
+>
+> Trelis Research — train ACT on SO-101 with LeRobot (includes KL / style discussion). Pair with HF Tutorial #4 for recording.
 
-3Blue1Brown, attention step-by-step. This is the decoder that emits the chunk.
+> [!video] Attention in transformers, step by step
+> [Watch video](https://www.youtube.com/watch?v=eMlx5fFNoYc)
+>
+> 3Blue1Brown, attention step-by-step. This is the decoder that emits the chunk.
 
 ### Worked chunk at 50 Hz, $k=100$
 
@@ -378,7 +367,7 @@ Failure mode of too-large $k$: the 2-second plan was built for a cup that is no 
 
   #### [[Papers/SmolVLA and LeRobot|SmolVLA]]
 
-  Video: Attention in transformers, step by step — https://www.youtube.com/embed/eMlx5fFNoYc
+  Keeps the chunk, replaces CVAE+ensemble with flow matching and an async queue.
 
 ### Primary sources
 

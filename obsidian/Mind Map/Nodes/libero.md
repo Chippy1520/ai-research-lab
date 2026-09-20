@@ -9,36 +9,41 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "systems", "concept"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: []
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # LIBERO
 
-Sim suite SmolVLA quotes (Spatial/Object/Goal/Long). Binary success, 10 trials/task. Not a real robot. Sep 2026: LIBERO-CTRL (arXiv 2609.15940) pairs each initial state across single-axis and simultaneous perturbations; up to 34.5% of matched states change outcome under compound shifts, so single-axis VLA tables do not compose.
+> [!concept] Concept · Systems · Layer 3
+> Sim suite SmolVLA quotes (Spatial/Object/Goal/Long). Binary success, 10 trials/task. Not a real robot. Sep 2026: LIBERO-CTRL (arXiv 2609.15940) pairs each initial state across single-axis and simultaneous perturbations; up to 34.5% of matched states change outcome under compound shifts, so single-axis VLA tables do not compose.
+>
+> **Why it belongs —** Every VLA percentage you will cite. Know the protocol first.
 
-> **Why it belongs**
-> Every VLA percentage you will cite. Know the protocol first.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/data-hw|↑ Data & bodies]]
 
-- [[Mind Map/Nodes/data-hw|Data & bodies]]
+> [!outgoing] Outgoing relationships
+> - **in →** [[Mind Map/Nodes/lerobot|LeRobot]]
+
+> [!incoming] Incoming relationships
+> - **← evals on —** [[Mind Map/Nodes/smolvla|SmolVLA]]
+> - **← includes —** [[Mind Map/Nodes/systems|Systems]]
 
 ## Research directions
 
 - Re-score published VLAs on LIBERO-CTRL paired compound shifts, not just LIBERO avg
 - Emergent failure vs compensated success as a reporting requirement
 
-## Semantic connections
-
-- [[Mind Map/Nodes/data-hw|Data & bodies]] — contains
-- [[Mind Map/Nodes/lerobot|LeRobot]] — in
-- [[Mind Map/Nodes/smolvla|SmolVLA]] — evals-on
-- [[Mind Map/Nodes/systems|Systems]] — includes
-
 ## Primary resources
 
 - **Paper:** [LIBERO-CTRL — compound robustness of VLAs (arXiv 2609.15940)](https://arxiv.org/abs/2609.15940)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#libero`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=libero
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#libero`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=libero)

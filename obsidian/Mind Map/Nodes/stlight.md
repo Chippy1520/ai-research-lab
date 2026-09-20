@@ -9,35 +9,43 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "perception", "paper"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: ["Papers/STLight.md"]
+related_curriculum: []
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # STLight
 
-Fully convolutional future-frame prediction. Fold time into channels, STLMixer, PixelShuffle. SOTA STL at a fraction of PredRNN FLOPs (2% on KTH 10→20 for STLight-L).
+> [!concept] Paper · Perception · Layer 3
+> Fully convolutional future-frame prediction. Fold time into channels, STLMixer, PixelShuffle. SOTA STL at a fraction of PredRNN FLOPs (2% on KTH 10→20 for STLight-L).
+>
+> **Why it belongs —** Video dynamics / world-model cousin of robot policies. Not a VLA.
 
-> **Why it belongs**
-> Video dynamics / world-model cousin of robot policies. Not a VLA.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/geom-3d|↑ Geometry & 3D]]
 
-- [[Mind Map/Nodes/geom-3d|Geometry & 3D]]
+> [!outgoing] Outgoing relationships
+> - **is →** [[Mind Map/Nodes/cnn|CNNs]]
+> - **is a →** [[Mind Map/Nodes/world-models|World models]]
 
-## Semantic connections
+> [!incoming] Incoming relationships
+> - **← backbone —** [[Mind Map/Nodes/cnn|CNNs]]
+> - **← cnn instead —** [[Mind Map/Nodes/seq-models|Sequence models]]
+> - **← dense future —** [[Mind Map/Nodes/optical-flow|Optical flow]]
+> - **← includes —** [[Mind Map/Nodes/perception|Perception]]
 
-- [[Mind Map/Nodes/cnn|CNNs]] — backbone
-- [[Mind Map/Nodes/cnn|CNNs]] — is
-- [[Mind Map/Nodes/geom-3d|Geometry & 3D]] — contains
-- [[Mind Map/Nodes/optical-flow|Optical flow]] — dense-future
-- [[Mind Map/Nodes/perception|Perception]] — includes
-- [[Mind Map/Nodes/seq-models|Sequence models]] — cnn-instead
-- [[Mind Map/Nodes/world-models|World models]] — is-a
+> [!study] Read and study
+> - [[Papers/STLight|STLight]]
 
 ## Primary resources
 
 - **Guide:** [Our STLight guide](https://chippy1520.github.io/ai-research-lab/papers-stlight.html)
 - **Paper:** [arXiv 2411.10198](https://arxiv.org/abs/2411.10198)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#stlight`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=stlight
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#stlight`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=stlight)

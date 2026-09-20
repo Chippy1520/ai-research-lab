@@ -9,26 +9,45 @@ layer: 1
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "learning", "domain"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: ["Curriculum/Lessons/Day 01 - Optimization Dynamics & AdamW.md", "Curriculum/Lessons/Day 04 - Probability, Estimation & Statistical Learning.md", "Curriculum/Lessons/Day 07 - Information Theory & Representation.md", "Curriculum/Lessons/Day 10 - Linear Models, Kernels & Generalization.md", "Curriculum/Lessons/Day 12 - Monte Carlo and Temporal-Difference Learning.md", "Curriculum/Lessons/Day 13 - Backpropagation, Initialization & Normalization.md"]
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Learning
 
-How a robot acquires a skill: copy a human, optimize a reward, or prompt a pretrained model in context.
+> [!concept] Domain · Learning · Layer 1
+> How a robot acquires a skill: copy a human, optimize a reward, or prompt a pretrained model in context.
+>
+> **Why it belongs —** ACT, DAgger, RL, and GEN-1.5 are different answers to the same compounding-error problem.
 
-> **Why it belongs**
-> ACT, DAgger, RL, and GEN-1.5 are different answers to the same compounding-error problem.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/embodied-ai|↑ Embodied AI]]
+> - [[Mind Map/Nodes/imit|↓ Imitation]]
+> - [[Mind Map/Nodes/rl-family|↓ Reinforcement learning]]
+> - [[Mind Map/Nodes/opt-basics|↓ Training machinery]]
+> - [[Mind Map/Nodes/xfer|↓ Transfer]]
+> - [[Mind Map/Nodes/gen-world|↓ World models & generation]]
 
-- [[Mind Map/Nodes/embodied-ai|Embodied AI]]
+> [!outgoing] Outgoing relationships
+> - **includes →** [[Mind Map/Nodes/behavior-cloning|Behavior cloning]]
+> - **includes →** [[Mind Map/Nodes/offline-rl|Offline RL]]
+> - **includes →** [[Mind Map/Nodes/one-shot|One-shot physical prompting]]
+> - **includes →** [[Mind Map/Nodes/rl|Reinforcement learning]]
+> - **includes →** [[Mind Map/Nodes/sim2real|Sim-to-real]]
+> - **includes →** [[Mind Map/Nodes/world-models|World models]]
 
-## Children
-
-- [[Mind Map/Nodes/imit|Imitation]]
-- [[Mind Map/Nodes/rl-family|Reinforcement learning]]
-- [[Mind Map/Nodes/opt-basics|Training machinery]]
-- [[Mind Map/Nodes/xfer|Transfer]]
-- [[Mind Map/Nodes/gen-world|World models & generation]]
+> [!study] Read and study
+> - [[Curriculum/Lessons/Day 01 - Optimization Dynamics & AdamW|Day 01 - Optimization Dynamics & AdamW]]
+> - [[Curriculum/Lessons/Day 04 - Probability, Estimation & Statistical Learning|Day 04 - Probability, Estimation & Statistical Learning]]
+> - [[Curriculum/Lessons/Day 07 - Information Theory & Representation|Day 07 - Information Theory & Representation]]
+> - [[Curriculum/Lessons/Day 10 - Linear Models, Kernels & Generalization|Day 10 - Linear Models, Kernels & Generalization]]
+> - [[Curriculum/Lessons/Day 12 - Monte Carlo and Temporal-Difference Learning|Day 12 - Monte Carlo and Temporal-Difference Learning]]
+> - [[Curriculum/Lessons/Day 13 - Backpropagation, Initialization & Normalization|Day 13 - Backpropagation, Initialization & Normalization]]
 
 ## Research directions
 
@@ -36,26 +55,10 @@ How a robot acquires a skill: copy a human, optimize a reward, or prompt a pretr
 - In-context physical prompting
 - Offline RL on robot logs
 
-## Semantic connections
-
-- [[Mind Map/Nodes/behavior-cloning|Behavior cloning]] — includes
-- [[Mind Map/Nodes/embodied-ai|Embodied AI]] — includes
-- [[Mind Map/Nodes/imit|Imitation]] — contains
-- [[Mind Map/Nodes/offline-rl|Offline RL]] — includes
-- [[Mind Map/Nodes/one-shot|One-shot physical prompting]] — includes
-- [[Mind Map/Nodes/rl|Reinforcement learning]] — includes
-- [[Mind Map/Nodes/rl-family|Reinforcement learning]] — contains
-- [[Mind Map/Nodes/sim2real|Sim-to-real]] — includes
-- [[Mind Map/Nodes/opt-basics|Training machinery]] — contains
-- [[Mind Map/Nodes/xfer|Transfer]] — contains
-- [[Mind Map/Nodes/world-models|World models]] — includes
-- [[Mind Map/Nodes/gen-world|World models & generation]] — contains
-
 ## Primary resources
 
 - **Video:** [Berkeley CS285 2023 — Deep Reinforcement Learning (Levine)](https://www.youtube.com/playlist?list=PL_iWQOsE6TfVYGEGiAOMaOzzv41Jfm_Ps)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#learning`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=learning
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#learning`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=learning)

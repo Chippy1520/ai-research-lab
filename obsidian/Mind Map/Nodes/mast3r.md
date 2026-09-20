@@ -9,32 +9,35 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "perception", "paper"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: []
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # MASt3R
 
-DUSt3R evolution: two-view matching + geometry, still fused for N>2. VGGT’s pairwise competitor on pose tables.
+> [!concept] Paper · Perception · Layer 3
+> DUSt3R evolution: two-view matching + geometry, still fused for N>2. VGGT’s pairwise competitor on pose tables.
+>
+> **Why it belongs —** Know this before quoting VGGT vs learned SfM.
 
-> **Why it belongs**
-> Know this before quoting VGGT vs learned SfM.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/geom-3d|↑ Geometry & 3D]]
 
-- [[Mind Map/Nodes/geom-3d|Geometry & 3D]]
-
-## Semantic connections
-
-- [[Mind Map/Nodes/dust3r|DUSt3R]] — evolves
-- [[Mind Map/Nodes/geom-3d|Geometry & 3D]] — contains
-- [[Mind Map/Nodes/perception|Perception]] — includes
-- [[Mind Map/Nodes/vggt|VGGT]] — compared-to
+> [!incoming] Incoming relationships
+> - **← compared to —** [[Mind Map/Nodes/vggt|VGGT]]
+> - **← evolves —** [[Mind Map/Nodes/dust3r|DUSt3R]]
+> - **← includes —** [[Mind Map/Nodes/perception|Perception]]
 
 ## Primary resources
 
 - **Video:** [Vincent Leroy — MASt3R (ECCV 5 min)](https://www.youtube.com/watch?v=rJfWsxzX61g)
 - **Paper:** [MASt3R](https://arxiv.org/abs/2406.09756)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#mast3r`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=mast3r
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#mast3r`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=mast3r)

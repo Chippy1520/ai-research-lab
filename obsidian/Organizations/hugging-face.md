@@ -5,18 +5,22 @@ aliases: ["Hugging Face"]
 organization_id: "hugging-face"
 organization_kind: "company / open-source community"
 source: "intelligence/entities.json"
-tags: ["organization", "company / open-source community"]
+tags: ["organization", "company-open-source-community"]
+cssclasses: ["research-note", "organization-note"]
+related_concepts: ["Mind Map/Nodes/smolvla.md", "Mind Map/Nodes/lerobot.md"]
 ---
+
+[[Home|Research Lab]]  /  [[Organizations/Organizations|Organizations]]
 
 # Hugging Face
 
-- **Official site:** https://huggingface.co/
+> [!organization] Company / Open Source Community
+> [Official site](https://huggingface.co/)
 
-## Verified associations
+> [!concepts] Connected research
+> - [[Mind Map/Nodes/smolvla|SmolVLA]]
+> - [[Mind Map/Nodes/lerobot|LeRobot]]
 
-- [[Mind Map/Nodes/smolvla|smolvla]] — Published the SmolVLA release and training/inference recipes in the LeRobot ecosystem. _(verified 2026-09-16)_
-- [[Mind Map/Nodes/lerobot|lerobot]] — Hosts the LeRobot framework used by the SmolVLA release; community participation is not employee status. _(verified 2026-09-16)_
 
-
-> [!privacy]
-> Public organizational record only. Career preparation and outreach remain private and outside this repository.
+> [!privacy] Public record boundary
+> Career preparation and outreach remain private and outside this repository.

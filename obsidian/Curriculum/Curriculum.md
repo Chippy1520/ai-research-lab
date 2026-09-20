@@ -4,154 +4,48 @@ type: "map-of-content"
 aliases: ["AI Research Curriculum"]
 tags: ["moc", "curriculum"]
 updated: "2026-08-29"
+cssclasses: ["research-note", "hub-note", "curriculum-hub"]
 ---
+
+[[Home|Research Lab]]  /  [[Curriculum/Curriculum|Curriculum]]
 
 # AI Research Curriculum
 
-Machine Learning → Computer Vision → Embodied AI & RL Robotics, maintained as a perpetual rolling horizon.
+> [!curriculum] A perpetual ML → CV → Embodied AI spiral
+> Spiral indefinitely through mathematical foundations, modern methods, systems, evaluation, interdisciplinary connections, and changing frontiers. There is no terminal lesson or completeness claim.
+>
+> **Current:** [[Curriculum/Lessons/Day 01 - Optimization Dynamics & AdamW|Day 01 - Optimization Dynamics & AdamW]] · **72 mapped lessons** · no terminal day
 
-> Current due day: **1** · mapped roadmap entries: **72** · terminal day: **none**.
+## Roadmap
 
-## Cycle 1
+| Cycle | Machine Learning | Computer Vision | Embodied AI & RL Robotics |
+|---:|---|---|---|
+| 1 | [[Curriculum/Lessons/Day 01 - Optimization Dynamics & AdamW|Day 01 - Optimization Dynamics & AdamW]] | [[Curriculum/Lessons/Day 02 - Image Formation, Sampling & Color|Day 02 - Image Formation, Sampling & Color]] | [[Curriculum/Lessons/Day 03 - MDPs, Returns & Occupancy Measures|Day 03 - MDPs, Returns & Occupancy Measures]] |
+| 2 | [[Curriculum/Lessons/Day 04 - Probability, Estimation & Statistical Learning|Day 04 - Probability, Estimation & Statistical Learning]] | [[Curriculum/Lessons/Day 05 - 2D Fourier Analysis & Phase|Day 05 - 2D Fourier Analysis & Phase]] | [[Curriculum/Lessons/Day 06 - Bellman Operators & Contraction Proofs|Day 06 - Bellman Operators & Contraction Proofs]] |
+| 3 | [[Curriculum/Lessons/Day 07 - Information Theory & Representation|Day 07 - Information Theory & Representation]] | [[Curriculum/Lessons/Day 08 - Spatial Derivatives, Scale Space & Features|Day 08 - Spatial Derivatives, Scale Space & Features]] | [[Curriculum/Lessons/Day 09 - Dynamic Programming- Policy-Value Iteration|Day 09 - Dynamic Programming- Policy-Value Iteration]] |
+| 4 | [[Curriculum/Lessons/Day 10 - Linear Models, Kernels & Generalization|Day 10 - Linear Models, Kernels & Generalization]] | [[Curriculum/Lessons/Day 11 - Projective Geometry & Camera Calibration|Day 11 - Projective Geometry & Camera Calibration]] | [[Curriculum/Lessons/Day 12 - Monte Carlo and Temporal-Difference Learning|Day 12 - Monte Carlo and Temporal-Difference Learning]] |
+| 5 | [[Curriculum/Lessons/Day 13 - Backpropagation, Initialization & Normalization|Day 13 - Backpropagation, Initialization & Normalization]] | [[Curriculum/Lessons/Day 14 - Multi-View Geometry, Epipolar Constraints & SfM|Day 14 - Multi-View Geometry, Epipolar Constraints & SfM]] | [[Curriculum/Lessons/Day 15 - Q-Learning, Function Approximation & DQN|Day 15 - Q-Learning, Function Approximation & DQN]] |
+| 6 | [[Curriculum/Lessons/Day 16 - CNN Inductive Biases & Modern ConvNets|Day 16 - CNN Inductive Biases & Modern ConvNets]] | [[Curriculum/Lessons/Day 17 - CNN Backbones, FPN & Detection|Day 17 - CNN Backbones, FPN & Detection]] | [[Curriculum/Lessons/Day 18 - Policy Gradients and Variance Reduction|Day 18 - Policy Gradients and Variance Reduction]] |
+| 7 | [[Curriculum/Lessons/Day 19 - Variational Inference, ELBO & VAEs|Day 19 - Variational Inference, ELBO & VAEs]] | [[Curriculum/Lessons/Day 20 - Semantic, Instance & Panoptic Segmentation|Day 20 - Semantic, Instance & Panoptic Segmentation]] | [[Curriculum/Lessons/Day 21 - Actor-Critic Methods & Generalized Advantage Estimation|Day 21 - Actor-Critic Methods & Generalized Advantage Estimation]] |
+| 8 | [[Curriculum/Lessons/Day 22 - Normalizing Flows & Change of Variables|Day 22 - Normalizing Flows & Change of Variables]] | [[Curriculum/Lessons/Day 23 - Vision Transformers & Patch Geometry|Day 23 - Vision Transformers & Patch Geometry]] | [[Curriculum/Lessons/Day 24 - PPO- Clipping, Trust Regions & Diagnostics|Day 24 - PPO- Clipping, Trust Regions & Diagnostics]] |
+| 9 | [[Curriculum/Lessons/Day 25 - Attention, RoPE & KV-Caching|Day 25 - Attention, RoPE & KV-Caching]] | [[Curriculum/Lessons/Day 26 - Self-Supervised Visual Representation Learning|Day 26 - Self-Supervised Visual Representation Learning]] | [[Curriculum/Lessons/Day 27 - Maximum-Entropy RL & Soft Actor-Critic|Day 27 - Maximum-Entropy RL & Soft Actor-Critic]] |
+| 10 | [[Curriculum/Lessons/Day 28 - Diffusion, Score Matching & SDEs|Day 28 - Diffusion, Score Matching & SDEs]] | [[Curriculum/Lessons/Day 29 - NeRF Volume Rendering & Positional Encoding|Day 29 - NeRF Volume Rendering & Positional Encoding]] | [[Curriculum/Lessons/Day 30 - Model-Based RL and Uncertainty-Aware Planning|Day 30 - Model-Based RL and Uncertainty-Aware Planning]] |
+| 11 | [[Curriculum/Lessons/Day 31 - Flow Matching & Optimal-Transport Paths|Day 31 - Flow Matching & Optimal-Transport Paths]] | [[Curriculum/Lessons/Day 32 - 3D Gaussian Splatting & Differentiable Rasterization|Day 32 - 3D Gaussian Splatting & Differentiable Rasterization]] | [[Curriculum/Lessons/Day 33 - POMDPs, Belief State & Recurrent Policies|Day 33 - POMDPs, Belief State & Recurrent Policies]] |
+| 12 | [[Curriculum/Lessons/Day 34 - Sequence Models- RNNs, S4 & Mamba|Day 34 - Sequence Models- RNNs, S4 & Mamba]] | [[Curriculum/Lessons/Day 35 - Video Motion- Optical Flow, Tracking & Temporal Models|Day 35 - Video Motion- Optical Flow, Tracking & Temporal Models]] | [[Curriculum/Lessons/Day 36 - Offline RL, Behavior Regularization & Dataset Shift|Day 36 - Offline RL, Behavior Regularization & Dataset Shift]] |
+| 13 | [[Curriculum/Lessons/Day 37 - Graph Neural Networks & Geometric Deep Learning|Day 37 - Graph Neural Networks & Geometric Deep Learning]] | [[Curriculum/Lessons/Day 38 - Open-Vocabulary Detection & Foundation Segmentation|Day 38 - Open-Vocabulary Detection & Foundation Segmentation]] | [[Curriculum/Lessons/Day 39 - Imitation Learning, DAgger & Inverse RL|Day 39 - Imitation Learning, DAgger & Inverse RL]] |
+| 14 | [[Curriculum/Lessons/Day 40 - Self-Supervised, Contrastive & Multimodal Learning|Day 40 - Self-Supervised, Contrastive & Multimodal Learning]] | [[Curriculum/Lessons/Day 41 - Generative Vision- Latent Diffusion & Controllable Synthesis|Day 41 - Generative Vision- Latent Diffusion & Controllable Synthesis]] | [[Curriculum/Lessons/Day 42 - World Models & Latent Imagination|Day 42 - World Models & Latent Imagination]] |
+| 15 | [[Curriculum/Lessons/Day 43 - Uncertainty, Calibration & Bayesian Deep Learning|Day 43 - Uncertainty, Calibration & Bayesian Deep Learning]] | [[Curriculum/Lessons/Day 44 - 3D Scene Understanding and Point-Implicit Representations|Day 44 - 3D Scene Understanding and Point-Implicit Representations]] | [[Curriculum/Lessons/Day 45 - Robot Kinematics, Dynamics & Operational-Space Control|Day 45 - Robot Kinematics, Dynamics & Operational-Space Control]] |
+| 16 | [[Curriculum/Lessons/Day 46 - Causal Representation Learning & Invariance|Day 46 - Causal Representation Learning & Invariance]] | [[Curriculum/Lessons/Day 47 - 4D Dynamic Reconstruction & Neural Scene Flow|Day 47 - 4D Dynamic Reconstruction & Neural Scene Flow]] | [[Curriculum/Lessons/Day 48 - Motion Planning, Trajectory Optimization & MPC|Day 48 - Motion Planning, Trajectory Optimization & MPC]] |
+| 17 | [[Curriculum/Lessons/Day 49 - Meta-Learning, Continual Learning & Adaptation|Day 49 - Meta-Learning, Continual Learning & Adaptation]] | [[Curriculum/Lessons/Day 50 - Domain Adaptation, Test-Time Adaptation & Robustness|Day 50 - Domain Adaptation, Test-Time Adaptation & Robustness]] | [[Curriculum/Lessons/Day 51 - Diffusion Policy for Visuomotor Control|Day 51 - Diffusion Policy for Visuomotor Control]] |
+| 18 | [[Curriculum/Lessons/Day 52 - Scaling Laws, Data Mixtures & Test-Time Compute|Day 52 - Scaling Laws, Data Mixtures & Test-Time Compute]] | [[Curriculum/Lessons/Day 53 - Vision-Language Models and Visual Reasoning|Day 53 - Vision-Language Models and Visual Reasoning]] | [[Curriculum/Lessons/Day 54 - Sim-to-Real, System Identification & Domain Randomization|Day 54 - Sim-to-Real, System Identification & Domain Randomization]] |
+| 19 | [[Curriculum/Lessons/Day 55 - ML Systems- Accelerators, Mixed Precision & Distributed Training|Day 55 - ML Systems- Accelerators, Mixed Precision & Distributed Training]] | [[Curriculum/Lessons/Day 56 - Efficient Vision- Quantization, Distillation & Edge Deployment|Day 56 - Efficient Vision- Quantization, Distillation & Edge Deployment]] | [[Curriculum/Lessons/Day 57 - ROS 2, Real-Time Robot Software & Hardware Interfaces|Day 57 - ROS 2, Real-Time Robot Software & Hardware Interfaces]] |
+| 20 | [[Curriculum/Lessons/Day 58 - Data-Centric ML, Evaluation & Reproducibility|Day 58 - Data-Centric ML, Evaluation & Reproducibility]] | [[Curriculum/Lessons/Day 59 - Dataset Design, Long-Tail Metrics & Failure Analysis|Day 59 - Dataset Design, Long-Tail Metrics & Failure Analysis]] | [[Curriculum/Lessons/Day 60 - Robot Evaluation, Safety Cases & Reproducible Benchmarks|Day 60 - Robot Evaluation, Safety Cases & Reproducible Benchmarks]] |
+| 21 | [[Curriculum/Lessons/Day 61 - Interpretability, Mechanistic Analysis & Alignment|Day 61 - Interpretability, Mechanistic Analysis & Alignment]] | [[Curriculum/Lessons/Day 62 - Adversarial Robustness, OOD Detection & Model Editing|Day 62 - Adversarial Robustness, OOD Detection & Model Editing]] | [[Curriculum/Lessons/Day 63 - Safe RL, Constraints, Shielding & Human Oversight|Day 63 - Safe RL, Constraints, Shielding & Human Oversight]] |
+| 22 | [[Curriculum/Lessons/Day 64 - Neural Operators, Scientific ML & Differentiable Simulation|Day 64 - Neural Operators, Scientific ML & Differentiable Simulation]] | [[Curriculum/Lessons/Day 65 - Event Cameras, Active Vision & Computational Imaging|Day 65 - Event Cameras, Active Vision & Computational Imaging]] | [[Curriculum/Lessons/Day 66 - Active Perception and Information-Gathering Control|Day 66 - Active Perception and Information-Gathering Control]] |
+| 23 | [[Curriculum/Lessons/Day 67 - Foundation-Model Agents, Tool Use & Memory|Day 67 - Foundation-Model Agents, Tool Use & Memory]] | [[Curriculum/Lessons/Day 68 - Video Foundation Models & World-Centric Perception|Day 68 - Video Foundation Models & World-Centric Perception]] | [[Curriculum/Lessons/Day 69 - VLA Models, Cross-Embodiment Transfer & Action Tokenization|Day 69 - VLA Models, Cross-Embodiment Transfer & Action Tokenization]] |
+| 24 | [[Curriculum/Lessons/Day 70 - Frontier ML Review — Selected on Generation Day|Day 70 - Frontier ML Review — Selected on Generation Day]] | [[Curriculum/Lessons/Day 71 - Frontier Vision Review — Selected on Generation Day|Day 71 - Frontier Vision Review — Selected on Generation Day]] | [[Curriculum/Lessons/Day 72 - Frontier Embodied AI Review — Selected on Generation Day|Day 72 - Frontier Embodied AI Review — Selected on Generation Day]] |
 
-- [[Curriculum/Lessons/Day 01 - Optimization Dynamics & AdamW|Day 01 - Optimization Dynamics & AdamW]]
-- [[Curriculum/Lessons/Day 02 - Image Formation, Sampling & Color|Day 02 - Image Formation, Sampling & Color]]
-- [[Curriculum/Lessons/Day 03 - MDPs, Returns & Occupancy Measures|Day 03 - MDPs, Returns & Occupancy Measures]]
-
-## Cycle 2
-
-- [[Curriculum/Lessons/Day 04 - Probability, Estimation & Statistical Learning|Day 04 - Probability, Estimation & Statistical Learning]]
-- [[Curriculum/Lessons/Day 05 - 2D Fourier Analysis & Phase|Day 05 - 2D Fourier Analysis & Phase]]
-- [[Curriculum/Lessons/Day 06 - Bellman Operators & Contraction Proofs|Day 06 - Bellman Operators & Contraction Proofs]]
-
-## Cycle 3
-
-- [[Curriculum/Lessons/Day 07 - Information Theory & Representation|Day 07 - Information Theory & Representation]]
-- [[Curriculum/Lessons/Day 08 - Spatial Derivatives, Scale Space & Features|Day 08 - Spatial Derivatives, Scale Space & Features]]
-- [[Curriculum/Lessons/Day 09 - Dynamic Programming- Policy-Value Iteration|Day 09 - Dynamic Programming- Policy-Value Iteration]]
-
-## Cycle 4
-
-- [[Curriculum/Lessons/Day 10 - Linear Models, Kernels & Generalization|Day 10 - Linear Models, Kernels & Generalization]]
-- [[Curriculum/Lessons/Day 11 - Projective Geometry & Camera Calibration|Day 11 - Projective Geometry & Camera Calibration]]
-- [[Curriculum/Lessons/Day 12 - Monte Carlo and Temporal-Difference Learning|Day 12 - Monte Carlo and Temporal-Difference Learning]]
-
-## Cycle 5
-
-- [[Curriculum/Lessons/Day 13 - Backpropagation, Initialization & Normalization|Day 13 - Backpropagation, Initialization & Normalization]]
-- [[Curriculum/Lessons/Day 14 - Multi-View Geometry, Epipolar Constraints & SfM|Day 14 - Multi-View Geometry, Epipolar Constraints & SfM]]
-- [[Curriculum/Lessons/Day 15 - Q-Learning, Function Approximation & DQN|Day 15 - Q-Learning, Function Approximation & DQN]]
-
-## Cycle 6
-
-- [[Curriculum/Lessons/Day 16 - CNN Inductive Biases & Modern ConvNets|Day 16 - CNN Inductive Biases & Modern ConvNets]]
-- [[Curriculum/Lessons/Day 17 - CNN Backbones, FPN & Detection|Day 17 - CNN Backbones, FPN & Detection]]
-- [[Curriculum/Lessons/Day 18 - Policy Gradients and Variance Reduction|Day 18 - Policy Gradients and Variance Reduction]]
-
-## Cycle 7
-
-- [[Curriculum/Lessons/Day 19 - Variational Inference, ELBO & VAEs|Day 19 - Variational Inference, ELBO & VAEs]]
-- [[Curriculum/Lessons/Day 20 - Semantic, Instance & Panoptic Segmentation|Day 20 - Semantic, Instance & Panoptic Segmentation]]
-- [[Curriculum/Lessons/Day 21 - Actor-Critic Methods & Generalized Advantage Estimation|Day 21 - Actor-Critic Methods & Generalized Advantage Estimation]]
-
-## Cycle 8
-
-- [[Curriculum/Lessons/Day 22 - Normalizing Flows & Change of Variables|Day 22 - Normalizing Flows & Change of Variables]]
-- [[Curriculum/Lessons/Day 23 - Vision Transformers & Patch Geometry|Day 23 - Vision Transformers & Patch Geometry]]
-- [[Curriculum/Lessons/Day 24 - PPO- Clipping, Trust Regions & Diagnostics|Day 24 - PPO- Clipping, Trust Regions & Diagnostics]]
-
-## Cycle 9
-
-- [[Curriculum/Lessons/Day 25 - Attention, RoPE & KV-Caching|Day 25 - Attention, RoPE & KV-Caching]]
-- [[Curriculum/Lessons/Day 26 - Self-Supervised Visual Representation Learning|Day 26 - Self-Supervised Visual Representation Learning]]
-- [[Curriculum/Lessons/Day 27 - Maximum-Entropy RL & Soft Actor-Critic|Day 27 - Maximum-Entropy RL & Soft Actor-Critic]]
-
-## Cycle 10
-
-- [[Curriculum/Lessons/Day 28 - Diffusion, Score Matching & SDEs|Day 28 - Diffusion, Score Matching & SDEs]]
-- [[Curriculum/Lessons/Day 29 - NeRF Volume Rendering & Positional Encoding|Day 29 - NeRF Volume Rendering & Positional Encoding]]
-- [[Curriculum/Lessons/Day 30 - Model-Based RL and Uncertainty-Aware Planning|Day 30 - Model-Based RL and Uncertainty-Aware Planning]]
-
-## Cycle 11
-
-- [[Curriculum/Lessons/Day 31 - Flow Matching & Optimal-Transport Paths|Day 31 - Flow Matching & Optimal-Transport Paths]]
-- [[Curriculum/Lessons/Day 32 - 3D Gaussian Splatting & Differentiable Rasterization|Day 32 - 3D Gaussian Splatting & Differentiable Rasterization]]
-- [[Curriculum/Lessons/Day 33 - POMDPs, Belief State & Recurrent Policies|Day 33 - POMDPs, Belief State & Recurrent Policies]]
-
-## Cycle 12
-
-- [[Curriculum/Lessons/Day 34 - Sequence Models- RNNs, S4 & Mamba|Day 34 - Sequence Models- RNNs, S4 & Mamba]]
-- [[Curriculum/Lessons/Day 35 - Video Motion- Optical Flow, Tracking & Temporal Models|Day 35 - Video Motion- Optical Flow, Tracking & Temporal Models]]
-- [[Curriculum/Lessons/Day 36 - Offline RL, Behavior Regularization & Dataset Shift|Day 36 - Offline RL, Behavior Regularization & Dataset Shift]]
-
-## Cycle 13
-
-- [[Curriculum/Lessons/Day 37 - Graph Neural Networks & Geometric Deep Learning|Day 37 - Graph Neural Networks & Geometric Deep Learning]]
-- [[Curriculum/Lessons/Day 38 - Open-Vocabulary Detection & Foundation Segmentation|Day 38 - Open-Vocabulary Detection & Foundation Segmentation]]
-- [[Curriculum/Lessons/Day 39 - Imitation Learning, DAgger & Inverse RL|Day 39 - Imitation Learning, DAgger & Inverse RL]]
-
-## Cycle 14
-
-- [[Curriculum/Lessons/Day 40 - Self-Supervised, Contrastive & Multimodal Learning|Day 40 - Self-Supervised, Contrastive & Multimodal Learning]]
-- [[Curriculum/Lessons/Day 41 - Generative Vision- Latent Diffusion & Controllable Synthesis|Day 41 - Generative Vision- Latent Diffusion & Controllable Synthesis]]
-- [[Curriculum/Lessons/Day 42 - World Models & Latent Imagination|Day 42 - World Models & Latent Imagination]]
-
-## Cycle 15
-
-- [[Curriculum/Lessons/Day 43 - Uncertainty, Calibration & Bayesian Deep Learning|Day 43 - Uncertainty, Calibration & Bayesian Deep Learning]]
-- [[Curriculum/Lessons/Day 44 - 3D Scene Understanding and Point-Implicit Representations|Day 44 - 3D Scene Understanding and Point-Implicit Representations]]
-- [[Curriculum/Lessons/Day 45 - Robot Kinematics, Dynamics & Operational-Space Control|Day 45 - Robot Kinematics, Dynamics & Operational-Space Control]]
-
-## Cycle 16
-
-- [[Curriculum/Lessons/Day 46 - Causal Representation Learning & Invariance|Day 46 - Causal Representation Learning & Invariance]]
-- [[Curriculum/Lessons/Day 47 - 4D Dynamic Reconstruction & Neural Scene Flow|Day 47 - 4D Dynamic Reconstruction & Neural Scene Flow]]
-- [[Curriculum/Lessons/Day 48 - Motion Planning, Trajectory Optimization & MPC|Day 48 - Motion Planning, Trajectory Optimization & MPC]]
-
-## Cycle 17
-
-- [[Curriculum/Lessons/Day 49 - Meta-Learning, Continual Learning & Adaptation|Day 49 - Meta-Learning, Continual Learning & Adaptation]]
-- [[Curriculum/Lessons/Day 50 - Domain Adaptation, Test-Time Adaptation & Robustness|Day 50 - Domain Adaptation, Test-Time Adaptation & Robustness]]
-- [[Curriculum/Lessons/Day 51 - Diffusion Policy for Visuomotor Control|Day 51 - Diffusion Policy for Visuomotor Control]]
-
-## Cycle 18
-
-- [[Curriculum/Lessons/Day 52 - Scaling Laws, Data Mixtures & Test-Time Compute|Day 52 - Scaling Laws, Data Mixtures & Test-Time Compute]]
-- [[Curriculum/Lessons/Day 53 - Vision-Language Models and Visual Reasoning|Day 53 - Vision-Language Models and Visual Reasoning]]
-- [[Curriculum/Lessons/Day 54 - Sim-to-Real, System Identification & Domain Randomization|Day 54 - Sim-to-Real, System Identification & Domain Randomization]]
-
-## Cycle 19
-
-- [[Curriculum/Lessons/Day 55 - ML Systems- Accelerators, Mixed Precision & Distributed Training|Day 55 - ML Systems- Accelerators, Mixed Precision & Distributed Training]]
-- [[Curriculum/Lessons/Day 56 - Efficient Vision- Quantization, Distillation & Edge Deployment|Day 56 - Efficient Vision- Quantization, Distillation & Edge Deployment]]
-- [[Curriculum/Lessons/Day 57 - ROS 2, Real-Time Robot Software & Hardware Interfaces|Day 57 - ROS 2, Real-Time Robot Software & Hardware Interfaces]]
-
-## Cycle 20
-
-- [[Curriculum/Lessons/Day 58 - Data-Centric ML, Evaluation & Reproducibility|Day 58 - Data-Centric ML, Evaluation & Reproducibility]]
-- [[Curriculum/Lessons/Day 59 - Dataset Design, Long-Tail Metrics & Failure Analysis|Day 59 - Dataset Design, Long-Tail Metrics & Failure Analysis]]
-- [[Curriculum/Lessons/Day 60 - Robot Evaluation, Safety Cases & Reproducible Benchmarks|Day 60 - Robot Evaluation, Safety Cases & Reproducible Benchmarks]]
-
-## Cycle 21
-
-- [[Curriculum/Lessons/Day 61 - Interpretability, Mechanistic Analysis & Alignment|Day 61 - Interpretability, Mechanistic Analysis & Alignment]]
-- [[Curriculum/Lessons/Day 62 - Adversarial Robustness, OOD Detection & Model Editing|Day 62 - Adversarial Robustness, OOD Detection & Model Editing]]
-- [[Curriculum/Lessons/Day 63 - Safe RL, Constraints, Shielding & Human Oversight|Day 63 - Safe RL, Constraints, Shielding & Human Oversight]]
-
-## Cycle 22
-
-- [[Curriculum/Lessons/Day 64 - Neural Operators, Scientific ML & Differentiable Simulation|Day 64 - Neural Operators, Scientific ML & Differentiable Simulation]]
-- [[Curriculum/Lessons/Day 65 - Event Cameras, Active Vision & Computational Imaging|Day 65 - Event Cameras, Active Vision & Computational Imaging]]
-- [[Curriculum/Lessons/Day 66 - Active Perception and Information-Gathering Control|Day 66 - Active Perception and Information-Gathering Control]]
-
-## Cycle 23
-
-- [[Curriculum/Lessons/Day 67 - Foundation-Model Agents, Tool Use & Memory|Day 67 - Foundation-Model Agents, Tool Use & Memory]]
-- [[Curriculum/Lessons/Day 68 - Video Foundation Models & World-Centric Perception|Day 68 - Video Foundation Models & World-Centric Perception]]
-- [[Curriculum/Lessons/Day 69 - VLA Models, Cross-Embodiment Transfer & Action Tokenization|Day 69 - VLA Models, Cross-Embodiment Transfer & Action Tokenization]]
-
-## Cycle 24
-
-- [[Curriculum/Lessons/Day 70 - Frontier ML Review — Selected on Generation Day|Day 70 - Frontier ML Review — Selected on Generation Day]]
-- [[Curriculum/Lessons/Day 71 - Frontier Vision Review — Selected on Generation Day|Day 71 - Frontier Vision Review — Selected on Generation Day]]
-- [[Curriculum/Lessons/Day 72 - Frontier Embodied AI Review — Selected on Generation Day|Day 72 - Frontier Embodied AI Review — Selected on Generation Day]]
+> [!method] Rolling-horizon policy
+> Before the mapped queue drops below 18 future days, research and append six new ML→CV→EAI cycles. Add roadmap spines only; author lesson content just in time.
+> Before authoring every module, review current literature and revise its emphasis without silently rewriting archived modules.
+> Generated modules remain immutable learning artifacts; corrections are appended to their research log.

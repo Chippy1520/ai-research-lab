@@ -9,26 +9,32 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "learning", "method"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: []
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # CVAE over chunks
 
-Model multimodal human demos as z ~ q(z|chunk, proprio); at test set z=0. ACT's answer to pauses and style.
+> [!concept] Method · Learning · Layer 3
+> Model multimodal human demos as z ~ q(z|chunk, proprio); at test set z=0. ACT's answer to pauses and style.
+>
+> **Why it belongs —** SmolVLA drops this for flow matching. Know why before you delete z.
 
-> **Why it belongs**
-> SmolVLA drops this for flow matching. Know why before you delete z.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/imit|↑ Imitation]]
 
-- [[Mind Map/Nodes/imit|Imitation]]
+> [!outgoing] Outgoing relationships
+> - **implemented in →** [[Mind Map/Nodes/act|ACT]]
+> - **is a →** [[Mind Map/Nodes/generative|Generative models]]
 
-## Semantic connections
-
-- [[Mind Map/Nodes/act|ACT]] — implemented-in
-- [[Mind Map/Nodes/action-chunking|Action chunking]] — plus
-- [[Mind Map/Nodes/generative|Generative models]] — includes
-- [[Mind Map/Nodes/generative|Generative models]] — is-a
-- [[Mind Map/Nodes/imit|Imitation]] — contains
+> [!incoming] Incoming relationships
+> - **← includes —** [[Mind Map/Nodes/generative|Generative models]]
+> - **← plus —** [[Mind Map/Nodes/action-chunking|Action chunking]]
 
 ## Primary resources
 
@@ -36,7 +42,6 @@ Model multimodal human demos as z ~ q(z|chunk, proprio); at test set z=0. ACT's 
 - **Paper:** [VAE · Kingma & Welling](https://arxiv.org/abs/1312.6114)
 - **Guide:** [ACT](https://chippy1520.github.io/ai-research-lab/papers-act.html)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#cvae`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=cvae
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#cvae`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=cvae)

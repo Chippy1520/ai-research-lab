@@ -7,20 +7,33 @@ source: "site/papers-jepa.html"
 live_url: "https://chippy1520.github.io/ai-research-lab/papers-jepa.html"
 tags: ["paper", "reading-guide"]
 related_nodes: ["representation", "world-models"]
+related_curriculum: ["Curriculum/Lessons/Day 07 - Information Theory & Representation.md", "Curriculum/Lessons/Day 26 - Self-Supervised Visual Representation Learning.md", "Curriculum/Lessons/Day 42 - World Models & Latent Imagination.md", "Curriculum/Lessons/Day 46 - Causal Representation Learning & Invariance.md"]
+cssclasses: ["research-note", "paper-note"]
 ---
+
+[[Home|Research Lab]]  /  [[Papers/Paper Guides|Paper Guides]]
 
 # JEPA: train the world model to predict $E(y)$, not $y$
 
+> [!paper] Research reading guide
 > Complete reading guide for Yann LeCun’s 2022 position paper A Path Towards Autonomous Machine Intelligence — the Joint Embedding Predictive Architecture (JEPA).
+>
+> **Concepts:** 2 · **Related curriculum notes:** 4
 
-- **Canonical guide:** `site/papers-jepa.html`
-- **Live guide:** https://chippy1520.github.io/ai-research-lab/papers-jepa.html
-- **Companion source:** `papers/jepa.md`
+> [!concepts] Connected concepts
+> - [[Mind Map/Nodes/representation|Self-supervised representation]]
+> - [[Mind Map/Nodes/world-models|World models]]
 
-## Connected concepts
+> [!study] Continue in the curriculum
+> - [[Curriculum/Lessons/Day 07 - Information Theory & Representation|Day 07 - Information Theory & Representation]]
+> - [[Curriculum/Lessons/Day 26 - Self-Supervised Visual Representation Learning|Day 26 - Self-Supervised Visual Representation Learning]]
+> - [[Curriculum/Lessons/Day 42 - World Models & Latent Imagination|Day 42 - World Models & Latent Imagination]]
+> - [[Curriculum/Lessons/Day 46 - Causal Representation Learning & Invariance|Day 46 - Causal Representation Learning & Invariance]]
 
-- [[Mind Map/Nodes/representation|representation]]
-- [[Mind Map/Nodes/world-models|world-models]]
+> [!source] Canonical and public versions
+> - Repository guide: `site/papers-jepa.html`
+> - [Open the published HTML guide](https://chippy1520.github.io/ai-research-lab/papers-jepa.html)
+> - Companion source: `papers/jepa.md`
 
 ---
 
@@ -28,55 +41,30 @@ related_nodes: ["representation", "world-models"]
 
 You decide to pick up a mug. The facts that matter are pose and contact: the mug stays put, the handle is on the left, the counter is solid. A video generator / MAE is trained to output the next RGB frame (or its pixels). You are not. A JEPA is trained to output a vector $E(y)$ from which those facts can still be read, and from which unpredictable texture can be dropped. That is the claim of this position paper.
 
-01
+> [!example] Step 01 — You
+> **You:** You encode the scene as a handful of facts (counter, mug, kettle pose). You do not store a pixel buffer.
+>
+> **The paper:** Perception module. Embed the sensory stream into a representation $s_t$ that already threw away unpredictable clutter.
 
-#### You
+> [!example] Step 02 — You
+> **You:** You remember: I just walked through a doorway; the mug was on the left. You do not replay the last minute of video.
+>
+> **The paper:** Short-term memory. A running latent of recent $s_t$, not a pixel buffer.
 
-You encode the scene as a handful of facts (counter, mug, kettle pose). You do not store a pixel buffer.
+> [!example] Step 03 — You
+> **You:** You predict the next state of the mug, not a new photograph of the kitchen.
+>
+> **The paper:** World model = JEPA. Encode the scene as $E(x)$, encode a later or hidden part as $E(y)$, train a predictor so $P(E(x), z) \approx E(y)$. The loss never looks at pixels of $y$. $z$ says which hidden part / which future you are asking about.
 
-#### The paper
+> [!example] Step 04 — You
+> **You:** You feel a cost: do not burn your hand; do not knock the cat. Nobody labelled those as rewards in this kitchen.
+>
+> **The paper:** Cost / energy module with intrinsic drives (energy, uncertainty, discomfort) plus a few hardwired terms. Behaviour is not “maximise a scalar reward the experimenter wrote.”
 
-**Perception module.** Embed the sensory stream into a representation $s\_t$ that already threw away unpredictable clutter.
-
-02
-
-#### You
-
-You remember: I just walked through a doorway; the mug was on the left. You do not replay the last minute of video.
-
-#### The paper
-
-**Short-term memory.** A running latent of recent $s\_t$, not a pixel buffer.
-
-03
-
-#### You
-
-You predict the next state of the mug, not a new photograph of the kitchen.
-
-#### The paper
-
-**World model = JEPA.** Encode the scene as $E(x)$, encode a later or hidden part as $E(y)$, train a predictor so $P(E(x), z) \approx E(y)$. The loss never looks at pixels of $y$. $z$ says which hidden part / which future you are asking about.
-
-04
-
-#### You
-
-You feel a cost: do not burn your hand; do not knock the cat. Nobody labelled those as rewards in this kitchen.
-
-#### The paper
-
-**Cost / energy module** with intrinsic drives (energy, uncertainty, discomfort) plus a few hardwired terms. Behaviour is not “maximise a scalar reward the experimenter wrote.”
-
-05
-
-#### You
-
-You pick an action by mentally trying a few reaches until the predicted cost is low, then you move.
-
-#### The paper
-
-**Actor** proposes actions; planning is search in latent space through the world model. **Configurator** sets which level of the hierarchy is running (grasp vs walk-to-counter).
+> [!example] Step 05 — You
+> **You:** You pick an action by mentally trying a few reaches until the predicted cost is low, then you move.
+>
+> **The paper:** Actor proposes actions; planning is search in latent space through the world model. Configurator sets which level of the hierarchy is running (grasp vs walk-to-counter).
 
 The mapping *is* the architecture: perception → memory → JEPA world model ($P(E(x),z)\approx E(y)$) → cost → actor. I-JEPA trains that predictor on still images. V-JEPA trains it on video. V-JEPA 2 adds the actor’s planning loop on a Franka.
 
@@ -132,13 +120,10 @@ No new ImageNet number. No trained weights. No proof that JEPA beats MAE. No rob
 
 SSL in vision in 2022 is a fork: (A) invariance methods that need a hand-written list of “this crop is the same image,” which do not travel to video or audio cleanly; (B) MAE-style pixel reconstruction, which travels but learns a lot of texture. JEPA is the bet that you can keep MAE’s masking (so no SimCLR recipe) and still get semantic features by moving the loss into embedding space. In the kitchen: you want a vector that still says “mug on the left,” not a reconstruction of the steam.
 
-#### Naive world model
-
-Decode the next RGB frame. Capacity goes into leaves and specularities. Planning a grasp means generating a video. Expensive, and most of the video is irrelevant.
-
-#### JEPA world model
-
-Encode $x$ and $y$. Predict $E(y)$ from $E(x)$ given $z$. The encoder may delete steam. Planning is search in $E(\cdot)$, which is what V-JEPA 2-AC later does on a Franka.
+| Alternative | Representation and consequence |
+|---|---|
+| **Naive world model** | Naive world model Decode the next RGB frame. Capacity goes into leaves and specularities. Planning a grasp means generating a video. Expensive, and most of the video is irrelevant. |
+| **JEPA world model** | JEPA world model Encode $x$ and $y$. Predict $E(y)$ from $E(x)$ given $z$. The encoder may delete steam. Planning is search in $E(\cdot)$, which is what V-JEPA 2-AC later does on a Franka. |
 
 ## Prerequisites
 
@@ -158,31 +143,56 @@ Encode $x$ and $y$. Predict $E(y)$ from $E(x)$ given $z$. The encoder may delete
 
    Ha & Schmidhuber 2018 is the named ancestor for “train a model of the world, then plan inside it.” JEPA is that idea with the decoder ripped out.
 
-Why this video: the prerequisite, not this paper. What an embedding layer even is.
+> [!video] 3Blue1Brown — But what is a neural network?
+> [Watch video](https://www.youtube.com/watch?v=aircAruvnKk)
+>
+> Why this video: the prerequisite, not this paper. What an embedding layer even is.
 
-Ha & Schmidhuber lineage: VAE + RNN world model. JEPA’s move is to drop the pixel decoder and predict $E(y)$ instead.
+> [!video] World Models explained
+> [Watch video](https://www.youtube.com/watch?v=b1roEd6liWI)
+>
+> Ha & Schmidhuber lineage: VAE + RNN world model. JEPA’s move is to drop the pixel decoder and predict $E(y)$ instead.
 
 ## Knowledge graph
 
+```text
 energy-based models
-│
-├─ JEA (SimCLR / VICReg / DINO) — invariant views
-├─ generative (MAE / BERT) — reconstruct y
-└─ JEPA — predict E(y) | E(x), z
-│
-├─ I-JEPA images, 2023
-├─ V-JEPA video, 2024
-└─ V-JEPA 2 video + robot planning, 2025EBM / VICReg / MAE↓perception
-JEPA world model
-cost↓six-module agent (this paper)
+   │
+   ├─ JEA (SimCLR / VICReg / DINO)  — invariant views
+   ├─ generative (MAE / BERT)       — reconstruct y
+   └─ JEPA                          — predict E(y) | E(x), z
+          │
+          ├─ I-JEPA   images, 2023
+          ├─ V-JEPA   video, 2024
+          └─ V-JEPA 2 video + robot planning, 2025
+```
+
+> [!graph] Concept flow
+> **EBM / VICReg / MAE**
+> ↓
+> **perception · JEPA world model · cost**
+> ↓
+> **six-module agent (this paper)**
 
 ## Architecture
 
-Configuratorwhich timescale / which expert↓ modulatesPerceptions\_t = E(obs)Short-term memoryrecent s↓World model (JEPA)ŝ' = P(E(x), z)Cost / energyintrinsic + a few hardwired↓Actorsearch actions that lower predicted cost
+> [!flow] Architecture / data flow
+> **Configurator** — which timescale / which expert
+> ↓ modulates
+> **Perception** — s_t = E(obs) + **Short-term memory** — recent s
+> ↓
+> **World model (JEPA)** — ŝ' = P(E(x), z) + **Cost / energy** — intrinsic + a few hardwired
+> ↓
+> **Actor** — search actions that lower predicted cost
 
 LeCun’s agent. Only the world-model box is what I-JEPA trains. V-JEPA 2-AC is the first paper in this family that actually closes the actor loop on hardware.
 
-xcontext (visible)ytarget (hidden / future)zmask / time / action↓E\_x(x)E\_y(y) often EMA teacher↓P(E\_x(x), z) ≈ E\_y(y)loss in embedding space
+> [!flow] Architecture / data flow
+> **x** — context (visible) + **y** — target (hidden / future) + **z** — mask / time / action
+> ↓
+> **E_x(x)** + **E_y(y)** — often EMA teacher
+> ↓
+> **P(E_x(x), z) ≈ E_y(y)** — loss in embedding space
 
 The JEPA cartoon every later paper redraws. $z$ is what makes this *predictive* rather than “make two views identical.”
 
@@ -210,7 +220,7 @@ Take a $224\times 224$ kitchen photo. Split it into $16\times 16$ ViT patches ($
 
 ## Study plan
 
-Video: World Models explained — https://www.youtube.com/embed/b1roEd6liWI
+60–75 minutes: kitchen case (10) → abstract + JEPA cartoon vs MAE vs SimCLR (20) → six modules (15) → hierarchical JEPA and “what is not claimed” (10) → start [[Papers/I-JEPA|I-JEPA]] Figure 3 (15). Do not read all 62 pages of speculation on consciousness; the load-bearing pages are the energy cartoons and the module diagram.
 
 ## Primary sources
 

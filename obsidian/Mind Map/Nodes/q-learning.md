@@ -9,31 +9,39 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "learning", "method"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: ["Curriculum/Lessons/Day 15 - Q-Learning, Function Approximation & DQN.md"]
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Q-learning
 
-Learn action-values, greedy policy. DQN is this with a CNN. Offline RL (CQL) is a conservative cousin.
+> [!concept] Method · Learning · Layer 3
+> Learn action-values, greedy policy. DQN is this with a CNN. Offline RL (CQL) is a conservative cousin.
+>
+> **Why it belongs —** Value-based neighbor of policy gradients.
 
-> **Why it belongs**
-> Value-based neighbor of policy gradients.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/rl-family|↑ Reinforcement learning]]
 
-- [[Mind Map/Nodes/rl-family|Reinforcement learning]]
+> [!outgoing] Outgoing relationships
+> - **can use →** [[Mind Map/Nodes/world-models|World models]]
+> - **cousin →** [[Mind Map/Nodes/offline-rl|Offline RL]]
 
-## Semantic connections
+> [!incoming] Incoming relationships
+> - **← includes —** [[Mind Map/Nodes/rl|Reinforcement learning]]
 
-- [[Mind Map/Nodes/offline-rl|Offline RL]] — cousin
-- [[Mind Map/Nodes/rl|Reinforcement learning]] — includes
-- [[Mind Map/Nodes/rl-family|Reinforcement learning]] — contains
-- [[Mind Map/Nodes/world-models|World models]] — can-use
+> [!study] Read and study
+> - [[Curriculum/Lessons/Day 15 - Q-Learning, Function Approximation & DQN|Day 15 - Q-Learning, Function Approximation & DQN]]
 
 ## Primary resources
 
 - **Video:** [David Silver L5 — Model-Free Control (Q-learning / SARSA)](https://www.youtube.com/watch?v=0g4j2k_Ggc4)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#q-learning`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=q-learning
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#q-learning`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=q-learning)

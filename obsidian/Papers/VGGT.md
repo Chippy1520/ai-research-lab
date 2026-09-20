@@ -7,19 +7,26 @@ source: "site/papers-vggt.html"
 live_url: "https://chippy1520.github.io/ai-research-lab/papers-vggt.html"
 tags: ["paper", "reading-guide"]
 related_nodes: ["vggt"]
+related_curriculum: []
+cssclasses: ["research-note", "paper-note"]
 ---
+
+[[Home|Research Lab]]  /  [[Papers/Paper Guides|Paper Guides]]
 
 # VGGT: 3D from images without the SfM ritual
 
+> [!paper] Research reading guide
 > Complete reading guide for VGGT (CVPR 2025 Best Paper, arXiv 2503.11651): SfM vs feed-forward, alternating attention, over-complete 3D heads.
+>
+> **Concepts:** 1 · **Related curriculum notes:** 0
 
-- **Canonical guide:** `site/papers-vggt.html`
-- **Live guide:** https://chippy1520.github.io/ai-research-lab/papers-vggt.html
-- **Companion source:** `papers/vggt.md`
+> [!concepts] Connected concepts
+> - [[Mind Map/Nodes/vggt|VGGT]]
 
-## Connected concepts
-
-- [[Mind Map/Nodes/vggt|vggt]]
+> [!source] Canonical and public versions
+> - Repository guide: `site/papers-vggt.html`
+> - [Open the published HTML guide](https://chippy1520.github.io/ai-research-lab/papers-vggt.html)
+> - Companion source: `papers/vggt.md`
 
 ---
 
@@ -27,55 +34,30 @@ related_nodes: ["vggt"]
 
 You walk into a messy office with a phone and want cameras, depth, and correspondences for the desk. Classical SfM does that as a pipeline: match, triangulate, bundle-adjust, then maybe dense stereo. VGGT is one transformer: one forward pass emits cameras, depth, point maps, and tracks. No essential-matrix layer in the middle.
 
-01
+> [!example] Step 01 — You
+> **You:** Look at each photo on its own: “this is a desk; that is a keyboard close-up.”
+>
+> **The paper:** DINO patchifies each image. Frame-wise self-attention mixes tokens inside one view.
 
-#### You
+> [!example] Step 02 — You
+> **You:** Relate photos: that desk corner in shot 1 is the same corner in shot 4, even if the zoom changed.
+>
+> **The paper:** Global self-attention across all views. Alternating with frame-wise attention, 24 layers. No essential-matrix layer.
 
-Look at each photo on its own: “this is a desk; that is a keyboard close-up.”
+> [!example] Step 03 — You
+> **You:** Guess where you were standing, and treat the first photo as “here” — the origin of your mental map.
+>
+> **The paper:** Camera token per frame predicts $\mathbf{g}=[\mathbf{q},\mathbf{t},\mathbf{f}]$. Frame 1 is the world origin (identity extrinsics, special tokens).
 
-#### The paper
+> [!example] Step 04 — You
+> **You:** Guess how far the wall is, and where every pixel sits in the room. Point at the mug in photo 1 and find it in photo 3.
+>
+> **The paper:** DPT heads emit depth, a viewpoint-invariant point map, and tracking features (CoTracker2). Train all of them; at inference, fused depth+cameras often beat the dedicated point-map head.
 
-DINO patchifies each image. *Frame-wise* self-attention mixes tokens inside one view.
-
-02
-
-#### You
-
-Relate photos: that desk corner in shot 1 is the same corner in shot 4, even if the zoom changed.
-
-#### The paper
-
-*Global* self-attention across all views. Alternating with frame-wise attention, 24 layers. No essential-matrix layer.
-
-03
-
-#### You
-
-Guess where you were standing, and treat the first photo as “here” — the origin of your mental map.
-
-#### The paper
-
-Camera token per frame predicts $\mathbf{g}=[\mathbf{q},\mathbf{t},\mathbf{f}]$. Frame 1 is the world origin (identity extrinsics, special tokens).
-
-04
-
-#### You
-
-Guess how far the wall is, and where every pixel sits in the room. Point at the mug in photo 1 and find it in photo 3.
-
-#### The paper
-
-DPT heads emit depth, a viewpoint-invariant point map, and tracking features (CoTracker2). Train all of them; at inference, fused depth+cameras often beat the dedicated point-map head.
-
-05
-
-#### You
-
-You do not run bundle adjustment in your head. You form a 3D sketch in one look. Later you might refine it with geometry.
-
-#### The paper
-
-Feed-forward VGGT is already competitive with methods that still run geometry optimization. VGGT+BA is the optional refinement.
+> [!example] Step 05 — You
+> **You:** You do not run bundle adjustment in your head. You form a 3D sketch in one look. Later you might refine it with geometry.
+>
+> **The paper:** Feed-forward VGGT is already competitive with methods that still run geometry optimization. VGGT+BA is the optional refinement.
 
 COLMAP is match → triangulate → bundle-adjust. VGGT is the same outputs from one transformer pass; VGGT+BA is the optional refinement. The rest of the guide is how those heads are trained.
 
@@ -111,7 +93,11 @@ VGGT’s bet: a large transformer, almost no 3D inductive bias, trained on a pil
 
 Input $(I\_i)\_{i=1}^N$, $I\_i\in\mathbb{R}^{3\times H\times W}$. Output, per frame: cameras $\mathbf{g}\_i$, depth $D\_i$, point map $P\_i$, tracking features $T\_i$. Equivariant to permuting frames $2\ldots N$; frame 1 is the world origin ($\mathbf{q}\_1=[0,0,0,1]$, $\mathbf{t}\_1=\mathbf{0}$).
 
-**I1**world origin**I2****I3****… IN**↓ one transformer, permutation-equivariant on 2…N**g**camera**D**depth**P**points**T**tracks
+`I 1 world origin → I 2 → I 3 → … I N`
+
+↓ one transformer, permutation-equivariant on 2…N
+
+`g camera → D depth → P points → T tracks`
 
 Eq. 1 drawn. Dark token is the coordinate frame. Do not permute it with the others.
 
@@ -121,13 +107,10 @@ Eq. 1 drawn. Dark token is the coordinate frame. Do not permute it with the othe
 
 Minimal 3D bias. DINO-style patchify each image to $K$ tokens. Alternating-Attention (AA): frame-wise SA (within a view) then global SA (across views), $L=24$ pairs. No cross-attention — only self-attention. AA is the inductive bias they did keep: integrate across images, normalize within an image.
 
-#### Frame-wise SA
-
-Tokens inside $I\_i$ talk. Normalizes one view. Cheap in $N$.
-
-#### Global SA
-
-Tokens across all views talk. This is the multi-view triangulation, learned.
+| Alternative | Representation and consequence |
+|---|---|
+| **Frame-wise SA** | Frame-wise SA Tokens inside $I_i$ talk. Normalizes one view. Cheap in $N$. |
+| **Global SA** | Global SA Tokens across all views talk. This is the multi-view triangulation, learned. |
 
 $L=24$ of (frame, global). No cross-attention anywhere.
 
@@ -135,7 +118,9 @@ $L=24$ of (frame, global). No cross-attention anywhere.
 
 Per image: camera token $\mathrm{t}^{\mathbf{g}}\_i$ plus four register tokens (Darcet et al.). Frame 1 gets a *different* learned camera/register set so the net knows which view is the origin. After AA, discard registers; camera token → $\mathbf{g}=[q,t,f]$ (9-D); image tokens → DPT heads for depth, points, track features.
 
-K image patches1 camera4 registers↓ AA · drop registersg = [q, t, f]DPT → D, P, T
+`K image patches → 1 camera → 4 registers`
+
+↓ AA · drop registersg = [q, t, f]DPT → D, P, T
 
 Tracker $\mathcal{T}$ is CoTracker2 on $T\_i$. Query point in image $q$ (train: $q=1$), bilinear sample, correlate with other $T\_i$, self-attend, emit 2D correspondences. No temporal order assumed — unordered photo sets, not just video.
 
@@ -147,7 +132,13 @@ $\mathcal{L}=\mathcal{L}\_{\mathrm{camera}}+\mathcal{L}\_{\mathrm{depth}}+\mathc
 
 **§4.1 cameras (Table 1).** CO3Dv2 + RealEstate10K, 10 images/scene, AUC@30 (min of relative rotation/translation accuracy). VGGT feed-forward beats COLMAP+SPSG, PixSfM, PoseDiff, DUSt3R, MASt3R, VGGSfM v2 — those last ones still run global alignment or BA (~7–20 s). VGGT: ~0.2 s. Optional BA on VGGT init still helps and is ~2 s because you skip triangulation.
 
-COLMAP-class**~15s**DUSt3R + align**~7s**VGGT + optional BA**~2s**VGGT feed-forward**0.2s**
+- COLMAP-class — ~15s
+
+- DUSt3R + align — ~7s
+
+- VGGT + optional BA — ~2s
+
+- VGGT feed-forward — 0.2s
 
 Wall-clock on the paper’s hardware, schematic widths. Accuracy still higher at 0.2 s.
 
@@ -185,11 +176,23 @@ Best Paper at CVPR 2025 is about claim 1 changing what a 3D backbone looks like,
 CVPR 2025 Best Paper
 feed-forward
 1–hundreds of views
-< 1 secondImages I1…INone, a few, or hundreds↓ DINO patchifyImage tokensCamera token + 4 registers / frame↓ alternating attention × 24Frame-wise SAwithin one viewGlobal SAacross views↓ headsg = [q, t, f]DPT → depthpoint map Ptracks T
+< 1 second
+
+> [!flow] Architecture / data flow
+> **Images I 1 …I N** — one, a few, or hundreds
+> ↓ DINO patchify
+> **Image tokens** + **Camera token + 4 registers / frame**
+> ↓ alternating attention × 24
+> **Frame-wise SA** — within one view + **Global SA** — across views
+> ↓ heads
+> **g = [q, t, f]** + **DPT → depth** + **point map P** + **tracks T**
 
 Figure. VGGT is one transformer, four 3D outputs. First camera is the world origin.
 
-A 3-minute flyover of VGGT: DINO tokens, camera tokens, alternating attention, no test-time BA required.
+> [!video] VGGT in 3 minutes
+> [Watch video](https://www.youtube.com/watch?v=xZb_oEld5y4)
+>
+> A 3-minute flyover of VGGT: DINO tokens, camera tokens, alternating attention, no test-time BA required.
 
 ### Prerequisites
 
@@ -204,9 +207,16 @@ A 3-minute flyover of VGGT: DINO tokens, camera tokens, alternating attention, n
 
    BA jointly refines cameras and 3D points to minimize reprojection error. It is iterative, requires correspondences, and fails without overlap. VGGT’s bet is that a large transformer trained on 3D-annotated data can *amortize* that optimization.
 
-   UCF CRCV, Lecture 15 — Structure from Motion. The ritual VGGT is trying to skip.
+> [!video] UCF lecture: Structure from Motion
+> [Watch video](https://www.youtube.com/watch?v=zdKX7Xo3Cb8)
+>
+> UCF CRCV, Lecture 15 — Structure from Motion. The ritual VGGT is trying to skip.
 
-   Polyfjord — a practical COLMAP track. Watch 5 minutes so “export to COLMAP / gsplat” in the VGGT repo is not abstract.
+> [!video] COLMAP workflow
+> [Watch video](https://www.youtube.com/watch?v=xx85eyN1Xc0)
+>
+> Polyfjord — a practical COLMAP track. Watch 5 minutes so “export to COLMAP / gsplat” in the VGGT repo is not abstract.
+
 3. **03**
 
    #### Point maps (DUSt3R’s key object)
@@ -218,7 +228,11 @@ A 3-minute flyover of VGGT: DINO tokens, camera tokens, alternating attention, n
 
    Images are patchified by a frozen/pretrained DINO encoder into tokens $t^I$. Dense outputs (depth, points, tracking features) are decoded with a DPT (dense prediction transformer) head — the multi-scale ViT readout from Ranftl et al. 2021 — then a $3\times 3$ conv.
 
-   Yannic Kilcher — DINO (self-supervised ViT). VGGT’s tokenizer is this family of features, not a 3D-specialized CNN.
+> [!video] DINO explained
+> [Watch video](https://www.youtube.com/watch?v=h3ij3F3cPIk)
+>
+> Yannic Kilcher — DINO (self-supervised ViT). VGGT’s tokenizer is this family of features, not a 3D-specialized CNN.
+
 5. **05**
 
    #### Tracking-any-point
@@ -239,56 +253,46 @@ D + g at test
 
 pipelines it replaces  foundations  backbones  tracking
 
+```text
 classical SfM (COLMAP)
-match → triangulate → bundle adjust
-│
-▼
+   match → triangulate → bundle adjust
+            │
+            ▼
 learned SfM (VGGSfM) — differentiable BA still in the loop
 pairwise feed-forward
-DUSt3R / MASt3R: 2 images → point maps
-│
-└── still need global alignment for N>2
+   DUSt3R / MASt3R: 2 images → point maps
+            │
+            └── still need global alignment for N>2
 monocular specialists
-DepthAnything, MoGe, LRM (one task each)
-▼
-VGGT (this paper)
-DINO patchify
-+ camera token + 4 register tokens / frame
-+ alternating frame-wise / global attention (L=24)
-+ camera head (g ∈ R^9)
-+ DPT → depth, point map, track features
-+ CoTracker2 head
-train: over-complete (all heads), aleatoric uncertainties
-infer: often fuse depth + cameras > raw point-map head
-optional: BA on top → extra SOTA
+   DepthAnything, MoGe, LRM  (one task each)
+            ▼
+VGGT  (this paper)
+   DINO patchify
+     + camera token + 4 register tokens / frame
+     + alternating frame-wise / global attention (L=24)
+     + camera head (g ∈ R^9)
+     + DPT → depth, point map, track features
+     + CoTracker2 head
+   train: over-complete (all heads), aleatoric uncertainties
+   infer: often fuse depth + cameras  >  raw point-map head
+   optional: BA on top → extra SOTA
 downstream: non-rigid tracking, feed-forward NVS
-export: COLMAP files → gsplat / NeRFCOLMAP SfM
-DUSt3R pairs
-DepthAnything / MoGe↓ still a pipeline or a pair-fuseDINO tokens
-alternating attention↓ one forward passcameras g
-depth D
-points P
-tracks T
+export: COLMAP files → gsplat / NeRF
+```
+
+> [!graph] Concept flow
+> **COLMAP SfM · DUSt3R pairs · DepthAnything / MoGe**
+> ↓ still a pipeline or a pair-fuse
+> **DINO tokens · alternating attention**
+> ↓ one forward pass
+> **cameras g · depth D · points P · tracks T**
 
 The graph the ASCII block is drawing. Specialists on top; VGGT is the merge.
 
-#### COLMAP / SfM
-
-1. Detect & match
-2. Triangulate
-3. Bundle adjust
-4. Then dense stereo
-
-Slow. Breaks with little overlap.
-
-#### VGGT glance
-
-1. All images in
-2. One transformer
-3. Cameras, depth, points, tracks out
-4. Optional BA afterwards
-
-Under a second. N from 1 to hundreds.
+| Alternative | Representation and consequence |
+|---|---|
+| **COLMAP / SfM** | COLMAP / SfM Detect & match Triangulate Bundle adjust Then dense stereo Slow. Breaks with little overlap. |
+| **VGGT glance** | VGGT glance All images in One transformer Cameras, depth, points, tracks out Optional BA afterwards Under a second. N from 1 to hundreds. |
 
 ### Problem statement, with the paper’s symbols
 
@@ -323,7 +327,10 @@ Cameras, depth, and point maps are algebraically redundant. Given $P$ you can Pn
 
 **During inference**, the paper reports that *composing* the independently predicted depth and cameras yields more accurate 3D points than using the dedicated point-map head. That is the opposite of what a tidy architecture diagram suggests, and it is one of the most useful sentences in the paper. If you wrap VGGT in a library, default to depth+camera fusion, not $P\_i$ verbatim.
 
-Train all threeg, D, P — extra heads are extra supervision↓ at test, don’t trust the named headUse D + gback-project → 3DNot raw Pdedicated point-map is weaker
+> [!flow] Architecture / data flow
+> **Train all three** — g, D, P — extra heads are extra supervision
+> ↓ at test, don’t trust the named head
+> **Use D + g** — back-project → 3D + **Not raw P** — dedicated point-map is weaker
 
 Over-complete training, selective decoding. The head named after the quantity is not always the head you read.
 
@@ -393,7 +400,7 @@ Single-image mode is the zero-shot surprise: the same weights produce a plausibl
 
   #### [VGGSfM · Wang et al.](https://arxiv.org/abs/2311.17033)
 
-  Video: DINO explained — https://www.youtube.com/embed/h3ij3F3cPIk
+  Learned SfM that still runs differentiable BA. The “geometry still in the loop” baseline of the intro.
 
 ### Primary sources
 

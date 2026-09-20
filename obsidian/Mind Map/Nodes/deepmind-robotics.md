@@ -9,31 +9,34 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "labs", "lab"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: []
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Google DeepMind Robotics
 
-RT-1/2, Gemini Robotics 1→2, ER 2. Named the VLA. Closed weights; public blogs.
+> [!concept] Lab · Labs · Layer 3
+> RT-1/2, Gemini Robotics 1→2, ER 2. Named the VLA. Closed weights; public blogs.
+>
+> **Why it belongs —** No rationale recorded yet.
 
-> **Why it belongs**
-> No rationale recorded yet.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/fm-labs|↑ Foundation-model labs]]
 
-- [[Mind Map/Nodes/fm-labs|Foundation-model labs]]
-
-## Semantic connections
-
-- [[Mind Map/Nodes/fm-labs|Foundation-model labs]] — contains
-- [[Mind Map/Nodes/gemini-robotics|Gemini Robotics 2]] — from
-- [[Mind Map/Nodes/labs|Labs & companies]] — includes
+> [!incoming] Incoming relationships
+> - **← from —** [[Mind Map/Nodes/gemini-robotics|Gemini Robotics 2]]
+> - **← includes —** [[Mind Map/Nodes/labs|Labs & companies]]
 
 ## Primary resources
 
 - **Video:** [Google DeepMind — Gemini Robotics (official playlist)](https://www.youtube.com/playlist?list=PLqYmG7hTraZC4Mx6pEKr6FVJehafA7vWE)
 - **Blog:** [Gemini Robotics](https://deepmind.google/models/gemini-robotics/)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#deepmind-robotics`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=deepmind-robotics
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#deepmind-robotics`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=deepmind-robotics)

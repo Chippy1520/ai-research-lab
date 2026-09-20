@@ -9,32 +9,40 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "learning", "concept"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: ["Curriculum/Lessons/Day 25 - Attention, RoPE & KV-Caching.md"]
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Attention
 
-Query-key-value weighting. Cross-attention (SmolVLA features→expert) vs self-attention (VGGT AA, ACT decoder).
+> [!concept] Concept · Learning · Layer 3
+> Query-key-value weighting. Cross-attention (SmolVLA features→expert) vs self-attention (VGGT AA, ACT decoder).
+>
+> **Why it belongs —** When a paper says CA vs SA, this is the node.
 
-> **Why it belongs**
-> When a paper says CA vs SA, this is the node.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/opt-basics|↑ Training machinery]]
 
-- [[Mind Map/Nodes/opt-basics|Training machinery]]
+> [!outgoing] Outgoing relationships
+> - **AA →** [[Mind Map/Nodes/vggt|VGGT]]
+> - **CA SA →** [[Mind Map/Nodes/smolvla|SmolVLA]]
+> - **is →** [[Mind Map/Nodes/transformers|Transformers]]
 
-## Semantic connections
+> [!incoming] Incoming relationships
+> - **← uses —** [[Mind Map/Nodes/transformers|Transformers]]
 
-- [[Mind Map/Nodes/smolvla|SmolVLA]] — CA-SA
-- [[Mind Map/Nodes/opt-basics|Training machinery]] — contains
-- [[Mind Map/Nodes/transformers|Transformers]] — uses
-- [[Mind Map/Nodes/transformers|Transformers]] — is
-- [[Mind Map/Nodes/vggt|VGGT]] — AA
+> [!study] Read and study
+> - [[Curriculum/Lessons/Day 25 - Attention, RoPE & KV-Caching|Day 25 - Attention, RoPE & KV-Caching]]
 
 ## Primary resources
 
 - **Video:** [3Blue1Brown — Attention in transformers, step-by-step](https://www.youtube.com/watch?v=eMlx5fFNoYc)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#attention`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=attention
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#attention`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=attention)

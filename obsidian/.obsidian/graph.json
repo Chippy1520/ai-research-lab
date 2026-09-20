@@ -48,6 +48,13 @@
         "a": 1,
         "rgb": 9470064
       }
+    },
+    {
+      "query": "path:Lectures",
+      "color": {
+        "a": 1,
+        "rgb": 6904466
+      }
     }
   ],
   "collapse-display": false,

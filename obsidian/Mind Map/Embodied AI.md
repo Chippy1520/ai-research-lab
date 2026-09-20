@@ -4,33 +4,32 @@ type: "map-of-content"
 aliases: ["Embodied AI Mind Map", "Embodied AI Knowledge Graph"]
 tags: ["moc", "mindmap"]
 source: "intelligence/mindmap.json"
+cssclasses: ["research-note", "hub-note", "graph-hub"]
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Embodied AI Knowledge Graph
 
-Perception, learning, policies, frameworks, and labs for physical intelligence. Hardware/materials only when they change the learning problem. Company nodes pull live jobs from the robotics intelligence desk.
-
-> [!abstract] Native graph
-> **113 concepts** · **358 semantic relationships** · canonical data updated **2026-09-18**
+> [!graph] The research system
+> Perception, learning, policies, frameworks, and labs for physical intelligence. Hardware/materials only when they change the learning problem. Company nodes pull live jobs from the robotics intelligence desk.
 >
-> Open **Graph View** from the left ribbon or command palette. Select any concept and use its local graph for a focused neighborhood.
+> **113 concepts** · **358 semantic relationships** · updated **2026-09-18**
 
-## Branches
+> [!map] Enter through a branch
+> - [[Mind Map/Nodes/foundations|Foundations]]
+> - [[Mind Map/Nodes/labs|Labs & companies]]
+> - [[Mind Map/Nodes/learning|Learning]]
+> - [[Mind Map/Nodes/perception|Perception]]
+> - [[Mind Map/Nodes/policy|Policies / VLA]]
+> - [[Mind Map/Nodes/systems|Systems]]
 
-- [[Mind Map/Nodes/foundations|Foundations]]
-- [[Mind Map/Nodes/labs|Labs & companies]]
-- [[Mind Map/Nodes/learning|Learning]]
-- [[Mind Map/Nodes/perception|Perception]]
-- [[Mind Map/Nodes/policy|Policies / VLA]]
-- [[Mind Map/Nodes/systems|Systems]]
+## How to navigate
 
-## How to read it
-
-- Solid note links encode parent and child hierarchy.
-- Each concept note lists selected semantic cross-links, people, organizations, and primary sources.
-- Global Graph View shows the whole research system; Local Graph shows the neighborhood of the current note.
-- Colors are assigned by research surface in `.obsidian/graph.json`.
-- Canonical concepts remain in `intelligence/mindmap.json`; rebuild after source changes.
+1. Open **Graph View** for the whole research system.
+2. Open a concept's **Local Graph** for one- or two-hop context.
+3. Follow **Read and study** to move from a concept into papers and curriculum.
+4. Follow provenance links to the people and organizations behind the work.
 
 ## Recent evolution
 

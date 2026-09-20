@@ -9,31 +9,40 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "policy", "paper"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: ["Curriculum/Lessons/Day 51 - Diffusion Policy for Visuomotor Control.md"]
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Diffusion Policy
 
-Chi et al.: denoise an action chunk. Same chunking instinct as ACT, different generative head. LeRobot ships it next to ACT. 17 Sep 2026: Movement Trend Guidance (arXiv 2609.20669) conditions DP3 on a compact latent of interaction evolution (sparse future gripper states at train; latent-only at test, +3.52% params) — first-party 71.93% vs 37.08% LIBERO-40 and 72% vs 49% on five real tasks.
+> [!concept] Paper · Policy · Layer 3
+> Chi et al.: denoise an action chunk. Same chunking instinct as ACT, different generative head. LeRobot ships it next to ACT. 17 Sep 2026: Movement Trend Guidance (arXiv 2609.20669) conditions DP3 on a compact latent of interaction evolution (sparse future gripper states at train; latent-only at test, +3.52% params) — first-party 71.93% vs 37.08% LIBERO-40 and 72% vs 49% on five real tasks.
+>
+> **Why it belongs —** The other baseline you will actually train before a VLA.
 
-> **Why it belongs**
-> The other baseline you will actually train before a VLA.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/chunked-pi|↑ Chunked policies]]
 
-- [[Mind Map/Nodes/chunked-pi|Chunked policies]]
+> [!outgoing] Outgoing relationships
+> - **cousin →** [[Mind Map/Nodes/vqbet|VQ-BeT]]
+> - **is a →** [[Mind Map/Nodes/generative|Generative models]]
+> - **uses →** [[Mind Map/Nodes/action-chunking|Action chunking]]
+
+> [!incoming] Incoming relationships
+> - **← includes —** [[Mind Map/Nodes/generative|Generative models]]
+> - **← scales —** [[Mind Map/Nodes/rdt|RDT-1B]]
+
+> [!study] Read and study
+> - [[Curriculum/Lessons/Day 51 - Diffusion Policy for Visuomotor Control|Day 51 - Diffusion Policy for Visuomotor Control]]
 
 ## Research directions
 
 - Latent interaction-evolution (Movement Trend) vs extra point-cloud tokens on SO-100 contact
-
-## Semantic connections
-
-- [[Mind Map/Nodes/action-chunking|Action chunking]] — uses
-- [[Mind Map/Nodes/chunked-pi|Chunked policies]] — contains
-- [[Mind Map/Nodes/generative|Generative models]] — includes
-- [[Mind Map/Nodes/generative|Generative models]] — is-a
-- [[Mind Map/Nodes/rdt|RDT-1B]] — scales
-- [[Mind Map/Nodes/vqbet|VQ-BeT]] — cousin
 
 ## Primary resources
 
@@ -41,7 +50,6 @@ Chi et al.: denoise an action chunk. Same chunking instinct as ACT, different ge
 - **Video:** [Cheng Chi — Diffusion Policy (LeRobot)](https://www.youtube.com/watch?v=M03sZFfW-qU)
 - **Paper:** [arXiv 2303.04137](https://arxiv.org/abs/2303.04137)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#diffusion-policy`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=diffusion-policy
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#diffusion-policy`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=diffusion-policy)

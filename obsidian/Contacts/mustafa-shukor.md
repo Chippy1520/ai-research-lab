@@ -6,24 +6,27 @@ contact_id: "mustafa-shukor"
 verified_on: "2026-09-16"
 source: "intelligence/entities.json"
 tags: ["contact", "public-record"]
+cssclasses: ["research-note", "person-note"]
 ---
+
+[[Home|Research Lab]]  /  [[Contacts/Contacts|Research Contacts]]
 
 # Mustafa Shukor
 
-Founding Research Scientist at UMA; previously LeRobot / Hugging Face. SmolVLA researcher; current role is distinct from publication affiliation.
+> [!person] Founding Research Scientist at UMA; previously LeRobot / Hugging Face. SmolVLA researcher; current role is distinct from publication affiliation.
+> **Affiliation:** Independent / not recorded
+> **Public record verified:** 2026-09-16
 
-## Public profiles
+> [!evidence] Verified contributions
+> - [[Mind Map/Nodes/smolvla|SmolVLA]] — SmolVLA researcher and release article co-author; personal research page identifies the work. _(verified 2026-09-16)_
 
-- [Research profile](https://mustafashukor.github.io/)
-
-## Verified contributions
-
-- [[Mind Map/Nodes/smolvla|smolvla]] — SmolVLA researcher and release article co-author; personal research page identifies the work. _(verified 2026-09-16)_
+> [!profile] Public profiles
+> - [Research profile](https://mustafashukor.github.io/)
 
 ## Source ledger
 
 - [Personal research page and current biography](https://mustafashukor.github.io/)
 - [SmolVLA announcement author list](https://huggingface.co/blog/smolvla)
 
-> [!privacy]
-> Public provenance only. No outreach ranking, contact history, private notes, or message drafts belong in this repository.
+> [!privacy] Public provenance boundary
+> No outreach ranking, contact history, private notes, or message drafts belong in this repository.

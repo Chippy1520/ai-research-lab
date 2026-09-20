@@ -9,31 +9,34 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "learning", "method"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: []
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # PPO / SAC
 
-On-policy PPO and off-policy SAC. Isaac Lab locomotion defaults. Not how you pry a condiment cup on 50 demos.
+> [!concept] Method · Learning · Layer 3
+> On-policy PPO and off-policy SAC. Isaac Lab locomotion defaults. Not how you pry a condiment cup on 50 demos.
+>
+> **Why it belongs —** WBC lower body is still this. VLA did not replace it.
 
-> **Why it belongs**
-> WBC lower body is still this. VLA did not replace it.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/rl-family|↑ Reinforcement learning]]
 
-- [[Mind Map/Nodes/rl-family|Reinforcement learning]]
-
-## Semantic connections
-
-- [[Mind Map/Nodes/policy-gradient|Policy gradient]] — includes
-- [[Mind Map/Nodes/rl|Reinforcement learning]] — includes
-- [[Mind Map/Nodes/rl-family|Reinforcement learning]] — contains
-- [[Mind Map/Nodes/wbc|Whole-body control]] — uses
+> [!incoming] Incoming relationships
+> - **← includes —** [[Mind Map/Nodes/policy-gradient|Policy gradient]]
+> - **← includes —** [[Mind Map/Nodes/rl|Reinforcement learning]]
+> - **← uses —** [[Mind Map/Nodes/wbc|Whole-body control]]
 
 ## Primary resources
 
 - **Video:** [Abbeel — L4 TRPO and PPO](https://www.youtube.com/watch?v=KjWF8VIMGiY)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#ppo-sac`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=ppo-sac
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#ppo-sac`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=ppo-sac)

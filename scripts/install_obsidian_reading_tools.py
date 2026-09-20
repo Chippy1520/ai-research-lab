@@ -87,6 +87,81 @@ ARTIFACTS = (
         "https://github.com/mirnovov/obsidian-homepage/releases/download/4.5.0/styles.css",
         "bf346def46e6626446c54983f7e6ce4775b84b01159cd046301e9be5c3407589",
     ),
+    Artifact(
+        "plugins/dataview/main.js",
+        "https://github.com/blacksmithgu/obsidian-dataview/releases/download/0.5.68/main.js",
+        "794e9eaede73920bb8d54b0eda4f5de2182d698cc638774500f24f14bcd4da0b",
+    ),
+    Artifact(
+        "plugins/dataview/manifest.json",
+        "https://github.com/blacksmithgu/obsidian-dataview/releases/download/0.5.68/manifest.json",
+        "9235db47112da81b85591c79ecb9ae2574e5e72207056e976472f90616286185",
+    ),
+    Artifact(
+        "plugins/dataview/styles.css",
+        "https://github.com/blacksmithgu/obsidian-dataview/releases/download/0.5.68/styles.css",
+        "3306dd9032e00f989ba7233a37fd255bc4d3f4340cee661762e952f3f6aa1de9",
+    ),
+    Artifact(
+        "plugins/omnisearch/main.js",
+        "https://github.com/scambier/obsidian-omnisearch/releases/download/1.31.0/main.js",
+        "9f2456705d0840f3cccf62a8e99a6fdaf8901939936e44d4dd27fc6b2d522f31",
+    ),
+    Artifact(
+        "plugins/omnisearch/manifest.json",
+        "https://github.com/scambier/obsidian-omnisearch/releases/download/1.31.0/manifest.json",
+        "26b1ffc250b1d90605f60c132f783e3148dd399e5baf5862040671d86294bc85",
+    ),
+    Artifact(
+        "plugins/omnisearch/styles.css",
+        "https://github.com/scambier/obsidian-omnisearch/releases/download/1.31.0/styles.css",
+        "c6a56b1a18ff867f12ebbb3a139060a249704281e1b449003ff487969621a2e6",
+    ),
+    Artifact(
+        "plugins/table-editor-obsidian/main.js",
+        "https://github.com/tgrosinger/advanced-tables-obsidian/releases/download/0.23.2/main.js",
+        "cf5dd4ddbddebef68cc99cd93a883e33895c7f123d04bc5d1106ea6e338ba791",
+    ),
+    Artifact(
+        "plugins/table-editor-obsidian/manifest.json",
+        "https://github.com/tgrosinger/advanced-tables-obsidian/releases/download/0.23.2/manifest.json",
+        "698b4f77445e07d887f33450eaf533a28e099b7b483f642fa883362ffbd8ffe9",
+    ),
+    Artifact(
+        "plugins/table-editor-obsidian/styles.css",
+        "https://github.com/tgrosinger/advanced-tables-obsidian/releases/download/0.23.2/styles.css",
+        "23fa30d76f117fd3d1624c4c2e6ddedabf809923996b0534895f8254ea6a39f7",
+    ),
+    Artifact(
+        "plugins/templater-obsidian/main.js",
+        "https://github.com/SilentVoid13/Templater/releases/download/2.25.1/main.js",
+        "eb86d9282694ce1f099154c320286fdd89473e60dc2441ee310f3ac331333e94",
+    ),
+    Artifact(
+        "plugins/templater-obsidian/manifest.json",
+        "https://github.com/SilentVoid13/Templater/releases/download/2.25.1/manifest.json",
+        "b99280d2c4ab2cd22ad010c12faeedf255bcf385d127d973b89f85deb27d23fd",
+    ),
+    Artifact(
+        "plugins/templater-obsidian/styles.css",
+        "https://github.com/SilentVoid13/Templater/releases/download/2.25.1/styles.css",
+        "67a6dd2d1d6dedca1287c334ca884ec4196433f71ca47388a0bd3eac14cf8b5f",
+    ),
+    Artifact(
+        "plugins/voice-scribe/main.js",
+        "https://github.com/mrrepac/voice-scribe/releases/download/0.3.1/main.js",
+        "b1339f98716f1a63aa7aa65c3b00ffce888e1ece7113fc09f1b460a28bb06c53",
+    ),
+    Artifact(
+        "plugins/voice-scribe/manifest.json",
+        "https://github.com/mrrepac/voice-scribe/releases/download/0.3.1/manifest.json",
+        "ebc6192d7fca395d57799016a2cfffe970586b06c515171ae516234c08395db9",
+    ),
+    Artifact(
+        "plugins/voice-scribe/styles.css",
+        "https://github.com/mrrepac/voice-scribe/releases/download/0.3.1/styles.css",
+        "b3ba5e0760559017a2d6b53bdcf276528b88cf8fc9333ae498f096213e278af5",
+    ),
 )
 
 EXPECTED_VERSIONS = {
@@ -94,6 +169,11 @@ EXPECTED_VERSIONS = {
     "obsidian-style-settings": "1.0.9",
     "obsidian-minimal-settings": "9.0.0",
     "homepage": "4.5.0",
+    "dataview": "0.5.68",
+    "omnisearch": "1.31.0",
+    "table-editor-obsidian": "0.23.2",
+    "templater-obsidian": "2.25.1",
+    "voice-scribe": "0.3.1",
 }
 
 
@@ -142,7 +222,7 @@ def verify_manifests() -> None:
     manifests.append(("Minimal", theme))
     if theme.get("version") != EXPECTED_VERSIONS["Minimal"]:
         raise RuntimeError(f"Unexpected Minimal version: {theme.get('version')}")
-    for plugin_id in ("obsidian-style-settings", "obsidian-minimal-settings", "homepage"):
+    for plugin_id in sorted(set(EXPECTED_VERSIONS) - {"Minimal"}):
         manifest_path = OBSIDIAN_DIR / f"plugins/{plugin_id}/manifest.json"
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         manifests.append((plugin_id, manifest))
@@ -183,11 +263,8 @@ def main() -> int:
     if failures:
         raise SystemExit("Obsidian reading-tools verification failed:\n" + "\n".join(failures))
     verify_manifests()
-    print(
-        "Obsidian reading tools verified for app "
-        f"{TARGET_OBSIDIAN_VERSION}: Minimal 9.0.2; Style Settings 1.0.9; "
-        "Minimal Theme Settings 9.0.0; Homepage 4.5.0"
-    )
+    versions = "; ".join(f"{name} {version}" for name, version in EXPECTED_VERSIONS.items())
+    print(f"Obsidian reading tools verified for app {TARGET_OBSIDIAN_VERSION}: {versions}")
     return 0
 
 

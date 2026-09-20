@@ -9,25 +9,31 @@ layer: 3
 source: "intelligence/mindmap.json"
 updated: "2026-09-18"
 tags: ["mindmap", "labs", "lab"]
+cssclasses: ["research-note", "concept-note"]
+related_papers: []
+related_curriculum: []
 ---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
 
 # Figure AI
 
-San Jose humanoid + Helix VLA. Series C $39B post-money (company, 2025-09-16). Helix 2.5 (17 Sep 2026, first-party): Index-pretrained zero-shot whole-body work in 30 unseen homes. Industrial + home. Heavy intern pipeline on the desk.
+> [!concept] Lab · Labs · Layer 3
+> San Jose humanoid + Helix VLA. Series C $39B post-money (company, 2025-09-16). Helix 2.5 (17 Sep 2026, first-party): Index-pretrained zero-shot whole-body work in 30 unseen homes. Industrial + home. Heavy intern pipeline on the desk.
+>
+> **Why it belongs —** Helix is a closed VLA; careers are the open artifact.
 
-> **Why it belongs**
-> Helix is a closed VLA; careers are the open artifact.
+## Knowledge neighborhood
 
-## Parent
+> [!hierarchy] Hierarchy
+> - [[Mind Map/Nodes/humanoids|↑ Humanoids]]
 
-- [[Mind Map/Nodes/humanoids|Humanoids]]
+> [!outgoing] Outgoing relationships
+> - **ships →** [[Mind Map/Nodes/helix|Helix / Helix 2.5]]
 
-## Semantic connections
-
-- [[Mind Map/Nodes/helix|Helix / Helix 2.5]] — from
-- [[Mind Map/Nodes/helix|Helix / Helix 2.5]] — ships
-- [[Mind Map/Nodes/humanoids|Humanoids]] — contains
-- [[Mind Map/Nodes/labs|Labs & companies]] — includes
+> [!incoming] Incoming relationships
+> - **← from —** [[Mind Map/Nodes/helix|Helix / Helix 2.5]]
+> - **← includes —** [[Mind Map/Nodes/labs|Labs & companies]]
 
 ## Primary resources
 
@@ -36,7 +42,6 @@ San Jose humanoid + Helix VLA. Series C $39B post-money (company, 2025-09-16). H
 - **Company:** [figure.ai](https://www.figure.ai/)
 - **Jobs:** [Careers](https://www.figure.ai/careers)
 
-## Source
-
-- Canonical record: `intelligence/mindmap.json#figure-ai`
-- Live graph: https://chippy1520.github.io/ai-research-lab/mindmap.html#node=figure-ai
+> [!source] Source record
+> - Canonical: `intelligence/mindmap.json#figure-ai`
+> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=figure-ai)
