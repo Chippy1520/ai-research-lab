@@ -14,7 +14,7 @@ A linked Obsidian workspace for the curriculum, embodied-AI concept map, paper c
 
 ## Research surfaces
 
-- [[Mind Map/Embodied AI|Embodied AI Mind Map]] — 113 concepts and their semantic relationships
+- [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]] — 113 concepts and their semantic relationships
 - [[Papers/Paper Guides|Paper Reading Guides]] — full guides converted from canonical editorial HTML
 - [[Curriculum/Curriculum|Research Curriculum]] — the rolling ML → CV → EAI roadmap
 - [[Robotics Intelligence/Robotics Intelligence|Robotics Intelligence]] — ecosystem, jobs, and repeated skill signals
@@ -22,10 +22,18 @@ A linked Obsidian workspace for the curriculum, embodied-AI concept map, paper c
 - [[Organizations/Organizations|Organizations]] — labs, universities, and robotics companies
 - [[Reports/Daily Reports|Daily Intelligence Reports]] — archived source-led briefs
 
-## Visual navigation
+## Navigate with Graph View
 
-- [[Mind Map/Embodied AI.canvas|Open the Embodied AI canvas]]
-- Open Obsidian Graph View to navigate all parent, semantic, paper, contributor, and organization links.
+> [!tip] Graph-first navigation
+> Open **Graph View** from the left ribbon or command palette. Colors separate concepts, papers, curriculum, people, organizations, and reports.
+>
+> For a quieter view, open a note's **Local Graph** and adjust depth to one or two hops.
+
+## Reading setup
+
+- **Minimal** provides the restrained editorial base theme.
+- **Minimal Theme Settings** and **Style Settings** expose typography, line width, and accent controls.
+- **Homepage** opens this note directly in Reading View.
 
 ## Working rule
 

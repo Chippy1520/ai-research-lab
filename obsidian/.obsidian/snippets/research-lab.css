@@ -1,18 +1,97 @@
-/* Warm editorial research-lab theme additions. */
+/* @settings
+name: AI Research Lab
+id: research-lab
+settings:
+  - id: research-accent
+    title: Accent color
+    type: variable-color
+    format: hex
+    default: '#4e6d5a'
+  - id: research-reading-width
+    title: Reading width
+    type: variable-number-slider
+    default: 860
+    min: 680
+    max: 1100
+    step: 20
+    format: px
+*/
+/* Warm editorial additions layered on the Minimal theme. */
 :root {
   --research-cream: #f3f0e8;
   --research-ink: #24231f;
-  --research-leaf: #4e6d5a;
+  --research-accent: #4e6d5a;
   --research-blue: #41687d;
+  --research-reading-width: 860px;
+  --file-line-width: var(--research-reading-width);
+  --line-height-normal: 1.7;
+  --heading-spacing: 2.2rem;
 }
 .theme-light {
   --background-primary: var(--research-cream);
   --background-secondary: #ebe6da;
   --text-normal: var(--research-ink);
-  --interactive-accent: var(--research-leaf);
+  --interactive-accent: var(--research-accent);
   --link-color: var(--research-blue);
+  --link-color-hover: var(--research-accent);
+  --h1-color: #243c32;
+  --h2-color: #315541;
 }
-.markdown-rendered h1, .markdown-rendered h2, .markdown-rendered h3 {
+.markdown-rendered,
+.markdown-source-view.mod-cm6 .cm-scroller {
+  font-variant-numeric: oldstyle-nums proportional-nums;
+}
+.markdown-rendered h1,
+.markdown-rendered h2,
+.markdown-rendered h3,
+.markdown-rendered h4 {
+  font-family: Georgia, "Times New Roman", serif;
   letter-spacing: -0.02em;
+  text-wrap: balance;
 }
-.markdown-rendered blockquote { border-left-color: var(--research-leaf); }
+.markdown-rendered h1 {
+  border-bottom: 1px solid var(--background-modifier-border);
+  padding-bottom: .35em;
+}
+.markdown-rendered p { text-wrap: pretty; }
+.markdown-rendered blockquote {
+  border-left-color: var(--research-accent);
+  background: color-mix(in srgb, var(--research-accent) 7%, transparent);
+  border-radius: 0 8px 8px 0;
+  padding: .7rem 1rem;
+}
+.callout { border-radius: 10px; }
+.markdown-rendered table {
+  display: block;
+  overflow-x: auto;
+  width: 100%;
+  border-collapse: collapse;
+}
+.markdown-rendered th {
+  background: color-mix(in srgb, var(--research-accent) 10%, var(--background-primary));
+}
+.markdown-rendered tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--research-accent) 3%, transparent);
+}
+.markdown-rendered code:not(pre code) {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+}
+.markdown-rendered img { border-radius: 8px; }
+.markdown-rendered hr { margin: 3rem auto; width: 35%; }
+.metadata-container {
+  border-bottom: 1px solid var(--background-modifier-border);
+  padding-bottom: .75rem;
+}
+.nav-file-title.is-active { border-left: 3px solid var(--research-accent); }
+.markdown-rendered .internal-link {
+  text-decoration-thickness: .08em;
+  text-underline-offset: .14em;
+}
+.markdown-rendered .tag { border-radius: 999px; font-size: .8em; }
+.markdown-rendered ul > li::marker { color: var(--research-accent); }
+.markdown-rendered ol > li::marker { color: var(--research-accent); font-weight: 650; }
+.markdown-rendered .callout[data-callout="abstract"] { --callout-color: 65, 104, 125; }
+.markdown-rendered .callout[data-callout="important"] { --callout-color: 78, 109, 90; }
+.markdown-rendered .callout[data-callout="tip"] { --callout-color: 174, 121, 64; }
+.markdown-rendered .callout-title { font-family: Georgia, "Times New Roman", serif; }

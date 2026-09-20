@@ -8,7 +8,6 @@ be rebuilt safely; hand-written notes without that marker are left untouched.
 from __future__ import annotations
 
 import json
-import math
 import re
 from collections import defaultdict
 from pathlib import Path
@@ -102,54 +101,171 @@ def clean_generated_files() -> None:
             sample = path.read_text(encoding="utf-8")[:600]
         except UnicodeDecodeError:
             continue
-        if f'generated_by: "{GENERATOR}"' in sample or f'"generated_by":"{GENERATOR}"' in sample:
+        generated_canvas = False
+        if path.suffix.lower() == ".canvas":
+            try:
+                generated_canvas = json.loads(path.read_text(encoding="utf-8")).get("generated_by") == GENERATOR
+            except (json.JSONDecodeError, AttributeError):
+                generated_canvas = False
+        if f'generated_by: "{GENERATOR}"' in sample or generated_canvas:
             path.unlink()
 
 
 def build_settings() -> None:
     settings = {
         ".obsidian/app.json": {"alwaysUpdateLinks": True, "newFileLocation": "current", "showLineNumber": True},
-        ".obsidian/appearance.json": {"baseFontSize": 16, "cssTheme": "", "enabledCssSnippets": ["research-lab"]},
-        ".obsidian/core-plugins.json": [
-            "file-explorer", "global-search", "switcher", "graph", "backlink", "canvas",
-            "outgoing-link", "tag-pane", "properties", "bookmarks", "outline", "word-count",
-        ],
+        ".obsidian/appearance.json": {"baseFontSize": 17, "cssTheme": "Minimal", "enabledCssSnippets": ["research-lab"]},
+        ".obsidian/core-plugins.json": {
+            "file-explorer": True, "global-search": True, "switcher": True, "graph": True,
+            "backlink": True, "outgoing-link": True, "tag-pane": True, "page-preview": True,
+            "daily-notes": False, "templates": False, "note-composer": True,
+            "command-palette": True, "slash-command": True, "editor-status": True,
+            "markdown-importer": False, "zk-prefixer": False, "random-note": False,
+            "outline": True, "word-count": True, "slides": False, "audio-recorder": False,
+            "workspaces": True, "file-recovery": True, "publish": False, "sync": False,
+            "canvas": True, "footnotes": True, "properties": True, "bookmarks": True,
+            "bases": True, "webviewer": False,
+        },
+        ".obsidian/community-plugins.json": ["obsidian-style-settings", "obsidian-minimal-settings", "homepage"],
+        ".obsidian/plugins/homepage/data.json": {
+            "version": 4,
+            "homepages": {
+                "Main Homepage": {
+                    "value": "Home", "kind": "File", "openOnStartup": True,
+                    "openMode": "Replace all open notes", "manualOpenMode": "Keep open notes",
+                    "view": "Reading view", "revertView": True, "openWhenEmpty": False,
+                    "refreshDataview": False, "autoCreate": False, "autoScroll": False,
+                    "pin": True, "commands": [], "alwaysApply": False, "hideReleaseNotes": False,
+                }
+            },
+            "separateMobile": False,
+        },
         ".obsidian/graph.json": {
-            "collapse-filter": False,
-            "showTags": True,
-            "showAttachments": False,
-            "showOrphans": False,
+            "collapse-filter": False, "search": "", "showTags": False,
+            "showAttachments": False, "hideUnresolved": True, "showOrphans": False,
+            "collapse-color-groups": False,
             "colorGroups": [
                 {"query": "path:\"Mind Map/Nodes\"", "color": {"a": 1, "rgb": 5162853}},
                 {"query": "path:Papers", "color": {"a": 1, "rgb": 3389416}},
+                {"query": "path:Curriculum", "color": {"a": 1, "rgb": 13408614}},
                 {"query": "path:Contacts", "color": {"a": 1, "rgb": 11043118}},
                 {"query": "path:Organizations", "color": {"a": 1, "rgb": 11369038}},
+                {"query": "path:Reports", "color": {"a": 1, "rgb": 9470064}},
             ],
+            "collapse-display": False, "showArrow": False, "textFadeMultiplier": 0,
+            "nodeSizeMultiplier": 1.15, "lineSizeMultiplier": 0.85,
+            "collapse-forces": False, "centerStrength": 0.45, "repelStrength": 12,
+            "linkStrength": 0.9, "linkDistance": 220, "scale": 0.75, "close": True,
         },
     }
     for relative, payload in settings.items():
         path = VAULT / relative
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    (VAULT / ".gitignore").write_text(".obsidian/workspace.json\n.obsidian/workspace-mobile.json\n.trash/\n", encoding="utf-8")
-    css = """/* Warm editorial research-lab theme additions. */
+    (VAULT / ".gitignore").write_text(
+        ".obsidian/workspace.json\n.obsidian/workspace-mobile.json\n.obsidian/backlink.json\n"
+        ".obsidian/themes/\n.obsidian/plugins/*/main.js\n.obsidian/plugins/*/manifest.json\n"
+        ".obsidian/plugins/*/styles.css\n.obsidian/plugins/obsidian-style-settings/data.json\n"
+        ".obsidian/plugins/obsidian-minimal-settings/data.json\n.trash/\n",
+        encoding="utf-8",
+    )
+    css = """/* @settings
+name: AI Research Lab
+id: research-lab
+settings:
+  - id: research-accent
+    title: Accent color
+    type: variable-color
+    format: hex
+    default: '#4e6d5a'
+  - id: research-reading-width
+    title: Reading width
+    type: variable-number-slider
+    default: 860
+    min: 680
+    max: 1100
+    step: 20
+    format: px
+*/
+/* Warm editorial additions layered on the Minimal theme. */
 :root {
   --research-cream: #f3f0e8;
   --research-ink: #24231f;
-  --research-leaf: #4e6d5a;
+  --research-accent: #4e6d5a;
   --research-blue: #41687d;
+  --research-reading-width: 860px;
+  --file-line-width: var(--research-reading-width);
+  --line-height-normal: 1.7;
+  --heading-spacing: 2.2rem;
 }
 .theme-light {
   --background-primary: var(--research-cream);
   --background-secondary: #ebe6da;
   --text-normal: var(--research-ink);
-  --interactive-accent: var(--research-leaf);
+  --interactive-accent: var(--research-accent);
   --link-color: var(--research-blue);
+  --link-color-hover: var(--research-accent);
+  --h1-color: #243c32;
+  --h2-color: #315541;
 }
-.markdown-rendered h1, .markdown-rendered h2, .markdown-rendered h3 {
+.markdown-rendered,
+.markdown-source-view.mod-cm6 .cm-scroller {
+  font-variant-numeric: oldstyle-nums proportional-nums;
+}
+.markdown-rendered h1,
+.markdown-rendered h2,
+.markdown-rendered h3,
+.markdown-rendered h4 {
+  font-family: Georgia, "Times New Roman", serif;
   letter-spacing: -0.02em;
+  text-wrap: balance;
 }
-.markdown-rendered blockquote { border-left-color: var(--research-leaf); }
+.markdown-rendered h1 {
+  border-bottom: 1px solid var(--background-modifier-border);
+  padding-bottom: .35em;
+}
+.markdown-rendered p { text-wrap: pretty; }
+.markdown-rendered blockquote {
+  border-left-color: var(--research-accent);
+  background: color-mix(in srgb, var(--research-accent) 7%, transparent);
+  border-radius: 0 8px 8px 0;
+  padding: .7rem 1rem;
+}
+.callout { border-radius: 10px; }
+.markdown-rendered table {
+  display: block;
+  overflow-x: auto;
+  width: 100%;
+  border-collapse: collapse;
+}
+.markdown-rendered th {
+  background: color-mix(in srgb, var(--research-accent) 10%, var(--background-primary));
+}
+.markdown-rendered tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--research-accent) 3%, transparent);
+}
+.markdown-rendered code:not(pre code) {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+}
+.markdown-rendered img { border-radius: 8px; }
+.markdown-rendered hr { margin: 3rem auto; width: 35%; }
+.metadata-container {
+  border-bottom: 1px solid var(--background-modifier-border);
+  padding-bottom: .75rem;
+}
+.nav-file-title.is-active { border-left: 3px solid var(--research-accent); }
+.markdown-rendered .internal-link {
+  text-decoration-thickness: .08em;
+  text-underline-offset: .14em;
+}
+.markdown-rendered .tag { border-radius: 999px; font-size: .8em; }
+.markdown-rendered ul > li::marker { color: var(--research-accent); }
+.markdown-rendered ol > li::marker { color: var(--research-accent); font-weight: 650; }
+.markdown-rendered .callout[data-callout="abstract"] { --callout-color: 65, 104, 125; }
+.markdown-rendered .callout[data-callout="important"] { --callout-color: 78, 109, 90; }
+.markdown-rendered .callout[data-callout="tip"] { --callout-color: 174, 121, 64; }
+.markdown-rendered .callout-title { font-family: Georgia, "Times New Roman", serif; }
 """
     path = VAULT / ".obsidian/snippets/research-lab.css"
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -232,62 +348,22 @@ def build_mindmap() -> dict[str, str]:
 
     domains = sorted((n for n in nodes if n["layer"] == 1), key=lambda item: item["label"])
     overview = [
-        frontmatter(type="map-of-content", aliases=["Embodied AI Mind Map"], tags=["moc", "mindmap"], source="intelligence/mindmap.json"),
-        "# Embodied AI Mind Map", "", data["scope"], "",
-        f"> Canonical data updated **{data['updated']}** · {len(nodes)} nodes · {len(data['edges'])} semantic edges.", "",
-        f"Open the visual canvas: {wiki('Mind Map/Embodied AI.canvas', 'Embodied AI canvas')}", "",
+        frontmatter(type="map-of-content", aliases=["Embodied AI Mind Map", "Embodied AI Knowledge Graph"], tags=["moc", "mindmap"], source="intelligence/mindmap.json"),
+        "# Embodied AI Knowledge Graph", "", data["scope"], "",
+        f"> [!abstract] Native graph", f"> **{len(nodes)} concepts** · **{len(data['edges'])} semantic relationships** · canonical data updated **{data['updated']}**", ">", "> Open **Graph View** from the left ribbon or command palette. Select any concept and use its local graph for a focused neighborhood.", "",
         "## Branches", "", bullet_links((node_path(n["id"]), n["label"]) for n in domains), "",
         "## How to read it", "",
-        "- Solid canvas edges show the parent hierarchy.",
-        "- Each concept note lists its selected semantic cross-links.",
-        "- Obsidian Graph View renders those wikilinks as a navigable semantic graph.",
+        "- Solid note links encode parent and child hierarchy.",
+        "- Each concept note lists selected semantic cross-links, people, organizations, and primary sources.",
+        "- Global Graph View shows the whole research system; Local Graph shows the neighborhood of the current note.",
+        "- Colors are assigned by research surface in `.obsidian/graph.json`.",
         "- Canonical concepts remain in `intelligence/mindmap.json`; rebuild after source changes.", "",
         "## Recent evolution", "",
     ]
     for item in reversed(data.get("changelog", [])[-10:]):
         overview.append(f"- **{item['date']}** — {item['note']}")
     write("Mind Map/Embodied AI.md", "\n".join(overview))
-    build_mindmap_canvas(data, by_id)
     return paths
-
-
-def build_mindmap_canvas(data: dict[str, Any], by_id: dict[str, dict[str, Any]]) -> None:
-    nodes = data["nodes"]
-    domains = sorted([n for n in nodes if n["layer"] == 1], key=lambda item: item["label"])
-    domain_angle = {node["domain"]: i * 2 * math.pi / len(domains) - math.pi / 2 for i, node in enumerate(domains)}
-    positions: dict[str, tuple[int, int]] = {data["center"]: (0, 0)}
-    grouped: dict[tuple[str, int], list[dict[str, Any]]] = defaultdict(list)
-    for node in nodes:
-        if node["layer"] > 0:
-            grouped[(node["domain"], node["layer"])].append(node)
-    for (domain, layer), group in grouped.items():
-        group.sort(key=lambda item: item["label"].lower())
-        center = domain_angle.get(domain, 0)
-        per_band = 7 if layer >= 3 else 5
-        for index, node in enumerate(group):
-            band = index // per_band
-            band_items = group[band * per_band : (band + 1) * per_band]
-            local = index % per_band
-            spread = 0.82
-            offset = 0 if len(band_items) == 1 else -spread / 2 + spread * local / (len(band_items) - 1)
-            radius = layer * 900 + band * 470
-            angle = center + offset
-            positions[node["id"]] = (round(math.cos(angle) * radius), round(math.sin(angle) * radius))
-    canvas_nodes = []
-    for node in nodes:
-        x, y = positions[node["id"]]
-        canvas_nodes.append({
-            "id": node["id"], "type": "file", "file": node_path(node["id"]),
-            "x": x - 170, "y": y - 80, "width": 340, "height": 160,
-            "color": {"hub": "1", "domain": "4", "area": "6", "concept": "3", "method": "2", "paper": "5", "framework": "1", "lab": "6"}.get(node["kind"], "3"),
-        })
-    canvas_edges = []
-    for node in nodes:
-        parent = node.get("parent")
-        if parent and parent in by_id:
-            canvas_edges.append({"id": f"parent-{parent}-{node['id']}", "fromNode": parent, "toNode": node["id"], "toEnd": "arrow"})
-    payload = {"generated_by": GENERATOR, "nodes": canvas_nodes, "edges": canvas_edges}
-    write("Mind Map/Embodied AI.canvas", json.dumps(payload, ensure_ascii=False, separators=(",", ":")))
 
 
 def prepare_article(article: Tag, paper_file_map: dict[str, str]) -> str:
@@ -589,20 +665,35 @@ def build_home() -> None:
         "# AI Research Lab", "", "A linked Obsidian workspace for the curriculum, embodied-AI concept map, paper companions, public provenance, and dated robotics intelligence.", "",
         "> [!important] Canonical sources", "> This vault is generated from the repository's JSON, HTML, and Markdown sources. Edit canonical files, then run `python scripts/build_obsidian_vault.py`.", "",
         "## Research surfaces", "",
-        f"- {wiki('Mind Map/Embodied AI.md', 'Embodied AI Mind Map')} — 113 concepts and their semantic relationships",
+        f"- {wiki('Mind Map/Embodied AI.md', 'Embodied AI Knowledge Graph')} — 113 concepts and their semantic relationships",
         f"- {wiki('Papers/Paper Guides.md', 'Paper Reading Guides')} — full guides converted from canonical editorial HTML",
         f"- {wiki('Curriculum/Curriculum.md', 'Research Curriculum')} — the rolling ML → CV → EAI roadmap",
         f"- {wiki('Robotics Intelligence/Robotics Intelligence.md', 'Robotics Intelligence')} — ecosystem, jobs, and repeated skill signals",
         f"- {wiki('Contacts/Contacts.md', 'Research Contacts')} — verified public contributors only",
         f"- {wiki('Organizations/Organizations.md', 'Organizations')} — labs, universities, and robotics companies",
         f"- {wiki('Reports/Daily Reports.md', 'Daily Intelligence Reports')} — archived source-led briefs", "",
-        "## Visual navigation", "", f"- {wiki('Mind Map/Embodied AI.canvas', 'Open the Embodied AI canvas')}", "- Open Obsidian Graph View to navigate all parent, semantic, paper, contributor, and organization links.", "",
+        "## Navigate with Graph View", "",
+        "> [!tip] Graph-first navigation", "> Open **Graph View** from the left ribbon or command palette. Colors separate concepts, papers, curriculum, people, organizations, and reports.", ">", "> For a quieter view, open a note's **Local Graph** and adjust depth to one or two hops.", "",
+        "## Reading setup", "",
+        "- **Minimal** provides the restrained editorial base theme.",
+        "- **Minimal Theme Settings** and **Style Settings** expose typography, line width, and accent controls.",
+        "- **Homepage** opens this note directly in Reading View.", "",
         "## Working rule", "", "Private career preparation and outreach do not enter this public repository. Contacts here are verified public provenance, not a CRM.",
     ]
     write("Home.md", "\n".join(home))
     readme = f"""# Obsidian research vault
 
 Open this **`obsidian/` directory** as an Obsidian vault. Start at `Home.md`.
+
+## Install the reading tools
+
+The vault uses a compatibility-pinned Minimal theme plus Style Settings, Minimal Theme Settings, and Homepage:
+
+```bash
+python scripts/install_obsidian_reading_tools.py
+```
+
+Third-party theme/plugin code is installed locally under `.obsidian/` and ignored by Git. The tracked configuration enables the plugins and opens `Home.md` in Reading View.
 
 ## Rebuild
 
@@ -619,7 +710,7 @@ Canonical sources remain outside the vault:
 - `curriculum_plan.json`, `curriculum_state.json`, `learning_log.json` — roadmap and study state
 - `intelligence/reports/*.md` — dated reports
 
-Generated Markdown and Canvas files carry `generated_by: {GENERATOR}`. The builder only removes files carrying that marker, so ordinary hand-written notes placed in the vault are preserved. Do not hand-edit generated notes because the next build will replace them.
+Generated Markdown files carry `generated_by: {GENERATOR}`. The builder only removes files carrying that marker, so ordinary hand-written notes placed in the vault are preserved. The concept network uses Obsidian's native Graph View rather than a separately maintained Canvas. Do not hand-edit generated notes because the next build will replace them.
 
 ## Privacy boundary
 
@@ -636,29 +727,27 @@ def validate_vault() -> dict[str, int]:
         text = path.read_text(encoding="utf-8")
         for target in WIKILINK_RE.findall(text):
             normalized = target.replace("\\", "/").strip().removesuffix(".md")
-            if normalized.endswith(".canvas"):
-                if not (VAULT / normalized).exists():
-                    missing.append((path.relative_to(VAULT).as_posix(), normalized))
-            elif normalized not in known:
+            if normalized not in known:
                 missing.append((path.relative_to(VAULT).as_posix(), normalized))
     if missing:
         preview = "\n".join(f"{source} -> {target}" for source, target in missing[:20])
         raise ValueError(f"Unresolved Obsidian links ({len(missing)}):\n{preview}")
-    canvas = json.loads((VAULT / "Mind Map/Embodied AI.canvas").read_text(encoding="utf-8"))
-    canvas_ids = {item["id"] for item in canvas["nodes"]}
-    for edge in canvas["edges"]:
-        if edge["fromNode"] not in canvas_ids or edge["toNode"] not in canvas_ids:
-            raise ValueError(f"Canvas edge references missing node: {edge}")
+    canvas_path = VAULT / "Mind Map/Embodied AI.canvas"
+    if canvas_path.exists():
+        raise ValueError("The generated Canvas should be absent; use native Obsidian Graph View")
+    mindmap = load_json("intelligence/mindmap.json")
+    node_files = list((VAULT / "Mind Map/Nodes").glob("*.md"))
+    graph_links = sum(len(WIKILINK_RE.findall(path.read_text(encoding="utf-8"))) for path in node_files)
     return {
         "markdown_notes": len(markdown_files),
-        "mindmap_notes": len(list((VAULT / "Mind Map/Nodes").glob("*.md"))),
+        "mindmap_notes": len(node_files),
+        "graph_links": graph_links,
+        "semantic_edges": len(mindmap["edges"]),
         "paper_guides": len(list((VAULT / "Papers").glob("*.md"))) - 1,
         "contact_notes": len(list((VAULT / "Contacts").glob("*.md"))) - 1,
         "organization_notes": len(list((VAULT / "Organizations").glob("*.md"))) - 1,
         "curriculum_lessons": len(list((VAULT / "Curriculum/Lessons").glob("*.md"))),
         "reports": len(list((VAULT / "Reports").glob("20*.md"))),
-        "canvas_nodes": len(canvas["nodes"]),
-        "canvas_edges": len(canvas["edges"]),
     }
 
 

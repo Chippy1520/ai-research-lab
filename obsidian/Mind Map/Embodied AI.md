@@ -1,18 +1,19 @@
 ---
 generated_by: "build_obsidian_vault.py"
 type: "map-of-content"
-aliases: ["Embodied AI Mind Map"]
+aliases: ["Embodied AI Mind Map", "Embodied AI Knowledge Graph"]
 tags: ["moc", "mindmap"]
 source: "intelligence/mindmap.json"
 ---
 
-# Embodied AI Mind Map
+# Embodied AI Knowledge Graph
 
 Perception, learning, policies, frameworks, and labs for physical intelligence. Hardware/materials only when they change the learning problem. Company nodes pull live jobs from the robotics intelligence desk.
 
-> Canonical data updated **2026-09-18** · 113 nodes · 358 semantic edges.
-
-Open the visual canvas: [[Mind Map/Embodied AI.canvas|Embodied AI canvas]]
+> [!abstract] Native graph
+> **113 concepts** · **358 semantic relationships** · canonical data updated **2026-09-18**
+>
+> Open **Graph View** from the left ribbon or command palette. Select any concept and use its local graph for a focused neighborhood.
 
 ## Branches
 
@@ -25,9 +26,10 @@ Open the visual canvas: [[Mind Map/Embodied AI.canvas|Embodied AI canvas]]
 
 ## How to read it
 
-- Solid canvas edges show the parent hierarchy.
-- Each concept note lists its selected semantic cross-links.
-- Obsidian Graph View renders those wikilinks as a navigable semantic graph.
+- Solid note links encode parent and child hierarchy.
+- Each concept note lists selected semantic cross-links, people, organizations, and primary sources.
+- Global Graph View shows the whole research system; Local Graph shows the neighborhood of the current note.
+- Colors are assigned by research surface in `.obsidian/graph.json`.
 - Canonical concepts remain in `intelligence/mindmap.json`; rebuild after source changes.
 
 ## Recent evolution

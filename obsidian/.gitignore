@@ -1,3 +1,10 @@
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
+.obsidian/backlink.json
+.obsidian/themes/
+.obsidian/plugins/*/main.js
+.obsidian/plugins/*/manifest.json
+.obsidian/plugins/*/styles.css
+.obsidian/plugins/obsidian-style-settings/data.json
+.obsidian/plugins/obsidian-minimal-settings/data.json
 .trash/

@@ -16,13 +16,14 @@ def _json(relative: str):
 
 def _generated_digest() -> str:
     digest = hashlib.sha256()
-    for path in sorted(p for p in VAULT.rglob("*") if p.is_file()):
-        relative = path.relative_to(VAULT).as_posix()
-        if relative in {".obsidian/workspace.json", ".obsidian/workspace-mobile.json"}:
+    for path in sorted(VAULT.rglob("*.md")):
+        data = path.read_bytes()
+        if b'generated_by: "build_obsidian_vault.py"' not in data[:600]:
             continue
+        relative = path.relative_to(VAULT).as_posix()
         digest.update(relative.encode("utf-8"))
         digest.update(b"\0")
-        digest.update(path.read_bytes())
+        digest.update(data)
         digest.update(b"\0")
     return digest.hexdigest()
 
@@ -41,8 +42,8 @@ def test_build_is_complete_and_idempotent():
     assert first == second
     assert first_digest == second_digest
     assert first["mindmap_notes"] == len(mindmap["nodes"])
-    assert first["canvas_nodes"] == len(mindmap["nodes"])
-    assert first["canvas_edges"] == len(mindmap["nodes"]) - 1
+    assert first["semantic_edges"] == len(mindmap["edges"])
+    assert first["graph_links"] >= 2 * len(mindmap["edges"])
     assert first["paper_guides"] == len(PAPER_SPECS)
     assert first["contact_notes"] == len(entities["people"])
     assert first["organization_notes"] == len(
@@ -52,11 +53,27 @@ def test_build_is_complete_and_idempotent():
     assert first["curriculum_lessons"] == len(curriculum["lessons"])
 
 
-def test_wikilinks_and_canvas_references_resolve():
+def test_wikilinks_resolve_and_native_graph_replaces_canvas():
     counts = validate_vault()
     assert counts["markdown_notes"] > 200
-    canvas = json.loads((VAULT / "Mind Map/Embodied AI.canvas").read_text(encoding="utf-8"))
-    assert all((VAULT / node["file"]).exists() for node in canvas["nodes"])
+    assert not (VAULT / "Mind Map/Embodied AI.canvas").exists()
+    graph = json.loads((VAULT / ".obsidian/graph.json").read_text(encoding="utf-8"))
+    assert graph["hideUnresolved"] is True
+    assert graph["showOrphans"] is False
+    assert graph["showTags"] is False
+    assert len(graph["colorGroups"]) >= 6
+
+
+def test_reading_theme_and_plugins_are_configured():
+    appearance = json.loads((VAULT / ".obsidian/appearance.json").read_text(encoding="utf-8"))
+    enabled = json.loads((VAULT / ".obsidian/community-plugins.json").read_text(encoding="utf-8"))
+    homepage = json.loads((VAULT / ".obsidian/plugins/homepage/data.json").read_text(encoding="utf-8"))
+    css = (VAULT / ".obsidian/snippets/research-lab.css").read_text(encoding="utf-8")
+    assert appearance["cssTheme"] == "Minimal"
+    assert {"obsidian-style-settings", "obsidian-minimal-settings", "homepage"} <= set(enabled)
+    assert homepage["homepages"]["Main Homepage"]["value"] == "Home"
+    assert homepage["homepages"]["Main Homepage"]["view"] == "Reading view"
+    assert "@settings" in css and "--research-reading-width" in css
 
 
 def test_full_paper_guides_are_present_and_connected():

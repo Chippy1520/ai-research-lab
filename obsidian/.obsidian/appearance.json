@@ -1,6 +1,6 @@
 {
-  "baseFontSize": 16,
-  "cssTheme": "",
+  "baseFontSize": 17,
+  "cssTheme": "Minimal",
   "enabledCssSnippets": [
     "research-lab"
   ]

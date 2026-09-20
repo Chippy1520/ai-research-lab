@@ -54,11 +54,12 @@ streamlit run app.py
 
 ## Obsidian knowledge vault
 
-Open the repository's `obsidian/` directory as a vault and start at `Home.md`. It contains a 113-node Canvas-backed embodied-AI map, full paper companions converted from the canonical HTML, verified public contacts and organizations, the curriculum roadmap, current openings, recurring skill signals, and dated intelligence reports.
+Open the repository's `obsidian/` directory as a vault and start at `Home.md`. It contains a native Graph View knowledge network with 113 embodied-AI concept notes, full paper companions converted from the canonical HTML, verified public contacts and organizations, the curriculum roadmap, current openings, recurring skill signals, and dated intelligence reports.
 
-The vault is a generated view rather than a second source of truth:
+Install the compatibility-pinned Minimal reading theme and the three curated helper plugins, then rebuild the generated notes:
 
 ```powershell
+python scripts\install_obsidian_reading_tools.py
 python scripts\build_obsidian_vault.py
 ```
 

@@ -1,8 +1,11 @@
 {
   "collapse-filter": false,
-  "showTags": true,
+  "search": "",
+  "showTags": false,
   "showAttachments": false,
+  "hideUnresolved": true,
   "showOrphans": false,
+  "collapse-color-groups": false,
   "colorGroups": [
     {
       "query": "path:\"Mind Map/Nodes\"",
@@ -19,6 +22,13 @@
       }
     },
     {
+      "query": "path:Curriculum",
+      "color": {
+        "a": 1,
+        "rgb": 13408614
+      }
+    },
+    {
       "query": "path:Contacts",
       "color": {
         "a": 1,
@@ -31,6 +41,25 @@
         "a": 1,
         "rgb": 11369038
       }
+    },
+    {
+      "query": "path:Reports",
+      "color": {
+        "a": 1,
+        "rgb": 9470064
+      }
     }
-  ]
+  ],
+  "collapse-display": false,
+  "showArrow": false,
+  "textFadeMultiplier": 0,
+  "nodeSizeMultiplier": 1.15,
+  "lineSizeMultiplier": 0.85,
+  "collapse-forces": false,
+  "centerStrength": 0.45,
+  "repelStrength": 12,
+  "linkStrength": 0.9,
+  "linkDistance": 220,
+  "scale": 0.75,
+  "close": true
 }
