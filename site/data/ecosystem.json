@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "as_of": "2026-09-10",
+  "as_of": "2026-09-20",
   "scope": "US-headquartered humanoid builders plus foreign companies with substantial US humanoid operations and adjacent US embodied-AI platform companies.",
   "funding_methodology": "Funding observations are the latest major disclosed raise or transaction capital, not necessarily cumulative capital raised. Read each source card before comparing companies.",
   "valuation_methodology": "Values are dated observations, not live appraisals. Private marks use the latest completed disclosed financing when available; proposed transactions and reported talks are labeled separately. Tesla is shown at whole-company public market capitalization, not an Optimus segment valuation. Boston Dynamics uses its 2020 acquisition basis because no current standalone mark is public. Undisclosed is more accurate than an inferred number.",
@@ -45,6 +45,11 @@
           "title": "Nscale and Figure sign strategic partnership to power physical AI",
           "url": "https://www.nscale.com/press-releases/nscale-and-figure",
           "date": "2026-09-03"
+        },
+        {
+          "title": "Helix 2.5: Zero-Shot 30-Home Generalization",
+          "url": "https://www.figure.ai/news/helix-2-5-zero-shot-30-home-generalization",
+          "date": "2026-09-17"
         }
       ]
     },
@@ -95,8 +100,8 @@
       "longitude": -123.0351,
       "cluster": "Pacific Northwest",
       "category": "Humanoid platform",
-      "focus": "Digit bipedal mobile manipulation for logistics and industrial material movement, with a dedicated robot factory in Oregon.",
-      "stage": "Commercial deployment; announced public-market transaction with S-4 registration filed",
+      "focus": "Digit 5 bipedal mobile manipulation for industrial workflows, cooperative-safety development, and fleet deployment, with a dedicated robot factory in Oregon.",
+      "stage": "Commercial Digit 4 deployments; Digit 5 announced for 2027 availability; proposed public-market transaction with S-4 registration filed",
       "funding_usd_millions": 620,
       "valuation_usd_billions": 2.5,
       "valuation_label": "$2.5B proposed transaction value",
@@ -119,6 +124,11 @@
           "title": "Churchill Capital Corp XI registration statement for the Agility Robotics business combination",
           "url": "https://www.sec.gov/Archives/edgar/data/2074973/000121390026097764/ea0297114-04.htm",
           "date": "2026-09-04"
+        },
+        {
+          "title": "Agility unveils Digit 5 humanoid robot built for cooperatively safe work at scale",
+          "url": "https://www.agilityrobotics.com/content/agility-unveils-digit-5-humanoid-robot-built-for-cooperatively-safe-work-at-scale",
+          "date": "2026-09-15"
         }
       ]
     },
@@ -311,6 +321,11 @@
           "title": "Skild AI careers",
           "url": "https://www.skild.ai/career",
           "date": "accessed 2026-09-01"
+        },
+        {
+          "title": "The Hidden Pillar of Robotics",
+          "url": "https://www.skild.ai/blogs/skild-crosses-100m-arr",
+          "date": "2026-09-10"
         }
       ]
     },
