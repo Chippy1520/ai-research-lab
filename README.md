@@ -48,12 +48,27 @@ streamlit run app.py
 | `scripts/update_robotics_jobs.py` | Deterministic official Greenhouse/Lever refresh |
 | `scripts/build_robotics_site.py` | Builds the data payload for the static public site |
 | `site/` | Responsive GitHub Pages application and generated public data |
+| `obsidian/` | Generated linked Obsidian vault for the map, paper guides, contacts, curriculum, and intelligence |
+| `scripts/build_obsidian_vault.py` | Rebuilds and validates the vault from canonical repository sources |
 | `AGENTS.md` | Generation-day research, editorial, archive, and verification protocol |
+
+## Obsidian knowledge vault
+
+Open the repository's `obsidian/` directory as a vault and start at `Home.md`. It contains a 113-node Canvas-backed embodied-AI map, full paper companions converted from the canonical HTML, verified public contacts and organizations, the curriculum roadmap, current openings, recurring skill signals, and dated intelligence reports.
+
+The vault is a generated view rather than a second source of truth:
+
+```powershell
+python scripts\build_obsidian_vault.py
+```
+
+Hand-written notes without the generator marker are preserved. Public contact notes intentionally exclude private outreach planning and follow-up state.
 
 ## Verification
 
 ```powershell
 python -m pytest -q
+python scripts\build_obsidian_vault.py
 python scripts\update_robotics_jobs.py
 python scripts\build_robotics_site.py
 python experiments\adamw_reference.py

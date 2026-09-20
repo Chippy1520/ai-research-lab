@@ -1,0 +1,36 @@
+{
+  "collapse-filter": false,
+  "showTags": true,
+  "showAttachments": false,
+  "showOrphans": false,
+  "colorGroups": [
+    {
+      "query": "path:\"Mind Map/Nodes\"",
+      "color": {
+        "a": 1,
+        "rgb": 5162853
+      }
+    },
+    {
+      "query": "path:Papers",
+      "color": {
+        "a": 1,
+        "rgb": 3389416
+      }
+    },
+    {
+      "query": "path:Contacts",
+      "color": {
+        "a": 1,
+        "rgb": 11043118
+      }
+    },
+    {
+      "query": "path:Organizations",
+      "color": {
+        "a": 1,
+        "rgb": 11369038
+      }
+    }
+  ]
+}

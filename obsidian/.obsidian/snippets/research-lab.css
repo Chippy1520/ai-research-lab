@@ -1,0 +1,18 @@
+/* Warm editorial research-lab theme additions. */
+:root {
+  --research-cream: #f3f0e8;
+  --research-ink: #24231f;
+  --research-leaf: #4e6d5a;
+  --research-blue: #41687d;
+}
+.theme-light {
+  --background-primary: var(--research-cream);
+  --background-secondary: #ebe6da;
+  --text-normal: var(--research-ink);
+  --interactive-accent: var(--research-leaf);
+  --link-color: var(--research-blue);
+}
+.markdown-rendered h1, .markdown-rendered h2, .markdown-rendered h3 {
+  letter-spacing: -0.02em;
+}
+.markdown-rendered blockquote { border-left-color: var(--research-leaf); }
