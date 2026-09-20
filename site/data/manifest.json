@@ -1,12 +1,16 @@
 {
   "site_title": "AI Research Lab",
-  "ecosystem_as_of": "2026-09-20",
-  "jobs_last_checked": "2026-09-20T16:39:56+05:30",
+  "ecosystem_as_of": "2026-09-21",
+  "jobs_last_checked": "2026-09-21T01:37:23+05:30",
   "company_count": 12,
   "humanoid_count": 8,
   "opening_count": 146,
   "early_career_count": 5,
   "reports": [
+    {
+      "date": "2026-09-21",
+      "path": "data/reports/2026-09-21.md"
+    },
     {
       "date": "2026-09-20",
       "path": "data/reports/2026-09-20.md"
