@@ -14,6 +14,8 @@ The vault uses a compatibility-pinned Minimal theme and a deliberately small plu
 
 - **Style Settings + Minimal Theme Settings + Homepage** — editorial presentation and a stable landing page
 - **Dataview + Omnisearch + Advanced Tables** — structured indexes, retrieval, and comfortable Markdown authoring
+- **Smart Lookup + Smart Connections** — local semantic topic search followed by a graph-and-list neighborhood around the selected note
+- **Callout Manager** — discover and manage the vault's native, portable callout vocabulary
 - **Templater + Voice Scribe** — lecture templates and local, on-device Whisper transcription
 
 ```bash
@@ -21,6 +23,19 @@ python scripts/install_obsidian_reading_tools.py
 ```
 
 Third-party theme/plugin code is installed locally under `.obsidian/` and ignored by Git. The tracked configuration enables the plugins and opens `Home.md` in Reading View. Release assets are version-pinned and checksum-verified by the installer.
+
+## Search and semantic graph workflow
+
+Use the tools according to the question:
+
+1. **Exact words, paths, or tags:** run Omnisearch.
+2. **An idea described in your own words:** run `Smart Lookup: Open: Lookup view`, enter a concrete query, and inspect the ranked previews.
+3. **A semantic neighborhood:** open the strongest result, then run `Smart Connections: Open: Connections view`. Its default Connections component renders related notes as both a graph and a list.
+4. **Explicit authored relationships:** use native Graph View or Local Graph.
+
+Smart Connections and Smart Lookup use a built-in local embedding model by default. Initial indexing can take several minutes and may download the model once. The generated embedding cache lives in `.smart-env/` and is ignored by Git.
+
+The optional paid **Smart Graph** companion provides a direct typed-query-to-semantic-map workflow. It is deliberately not bundled: the free local workflow above reaches the graph by opening one inspected search result first, and no subscription should be assumed silently.
 
 ## Lecture capture
 

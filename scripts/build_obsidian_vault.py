@@ -221,7 +221,8 @@ def build_settings() -> None:
         ".obsidian/community-plugins.json": [
             "obsidian-style-settings", "obsidian-minimal-settings", "homepage",
             "dataview", "omnisearch", "table-editor-obsidian",
-            "templater-obsidian", "voice-scribe",
+            "templater-obsidian", "voice-scribe", "smart-connections",
+            "smart-lookup", "callout-manager",
         ],
         ".obsidian/plugins/dataview/data.json": {
             "enableDataviewJs": False, "enableInlineDataview": True,
@@ -279,7 +280,9 @@ def build_settings() -> None:
         ".obsidian/workspace.json\n.obsidian/workspace-mobile.json\n.obsidian/backlink.json\n"
         ".obsidian/themes/\n.obsidian/plugins/*/main.js\n.obsidian/plugins/*/manifest.json\n"
         ".obsidian/plugins/*/styles.css\n.obsidian/plugins/obsidian-style-settings/data.json\n"
-        ".obsidian/plugins/obsidian-minimal-settings/data.json\n.trash/\n",
+        ".obsidian/plugins/obsidian-minimal-settings/data.json\n"
+        ".obsidian/plugins/smart-connections/data.json\n.obsidian/plugins/smart-lookup/data.json\n"
+        ".obsidian/plugins/callout-manager/data.json\n.smart-env/\n.trash/\n",
         encoding="utf-8",
     )
     css = """/* @settings
@@ -337,6 +340,17 @@ settings:
   border-bottom: 1px solid var(--background-modifier-border);
   padding-bottom: .35em;
 }
+.markdown-rendered h2 {
+  display: flex;
+  align-items: baseline;
+  gap: .8rem;
+}
+.markdown-rendered h2::after {
+  content: "";
+  flex: 1 1 auto;
+  height: 1px;
+  background: linear-gradient(90deg, var(--background-modifier-border), transparent);
+}
 .markdown-rendered p { text-wrap: pretty; }
 .markdown-rendered blockquote {
   border-left-color: var(--research-accent);
@@ -362,6 +376,10 @@ settings:
   border-radius: 4px;
 }
 .markdown-rendered img { border-radius: 8px; }
+.markdown-rendered .image-embed {
+  display: block;
+  margin-inline: auto;
+}
 .markdown-rendered hr { margin: 3rem auto; width: 35%; }
 .metadata-container {
   border-bottom: 1px solid var(--background-modifier-border);
@@ -408,6 +426,7 @@ settings:
 .callout[data-callout="incoming"] { --callout-color: 132, 104, 144; --callout-icon: lucide-arrow-down-left; }
 .callout[data-callout="palette"] { --callout-color: 0, 166, 251; --callout-icon: lucide-palette; }
 .callout[data-callout="local"] { --callout-color: 56, 176, 0; --callout-icon: lucide-folder-check; }
+.callout[data-callout="semantic"] { --callout-color: 55, 112, 108; --callout-icon: lucide-scan-search; }
 .callout[data-callout="sequence"],
 .callout[data-callout="prerequisite"] { --callout-color: 105, 117, 132; --callout-icon: lucide-route; }
 
@@ -466,6 +485,17 @@ settings:
 .research-note .callout { border: 1px solid color-mix(in srgb, rgb(var(--callout-color)) 20%, transparent); }
 .research-note .callout-title { font-size: 1.02em; letter-spacing: .01em; }
 .research-note .callout-content > :last-child { margin-bottom: 0; }
+.research-note .callout[data-callout="home"],
+.research-note .callout[data-callout="paper"],
+.research-note .callout[data-callout="concept"],
+.research-note .callout[data-callout="semantic"] {
+  box-shadow: 0 10px 28px rgb(40 35 26 / 6%);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, rgb(var(--callout-color)) 10%, var(--background-primary)),
+    color-mix(in srgb, rgb(var(--callout-color)) 3%, var(--background-primary))
+  );
+}
 .paper-note .markdown-rendered img {
   display: block;
   max-height: 34rem;
@@ -477,6 +507,32 @@ settings:
 .jobs-note .markdown-rendered table { font-size: .92em; }
 .home-note .markdown-rendered table td:first-child { font-weight: 650; color: var(--research-accent); }
 .report-note .markdown-rendered h2 { border-bottom: 1px solid var(--background-modifier-border); padding-bottom: .25em; }
+
+/* Keep semantic discovery visually native to the cream/ink reading system. */
+.lookup-item-view .lookup-query-form,
+.smart-lookup-list-container,
+.connections-list-v4,
+.connections-graph-container {
+  border-color: var(--background-modifier-border) !important;
+  border-radius: 10px;
+}
+.lookup-item-view .lookup-query-form {
+  background: color-mix(in srgb, var(--research-accent) 6%, var(--background-primary));
+  padding: .8rem;
+}
+.lookup-query-input {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.05rem;
+}
+.smart-lookup-list-container .sc-result,
+.connections-list-v4 .sc-result {
+  border-bottom-color: var(--background-modifier-border) !important;
+}
+.smart-lookup-list-container .sc-result-file-title,
+.connections-list-v4 .sc-result-file-title {
+  color: var(--research-accent);
+  font-family: Georgia, "Times New Roman", serif;
+}
 @media (max-width: 700px) {
   :root { --research-reading-width: 100%; }
   .callout .callout-content > ul { grid-template-columns: 1fr !important; }
@@ -1767,6 +1823,16 @@ def build_home() -> None:
             ],
         ), "",
         *link_callout("Research surfaces", surfaces, "map"), "",
+        "## Find an idea by meaning", "",
+        *callout(
+            "semantic", "Semantic discovery: query → evidence → neighborhood",
+            [
+                "1. Run **Smart Lookup: Open: Lookup view** and ask for the topic in ordinary language.",
+                "2. Preview the ranked matches and open the strongest evidence-bearing note.",
+                "3. Run **Smart Connections: Open: Connections view** to see that note's semantically related nodes as a graph and list.",
+                "", "Use **Omnisearch** when exact wording, filenames, or tags matter. Semantic results are leads to inspect, not evidence by themselves.",
+            ],
+        ), "",
         "## How the vault connects", "",
         "| From | Follow links to | Why |", "|---|---|---|",
         "| Concepts | Papers, curriculum, people, organizations | Move from an idea to evidence and study |",
@@ -1811,6 +1877,8 @@ The vault uses a compatibility-pinned Minimal theme and a deliberately small plu
 
 - **Style Settings + Minimal Theme Settings + Homepage** — editorial presentation and a stable landing page
 - **Dataview + Omnisearch + Advanced Tables** — structured indexes, retrieval, and comfortable Markdown authoring
+- **Smart Lookup + Smart Connections** — local semantic topic search followed by a graph-and-list neighborhood around the selected note
+- **Callout Manager** — discover and manage the vault's native, portable callout vocabulary
 - **Templater + Voice Scribe** — lecture templates and local, on-device Whisper transcription
 
 ```bash
@@ -1818,6 +1886,19 @@ python scripts/install_obsidian_reading_tools.py
 ```
 
 Third-party theme/plugin code is installed locally under `.obsidian/` and ignored by Git. The tracked configuration enables the plugins and opens `Home.md` in Reading View. Release assets are version-pinned and checksum-verified by the installer.
+
+## Search and semantic graph workflow
+
+Use the tools according to the question:
+
+1. **Exact words, paths, or tags:** run Omnisearch.
+2. **An idea described in your own words:** run `Smart Lookup: Open: Lookup view`, enter a concrete query, and inspect the ranked previews.
+3. **A semantic neighborhood:** open the strongest result, then run `Smart Connections: Open: Connections view`. Its default Connections component renders related notes as both a graph and a list.
+4. **Explicit authored relationships:** use native Graph View or Local Graph.
+
+Smart Connections and Smart Lookup use a built-in local embedding model by default. Initial indexing can take several minutes and may download the model once. The generated embedding cache lives in `.smart-env/` and is ignored by Git.
+
+The optional paid **Smart Graph** companion provides a direct typed-query-to-semantic-map workflow. It is deliberately not bundled: the free local workflow above reaches the graph by opening one inspected search result first, and no subscription should be assumed silently.
 
 ## Lecture capture
 

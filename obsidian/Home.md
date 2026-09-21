@@ -23,6 +23,15 @@ cssclasses: ["research-note", "hub-note", "home-note"]
 > - [[Reports/Daily Reports|Daily Intelligence Reports]]
 > - [[Lectures/Lecture Notes|Lecture Notes & Knowledge Graphs]]
 
+## Find an idea by meaning
+
+> [!semantic] Semantic discovery: query → evidence → neighborhood
+> 1. Run **Smart Lookup: Open: Lookup view** and ask for the topic in ordinary language.
+> 2. Preview the ranked matches and open the strongest evidence-bearing note.
+> 3. Run **Smart Connections: Open: Connections view** to see that note's semantically related nodes as a graph and list.
+>
+> Use **Omnisearch** when exact wording, filenames, or tags matter. Semantic results are leads to inspect, not evidence by themselves.
+
 ## How the vault connects
 
 | From | Follow links to | Why |

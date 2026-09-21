@@ -162,6 +162,51 @@ ARTIFACTS = (
         "https://github.com/mrrepac/voice-scribe/releases/download/0.3.1/styles.css",
         "b3ba5e0760559017a2d6b53bdcf276528b88cf8fc9333ae498f096213e278af5",
     ),
+    Artifact(
+        "plugins/smart-connections/main.js",
+        "https://github.com/brianpetro/obsidian-smart-connections/releases/download/4.7.2/main.js",
+        "f5b1e045e9427a7b7ffc43cd46ba7e0b9223adcc856037d4e0571dc7a9c08083",
+    ),
+    Artifact(
+        "plugins/smart-connections/manifest.json",
+        "https://github.com/brianpetro/obsidian-smart-connections/releases/download/4.7.2/manifest.json",
+        "781506575bc026f94923789b0377214908889e4ae13289391d0e94c58727fa32",
+    ),
+    Artifact(
+        "plugins/smart-connections/styles.css",
+        "https://github.com/brianpetro/obsidian-smart-connections/releases/download/4.7.2/styles.css",
+        "5892f589156b29078642513ae56ed1e513eb9b04b6ce4fd89fbacdd395bf6580",
+    ),
+    Artifact(
+        "plugins/smart-lookup/main.js",
+        "https://github.com/brianpetro/smart-lookup-obsidian/releases/download/0.3.4/main.js",
+        "1cabdeb055835322fa7a8fd4a9a1c2dfd43262433dd22f74098d15c9ba3756c7",
+    ),
+    Artifact(
+        "plugins/smart-lookup/manifest.json",
+        "https://github.com/brianpetro/smart-lookup-obsidian/releases/download/0.3.4/manifest.json",
+        "8c78973561b99bfac97b0b921b23d6a4876d3d4c989e4b4c584a040d444ddc9e",
+    ),
+    Artifact(
+        "plugins/smart-lookup/styles.css",
+        "https://github.com/brianpetro/smart-lookup-obsidian/releases/download/0.3.4/styles.css",
+        "c57deb6da0a64aa15c9ea8ca12347688a2aceaba854c603fe9ebaea752b86a48",
+    ),
+    Artifact(
+        "plugins/callout-manager/main.js",
+        "https://github.com/eth-p/obsidian-callout-manager/releases/download/1.1.2/main.js",
+        "3c97eba0dd0c7e78bf3faad701cbbc3834754264bcf0717af64403fe152b2f04",
+    ),
+    Artifact(
+        "plugins/callout-manager/manifest.json",
+        "https://github.com/eth-p/obsidian-callout-manager/releases/download/1.1.2/manifest.json",
+        "b0e02242c78b39e1263da891d789e3fcaa0c1f6c48aa1c2bbe4b892ddc8cce0a",
+    ),
+    Artifact(
+        "plugins/callout-manager/styles.css",
+        "https://github.com/eth-p/obsidian-callout-manager/releases/download/1.1.2/styles.css",
+        "85dd7d013ad642fcf6cc9fbd87a81ad70769276c4725722562e3585f4407aa54",
+    ),
 )
 
 EXPECTED_VERSIONS = {
@@ -174,6 +219,9 @@ EXPECTED_VERSIONS = {
     "table-editor-obsidian": "0.23.2",
     "templater-obsidian": "2.25.1",
     "voice-scribe": "0.3.1",
+    "smart-connections": "4.7.2",
+    "smart-lookup": "0.3.4",
+    "callout-manager": "1.1.2",
 }
 
 

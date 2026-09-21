@@ -92,6 +92,7 @@ def test_reading_theme_and_plugins_are_configured():
     assert {
         "obsidian-style-settings", "obsidian-minimal-settings", "homepage",
         "dataview", "omnisearch", "table-editor-obsidian", "templater-obsidian", "voice-scribe",
+        "smart-connections", "smart-lookup", "callout-manager",
     } <= set(enabled)
     dataview = json.loads((VAULT / ".obsidian/plugins/dataview/data.json").read_text(encoding="utf-8"))
     templater = json.loads((VAULT / ".obsidian/plugins/templater-obsidian/data.json").read_text(encoding="utf-8"))
@@ -101,6 +102,10 @@ def test_reading_theme_and_plugins_are_configured():
     assert homepage["homepages"]["Main Homepage"]["value"] == "Home"
     assert homepage["homepages"]["Main Homepage"]["view"] == "Reading view"
     assert "@settings" in css and "--research-reading-width" in css
+    assert '.callout[data-callout="semantic"]' in css
+    assert ".lookup-item-view .lookup-query-form" in css
+    gitignore = (VAULT / ".gitignore").read_text(encoding="utf-8")
+    assert ".smart-env/" in gitignore
 
 
 def test_full_paper_guides_are_present_and_connected():
@@ -162,6 +167,8 @@ def test_home_exposes_each_research_surface():
         "Organizations/Organizations", "Reports/Daily Reports", "Lectures/Lecture Notes",
     ):
         assert f"[[{target}" in home
+    assert "Smart Lookup: Open: Lookup view" in home
+    assert "Smart Connections: Open: Connections view" in home
 
 
 def test_directional_graph_relations_and_normalized_tags():
