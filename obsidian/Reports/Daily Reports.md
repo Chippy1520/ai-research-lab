@@ -13,9 +13,10 @@ cssclasses: ["research-note", "hub-note", "reports-hub"]
 > [!report] Dated evidence, including quiet days
 > Source-led observations. No-change days remain explicit rather than being filled with speculation.
 >
-> **9 archived reports**
+> **10 archived reports**
 
 > [!reports] Report archive
+> - [[Reports/2026-09-21|2026-09-21]]
 > - [[Reports/2026-09-20|2026-09-20]]
 > - [[Reports/2026-09-10|2026-09-10]]
 > - [[Reports/2026-09-09|2026-09-09]]

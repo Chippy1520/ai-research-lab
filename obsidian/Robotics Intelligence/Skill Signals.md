@@ -3,7 +3,7 @@ generated_by: "build_obsidian_vault.py"
 type: "dataset-view"
 aliases: ["Robotics Skill Signals"]
 tags: ["skills", "robotics-intelligence"]
-last_checked: "2026-09-20T16:39:56+05:30"
+last_checked: "2026-09-21T01:37:23+05:30"
 cssclasses: ["research-note", "dataset-note", "signals-note"]
 ---
 
@@ -14,7 +14,7 @@ cssclasses: ["research-note", "dataset-note", "signals-note"]
 > [!signal] Repeated requirements, not career advice
 > Patterns across official boards, kept distinct from personal outreach and private planning.
 >
-> **9 tracked signals** · checked **2026-09-20T16:39:56+05:30**
+> **9 tracked signals** · checked **2026-09-21T01:37:23+05:30**
 
 > [!skill] Controls / estimation
 > **Category:** Robotics foundations

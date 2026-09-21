@@ -3,7 +3,7 @@ generated_by: "build_obsidian_vault.py"
 type: "map-of-content"
 aliases: ["Robotics Intelligence"]
 tags: ["moc", "robotics-intelligence"]
-as_of: "2026-09-20"
+as_of: "2026-09-21"
 cssclasses: ["research-note", "hub-note", "intelligence-hub"]
 ---
 
@@ -14,7 +14,7 @@ cssclasses: ["research-note", "hub-note", "intelligence-hub"]
 > [!intelligence] Evidence before narrative
 > US-headquartered humanoid builders plus foreign companies with substantial US humanoid operations and adjacent US embodied-AI platform companies.
 >
-> **Ecosystem:** 2026-09-20 · **jobs checked:** 2026-09-20T16:39:56+05:30
+> **Ecosystem:** 2026-09-21 · **jobs checked:** 2026-09-21T01:37:23+05:30
 
 > [!desks] Intelligence desks
 > - [[Robotics Intelligence/Current Openings|Current Openings]]
