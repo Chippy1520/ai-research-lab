@@ -44,6 +44,7 @@ related_curriculum: ["Curriculum/Lessons/Day 20 - Semantic, Instance & Panoptic 
 
 - **Video:** [CS231n 2017 L11 — Detection and Segmentation](https://www.youtube.com/watch?v=nDPWywWRIRo)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#segmentation`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=segmentation)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#segmentation`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

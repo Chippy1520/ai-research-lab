@@ -39,6 +39,7 @@ related_curriculum: ["Curriculum/Lessons/Day 38 - Open-Vocabulary Detection & Fo
 > - [[Curriculum/Lessons/Day 67 - Foundation-Model Agents, Tool Use & Memory|Day 67 - Foundation-Model Agents, Tool Use & Memory]]
 > - [[Curriculum/Lessons/Day 68 - Video Foundation Models & World-Centric Perception|Day 68 - Video Foundation Models & World-Centric Perception]]
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#foundation-lab`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=foundation-lab)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#foundation-lab`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

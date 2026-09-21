@@ -45,6 +45,7 @@ related_curriculum: []
 - **Video:** [Skild — Introducing S1](https://www.youtube.com/watch?v=hr39FlEiCcQ)
 - **News:** [S1 on NVIDIA infra (Sep 2026)](https://iottechnews.com/news/skild-trains-s1-robot-physical-ai-model-on-nvidia-infrastructure/)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#skild-s1`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=skild-s1)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#skild-s1`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

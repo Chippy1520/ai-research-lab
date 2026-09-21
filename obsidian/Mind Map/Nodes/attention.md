@@ -43,6 +43,7 @@ related_curriculum: ["Curriculum/Lessons/Day 25 - Attention, RoPE & KV-Caching.m
 
 - **Video:** [3Blue1Brown — Attention in transformers, step-by-step](https://www.youtube.com/watch?v=eMlx5fFNoYc)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#attention`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=attention)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#attention`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

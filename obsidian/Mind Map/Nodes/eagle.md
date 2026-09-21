@@ -35,6 +35,7 @@ related_curriculum: []
 > - **← includes —** [[Mind Map/Nodes/perception|Perception]]
 > - **← uses —** [[Mind Map/Nodes/gr00t|GR00T N1.5]]
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#eagle`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=eagle)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#eagle`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

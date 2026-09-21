@@ -42,6 +42,7 @@ related_curriculum: []
 - **Video:** [Google DeepMind — Gemini Robotics (official playlist)](https://www.youtube.com/playlist?list=PLqYmG7hTraZC4Mx6pEKr6FVJehafA7vWE)
 - **Blog:** [Gemini Robotics 2](https://deepmind.google/blog/gemini-robotics-2-brings-whole-body-intelligence-to-robots/)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#gemini-robotics`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=gemini-robotics)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#gemini-robotics`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

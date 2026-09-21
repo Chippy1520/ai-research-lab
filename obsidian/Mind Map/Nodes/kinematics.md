@@ -44,6 +44,7 @@ related_curriculum: ["Curriculum/Lessons/Day 45 - Robot Kinematics, Dynamics & O
 
 - **Video:** [Modern Robotics — Chapter 4 Forward Kinematics (Northwestern)](https://www.youtube.com/watch?v=cKHsil0V6Qk)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#kinematics`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=kinematics)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#kinematics`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

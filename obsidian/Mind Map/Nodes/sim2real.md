@@ -53,6 +53,7 @@ related_curriculum: ["Curriculum/Lessons/Day 54 - Sim-to-Real, System Identifica
 - **Paper:** [Function-preserving Real-to-Sim-to-Real (arXiv 2609.18293)](https://arxiv.org/abs/2609.18293)
 - **Video:** [NVIDIA — Isaac Lab Office Hours (sim-to-real stack)](https://www.youtube.com/playlist?list=PL3jK4xNnlCVcnMqm4Lnqa5Bok4_iP5NsK)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#sim2real`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=sim2real)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#sim2real`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

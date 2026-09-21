@@ -38,6 +38,7 @@ related_curriculum: ["Curriculum/Lessons/Day 64 - Neural Operators, Scientific M
 
 - **Video:** [NVIDIA — Isaac Lab Office Hours](https://www.youtube.com/playlist?list=PL3jK4xNnlCVcnMqm4Lnqa5Bok4_iP5NsK)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#sim-stack`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=sim-stack)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#sim-stack`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

@@ -39,6 +39,7 @@ related_curriculum: ["Curriculum/Lessons/Day 44 - 3D Scene Understanding and Poi
 
 - **Video:** [3Blue1Brown — Neural networks (full series)](https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#rep-found`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=rep-found)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#rep-found`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

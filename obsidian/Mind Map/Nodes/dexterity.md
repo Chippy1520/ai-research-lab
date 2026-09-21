@@ -40,6 +40,7 @@ related_curriculum: []
 - **Video:** [Dexterity — Introducing Mech](https://www.youtube.com/watch?v=cNbGmvtKjuM)
 - **Company:** [dexterity.ai](https://www.dexterity.ai/)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#dexterity`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=dexterity)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#dexterity`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

@@ -42,6 +42,7 @@ related_curriculum: ["Curriculum/Lessons/Day 35 - Video Motion- Optical Flow, Tr
 
 - **Video:** [Shree Nayar — Optical Flow (First Principles overview)](https://www.youtube.com/watch?v=lnXFcmLB7sM)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#optical-flow`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=optical-flow)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#optical-flow`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

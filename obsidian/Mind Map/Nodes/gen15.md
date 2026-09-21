@@ -53,6 +53,7 @@ related_curriculum: []
 - **Video:** [Generalist — Introducing GEN-1.5](https://www.youtube.com/watch?v=1cllCVK-9lo)
 - **Blog:** [GEN-1.5 blog (Generalist)](https://generalistai.com/blog/gen-1.5)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#gen15`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=gen15)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#gen15`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

@@ -34,6 +34,7 @@ related_curriculum: []
 
 - **Video:** [Yann LeCun — World Models: Enabling the next AI revolution (ETH)](https://www.youtube.com/watch?v=72Xj8k5WQX4)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#gen-world`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=gen-world)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#gen-world`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

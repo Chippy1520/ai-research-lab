@@ -55,6 +55,7 @@ related_curriculum: ["Curriculum/Lessons/Day 31 - Flow Matching & Optimal-Transp
 - **Video:** [Outlier — Flow matching explained](https://www.youtube.com/watch?v=7cMzfkWFWhI)
 - **Paper:** [Flow Matching for Generative Modeling](https://arxiv.org/abs/2210.02747)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#flow-matching`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=flow-matching)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#flow-matching`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

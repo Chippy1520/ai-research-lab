@@ -32,4 +32,6 @@ cssclasses: ["research-note", "hub-note", "papers-hub"]
 3. Name the model mechanism precisely.
 4. Tie results to their evaluation protocol and separate evidence from hypotheses.
 
-[Open the public paper hub](https://chippy1520.github.io/ai-research-lab/papers.html)
+> [!local] Local-first library
+> Every guide is fully recreated inside this vault, including its figures and cross-links.
+> External links are retained only for primary evidence, repositories, and videos.

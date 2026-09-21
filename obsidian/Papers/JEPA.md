@@ -3,8 +3,8 @@ generated_by: "build_obsidian_vault.py"
 type: "paper-guide"
 aliases: ["JEPA", "JEPA: train the world model to predict $E(y)$, not $y$"]
 paper_slug: "jepa"
-source: "site/papers-jepa.html"
-live_url: "https://chippy1520.github.io/ai-research-lab/papers-jepa.html"
+source: ["site/papers-jepa.html", "papers/jepa.md"]
+content_mode: "local"
 tags: ["paper", "reading-guide"]
 related_nodes: ["representation", "world-models"]
 related_curriculum: ["Curriculum/Lessons/Day 07 - Information Theory & Representation.md", "Curriculum/Lessons/Day 26 - Self-Supervised Visual Representation Learning.md", "Curriculum/Lessons/Day 42 - World Models & Latent Imagination.md", "Curriculum/Lessons/Day 46 - Causal Representation Learning & Invariance.md"]
@@ -30,10 +30,12 @@ cssclasses: ["research-note", "paper-note"]
 > - [[Curriculum/Lessons/Day 42 - World Models & Latent Imagination|Day 42 - World Models & Latent Imagination]]
 > - [[Curriculum/Lessons/Day 46 - Causal Representation Learning & Invariance|Day 46 - Causal Representation Learning & Invariance]]
 
-> [!source] Canonical and public versions
-> - Repository guide: `site/papers-jepa.html`
-> - [Open the published HTML guide](https://chippy1520.github.io/ai-research-lab/papers-jepa.html)
+> [!source] Local reconstruction and provenance
+> - This note contains the complete recreated reading guide; no published mirror is required.
+> - Canonical editorial source: `site/papers-jepa.html`
 > - Companion source: `papers/jepa.md`
+> - Local figures: `_attachments/Papers/jepa/`
+> - Primary papers, repositories, and videos remain linked as evidence.
 
 ---
 

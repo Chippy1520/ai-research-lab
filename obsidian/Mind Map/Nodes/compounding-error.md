@@ -39,8 +39,9 @@ related_curriculum: []
 
 - **Video:** [LeRobot — ALOHA and ACT (chunking vs one-step BC compounding)](https://www.youtube.com/watch?v=ft73x0LfGpM)
 - **Paper:** [DAgger · Ross et al.](https://arxiv.org/abs/1011.0686)
-- **Guide:** [ACT guide](https://chippy1520.github.io/ai-research-lab/papers-act.html)
+- **Guide:** [[Papers/ACT and ALOHA|ACT guide]]
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#compounding-error`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=compounding-error)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#compounding-error`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

@@ -51,6 +51,7 @@ related_curriculum: []
 - **Paper:** [VLBiMan++ (arXiv 2609.14310)](https://arxiv.org/abs/2609.14310)
 - **Video:** [Generalist — Introducing GEN-1.5 (in-context physical prompting)](https://www.youtube.com/watch?v=1cllCVK-9lo)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#one-shot`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=one-shot)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#one-shot`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

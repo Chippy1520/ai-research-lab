@@ -44,6 +44,7 @@ related_curriculum: []
 
 - **Paper:** [LIBERO-CTRL — compound robustness of VLAs (arXiv 2609.15940)](https://arxiv.org/abs/2609.15940)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#libero`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=libero)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#libero`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

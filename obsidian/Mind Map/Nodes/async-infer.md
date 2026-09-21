@@ -48,8 +48,9 @@ related_curriculum: []
 - **Paper:** [rMuscle — muscle-memory VLA inference cache (arXiv 2609.19104)](https://arxiv.org/abs/2609.19104)
 - **Paper:** [Real-Time EXPO-FT (arXiv 2609.18207)](https://arxiv.org/abs/2609.18207)
 - **Video:** [Hugging Face — LeRobot tutorials (record/evaluate loop)](https://www.youtube.com/playlist?list=PLo2EIpI_JMQu5zrDHe4NchRyumF2ynaUN)
-- **Guide:** [SmolVLA §3.3](https://chippy1520.github.io/ai-research-lab/papers-smolvla.html#walk)
+- **Guide:** [[Papers/SmolVLA and LeRobot|SmolVLA §3.3]]
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#async-infer`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=async-infer)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#async-infer`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

@@ -39,6 +39,7 @@ related_curriculum: ["Curriculum/Lessons/Day 39 - Imitation Learning, DAgger & I
 
 - **Video:** [LeRobot — ALOHA and ACT (action chunking imitation)](https://www.youtube.com/watch?v=ft73x0LfGpM)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#imit`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=imit)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#imit`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

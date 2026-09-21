@@ -55,6 +55,7 @@ related_curriculum: []
 - **Video:** [Boston Dynamics Atlas — Partners in Parkour](https://www.youtube.com/watch?v=tF4DML7FIWk)
 - **Code:** [GR00T-WholeBodyControl](https://github.com/NVlabs/GR00T-WholeBodyControl)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#wbc`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=wbc)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#wbc`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

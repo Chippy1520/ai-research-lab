@@ -40,8 +40,9 @@ related_curriculum: []
 
 - **Video:** [Arxiv Insights — Variational autoencoders](https://www.youtube.com/watch?v=9zKuYvjFFS8)
 - **Paper:** [VAE · Kingma & Welling](https://arxiv.org/abs/1312.6114)
-- **Guide:** [ACT](https://chippy1520.github.io/ai-research-lab/papers-act.html)
+- **Guide:** [[Papers/ACT and ALOHA|ACT]]
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#cvae`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=cvae)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#cvae`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

@@ -3,8 +3,8 @@ generated_by: "build_obsidian_vault.py"
 type: "paper-guide"
 aliases: ["VGGT", "VGGT: 3D from images without the SfM ritual"]
 paper_slug: "vggt"
-source: "site/papers-vggt.html"
-live_url: "https://chippy1520.github.io/ai-research-lab/papers-vggt.html"
+source: ["site/papers-vggt.html", "papers/vggt.md"]
+content_mode: "local"
 tags: ["paper", "reading-guide"]
 related_nodes: ["vggt"]
 related_curriculum: []
@@ -23,10 +23,12 @@ cssclasses: ["research-note", "paper-note"]
 > [!concepts] Connected concepts
 > - [[Mind Map/Nodes/vggt|VGGT]]
 
-> [!source] Canonical and public versions
-> - Repository guide: `site/papers-vggt.html`
-> - [Open the published HTML guide](https://chippy1520.github.io/ai-research-lab/papers-vggt.html)
+> [!source] Local reconstruction and provenance
+> - This note contains the complete recreated reading guide; no published mirror is required.
+> - Canonical editorial source: `site/papers-vggt.html`
 > - Companion source: `papers/vggt.md`
+> - Local figures: `_attachments/Papers/vggt/`
+> - Primary papers, repositories, and videos remain linked as evidence.
 
 ---
 
@@ -69,15 +71,15 @@ Open [arXiv 2503.11651](https://arxiv.org/pdf/2503.11651). CVPR 2025 Best Paper.
 
 VGGT is a feed-forward net that infers cameras, point maps, depth, and 3D tracks from one, a few, or hundreds of views. 3D vision has been specialized per task; this is one model for all of them. Reconstruction in under a second, still beating methods that post-process with geometry optimization. SOTA on camera pose, multi-view depth, dense clouds, point tracking. Pretrained VGGT as a backbone also helps non-rigid tracking and feed-forward novel-view synthesis. Code: facebookresearch/vggt.
 
-![VGGT teaser: cameras, depth, points, tracks from many views](https://arxiv.org/html/2503.11651v1/teaser.png)
+![VGGT teaser: cameras, depth, points, tracks from many views](../_attachments/Papers/vggt/teaser.png)
 
 **Paper Figure 1 (teaser).** One forward pass, variable $N$. The frustums are predicted cameras, not COLMAP cameras. If this picture is not obvious, the method section will not be either.
 
-![VGGT architecture: DINO tokens, alternating attention, heads](https://arxiv.org/html/2503.11651v1/architecture_v4.png)
+![VGGT architecture: DINO tokens, alternating attention, heads](../_attachments/Papers/vggt/architecture_v4.png)
 
 **Paper architecture figure.** Patchify with DINO, append camera + register tokens, alternate frame-wise and global self-attention, then camera head vs DPT heads. No cross-attention. Frame 1’s camera token is a different learned vector so the world frame is marked.
 
-![VGGT vs DUSt3R qualitative 3D](https://arxiv.org/html/2503.11651v1/comparison_vggt_dust3r.png)
+![VGGT vs DUSt3R qualitative 3D](../_attachments/Papers/vggt/comparison_vggt_dust3r.png)
 
 **Paper qualitative vs DUSt3R.** Oil painting, non-overlapping pair, repeated texture. DUSt3R is a two-view method plus fusion; this figure is why “just run DUSt3R” is not the same paper.
 
@@ -146,7 +148,7 @@ Wall-clock on the paper’s hardware, schematic widths. Accuracy still higher at
 
 **§4.3 point maps (ETH3D).** 10 frames, Umeyama align, official masks. Same three Chamfer numbers vs DUSt3R/MASt3R.
 
-![VGGT predicted point maps with camera frustums](https://arxiv.org/html/2503.11651v1/pointmap_v6.png)
+![VGGT predicted point maps with camera frustums](../_attachments/Papers/vggt/pointmap_v6.png)
 
 **Paper point-map figure.** Predicted cloud + frustums. This is $P$ (or fused $D$+$g$), not a COLMAP sparse model colored in.
 

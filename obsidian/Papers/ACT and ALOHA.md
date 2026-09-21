@@ -3,8 +3,8 @@ generated_by: "build_obsidian_vault.py"
 type: "paper-guide"
 aliases: ["ACT and ALOHA", "ACT: compounding error is a horizon problem"]
 paper_slug: "act"
-source: "site/papers-act.html"
-live_url: "https://chippy1520.github.io/ai-research-lab/papers-act.html"
+source: ["site/papers-act.html", "papers/act.md"]
+content_mode: "local"
 tags: ["paper", "reading-guide"]
 related_nodes: ["act", "action-chunking"]
 related_curriculum: []
@@ -24,10 +24,12 @@ cssclasses: ["research-note", "paper-note"]
 > - [[Mind Map/Nodes/act|ACT]]
 > - [[Mind Map/Nodes/action-chunking|Action chunking]]
 
-> [!source] Canonical and public versions
-> - Repository guide: `site/papers-act.html`
-> - [Open the published HTML guide](https://chippy1520.github.io/ai-research-lab/papers-act.html)
+> [!source] Local reconstruction and provenance
+> - This note contains the complete recreated reading guide; no published mirror is required.
+> - Canonical editorial source: `site/papers-act.html`
 > - Companion source: `papers/act.md`
+> - Local figures: `_attachments/Papers/act/`
+> - Primary papers, repositories, and videos remain linked as evidence.
 
 ---
 
@@ -70,15 +72,15 @@ Open [arXiv 2304.13705](https://arxiv.org/pdf/2304.13705) (RSS 2023). Hardware p
 
 Fine tasks (cable ties, battery slotting) need precision, contact, closed-loop vision. Usually that means expensive robots and calibration. Question: can learning make cheap, imprecise hardware do them? They collect demos on a custom teleop rig and train end-to-end. Imitation has two diseases here: compounding error, and non-stationary humans. ACT is a generative model over action sequences. Six real tasks (open a translucent condiment cup, slot a battery) at 80–90% with ~10 minutes of demos. Site: tonyzhaozh.github.io/aloha.
 
-![ALOHA bimanual teleoperation hardware](https://arxiv.org/html/2304.13705v1/figures/setup.jpg)
+![ALOHA bimanual teleoperation hardware](../_attachments/Papers/act/setup.jpg)
 
 **Paper hardware figure.** Leader arms in the operator’s hands, followers on the table, four cameras. Joint-space mapping — no IK. This is the data engine; ACT is the learner.
 
-![ACT real-world fine manipulation tasks](https://arxiv.org/html/2304.13705v1/real_tasks.png)
+![ACT real-world fine manipulation tasks](../_attachments/Papers/act/real_tasks.png)
 
 **Paper real tasks.** Cup, battery, velcro, tape, shoe. Each frame is a contact story from §V-A. Quote subtask columns, not a single %.
 
-![Four camera observations used by ACT](https://arxiv.org/html/2304.13705v1/figures/obs.jpg)
+![Four camera observations used by ACT](../_attachments/Papers/act/obs.jpg)
 
 **Paper observations.** Four RGB streams at 480×640. Wrist + workspace. This is why ResNet-18 × 4, not a single front camera.
 
@@ -134,11 +136,11 @@ Decoder tensor path. Train $z$ from [CLS]; test $z=0$.
 
 ### §V Tasks (read every one)
 
-![ACT simulated cube transfer and insertion](https://arxiv.org/html/2304.13705v1/sim_tasks.png)
+![ACT simulated cube transfer and insertion](../_attachments/Papers/act/sim_tasks.png)
 
 **Paper sim tasks.** Transfer Cube and Bimanual Insertion — the $k=1$ vs $k=100$ ablation lives here, not on the cup.
 
-![ALOHA teleop skill examples](https://arxiv.org/html/2304.13705v1/figures/teleop_tasks.jpg)
+![ALOHA teleop skill examples](../_attachments/Papers/act/teleop_tasks.jpg)
 
 **Paper teleop skills.** Existence proof for the hardware (zip-tie, RAM, …). Do not quote these as ACT policy success rates.
 
@@ -219,7 +221,7 @@ exp weights
 
 problems  foundations  cousins  descendants
 
-The field-scale version of this tree is the [living mind map](https://chippy1520.github.io/ai-research-lab/mindmap.html) (click ACT, chunking, CVAE, SmolVLA).
+The field-scale version of this tree is the [[Mind Map/Embodied AI|living mind map]] (click ACT, chunking, CVAE, SmolVLA).
 
 > [!graph] Concept flow
 > **ALOHA teleop**

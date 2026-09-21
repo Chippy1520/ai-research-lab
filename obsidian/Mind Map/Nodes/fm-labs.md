@@ -37,6 +37,7 @@ related_curriculum: []
 
 - **Video:** [Physical Intelligence — π0: Our First Generalist Robotic Policy](https://www.youtube.com/watch?v=a6Ix6Vzuk0c)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#fm-labs`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=fm-labs)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#fm-labs`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

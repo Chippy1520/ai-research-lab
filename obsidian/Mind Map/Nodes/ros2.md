@@ -44,6 +44,7 @@ related_curriculum: ["Curriculum/Lessons/Day 57 - ROS 2, Real-Time Robot Softwar
 - **Video:** [DigiKey — What is ROS / ROS 2?](https://www.youtube.com/watch?v=mjrxf8EFSb8)
 - **Docs:** [ROS 2 docs](https://docs.ros.org/en/humble/)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#ros2`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=ros2)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#ros2`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

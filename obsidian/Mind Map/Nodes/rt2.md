@@ -41,6 +41,7 @@ related_curriculum: []
 - **Video:** [Yevgen Chebotar — RT-2: VLA models transfer web knowledge to control](https://www.youtube.com/watch?v=o5ONDdbReAA)
 - **Paper:** [RT-2 · Brohan et al.](https://arxiv.org/abs/2307.15818)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#rt2`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=rt2)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#rt2`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

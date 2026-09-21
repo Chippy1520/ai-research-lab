@@ -37,6 +37,7 @@ related_curriculum: []
 
 - **Video:** [Abbeel — L4 TRPO and PPO](https://www.youtube.com/watch?v=KjWF8VIMGiY)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#ppo-sac`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=ppo-sac)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#ppo-sac`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

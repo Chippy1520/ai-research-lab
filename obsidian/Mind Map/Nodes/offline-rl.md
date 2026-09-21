@@ -44,6 +44,7 @@ related_curriculum: ["Curriculum/Lessons/Day 36 - Offline RL, Behavior Regulariz
 - **Video:** [Berkeley CS285 — includes offline RL lectures](https://www.youtube.com/playlist?list=PL_iWQOsE6TfVYGEGiAOMaOzzv41Jfm_Ps)
 - **Paper:** [IQL · Kostrikov et al.](https://arxiv.org/abs/2110.06169)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#offline-rl`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=offline-rl)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#offline-rl`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

@@ -61,10 +61,11 @@ related_curriculum: []
 ## Primary resources
 
 - **Video:** [Hugging Face — SmolVLA (official)](https://www.youtube.com/watch?v=VbhL8_vVtVM)
-- **Guide:** [Our SmolVLA guide](https://chippy1520.github.io/ai-research-lab/papers-smolvla.html)
+- **Guide:** [[Papers/SmolVLA and LeRobot|Our SmolVLA guide]]
 - **Paper:** [arXiv 2506.01844](https://arxiv.org/abs/2506.01844)
 - **Code:** [LeRobot](https://github.com/huggingface/lerobot)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#smolvla`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=smolvla)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#smolvla`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

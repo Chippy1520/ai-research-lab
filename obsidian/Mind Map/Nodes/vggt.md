@@ -49,10 +49,11 @@ related_curriculum: []
 
 ## Primary resources
 
-- **Guide:** [Our VGGT guide](https://chippy1520.github.io/ai-research-lab/papers-vggt.html)
+- **Guide:** [[Papers/VGGT|Our VGGT guide]]
 - **Paper:** [arXiv 2503.11651](https://arxiv.org/abs/2503.11651)
 - **Code:** [facebookresearch/vggt](https://github.com/facebookresearch/vggt)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#vggt`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=vggt)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#vggt`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

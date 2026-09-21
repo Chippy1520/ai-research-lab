@@ -51,8 +51,9 @@ related_curriculum: []
 
 - **Paper:** [GeoAAC — geometry-based adaptive action chunking (arXiv 2609.20776)](https://arxiv.org/abs/2609.20776)
 - **Video:** [LeRobot — ALOHA and ACT](https://www.youtube.com/watch?v=ft73x0LfGpM)
-- **Guide:** [ACT](https://chippy1520.github.io/ai-research-lab/papers-act.html)
+- **Guide:** [[Papers/ACT and ALOHA|ACT]]
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#action-chunking`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=action-chunking)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#action-chunking`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

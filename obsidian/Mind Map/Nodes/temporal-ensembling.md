@@ -38,8 +38,9 @@ related_curriculum: []
 ## Primary resources
 
 - **Video:** [LeRobot — ALOHA and ACT (temporal ensemble of overlapping chunks)](https://www.youtube.com/watch?v=ft73x0LfGpM)
-- **Guide:** [ACT](https://chippy1520.github.io/ai-research-lab/papers-act.html)
+- **Guide:** [[Papers/ACT and ALOHA|ACT]]
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#temporal-ensembling`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=temporal-ensembling)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#temporal-ensembling`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

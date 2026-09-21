@@ -48,6 +48,7 @@ related_curriculum: ["Curriculum/Lessons/Day 69 - VLA Models, Cross-Embodiment T
 - **Paper:** [Action-similarity supervision for latent-action models (arXiv 2609.19846)](https://arxiv.org/abs/2609.19846)
 - **Video:** [Moo Jin Kim — OpenVLA (cross-robot OXE generalist)](https://www.youtube.com/watch?v=-0s0v3q7mBk)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#cross-embod`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=cross-embod)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#cross-embod`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

@@ -41,6 +41,7 @@ related_curriculum: []
 - **Video:** [DUSt3R intro — Vincent Leroy](https://www.youtube.com/watch?v=X1I7Z0V1JJc)
 - **Paper:** [arXiv 2312.14132](https://arxiv.org/abs/2312.14132)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#dust3r`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=dust3r)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#dust3r`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

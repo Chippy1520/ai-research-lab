@@ -38,6 +38,7 @@ related_curriculum: []
 - **Video:** [Vincent Leroy — MASt3R (ECCV 5 min)](https://www.youtube.com/watch?v=rJfWsxzX61g)
 - **Paper:** [MASt3R](https://arxiv.org/abs/2406.09756)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#mast3r`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=mast3r)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#mast3r`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

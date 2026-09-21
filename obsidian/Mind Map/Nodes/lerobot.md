@@ -52,6 +52,7 @@ related_curriculum: []
 - **Code:** [github.com/huggingface/lerobot](https://github.com/huggingface/lerobot)
 - **Docs:** [LeRobot docs](https://huggingface.co/docs/lerobot)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#lerobot`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=lerobot)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#lerobot`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

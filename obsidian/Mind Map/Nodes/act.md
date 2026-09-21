@@ -60,10 +60,11 @@ related_curriculum: []
 
 - **Paper:** [UGR — Uncertainty-Guided Sparse Refinement for ACT (arXiv 2609.15840)](https://arxiv.org/abs/2609.15840)
 - **Video:** [ALOHA — Learning Fine-Grained Bimanual Manipulation (ACT paper video)](https://www.youtube.com/watch?v=pN4Ig_aTSUo)
-- **Guide:** [Our ACT guide](https://chippy1520.github.io/ai-research-lab/papers-act.html)
+- **Guide:** [[Papers/ACT and ALOHA|Our ACT guide]]
 - **Paper:** [arXiv 2304.13705](https://arxiv.org/abs/2304.13705)
 - **Docs:** [LeRobot ACT](https://huggingface.co/docs/lerobot/act)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#act`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=act)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#act`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

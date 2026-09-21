@@ -34,6 +34,7 @@ related_curriculum: []
 > [!incoming] Incoming relationships
 > - **← includes —** [[Mind Map/Nodes/labs|Labs & companies]]
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#persona-ai`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=persona-ai)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#persona-ai`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

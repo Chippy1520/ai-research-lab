@@ -39,6 +39,7 @@ related_curriculum: []
 
 - **Paper:** [Depth Anything](https://arxiv.org/abs/2401.10891)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#depth-anything`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=depth-anything)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#depth-anything`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

@@ -3,8 +3,8 @@ generated_by: "build_obsidian_vault.py"
 type: "paper-guide"
 aliases: ["I-JEPA", "I-JEPA: predict embeddings of masked blocks, not their pixels"]
 paper_slug: "ijepa"
-source: "site/papers-ijepa.html"
-live_url: "https://chippy1520.github.io/ai-research-lab/papers-ijepa.html"
+source: ["site/papers-ijepa.html", "papers/ijepa.md"]
+content_mode: "local"
 tags: ["paper", "reading-guide"]
 related_nodes: ["representation", "world-models"]
 related_curriculum: ["Curriculum/Lessons/Day 07 - Information Theory & Representation.md", "Curriculum/Lessons/Day 26 - Self-Supervised Visual Representation Learning.md", "Curriculum/Lessons/Day 42 - World Models & Latent Imagination.md", "Curriculum/Lessons/Day 46 - Causal Representation Learning & Invariance.md"]
@@ -30,10 +30,12 @@ cssclasses: ["research-note", "paper-note"]
 > - [[Curriculum/Lessons/Day 42 - World Models & Latent Imagination|Day 42 - World Models & Latent Imagination]]
 > - [[Curriculum/Lessons/Day 46 - Causal Representation Learning & Invariance|Day 46 - Causal Representation Learning & Invariance]]
 
-> [!source] Canonical and public versions
-> - Repository guide: `site/papers-ijepa.html`
-> - [Open the published HTML guide](https://chippy1520.github.io/ai-research-lab/papers-ijepa.html)
+> [!source] Local reconstruction and provenance
+> - This note contains the complete recreated reading guide; no published mirror is required.
+> - Canonical editorial source: `site/papers-ijepa.html`
 > - Companion source: `papers/ijepa.md`
+> - Local figures: `_attachments/Papers/ijepa/`
+> - Primary papers, repositories, and videos remain linked as evidence.
 
 ---
 
@@ -91,7 +93,7 @@ EBMs: low energy on compatible pairs. JEA collapse fixes: contrastive negatives,
 
 ### §3 Method — Figure 3
 
-![I-JEPA: context encoder, predictor with positional tokens, EMA target encoder](https://arxiv.org/html/2301.08243v3/ijepa.png)
+![I-JEPA: context encoder, predictor with positional tokens, EMA target encoder](../_attachments/Papers/ijepa/ijepa.png)
 
 **Paper Figure 3.** Context ViT on visible patches. Narrow predictor, coloured positional tokens = $z$. Target encoder is EMA of the context encoder. Loss is between predictor output and target-encoder tokens in the block. There is no pixel decoder in this figure. If a slide added one, it is MAE, not this paper.
 
@@ -105,7 +107,7 @@ EBMs: low energy on compatible pairs. JEA collapse fixes: contrastive negatives,
 
 ### Figure 4 — masking
 
-![I-JEPA context and target block masking examples](https://arxiv.org/html/2301.08243v3/mask-samples-4.png)
+![I-JEPA context and target block masking examples](../_attachments/Papers/ijepa/mask-samples-4.png)
 
 **Paper Figure 4.** Four target blocks, scale $(0.15,0.2)$, aspect $(0.75,1.5)$. Context scale $(0.85,1.0)$ minus those blocks. Targets look like object parts. Context is still most of the image, just with holes.
 
@@ -136,7 +138,7 @@ View-aug methods still sit higher at similar size (DINO ViT-B/8 80.1, iBOT ViT-L
 
 This is the section that justifies dropping SimCLR. Counting (CLEVR) and depth: view-invariance methods throw away localisation that those tasks need. I-JEPA keeps it because the predictor is still spatially addressed. Quote the PDF’s tables here rather than a tweet. The qualitative claim in the Meta blog: a decoder fitted on predictor outputs sketches a dog head / bird leg in the right pose — semantics without discarding position.
 
-![I-JEPA predictor visualizations decoded back to pixels](https://arxiv.org/html/2301.08243v3/visualization_predictor_2.png)
+![I-JEPA predictor visualizations decoded back to pixels](../_attachments/Papers/ijepa/visualization_predictor_2.png)
 
 **Paper predictor visualisation.** Context outside the box → predictor representation inside the box → a separate generative probe paints a sketch. The sketch is not the training loss. It is a probe that the latent meant “the rest of the animal, correct pose.”
 

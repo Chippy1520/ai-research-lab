@@ -40,6 +40,7 @@ related_curriculum: []
 - **Video:** [Skild — Introducing S1](https://www.youtube.com/watch?v=hr39FlEiCcQ)
 - **Company:** [skild.ai](https://www.skild.ai/)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#skild-ai`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=skild-ai)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#skild-ai`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

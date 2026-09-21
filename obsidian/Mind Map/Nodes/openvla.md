@@ -50,6 +50,7 @@ related_curriculum: []
 - **Video:** [Moo Jin Kim — OpenVLA (author talk)](https://www.youtube.com/watch?v=-0s0v3q7mBk)
 - **Paper:** [arXiv 2406.09246](https://arxiv.org/abs/2406.09246)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#openvla`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=openvla)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#openvla`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

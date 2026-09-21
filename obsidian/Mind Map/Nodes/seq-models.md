@@ -48,6 +48,7 @@ related_curriculum: ["Curriculum/Lessons/Day 34 - Sequence Models- RNNs, S4 & Ma
 - **Paper:** [Workspace Models — lightweight robotic memory via saliency distillation (arXiv 2609.20820)](https://arxiv.org/abs/2609.20820)
 - **Video:** [Karpathy — RNNs, seq2seq, attention (CS231n)](https://www.youtube.com/watch?v=yCC09vCHzF8)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#seq-models`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=seq-models)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#seq-models`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

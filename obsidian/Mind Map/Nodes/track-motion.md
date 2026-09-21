@@ -34,6 +34,7 @@ related_curriculum: []
 
 - **Video:** [CoTracker3 — tracking points through occlusion (Meta)](https://www.youtube.com/watch?v=9PKmkbyrRFw)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#track-motion`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=track-motion)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#track-motion`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

@@ -45,6 +45,7 @@ related_curriculum: []
 - **Paper:** [Towards High-DoF Dexterous Manipulation through VLA Post-Training (arXiv 2609.19666)](https://arxiv.org/abs/2609.19666)
 - **Video:** [Moo Jin Kim — OpenVLA (LeRobot; the open VLA recipe)](https://www.youtube.com/watch?v=-0s0v3q7mBk)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#vla-family`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=vla-family)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#vla-family`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

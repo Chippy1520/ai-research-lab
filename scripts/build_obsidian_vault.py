@@ -14,6 +14,7 @@ import textwrap
 from collections import defaultdict
 from pathlib import Path
 from typing import Any, Iterable
+from urllib.parse import parse_qs, urlparse
 
 from bs4 import BeautifulSoup, Tag
 from markdownify import markdownify as html_to_markdown
@@ -21,7 +22,6 @@ from markdownify import markdownify as html_to_markdown
 ROOT = Path(__file__).resolve().parents[1]
 VAULT = ROOT / "obsidian"
 GENERATOR = "build_obsidian_vault.py"
-LIVE_ROOT = "https://chippy1520.github.io/ai-research-lab"
 
 PAPER_SPECS = {
     "act": {"title": "ACT and ALOHA", "source": "act.md", "nodes": ["act", "action-chunking"]},
@@ -106,6 +106,36 @@ def bullet_links(items: Iterable[tuple[str, str]]) -> str:
 
 def markdown_link(title: str, url: str) -> str:
     return f"[{title}]({url})"
+
+
+def local_site_wikilink(href: str, label: str, paper_file_map: dict[str, str] | None = None) -> str | None:
+    """Resolve links to this project's published HTML into vault-native notes."""
+    parsed = urlparse(href)
+    if parsed.scheme in {"http", "https"}:
+        if parsed.netloc.lower() != "chippy1520.github.io" or not parsed.path.startswith("/ai-research-lab/"):
+            return None
+        site_path = parsed.path.removeprefix("/ai-research-lab/")
+    elif parsed.scheme or parsed.netloc or href.startswith("#"):
+        return None
+    else:
+        site_path = parsed.path.lstrip("./")
+
+    file_name = Path(site_path).name
+    paper_file_map = paper_file_map or {f"papers-{slug}.html": slug for slug in PAPER_SPECS}
+    if file_name in paper_file_map:
+        spec = PAPER_SPECS[paper_file_map[file_name]]
+        return wiki(f"Papers/{spec['title']}.md", label)
+    if file_name == "papers.html":
+        return wiki("Papers/Paper Guides.md", label)
+    if file_name == "mindmap.html":
+        fragment_values = parse_qs(parsed.fragment)
+        query_values = parse_qs(parsed.query)
+        node_id = (fragment_values.get("node") or query_values.get("node") or [None])[0]
+        target = f"Mind Map/Nodes/{node_id}.md" if node_id else "Mind Map/Embodied AI.md"
+        return wiki(target, label)
+    if file_name in {"", "index.html"}:
+        return wiki("Home.md", label)
+    return None
 
 
 def table_cell(value: Any) -> str:
@@ -377,6 +407,7 @@ settings:
 .callout[data-callout="outgoing"] { --callout-color: 62, 111, 142; --callout-icon: lucide-arrow-up-right; }
 .callout[data-callout="incoming"] { --callout-color: 132, 104, 144; --callout-icon: lucide-arrow-down-left; }
 .callout[data-callout="palette"] { --callout-color: 0, 166, 251; --callout-icon: lucide-palette; }
+.callout[data-callout="local"] { --callout-color: 56, 176, 0; --callout-icon: lucide-folder-check; }
 .callout[data-callout="sequence"],
 .callout[data-callout="prerequisite"] { --callout-color: 105, 117, 132; --callout-icon: lucide-route; }
 
@@ -577,14 +608,17 @@ def build_mindmap() -> dict[str, str]:
             lines.extend(["## Primary resources", ""])
             for resource in node["resources"]:
                 url = resource["url"]
-                if not url.startswith(("http://", "https://")):
-                    url = f"{LIVE_ROOT}/{url.lstrip('/')}"
-                lines.append(f"- **{resource['type'].title()}:** {markdown_link(resource['title'], url)}")
+                local_link = local_site_wikilink(url, resource["title"])
+                rendered_link = local_link or markdown_link(resource["title"], url)
+                lines.append(f"- **{resource['type'].title()}:** {rendered_link}")
             lines.append("")
-        live_graph_url = f"{LIVE_ROOT}/mindmap.html#node={node['id']}"
         lines.extend(callout(
-            "source", "Source record",
-            [f"- Canonical: `intelligence/mindmap.json#{node['id']}`", f"- {markdown_link('Open the public graph', live_graph_url)}"],
+            "source", "Local source record",
+            [
+                f"- Canonical data: `intelligence/mindmap.json#{node['id']}`",
+                f"- Vault map: {wiki('Mind Map/Embodied AI.md', 'Embodied AI Knowledge Graph')}",
+                "- This note is the complete local concept record; no published mirror is required.",
+            ],
         ))
         write(paths[node["id"]], "\n".join(lines))
 
@@ -615,7 +649,7 @@ def build_mindmap() -> dict[str, str]:
     return paths
 
 
-def prepare_article(article: Tag, paper_file_map: dict[str, str]) -> str:
+def prepare_article(article: Tag, paper_file_map: dict[str, str], slug: str) -> str:
     clone = BeautifulSoup(str(article), "html.parser")
     blocks: dict[str, str] = {}
 
@@ -736,14 +770,26 @@ def prepare_article(article: Tag, paper_file_map: dict[str, str]) -> str:
         watch_url = src.replace("youtube.com/embed/", "youtube.com/watch?v=")
         stash(iframe, f"> [!video] {title}\n> [Watch video]({watch_url})")
 
+    for image in clone.find_all("img"):
+        src = image.get("src", "")
+        if src.startswith(("http://", "https://")):
+            filename = Path(urlparse(src).path).name
+            asset_relative = Path("_attachments") / "Papers" / slug / filename
+            asset_path = VAULT / asset_relative
+            if not filename or not asset_path.is_file():
+                raise FileNotFoundError(f"Missing localized paper image for {src}: {asset_path}")
+            image["src"] = f"../{asset_relative.as_posix()}"
+
     for anchor in clone.find_all("a"):
         href = anchor.get("href", "")
-        file_name = href.split("#", 1)[0]
-        if file_name in paper_file_map:
-            label = anchor.get_text(" ", strip=True) or PAPER_SPECS[paper_file_map[file_name]]["title"]
-            anchor.replace_with(f"[[Papers/{PAPER_SPECS[paper_file_map[file_name]]['title']}|{label}]]")
+        label = anchor.get_text(" ", strip=True) or href
+        local_link = local_site_wikilink(href, label, paper_file_map)
+        if local_link:
+            anchor.replace_with(local_link)
         elif href and not href.startswith(("http://", "https://", "#")):
-            anchor["href"] = f"{LIVE_ROOT}/{href.lstrip('/')}"
+            # Unknown first-party navigation is not allowed to become a web
+            # dependency. Its surrounding article content is already local.
+            anchor.replace_with(label)
     markdown = html_to_markdown(str(clone), heading_style="ATX", bullets="-", strip=["article", "div", "span"])
     for marker, block in blocks.items():
         markdown = markdown.replace(marker, f"\n\n{block}\n\n")
@@ -791,8 +837,9 @@ def build_papers(node_paths: dict[str, str]) -> dict[str, str]:
         curriculum = [(path, label) for path, label, ids in lesson_nodes if ids.intersection(related_nodes)][:8]
         lines = [
             frontmatter(
-                type="paper-guide", aliases=aliases, paper_slug=slug, source=f"site/papers-{slug}.html",
-                live_url=f"{LIVE_ROOT}/papers-{slug}.html", tags=["paper", "reading-guide"],
+                type="paper-guide", aliases=aliases, paper_slug=slug,
+                source=[f"site/papers-{slug}.html", f"papers/{spec['source']}"],
+                content_mode="local", tags=["paper", "reading-guide"],
                 related_nodes=related_nodes, related_curriculum=[path for path, _ in curriculum],
                 cssclasses=["research-note", "paper-note"],
             ),
@@ -812,13 +859,15 @@ def build_papers(node_paths: dict[str, str]) -> dict[str, str]:
             lines.extend([*link_callout("Continue in the curriculum", curriculum, "study"), ""])
         lines.extend([
             *callout(
-                "source", "Canonical and public versions",
+                "source", "Local reconstruction and provenance",
                 [
-                    f"- Repository guide: `site/papers-{slug}.html`",
-                    f"- {markdown_link('Open the published HTML guide', f'{LIVE_ROOT}/papers-{slug}.html')}",
+                    "- This note contains the complete recreated reading guide; no published mirror is required.",
+                    f"- Canonical editorial source: `site/papers-{slug}.html`",
                     f"- Companion source: `papers/{spec['source']}`",
+                    f"- Local figures: `_attachments/Papers/{slug}/`",
+                    "- Primary papers, repositories, and videos remain linked as evidence.",
                 ],
-            ), "", "---", "", prepare_article(article, paper_file_map),
+            ), "", "---", "", prepare_article(article, paper_file_map, slug),
         ])
         relative = f"Papers/{title}.md"
         output_paths[slug] = relative
@@ -843,7 +892,13 @@ def build_papers(node_paths: dict[str, str]) -> dict[str, str]:
         "2. Walk through the paper in its original order.",
         "3. Name the model mechanism precisely.",
         "4. Tie results to their evaluation protocol and separate evidence from hypotheses.", "",
-        markdown_link("Open the public paper hub", f"{LIVE_ROOT}/papers.html"),
+        *callout(
+            "local", "Local-first library",
+            [
+                "Every guide is fully recreated inside this vault, including its figures and cross-links.",
+                "External links are retained only for primary evidence, repositories, and videos.",
+            ],
+        ),
     ]
     write("Papers/Paper Guides.md", "\n".join(index))
     return output_paths

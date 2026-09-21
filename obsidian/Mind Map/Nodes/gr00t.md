@@ -49,6 +49,7 @@ related_curriculum: []
 - **Docs:** [GR00T N1.5](https://research.nvidia.com/labs/gear/gr00t-n1_5/)
 - **Code:** [NVIDIA/Isaac-GR00T](https://github.com/NVIDIA/Isaac-GR00T)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#gr00t`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=gr00t)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#gr00t`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

@@ -48,6 +48,7 @@ related_curriculum: ["Curriculum/Lessons/Day 07 - Information Theory & Represent
 
 - **Video:** [Meta AI — DINOv2 (self-supervised visual features)](https://www.youtube.com/watch?v=csEgtSh7jV4)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#representation`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=representation)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#representation`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

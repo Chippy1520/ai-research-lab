@@ -5,6 +5,7 @@ import hashlib
 import json
 import re
 from pathlib import Path
+from urllib.parse import urlparse
 
 import yaml
 from bs4 import BeautifulSoup
@@ -108,12 +109,38 @@ def test_full_paper_guides_are_present_and_connected():
         source = BeautifulSoup((ROOT / "site" / f"papers-{slug}.html").read_text(encoding="utf-8"), "html.parser")
         assert "type: \"paper-guide\"" in note
         assert f"site/papers-{slug}.html" in note
+        assert 'content_mode: "local"' in note
+        assert "live_url:" not in note
+        assert "chippy1520.github.io/ai-research-lab" not in note
         assert "Connected concepts" in note
         assert "## The paper" in note or "paper, in order" in note.lower()
         assert len(note) > 3_000
         assert "OBSMD" not in note
         assert "**1**step" not in note
         assert note.count("[!video]") == len(source.find_all("iframe"))
+        for image in source.find_all("img"):
+            src = image.get("src", "")
+            if not src.startswith(("http://", "https://")):
+                continue
+            filename = Path(urlparse(src).path).name
+            asset = VAULT / "_attachments" / "Papers" / slug / filename
+            assert asset.is_file(), asset
+            assert f"../_attachments/Papers/{slug}/{filename}" in note
+        assert not re.search(r"!\[[^\]]*\]\(https?://", note)
+
+
+def test_generated_vault_has_no_first_party_pages_dependency():
+    forbidden = "https://chippy1520.github.io/ai-research-lab"
+    for path in VAULT.rglob("*.md"):
+        text = path.read_text(encoding="utf-8")
+        if 'generated_by: "build_obsidian_vault.py"' not in text[:700]:
+            continue
+        assert forbidden not in text, path
+    paper_index = (VAULT / "Papers/Paper Guides.md").read_text(encoding="utf-8")
+    concept = (VAULT / "Mind Map/Nodes/act.md").read_text(encoding="utf-8")
+    assert "[!local] Local-first library" in paper_index
+    assert "[[Papers/ACT and ALOHA|Our ACT guide]]" in concept
+    assert "[[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]" in concept
 
 
 def test_contacts_preserve_public_privacy_boundary():

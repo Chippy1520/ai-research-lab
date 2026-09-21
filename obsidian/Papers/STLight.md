@@ -3,8 +3,8 @@ generated_by: "build_obsidian_vault.py"
 type: "paper-guide"
 aliases: ["STLight", "STLight: future frames without the RNN tax"]
 paper_slug: "stlight"
-source: "site/papers-stlight.html"
-live_url: "https://chippy1520.github.io/ai-research-lab/papers-stlight.html"
+source: ["site/papers-stlight.html", "papers/stlight.md"]
+content_mode: "local"
 tags: ["paper", "reading-guide"]
 related_nodes: ["stlight", "transformers"]
 related_curriculum: ["Curriculum/Lessons/Day 23 - Vision Transformers & Patch Geometry.md"]
@@ -27,10 +27,12 @@ cssclasses: ["research-note", "paper-note"]
 > [!study] Continue in the curriculum
 > - [[Curriculum/Lessons/Day 23 - Vision Transformers & Patch Geometry|Day 23 - Vision Transformers & Patch Geometry]]
 
-> [!source] Canonical and public versions
-> - Repository guide: `site/papers-stlight.html`
-> - [Open the published HTML guide](https://chippy1520.github.io/ai-research-lab/papers-stlight.html)
+> [!source] Local reconstruction and provenance
+> - This note contains the complete recreated reading guide; no published mirror is required.
+> - Canonical editorial source: `site/papers-stlight.html`
 > - Companion source: `papers/stlight.md`
+> - Local figures: `_attachments/Papers/stlight/`
+> - Primary papers, repositories, and videos remain linked as evidence.
 
 ---
 
@@ -70,13 +72,13 @@ STL = self-supervised: past frames → future frames, discover space–time stru
 
 ### Figure 1
 
-![STLight architecture versus Spatial-Temporal-Spatial](https://arxiv.org/html/2411.10198v1/architectures4.png)
+![STLight architecture versus Spatial-Temporal-Spatial](../_attachments/Papers/stlight/architectures4.png)
 
 **Paper architecture figure.** Top of the family: STS (CNN → RNN → decode). STLight: fold time into channels, one conv to space–time patches, STLMixer (local / dilated / temporal $d$), PixelShuffle out. This drawing is the paper.
 
 MSE vs parameters on Moving MNIST, same training recipe. RNN methods live up-right; SimVP/TAU sit mid; STLight traces a lower front from 5M to 54M. This figure is the paper’s poster. If a later table disagrees with your memory of this plot, trust the plot’s axes first.
 
-![STLight qualitative future-frame predictions](https://arxiv.org/html/2411.10198v1/qualitative.png)
+![STLight qualitative future-frame predictions](../_attachments/Papers/stlight/qualitative.png)
 
 **Paper qualitative.** Colliding digits, wall bounce, TaxiBJ flow. SSIM will not tell you if the bounce is physical — this gif-as-figure will.
 

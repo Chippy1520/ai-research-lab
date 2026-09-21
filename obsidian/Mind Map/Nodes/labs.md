@@ -57,6 +57,7 @@ related_curriculum: []
 
 - **Video:** [ETH Zurich — Frontiers of Embodied AI (labs + research talks)](https://www.youtube.com/playlist?list=PLfjJj_IgRo7DWoamlTwlK7-4bZhNNNFgM)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#labs`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=labs)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#labs`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

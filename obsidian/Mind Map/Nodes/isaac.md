@@ -44,6 +44,7 @@ related_curriculum: []
 - **Video:** [NVIDIA — Isaac Lab Office Hours](https://www.youtube.com/playlist?list=PL3jK4xNnlCVcnMqm4Lnqa5Bok4_iP5NsK)
 - **Docs:** [Isaac Lab](https://developer.nvidia.com/isaac/lab)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#isaac`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=isaac)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#isaac`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

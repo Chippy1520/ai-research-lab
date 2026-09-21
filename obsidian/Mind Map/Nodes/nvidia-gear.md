@@ -39,6 +39,7 @@ related_curriculum: []
 - **Video:** [NVIDIA — Isaac GR00T-Mimic / GEAR](https://www.youtube.com/watch?v=r24CiGLYFQo)
 - **Docs:** [GEAR GR00T N1.5](https://research.nvidia.com/labs/gear/gr00t-n1_5/)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#nvidia-gear`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=nvidia-gear)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#nvidia-gear`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

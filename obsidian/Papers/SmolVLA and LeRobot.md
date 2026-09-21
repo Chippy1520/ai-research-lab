@@ -3,8 +3,8 @@ generated_by: "build_obsidian_vault.py"
 type: "paper-guide"
 aliases: ["SmolVLA and LeRobot", "SmolVLA: a 450M-parameter VLA you can actually train"]
 paper_slug: "smolvla"
-source: "site/papers-smolvla.html"
-live_url: "https://chippy1520.github.io/ai-research-lab/papers-smolvla.html"
+source: ["site/papers-smolvla.html", "papers/smolvla-lerobot.md"]
+content_mode: "local"
 tags: ["paper", "reading-guide"]
 related_nodes: ["smolvla", "lerobot", "flow-matching", "async-infer"]
 related_curriculum: ["Curriculum/Lessons/Day 31 - Flow Matching & Optimal-Transport Paths.md"]
@@ -29,10 +29,12 @@ cssclasses: ["research-note", "paper-note"]
 > [!study] Continue in the curriculum
 > - [[Curriculum/Lessons/Day 31 - Flow Matching & Optimal-Transport Paths|Day 31 - Flow Matching & Optimal-Transport Paths]]
 
-> [!source] Canonical and public versions
-> - Repository guide: `site/papers-smolvla.html`
-> - [Open the published HTML guide](https://chippy1520.github.io/ai-research-lab/papers-smolvla.html)
+> [!source] Local reconstruction and provenance
+> - This note contains the complete recreated reading guide; no published mirror is required.
+> - Canonical editorial source: `site/papers-smolvla.html`
 > - Companion source: `papers/smolvla-lerobot.md`
+> - Local figures: `_attachments/Papers/smolvla/`
+> - Primary papers, repositories, and videos remain linked as evidence.
 
 ---
 
@@ -83,7 +85,7 @@ Read the abstract as three constraints, not a slogan: (1) size, (2) community da
 
 ### Figure 1 (do this before §1)
 
-![SmolVLA architecture: VLM with scissors, three inputs, action expert, action chunk](https://arxiv.org/html/2506.01844v1/SmolVLA.png)
+![SmolVLA architecture: VLM with scissors, three inputs, action expert, action chunk](../_attachments/Papers/smolvla/SmolVLA.png)
 
 **Paper Figure 1.** Scissors = dropped late VLM layers. Gold blocks = cross-attention into the VLM; pale = causal self-attention inside the chunk. Flow matching sits in the expert, not in the VLM. Community data and cheap arms are in the caption on purpose — they are part of the claim, not decoration.
 
@@ -142,11 +144,11 @@ Robot pretraining data is still orders of magnitude smaller than language. Datas
 
 ### §3.3 Asynchronous inference
 
-![Asynchronous inference: RobotClient and PolicyServer](https://arxiv.org/html/2506.01844v1/async_inference.png)
+![Asynchronous inference: RobotClient and PolicyServer](../_attachments/Papers/smolvla/async_inference.png)
 
 **Paper Figure 2.** Client pops actions at the control rate. Server infers on another machine/process. The arm does not wait for the forward pass.
 
-![Action queue size versus threshold g, with and without joint-space filter](https://arxiv.org/html/2506.01844v1/queues.png)
+![Action queue size versus threshold g, with and without joint-space filter](../_attachments/Papers/smolvla/queues.png)
 
 **Paper Figure 3.** Left: no filter, queue never empties because near-duplicate observations keep filling it. Right: joint-space filter, except the red arrow — empty queue forces an infer even on a duplicate, or the robot stalls.
 
@@ -168,7 +170,7 @@ Queue at $g=0.7$: grey already executed, green still to run, gold = fire a new i
 
 ### §4 Experiments — protocol first
 
-![SmolVLA real-world SO-100 tasks](https://arxiv.org/html/2506.01844v1/tasks.png)
+![SmolVLA real-world SO-100 tasks](../_attachments/Papers/smolvla/tasks.png)
 
 **Paper task figure.** Start and end frames for pick-place, stack, sort. Partial credit is defined on these substeps (0.5+0.5 or 0.25×4), not a binary sim success bit.
 

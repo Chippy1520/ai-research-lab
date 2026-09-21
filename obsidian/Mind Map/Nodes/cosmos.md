@@ -41,6 +41,7 @@ related_curriculum: []
 - **Video:** [NVIDIA — Meet Cosmos 3](https://www.youtube.com/watch?v=-HfCFTvihjo)
 - **Docs:** [NVIDIA Cosmos](https://www.nvidia.com/en-us/ai/cosmos/)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#cosmos`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=cosmos)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#cosmos`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

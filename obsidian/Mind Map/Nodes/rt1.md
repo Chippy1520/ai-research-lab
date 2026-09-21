@@ -37,6 +37,7 @@ related_curriculum: []
 - **Video:** [Yevgen Chebotar — RT-1 then RT-2 (author talk)](https://www.youtube.com/watch?v=o5ONDdbReAA)
 - **Paper:** [RT-1](https://arxiv.org/abs/2212.06817)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#rt1`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=rt1)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#rt1`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

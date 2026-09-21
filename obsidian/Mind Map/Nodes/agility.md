@@ -40,6 +40,7 @@ related_curriculum: []
 - **Video:** [Agility — The Next Generation of Digit](https://www.youtube.com/watch?v=rnFZAB9ogEE)
 - **Company:** [agilityrobotics.com](https://www.agilityrobotics.com/)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#agility`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=agility)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#agility`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

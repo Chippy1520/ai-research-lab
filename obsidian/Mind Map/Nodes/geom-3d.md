@@ -43,6 +43,7 @@ related_curriculum: []
 - **Paper:** [FAMOS — feed-forward 3D articulation from sparse observations (arXiv 2609.20817)](https://arxiv.org/abs/2609.20817)
 - **Video:** [DUSt3R — dense unconstrained stereo 3D from image pairs (Leroy)](https://www.youtube.com/watch?v=X1I7Z0V1JJc)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#geom-3d`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=geom-3d)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#geom-3d`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

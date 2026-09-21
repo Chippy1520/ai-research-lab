@@ -123,6 +123,7 @@ settings:
 .callout[data-callout="outgoing"] { --callout-color: 62, 111, 142; --callout-icon: lucide-arrow-up-right; }
 .callout[data-callout="incoming"] { --callout-color: 132, 104, 144; --callout-icon: lucide-arrow-down-left; }
 .callout[data-callout="palette"] { --callout-color: 0, 166, 251; --callout-icon: lucide-palette; }
+.callout[data-callout="local"] { --callout-color: 56, 176, 0; --callout-icon: lucide-folder-check; }
 .callout[data-callout="sequence"],
 .callout[data-callout="prerequisite"] { --callout-color: 105, 117, 132; --callout-icon: lucide-route; }
 

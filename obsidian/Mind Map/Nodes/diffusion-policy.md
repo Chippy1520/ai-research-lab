@@ -50,6 +50,7 @@ related_curriculum: ["Curriculum/Lessons/Day 51 - Diffusion Policy for Visuomoto
 - **Video:** [Cheng Chi — Diffusion Policy (LeRobot)](https://www.youtube.com/watch?v=M03sZFfW-qU)
 - **Paper:** [arXiv 2303.04137](https://arxiv.org/abs/2303.04137)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#diffusion-policy`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=diffusion-policy)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#diffusion-policy`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

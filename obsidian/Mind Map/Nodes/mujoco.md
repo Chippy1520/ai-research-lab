@@ -33,6 +33,7 @@ related_curriculum: []
 > - **← includes —** [[Mind Map/Nodes/systems|Systems]]
 > - **← sim in —** [[Mind Map/Nodes/act|ACT]]
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#mujoco`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=mujoco)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#mujoco`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

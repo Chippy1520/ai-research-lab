@@ -48,6 +48,7 @@ related_curriculum: ["Curriculum/Lessons/Day 16 - CNN Inductive Biases & Modern 
 - **Video:** [CS231n 2017 L5 — Convolutional Neural Networks](https://www.youtube.com/watch?v=bNb2fEVKeEo)
 - **Paper:** [ResNet](https://arxiv.org/abs/1512.03385)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#cnn`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=cnn)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#cnn`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

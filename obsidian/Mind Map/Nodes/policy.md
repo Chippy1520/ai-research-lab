@@ -72,6 +72,7 @@ related_curriculum: ["Curriculum/Lessons/Day 03 - MDPs, Returns & Occupancy Meas
 
 - **Video:** [LeRobot Tech Talks — ACT, Diffusion Policy, OpenVLA, VQ-BeT](https://www.youtube.com/playlist?list=PLo2EIpI_JMQtIjHHOOmdSCpvdn55--7gS)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#policy`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=policy)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#policy`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

@@ -42,6 +42,7 @@ related_curriculum: []
 
 - **Video:** [Shree Nayar — Image formation / pinhole](https://www.youtube.com/watch?v=_QjxbQKY4ds)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#camera-model`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=camera-model)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#camera-model`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

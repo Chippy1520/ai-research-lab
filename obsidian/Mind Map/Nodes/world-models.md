@@ -67,6 +67,7 @@ related_curriculum: ["Curriculum/Lessons/Day 42 - World Models & Latent Imaginat
 - **Paper:** [GLAM — latent world model over global map memory (arXiv 2609.14561)](https://arxiv.org/abs/2609.14561)
 - **Video:** [David Ha / World Models lineage explained](https://www.youtube.com/watch?v=b1roEd6liWI)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#world-models`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=world-models)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#world-models`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

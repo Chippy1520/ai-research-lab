@@ -42,6 +42,7 @@ related_curriculum: ["Curriculum/Lessons/Day 15 - Q-Learning, Function Approxima
 
 - **Video:** [David Silver L5 — Model-Free Control (Q-learning / SARSA)](https://www.youtube.com/watch?v=0g4j2k_Ggc4)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#q-learning`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=q-learning)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#q-learning`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

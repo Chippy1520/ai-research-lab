@@ -35,6 +35,7 @@ related_curriculum: []
 
 - **Video:** [Hugging Face — LeRobot tutorials](https://www.youtube.com/playlist?list=PLo2EIpI_JMQu5zrDHe4NchRyumF2ynaUN)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#stacks`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=stacks)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#stacks`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

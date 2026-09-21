@@ -59,6 +59,7 @@ related_curriculum: ["Curriculum/Lessons/Day 01 - Optimization Dynamics & AdamW.
 
 - **Video:** [Berkeley CS285 2023 — Deep Reinforcement Learning (Levine)](https://www.youtube.com/playlist?list=PL_iWQOsE6TfVYGEGiAOMaOzzv41Jfm_Ps)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#learning`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=learning)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#learning`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

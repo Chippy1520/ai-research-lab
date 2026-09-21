@@ -39,6 +39,7 @@ related_curriculum: []
 
 - **Video:** [David Silver L7 — Policy Gradient Methods](https://www.youtube.com/watch?v=KHZVXao4qXs)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#policy-gradient`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=policy-gradient)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#policy-gradient`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

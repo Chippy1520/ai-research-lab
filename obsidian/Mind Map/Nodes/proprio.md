@@ -37,6 +37,7 @@ related_curriculum: []
 > - **← filters —** [[Mind Map/Nodes/state-est|State estimation]]
 > - **← includes —** [[Mind Map/Nodes/foundations|Foundations]]
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#proprio`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=proprio)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#proprio`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

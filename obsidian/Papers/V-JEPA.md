@@ -3,8 +3,8 @@ generated_by: "build_obsidian_vault.py"
 type: "paper-guide"
 aliases: ["V-JEPA", "V-JEPA: predict the next motion in feature space, from video only"]
 paper_slug: "vjepa"
-source: "site/papers-vjepa.html"
-live_url: "https://chippy1520.github.io/ai-research-lab/papers-vjepa.html"
+source: ["site/papers-vjepa.html", "papers/vjepa.md"]
+content_mode: "local"
 tags: ["paper", "reading-guide"]
 related_nodes: ["representation", "world-models"]
 related_curriculum: ["Curriculum/Lessons/Day 07 - Information Theory & Representation.md", "Curriculum/Lessons/Day 26 - Self-Supervised Visual Representation Learning.md", "Curriculum/Lessons/Day 42 - World Models & Latent Imagination.md", "Curriculum/Lessons/Day 46 - Causal Representation Learning & Invariance.md"]
@@ -30,10 +30,12 @@ cssclasses: ["research-note", "paper-note"]
 > - [[Curriculum/Lessons/Day 42 - World Models & Latent Imagination|Day 42 - World Models & Latent Imagination]]
 > - [[Curriculum/Lessons/Day 46 - Causal Representation Learning & Invariance|Day 46 - Causal Representation Learning & Invariance]]
 
-> [!source] Canonical and public versions
-> - Repository guide: `site/papers-vjepa.html`
-> - [Open the published HTML guide](https://chippy1520.github.io/ai-research-lab/papers-vjepa.html)
+> [!source] Local reconstruction and provenance
+> - This note contains the complete recreated reading guide; no published mirror is required.
+> - Canonical editorial source: `site/papers-vjepa.html`
 > - Companion source: `papers/vjepa.md`
+> - Local figures: `_attachments/Papers/vjepa/`
+> - Primary papers, repositories, and videos remain linked as evidence.
 
 ---
 
@@ -87,7 +89,7 @@ Slow features / SFA: make nearby frames identical. Predictive features: a predic
 
 ### §3 Methodology: Video-JEPA
 
-![V-JEPA joint-embedding predictive architecture](https://arxiv.org/html/2404.08471v1/decoder-color.png)
+![V-JEPA joint-embedding predictive architecture](../_attachments/Papers/vjepa/decoder-color.png)
 
 **Paper Figure 2 flavour.** Predict $E(y)$ from $E(x)$ given $z$. $z$ carries the spatio-temporal location of the missing tube. If this drawing has a pixel decoder, you are in the VideoMAE column of their comparison, not here.
 
@@ -103,7 +105,7 @@ EMA teacher $\bar{E}$, stop-gradient, L1 (I-JEPA used L2; they found L1 more sta
 
 $y$ is a masked spatio-temporal block (or several). $x$ is the complement. $z=\Delta\_y$ is positions. Multi-block, as in I-JEPA, extended in time. Figure samples in the HTML: `assets/samples-v1.png`.
 
-![V-JEPA masking samples on video](https://arxiv.org/html/2404.08471v1/assets/samples-v1.png)
+![V-JEPA masking samples on video](../_attachments/Papers/vjepa/samples-v1.png)
 
 **Masking samples.** Targets are tubes, not salt-and-pepper. Local texture should not be enough; you need the motion.
 

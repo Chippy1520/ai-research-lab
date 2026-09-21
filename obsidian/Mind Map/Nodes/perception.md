@@ -62,6 +62,7 @@ related_curriculum: ["Curriculum/Lessons/Day 02 - Image Formation, Sampling & Co
 - **Paper:** [ActiveScale — Scaling Active Perception (arXiv 2609.18514)](https://arxiv.org/abs/2609.18514)
 - **Video:** [Stanford CS231n 2025 — Deep Learning for Computer Vision](https://www.youtube.com/playlist?list=PLoROMvodv4rOmsNzYBMe0gJY2XS8AQg16)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#perception`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=perception)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#perception`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

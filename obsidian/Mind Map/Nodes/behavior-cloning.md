@@ -47,6 +47,7 @@ related_curriculum: []
 - **Video:** [LeRobot — ALOHA and ACT (imitation / behavior cloning on a real arm)](https://www.youtube.com/watch?v=ft73x0LfGpM)
 - **Paper:** [DAgger](https://arxiv.org/abs/1011.0686)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#behavior-cloning`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=behavior-cloning)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#behavior-cloning`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

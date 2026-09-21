@@ -37,6 +37,7 @@ related_curriculum: []
 
 - **Video:** [NVIDIA — Isaac GR00T-Mimic / foundation robot models](https://www.youtube.com/watch?v=r24CiGLYFQo)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#robot-fm`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=robot-fm)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#robot-fm`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

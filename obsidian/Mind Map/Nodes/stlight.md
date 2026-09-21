@@ -43,9 +43,10 @@ related_curriculum: []
 
 ## Primary resources
 
-- **Guide:** [Our STLight guide](https://chippy1520.github.io/ai-research-lab/papers-stlight.html)
+- **Guide:** [[Papers/STLight|Our STLight guide]]
 - **Paper:** [arXiv 2411.10198](https://arxiv.org/abs/2411.10198)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#stlight`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=stlight)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#stlight`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

@@ -39,6 +39,7 @@ related_curriculum: []
 
 - **Video:** [Mobile ALOHA — low-cost bimanual teleop hardware + data](https://www.youtube.com/watch?v=HaaZ8ss-HP4)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#data-hw`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=data-hw)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#data-hw`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

@@ -45,6 +45,7 @@ related_curriculum: []
 - **Paper:** [PhysBrain 1.5 (arXiv 2609.14973)](https://arxiv.org/abs/2609.14973)
 - **Docs:** [Project page](https://deepcybo-physai.github.io/PhysBrain-1.5/)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#physbrain`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=physbrain)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#physbrain`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

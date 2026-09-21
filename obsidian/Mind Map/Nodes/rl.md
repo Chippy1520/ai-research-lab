@@ -53,6 +53,7 @@ related_curriculum: []
 - **Video:** [David Silver — Reinforcement Learning course](https://www.youtube.com/playlist?list=PLEAYkSg4uSQ2S3rHUCqz6W1ZKybVICeSP)
 - **Docs:** [Isaac Lab](https://developer.nvidia.com/isaac/lab)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#rl`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=rl)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#rl`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

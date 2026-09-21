@@ -60,6 +60,7 @@ related_curriculum: ["Curriculum/Lessons/Day 01 - Optimization Dynamics & AdamW.
 
 - **Video:** [Hugging Face — LeRobot tutorials (assemble → record → evaluate)](https://www.youtube.com/playlist?list=PLo2EIpI_JMQu5zrDHe4NchRyumF2ynaUN)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#systems`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=systems)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#systems`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

@@ -39,6 +39,7 @@ related_curriculum: []
 
 - **Video:** [3Blue1Brown — Gradient descent, how nets learn](https://www.youtube.com/watch?v=IHZwWFHWa-w)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#backprop`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=backprop)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#backprop`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

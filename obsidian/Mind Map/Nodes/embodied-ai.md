@@ -47,9 +47,10 @@ related_curriculum: ["Curriculum/Lessons/Day 72 - Frontier Embodied AI Review â€
 ## Primary resources
 
 - **Video:** [ETH Zurich â€” Frontiers of Embodied AI (Malik, Koltun, LeCun, Song)](https://www.youtube.com/playlist?list=PLfjJj_IgRo7DWoamlTwlK7-4bZhNNNFgM)
-- **Guide:** [Paper guides hub](https://chippy1520.github.io/ai-research-lab/papers.html)
-- **Intel:** [Robotics intelligence desk](https://chippy1520.github.io/ai-research-lab/index.html)
+- **Guide:** [[Papers/Paper Guides|Paper guides hub]]
+- **Intel:** [[Home|Robotics intelligence desk]]
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#embodied-ai`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=embodied-ai)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#embodied-ai`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

@@ -47,6 +47,7 @@ related_curriculum: ["Curriculum/Lessons/Day 41 - Generative Vision- Latent Diff
 
 - **Video:** [Stanford CS231n 2017 L13 — Generative Models (Goodfellow)](https://www.youtube.com/watch?v=5WoItGTWV54)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#generative`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=generative)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#generative`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.

@@ -3,8 +3,8 @@ generated_by: "build_obsidian_vault.py"
 type: "paper-guide"
 aliases: ["V-JEPA 2", "V-JEPA 2: watch a million hours, then plan a grasp in latent space"]
 paper_slug: "vjepa2"
-source: "site/papers-vjepa2.html"
-live_url: "https://chippy1520.github.io/ai-research-lab/papers-vjepa2.html"
+source: ["site/papers-vjepa2.html", "papers/vjepa2.md"]
+content_mode: "local"
 tags: ["paper", "reading-guide"]
 related_nodes: ["representation", "world-models"]
 related_curriculum: ["Curriculum/Lessons/Day 07 - Information Theory & Representation.md", "Curriculum/Lessons/Day 26 - Self-Supervised Visual Representation Learning.md", "Curriculum/Lessons/Day 42 - World Models & Latent Imagination.md", "Curriculum/Lessons/Day 46 - Causal Representation Learning & Invariance.md"]
@@ -30,10 +30,12 @@ cssclasses: ["research-note", "paper-note"]
 > - [[Curriculum/Lessons/Day 42 - World Models & Latent Imagination|Day 42 - World Models & Latent Imagination]]
 > - [[Curriculum/Lessons/Day 46 - Causal Representation Learning & Invariance|Day 46 - Causal Representation Learning & Invariance]]
 
-> [!source] Canonical and public versions
-> - Repository guide: `site/papers-vjepa2.html`
-> - [Open the published HTML guide](https://chippy1520.github.io/ai-research-lab/papers-vjepa2.html)
+> [!source] Local reconstruction and provenance
+> - This note contains the complete recreated reading guide; no published mirror is required.
+> - Canonical editorial source: `site/papers-vjepa2.html`
 > - Companion source: `papers/vjepa2.md`
+> - Local figures: `_attachments/Papers/vjepa2/`
+> - Primary papers, repositories, and videos remain linked as evidence.
 
 ---
 
@@ -73,7 +75,7 @@ Learn to understand and act largely by observation. Combine internet-scale video
 
 ### Figure 1 — overview
 
-![V-JEPA 2 overview: pretrain, probes, LLM align, action-conditioned planning](https://arxiv.org/html/2506.09985v1/flowchart.png)
+![V-JEPA 2 overview: pretrain, probes, LLM align, action-conditioned planning](../_attachments/Papers/vjepa2/flowchart.png)
 
 **Paper Figure 1 / flowchart.** Left: mask-denoise video → encoder. Branches: classification probes, LLM alignment for VideoQA, freeze encoder and train AC predictor for robot MPC. If your mental model has one loss that does all of this, redraw. It is staged.
 
@@ -91,7 +93,7 @@ Roadmap they announce: §2 pretrain, §3 AC model, §4 robot, §5 probes, §6 an
 
 Mask-denoising in feature space, as V-JEPA. Patchify clip → drop tokens → encoder on the rest → concat learnable mask tokens with positions → predictor → L1 to teacher targets. Teacher is EMA. Scaling ingredients beyond Bardes et al. 2024 live in §2.2–2.4 (data, resolution, duration, model size). Copy those tables from the PDF when reproducing; do not invent a recipe from this sentence.
 
-![V-JEPA 2 pretraining: mask denoising in representation space](https://arxiv.org/html/2506.09985v1/vjepa2-abstract-new.png)
+![V-JEPA 2 pretraining: mask denoising in representation space](../_attachments/Papers/vjepa2/vjepa2-abstract-new.png)
 
 **Pretrain cartoon.** Same JEPA as V-JEPA, internet scale. $z$ is still mask position, not yet an action.
 
@@ -105,7 +107,7 @@ Progressive scaling: model size up to 1B, longer clips, higher resolution. The p
 
 ### §3 V-JEPA 2-AC
 
-![V-JEPA 2-AC action-conditioned world model](https://arxiv.org/html/2506.09985v1/vjepa2-ac-abstract-new.png)
+![V-JEPA 2-AC action-conditioned world model](../_attachments/Papers/vjepa2/vjepa2-ac-abstract-new.png)
 
 **AC cartoon.** Frozen $E$ from stage 1. New predictor $P(s\_t, a\_t)\to s\_{t+1}$ in latent space. Actions are robot controls from Droid, not internet-video verbs.
 
@@ -119,7 +121,7 @@ Not imitation of Droid’s actions at test time. At test time you have a goal im
 
 ### §4 Planning — zero-shot robot control
 
-![V-JEPA 2-AC model-predictive control loop](https://arxiv.org/html/2506.09985v1/vjepa2-mpc.png)
+![V-JEPA 2-AC model-predictive control loop](../_attachments/Papers/vjepa2/vjepa2-mpc.png)
 
 **MPC loop.** RGB → $E$ → plan actions in $E$ → send to Franka → new RGB. Goal is an image, not a reward classifier.
 
@@ -147,7 +149,7 @@ Epic-Kitchens-100: **39.7 recall-at-5**, SOTA, 44% relative over previous best, 
 
 Align frozen (or lightly adapted) V-JEPA 2 encoder with an 8B LLM via visual instruction tuning (§7.1). Encoder was *not* trained with language. They treat that as a feature: conventional wisdom said you need a vision encoder trained on captions. Numbers at 8B class: PerceptionTest **84.0**, TempCompass **76.9**, MVP 44.5 paired acc, TemporalBench 36.7, TOMATO 40.3. §7.2 vs image encoders, §7.3 scale encoder size and resolution, §7.4 scale data. These numbers do not imply the Franka can answer questions.
 
-![V-JEPA 2 qualitative visualisations](https://arxiv.org/html/2506.09985v1/visualizations_2.png)
+![V-JEPA 2 qualitative visualisations](../_attachments/Papers/vjepa2/visualizations_2.png)
 
 **Qualitative visualisations.** Use them as “what the latent attends to,” not as proof of planning.
 

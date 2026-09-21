@@ -43,6 +43,7 @@ related_curriculum: ["Curriculum/Lessons/Day 26 - Self-Supervised Visual Represe
 
 - **Video:** [StatQuest — A gentle introduction to machine learning](https://www.youtube.com/watch?v=Gv9_4yMHFhI)
 
-> [!source] Source record
-> - Canonical: `intelligence/mindmap.json#supervised`
-> - [Open the public graph](https://chippy1520.github.io/ai-research-lab/mindmap.html#node=supervised)
+> [!source] Local source record
+> - Canonical data: `intelligence/mindmap.json#supervised`
+> - Vault map: [[Mind Map/Embodied AI|Embodied AI Knowledge Graph]]
+> - This note is the complete local concept record; no published mirror is required.
