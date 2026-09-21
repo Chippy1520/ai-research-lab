@@ -1,8 +1,8 @@
-<%* /* generated_by: "build_obsidian_vault.py" */ -%>
+<!-- generated_by: "build_obsidian_vault.py" -->
 ---
 type: lecture-concept
-aliases: ["<% tp.file.title %>"]
-course: ""
+aliases: ["{{VALUE:title}}"]
+course: "{{VALUE:course}}"
 confidence: seed
 source_lectures: []
 related_concepts: []
@@ -13,7 +13,7 @@ cssclasses: [research-note, lecture-concept-note]
 
 [[Home|Research Lab]]  /  [[Lectures/Concepts|Lecture Concepts]]
 
-# <% tp.file.title %>
+# {{VALUE:title}}
 
 > [!concept] One reusable idea
 > State the idea precisely enough that it can stand outside the source lecture.

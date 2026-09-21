@@ -10,8 +10,8 @@ cssclasses: ["research-note", "hub-note", "lecture-hub"]
 
 # Lecture Notes
 
-> [!lecture] Capture → transcribe → distill → connect
-> Record the lecture locally, preserve the raw transcript, then turn only durable ideas into linked concept notes.
+> [!lecture] Capture → distill → connect
+> Capture claims, equations, diagrams, and questions; then turn only durable ideas into linked concept notes.
 >
 > The graph is built from deliberate links—not from auto-linking every word in a transcript.
 
@@ -23,31 +23,16 @@ cssclasses: ["research-note", "hub-note", "lecture-hub"]
 
 ## Capture workflow
 
-1. Run **Templater: Create new note from template** and choose **Lecture Note**.
-2. Fill the course, module, lecturer, and status properties.
-3. Start **Voice Scribe: Record voice note**. Keep the audio embed and transcript in the lecture note.
-4. During class, write only cues, equations, diagrams, and questions under **Live notes**.
-5. After class, distill the mechanism and worked examples; create atomic concept notes only for reusable ideas.
-6. Link each concept back to its source lecture, related concepts, papers, and curriculum notes.
-
-> [!privacy] Local transcription boundary
-> Voice Scribe runs Whisper on-device after a one-time model download. No API key is required.
-> Do not record a lecture unless the instructor and institutional rules permit it.
+1. Run **QuickAdd: New lecture**.
+2. Answer the title, course, module, and lecturer prompts once.
+3. During class, write only cues, equations, diagrams, and questions under **Live notes**.
+4. After class, distill the mechanism and worked examples; create atomic concept notes only for reusable ideas.
+5. Link each concept back to its source lecture, related concepts, papers, and curriculum notes.
 
 ## All lecture notes
 
-```dataview
-TABLE WITHOUT ID file.link AS "Lecture", course AS "Course", module AS "Module", date AS "Date", status AS "Status"
-FROM "Lectures/Notes"
-WHERE type = "lecture-note"
-SORT date DESC
-```
+![[Library/Research Library.base#Lectures]]
 
 ## Review queue
 
-```dataview
-TABLE WITHOUT ID file.link AS "Lecture", course AS "Course", status AS "Status"
-FROM "Lectures/Notes"
-WHERE type = "lecture-note" AND status != "distilled"
-SORT date ASC
-```
+![[Library/Research Library.base#Research queue]]

@@ -23,14 +23,21 @@ cssclasses: ["research-note", "hub-note", "home-note"]
 > - [[Reports/Daily Reports|Daily Intelligence Reports]]
 > - [[Lectures/Lecture Notes|Lecture Notes & Knowledge Graphs]]
 
-## Find an idea by meaning
+## Start here
 
-> [!semantic] Semantic discovery: query → evidence → neighborhood
-> 1. Run **Smart Lookup: Open: Lookup view** and ask for the topic in ordinary language.
-> 2. Preview the ranked matches and open the strongest evidence-bearing note.
-> 3. Run **Smart Connections: Open: Connections view** to see that note's semantically related nodes as a graph and list.
->
-> Use **Omnisearch** when exact wording, filenames, or tags matter. Semantic results are leads to inspect, not evidence by themselves.
+> [!capture] One capture command, one search, two maps
+> 1. Open [[Research Dashboard.canvas|Research Dashboard]] for the fixed overview.
+> 2. Open [[Library/Research Library.base|Research Library]] to filter concepts, papers, curriculum, people, lectures, or the review queue.
+> 3. Run **QuickAdd: New concept**, **New paper**, or **New lecture** to create a routed, linked note from a template.
+> 4. Use Obsidian's built-in **Search** (`Ctrl+Shift+F`) for every retrieval question.
+
+### Useful native searches
+
+- Exact phrase: `"action chunking"`
+- Concepts only: `path:"Mind Map" flow matching`
+- Papers only: `path:Papers transformer`
+- Property: `[status:to-read]`
+- Open tasks: `task-todo: evidence`
 
 ## How the vault connects
 
@@ -43,15 +50,17 @@ cssclasses: ["research-note", "hub-note", "home-note"]
 | Reports | Organizations, concepts, papers, dated neighbors | Turn daily observations into cumulative knowledge |
 | Lectures | Course hubs, atomic concepts, papers, curriculum | Convert captured speech into durable understanding |
 
-> [!graph] Navigate with native Graph View
-> Open **Graph View** for the complete system. Colors separate research surfaces.
+> [!graph] Canvas fixes the map; Graph reveals the relationships
+> Use [[Research Dashboard.canvas|Research Dashboard]] when domain clusters must stay in fixed positions.
+> Open **Graph View** for the complete linked system. Colors separate research surfaces and hub links pull each domain together.
 > Open a note's **Local Graph** at depth one or two for a readable neighborhood.
+> Native Graph is force-directed, so colors and links create coherent clusters but do not lock coordinates; Canvas is the stable overview.
 
 > [!palette] Graph cluster key
 > 🔵 [[Mind Map/Embodied AI|Concepts]] · 🟠 [[Papers/Paper Guides|Papers]] · 🟢 [[Curriculum/Curriculum|Curriculum]]
 > 🩷 [[Contacts/Contacts|People]] · 🟡 [[Organizations/Organizations|Organizations]] · 🔴 [[Reports/Daily Reports|Reports]]
 > 🟣 [[Lectures/Lecture Notes|Lectures]] · 🩵 [[Robotics Intelligence/Robotics Intelligence|Robotics intelligence]]
-> Cross-cluster edges stay visible: they are the evidence, provenance, and study paths joining these areas.
+> Every note links to its domain hub. Cross-cluster edges remain deliberate evidence, provenance, or study paths.
 
 > [!source] Canonical-source rule
 > The vault is generated from repository JSON, HTML, and Markdown. Edit canonical sources, then run `python scripts/build_obsidian_vault.py`.

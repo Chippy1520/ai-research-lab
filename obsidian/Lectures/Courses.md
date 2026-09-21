@@ -13,13 +13,7 @@ cssclasses: ["research-note", "hub-note", "course-hub"]
 > [!lecture] Course-level maps
 > A course hub should connect lectures in sequence and expose the concepts that recur across them.
 
-```dataview
-TABLE WITHOUT ID rows.file.link AS "Lectures"
-FROM "Lectures/Notes"
-WHERE type = "lecture-note" AND course
-GROUP BY course
-SORT key ASC
-```
+![[Library/Research Library.base#Lectures]]
 
 > [!method] Create a course hub
-> Use the **Course Hub** template, then give every lecture in that course the exact same `course` property.
+> Run **QuickAdd: New note from template**, choose **Course Hub**, then use the exact same `course` property on every lecture.

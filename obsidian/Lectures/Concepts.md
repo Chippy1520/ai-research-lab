@@ -13,12 +13,7 @@ cssclasses: ["research-note", "hub-note", "lecture-concepts-hub"]
 > [!concept] Atomic, reusable understanding
 > Create a concept note when an idea has its own mechanism, equation, failure mode, or reusable explanation—not merely because a term appeared in a transcript.
 
-```dataview
-TABLE WITHOUT ID file.link AS "Concept", course AS "Course", confidence AS "Confidence", source_lectures AS "Source lectures"
-FROM "Lectures/Concepts"
-WHERE type = "lecture-concept"
-SORT file.name ASC
-```
+![[Library/Research Library.base#Concepts]]
 
 > [!graph] Build a useful local graph
 > Link each concept to one source lecture, one broader concept or course hub, and—when real—one paper, curriculum lesson, or neighboring concept.

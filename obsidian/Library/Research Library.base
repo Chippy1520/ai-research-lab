@@ -1,0 +1,98 @@
+# generated_by: "build_obsidian_vault.py"
+filters:
+  and:
+    - 'file.ext == "md"'
+    - 'file.folder != "_Templates"'
+properties:
+  file.name:
+    displayName: Note
+  file.mtime:
+    displayName: Updated
+  type:
+    displayName: Type
+  status:
+    displayName: Status
+  domain:
+    displayName: Domain
+  source:
+    displayName: Source
+views:
+  - type: table
+    name: Concepts
+    filters:
+      or:
+        - 'type == "mindmap-node"'
+        - 'type == "concept-note"'
+        - 'type == "lecture-concept"'
+    order:
+      - file.name
+      - domain
+      - status
+      - file.mtime
+  - type: table
+    name: Papers
+    filters:
+      or:
+        - 'type == "paper-guide"'
+        - 'type == "paper-note"'
+    order:
+      - file.name
+      - status
+      - source
+      - file.mtime
+  - type: table
+    name: Curriculum
+    filters:
+      or:
+        - 'type == "curriculum-lesson"'
+        - 'type == "course-hub"'
+    order:
+      - file.name
+      - domain
+      - status
+  - type: table
+    name: People and organizations
+    filters:
+      or:
+        - 'type == "public-contact"'
+        - 'type == "organization"'
+    order:
+      - file.name
+      - type
+      - file.mtime
+  - type: table
+    name: Lectures
+    filters:
+      or:
+        - 'type == "lecture-note"'
+        - 'type == "lecture-concept"'
+        - 'type == "course-hub"'
+    order:
+      - file.name
+      - course
+      - status
+      - file.mtime
+  - type: table
+    name: Research queue
+    filters:
+      or:
+        - 'status == "seed"'
+        - 'status == "developing"'
+        - 'status == "to-read"'
+        - 'status == "reading"'
+        - 'status == "captured"'
+    groupBy:
+      property: status
+      direction: ASC
+    order:
+      - file.name
+      - type
+      - status
+      - file.mtime
+  - type: table
+    name: Recently changed
+    limit: 50
+    order:
+      - file.name
+      - type
+      - file.mtime

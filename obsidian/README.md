@@ -10,36 +10,31 @@ Open this **`obsidian/` directory** as an Obsidian vault. Start at `Home.md`.
 
 ## Install the reading tools
 
-The vault uses a compatibility-pinned Minimal theme and a deliberately small plugin stack:
+The vault uses the free Minimal theme, a native CSS snippet, and exactly one free/open-source community plugin:
 
-- **Style Settings + Minimal Theme Settings + Homepage** — editorial presentation and a stable landing page
-- **Dataview + Omnisearch + Advanced Tables** — structured indexes, retrieval, and comfortable Markdown authoring
-- **Smart Lookup + Smart Connections** — local semantic topic search followed by a graph-and-list neighborhood around the selected note
-- **Callout Manager** — discover and manage the vault's native, portable callout vocabulary
-- **Templater + Voice Scribe** — lecture templates and local, on-device Whisper transcription
+- **QuickAdd** — creates routed concept, paper, and lecture notes from ordinary Markdown templates.
+
+Everything else is built into Obsidian: Search, Bases, Graph, Canvas, Properties, Bookmarks, backlinks, and Local Graph.
 
 ```bash
 python scripts/install_obsidian_reading_tools.py
 ```
 
-Third-party theme/plugin code is installed locally under `.obsidian/` and ignored by Git. The tracked configuration enables the plugins and opens `Home.md` in Reading View. Release assets are version-pinned and checksum-verified by the installer.
+Third-party theme/plugin code is installed locally under `.obsidian/` and ignored by Git. Release assets are version-pinned and checksum-verified by the installer. The installer also removes the retired plugin directories from the older, redundant stack.
 
-## Search and semantic graph workflow
+## Daily workflow
 
-Use the tools according to the question:
+1. Open `Home.md` or `Research Dashboard.canvas`.
+2. Add research with `QuickAdd: New concept`, `QuickAdd: New paper`, or `QuickAdd: New lecture`.
+3. Browse structured records in `Library/Research Library.base`.
+4. Retrieve everything with native Search (`Ctrl+Shift+F`). Useful operators include `path:`, `tag:`, `[property:value]`, quoted phrases, and `task-todo:`.
+5. Use Local Graph for one note's neighborhood and global Graph for the full linked system.
 
-1. **Exact words, paths, or tags:** run Omnisearch.
-2. **An idea described in your own words:** run `Smart Lookup: Open: Lookup view`, enter a concrete query, and inspect the ranked previews.
-3. **A semantic neighborhood:** open the strongest result, then run `Smart Connections: Open: Connections view`. Its default Connections component renders related notes as both a graph and a list.
-4. **Explicit authored relationships:** use native Graph View or Local Graph.
+`Research Dashboard.canvas` keeps the eight domains in fixed positions. Native Graph is force-directed: path colors and hub links create coherent clusters, but Canvas is the stable map when coordinates must not drift.
 
-Smart Connections and Smart Lookup use a built-in local embedding model by default. Initial indexing can take several minutes and may download the model once. The generated embedding cache lives in `.smart-env/` and is ignored by Git.
+## Templates and capture
 
-The optional paid **Smart Graph** companion provides a direct typed-query-to-semantic-map workflow. It is deliberately not bundled: the free local workflow above reaches the graph by opening one inspected search result first, and no subscription should be assumed silently.
-
-## Lecture capture
-
-Start at `Lectures/Lecture Notes.md`. Templater is preconfigured to use `_Templates/`; Voice Scribe downloads its Whisper model on first use and then transcribes locally. Use the lecture template for capture, the concept template for reusable ideas, and deliberate wikilinks to build the graph. Recording permission remains the user's responsibility.
+QuickAdd reads `_Templates/` directly. The main commands route new notes to `Mind Map/Notes/`, `Papers/Notes/`, and `Lectures/Notes/`. Every template links to its domain hub so new notes join the correct graph cluster immediately.
 
 ## Rebuild
 
@@ -56,7 +51,7 @@ Canonical sources remain outside the vault:
 - `curriculum_plan.json`, `curriculum_state.json`, `learning_log.json` — roadmap and study state
 - `intelligence/reports/*.md` — dated reports
 
-Generated Markdown files carry `generated_by: build_obsidian_vault.py`. The builder only removes files carrying that marker, so ordinary hand-written notes placed in the vault are preserved. The concept network uses Obsidian's native Graph View rather than a separately maintained Canvas. Do not hand-edit generated notes because the next build will replace them.
+Generated Markdown, Base, and Canvas files carry a generator marker. The builder only removes files carrying that marker, so ordinary hand-written notes are preserved. Do not hand-edit generated files because the next build will replace them.
 
 ## Privacy boundary
 

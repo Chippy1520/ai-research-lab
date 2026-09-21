@@ -1,0 +1,127 @@
+{
+  "choices": [
+    {
+      "id": "research-new-concept",
+      "name": "New concept",
+      "type": "Template",
+      "command": true,
+      "onePageInput": "always",
+      "icon": "network",
+      "templatePath": "_Templates/Concept Note.md",
+      "fileNameFormat": {
+        "enabled": true,
+        "format": "{{VALUE:title}}"
+      },
+      "discoverExistingNotesBeforeCreate": true,
+      "existingNoteAction": "open",
+      "folder": {
+        "enabled": true,
+        "folders": [
+          "Mind Map/Notes"
+        ],
+        "chooseWhenCreatingNote": false,
+        "createInSameFolderAsActiveFile": false,
+        "chooseFromSubfolders": false
+      },
+      "appendLink": false,
+      "copyLinkToClipboard": false,
+      "openFile": true,
+      "fileOpening": {
+        "location": "reuse",
+        "direction": "vertical",
+        "mode": "live",
+        "focus": true
+      },
+      "fileExistsBehavior": {
+        "kind": "apply",
+        "mode": "doNothing"
+      }
+    },
+    {
+      "id": "research-new-paper",
+      "name": "New paper",
+      "type": "Template",
+      "command": true,
+      "onePageInput": "always",
+      "icon": "book-open-text",
+      "templatePath": "_Templates/Paper Note.md",
+      "fileNameFormat": {
+        "enabled": true,
+        "format": "{{VALUE:title}}"
+      },
+      "discoverExistingNotesBeforeCreate": true,
+      "existingNoteAction": "open",
+      "folder": {
+        "enabled": true,
+        "folders": [
+          "Papers/Notes"
+        ],
+        "chooseWhenCreatingNote": false,
+        "createInSameFolderAsActiveFile": false,
+        "chooseFromSubfolders": false
+      },
+      "appendLink": false,
+      "copyLinkToClipboard": false,
+      "openFile": true,
+      "fileOpening": {
+        "location": "reuse",
+        "direction": "vertical",
+        "mode": "live",
+        "focus": true
+      },
+      "fileExistsBehavior": {
+        "kind": "apply",
+        "mode": "doNothing"
+      }
+    },
+    {
+      "id": "research-new-lecture",
+      "name": "New lecture",
+      "type": "Template",
+      "command": true,
+      "onePageInput": "always",
+      "icon": "presentation",
+      "templatePath": "_Templates/Lecture Note.md",
+      "fileNameFormat": {
+        "enabled": true,
+        "format": "{{DATE}} - {{VALUE:title}}"
+      },
+      "discoverExistingNotesBeforeCreate": true,
+      "existingNoteAction": "open",
+      "folder": {
+        "enabled": true,
+        "folders": [
+          "Lectures/Notes"
+        ],
+        "chooseWhenCreatingNote": false,
+        "createInSameFolderAsActiveFile": false,
+        "chooseFromSubfolders": false
+      },
+      "appendLink": false,
+      "copyLinkToClipboard": false,
+      "openFile": true,
+      "fileOpening": {
+        "location": "reuse",
+        "direction": "vertical",
+        "mode": "live",
+        "focus": true
+      },
+      "fileExistsBehavior": {
+        "kind": "apply",
+        "mode": "doNothing"
+      }
+    }
+  ],
+  "inputPrompt": "single-line",
+  "persistInputPromptDrafts": true,
+  "templateFolderPaths": [
+    "_Templates"
+  ],
+  "templateFolderLauncherRow": "bottom",
+  "onePageInputEnabled": true,
+  "disableOnlineFeatures": true,
+  "enableRibbonIcon": true,
+  "namePastedImagesAfterNoteTitle": true,
+  "announceUpdates": "major",
+  "version": "2.27.0"
+}

@@ -85,8 +85,8 @@ def write(relative: str, content: str) -> Path:
 
 
 def write_template(relative: str, content: str) -> Path:
-    """Write a managed Templater source without marking created user notes as generated."""
-    marker = f'<%* /* generated_by: "{GENERATOR}" */ -%>\n'
+    """Write a managed QuickAdd template without marking created notes as generated."""
+    marker = f'<!-- generated_by: "{GENERATOR}" -->\n'
     path = VAULT / relative
     path.parent.mkdir(parents=True, exist_ok=True)
     normalized = "\n".join(content.splitlines()).rstrip() + "\n"
@@ -187,7 +187,7 @@ def clean_generated_files() -> None:
     if not VAULT.exists():
         return
     for path in VAULT.rglob("*"):
-        if not path.is_file() or path.suffix.lower() not in {".md", ".canvas"}:
+        if not path.is_file() or path.suffix.lower() not in {".md", ".canvas", ".base"}:
             continue
         try:
             sample = path.read_text(encoding="utf-8")[:600]
@@ -218,38 +218,54 @@ def build_settings() -> None:
             "canvas": True, "footnotes": True, "properties": True, "bookmarks": True,
             "bases": True, "webviewer": False,
         },
-        ".obsidian/community-plugins.json": [
-            "obsidian-style-settings", "obsidian-minimal-settings", "homepage",
-            "dataview", "omnisearch", "table-editor-obsidian",
-            "templater-obsidian", "voice-scribe", "smart-connections",
-            "smart-lookup", "callout-manager",
-        ],
-        ".obsidian/plugins/dataview/data.json": {
-            "enableDataviewJs": False, "enableInlineDataview": True,
-            "enableInlineDataviewJs": False, "refreshEnabled": True,
-        },
-        ".obsidian/plugins/templater-obsidian/data.json": {
-            "data_version": 2, "command_timeout": 5, "templates_folder": "_Templates",
-            "templates_pairs": [], "trigger_on_file_creation_mode": "none",
-            "auto_jump_to_cursor": False, "jump_to_cursor_after_file_name": False,
-            "shell_path": "", "user_scripts_folder": "", "folder_templates": [],
-            "file_templates": [], "syntax_highlighting": True,
-            "syntax_highlighting_mobile": False, "enabled_templates_hotkeys": [],
-            "startup_templates": [], "intellisense_render": "1",
-            "ignore_folders_on_creation": [],
-        },
-        ".obsidian/plugins/homepage/data.json": {
-            "version": 4,
-            "homepages": {
-                "Main Homepage": {
-                    "value": "Home", "kind": "File", "openOnStartup": True,
-                    "openMode": "Replace all open notes", "manualOpenMode": "Keep open notes",
-                    "view": "Reading view", "revertView": True, "openWhenEmpty": False,
-                    "refreshDataview": False, "autoCreate": False, "autoScroll": False,
-                    "pin": True, "commands": [], "alwaysApply": False, "hideReleaseNotes": False,
-                }
-            },
-            "separateMobile": False,
+        ".obsidian/community-plugins.json": ["quickadd"],
+        ".obsidian/plugins/quickadd/data.json": {
+            "choices": [
+                {
+                    "id": "research-new-concept", "name": "New concept", "type": "Template",
+                    "command": True, "onePageInput": "always", "icon": "network",
+                    "templatePath": "_Templates/Concept Note.md",
+                    "fileNameFormat": {"enabled": True, "format": "{{VALUE:title}}"},
+                    "discoverExistingNotesBeforeCreate": True, "existingNoteAction": "open",
+                    "folder": {"enabled": True, "folders": ["Mind Map/Notes"],
+                               "chooseWhenCreatingNote": False, "createInSameFolderAsActiveFile": False,
+                               "chooseFromSubfolders": False},
+                    "appendLink": False, "copyLinkToClipboard": False, "openFile": True,
+                    "fileOpening": {"location": "reuse", "direction": "vertical", "mode": "live", "focus": True},
+                    "fileExistsBehavior": {"kind": "apply", "mode": "doNothing"},
+                },
+                {
+                    "id": "research-new-paper", "name": "New paper", "type": "Template",
+                    "command": True, "onePageInput": "always", "icon": "book-open-text",
+                    "templatePath": "_Templates/Paper Note.md",
+                    "fileNameFormat": {"enabled": True, "format": "{{VALUE:title}}"},
+                    "discoverExistingNotesBeforeCreate": True, "existingNoteAction": "open",
+                    "folder": {"enabled": True, "folders": ["Papers/Notes"],
+                               "chooseWhenCreatingNote": False, "createInSameFolderAsActiveFile": False,
+                               "chooseFromSubfolders": False},
+                    "appendLink": False, "copyLinkToClipboard": False, "openFile": True,
+                    "fileOpening": {"location": "reuse", "direction": "vertical", "mode": "live", "focus": True},
+                    "fileExistsBehavior": {"kind": "apply", "mode": "doNothing"},
+                },
+                {
+                    "id": "research-new-lecture", "name": "New lecture", "type": "Template",
+                    "command": True, "onePageInput": "always", "icon": "presentation",
+                    "templatePath": "_Templates/Lecture Note.md",
+                    "fileNameFormat": {"enabled": True, "format": "{{DATE}} - {{VALUE:title}}"},
+                    "discoverExistingNotesBeforeCreate": True, "existingNoteAction": "open",
+                    "folder": {"enabled": True, "folders": ["Lectures/Notes"],
+                               "chooseWhenCreatingNote": False, "createInSameFolderAsActiveFile": False,
+                               "chooseFromSubfolders": False},
+                    "appendLink": False, "copyLinkToClipboard": False, "openFile": True,
+                    "fileOpening": {"location": "reuse", "direction": "vertical", "mode": "live", "focus": True},
+                    "fileExistsBehavior": {"kind": "apply", "mode": "doNothing"},
+                },
+            ],
+            "inputPrompt": "single-line", "persistInputPromptDrafts": True,
+            "templateFolderPaths": ["_Templates"], "templateFolderLauncherRow": "bottom",
+            "onePageInputEnabled": True, "disableOnlineFeatures": True,
+            "enableRibbonIcon": True, "namePastedImagesAfterNoteTitle": True,
+            "announceUpdates": "major", "version": "2.27.0",
         },
         ".obsidian/graph.json": {
             "collapse-filter": False, "search": "", "showTags": False,
@@ -265,10 +281,10 @@ def build_settings() -> None:
                 {"query": "path:Lectures", "color": {"a": 1, "rgb": 8599788}},
                 {"query": "path:\"Robotics Intelligence\"", "color": {"a": 1, "rgb": 54472}},
             ],
-            "collapse-display": False, "showArrow": True, "textFadeMultiplier": 0.65,
-            "nodeSizeMultiplier": 1.35, "lineSizeMultiplier": 0.7,
-            "collapse-forces": False, "centerStrength": 0.28,
-            "repelStrength": 14.0, "linkStrength": 0.72, "linkDistance": 260,
+            "collapse-display": False, "showArrow": True, "textFadeMultiplier": 0.72,
+            "nodeSizeMultiplier": 1.4, "lineSizeMultiplier": 0.75,
+            "collapse-forces": False, "centerStrength": 0.36,
+            "repelStrength": 11.0, "linkStrength": 1.0, "linkDistance": 175,
             "scale": 0.55, "close": True,
         },
     }
@@ -279,31 +295,10 @@ def build_settings() -> None:
     (VAULT / ".gitignore").write_text(
         ".obsidian/workspace.json\n.obsidian/workspace-mobile.json\n.obsidian/backlink.json\n"
         ".obsidian/themes/\n.obsidian/plugins/*/main.js\n.obsidian/plugins/*/manifest.json\n"
-        ".obsidian/plugins/*/styles.css\n.obsidian/plugins/obsidian-style-settings/data.json\n"
-        ".obsidian/plugins/obsidian-minimal-settings/data.json\n"
-        ".obsidian/plugins/smart-connections/data.json\n.obsidian/plugins/smart-lookup/data.json\n"
-        ".obsidian/plugins/callout-manager/data.json\n.smart-env/\n.trash/\n",
+        ".obsidian/plugins/*/styles.css\n.trash/\n",
         encoding="utf-8",
     )
-    css = """/* @settings
-name: AI Research Lab
-id: research-lab
-settings:
-  - id: research-accent
-    title: Accent color
-    type: variable-color
-    format: hex
-    default: '#4e6d5a'
-  - id: research-reading-width
-    title: Reading width
-    type: variable-number-slider
-    default: 860
-    min: 680
-    max: 1100
-    step: 20
-    format: px
-*/
-/* Warm editorial additions layered on the Minimal theme. */
+    css = """/* Warm editorial additions layered on the free Minimal theme. */
 :root {
   --research-cream: #f3f0e8;
   --research-ink: #24231f;
@@ -426,7 +421,7 @@ settings:
 .callout[data-callout="incoming"] { --callout-color: 132, 104, 144; --callout-icon: lucide-arrow-down-left; }
 .callout[data-callout="palette"] { --callout-color: 0, 166, 251; --callout-icon: lucide-palette; }
 .callout[data-callout="local"] { --callout-color: 56, 176, 0; --callout-icon: lucide-folder-check; }
-.callout[data-callout="semantic"] { --callout-color: 55, 112, 108; --callout-icon: lucide-scan-search; }
+.callout[data-callout="capture"] { --callout-color: 55, 112, 108; --callout-icon: lucide-square-pen; }
 .callout[data-callout="sequence"],
 .callout[data-callout="prerequisite"] { --callout-color: 105, 117, 132; --callout-icon: lucide-route; }
 
@@ -488,7 +483,7 @@ settings:
 .research-note .callout[data-callout="home"],
 .research-note .callout[data-callout="paper"],
 .research-note .callout[data-callout="concept"],
-.research-note .callout[data-callout="semantic"] {
+.research-note .callout[data-callout="capture"] {
   box-shadow: 0 10px 28px rgb(40 35 26 / 6%);
   background: linear-gradient(
     135deg,
@@ -508,30 +503,29 @@ settings:
 .home-note .markdown-rendered table td:first-child { font-weight: 650; color: var(--research-accent); }
 .report-note .markdown-rendered h2 { border-bottom: 1px solid var(--background-modifier-border); padding-bottom: .25em; }
 
-/* Keep semantic discovery visually native to the cream/ink reading system. */
-.lookup-item-view .lookup-query-form,
-.smart-lookup-list-container,
-.connections-list-v4,
-.connections-graph-container {
-  border-color: var(--background-modifier-border) !important;
-  border-radius: 10px;
+/* File cards in Canvas use the same restrained reading language as full notes. */
+.canvas-node-content.markdown-embed,
+.canvas-node-content .markdown-embed-content {
+  background: var(--background-primary);
 }
-.lookup-item-view .lookup-query-form {
-  background: color-mix(in srgb, var(--research-accent) 6%, var(--background-primary));
-  padding: .8rem;
+.canvas-node-content .markdown-preview-view {
+  padding: 1rem 1.2rem 1.4rem;
 }
-.lookup-query-input {
+.canvas-node-content .markdown-preview-view h1,
+.canvas-node-content .markdown-preview-view h2 {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.05rem;
 }
-.smart-lookup-list-container .sc-result,
-.connections-list-v4 .sc-result {
-  border-bottom-color: var(--background-modifier-border) !important;
+.canvas-node-content .markdown-preview-view h1 {
+  font-size: 1.5rem;
 }
-.smart-lookup-list-container .sc-result-file-title,
-.connections-list-v4 .sc-result-file-title {
-  color: var(--research-accent);
+.canvas-node-content .markdown-preview-view .callout {
+  box-shadow: none;
+  margin: .75rem 0;
+}
+.canvas-group-label {
   font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: .01em;
 }
 @media (max-width: 700px) {
   :root { --research-reading-width: 100%; }
@@ -542,6 +536,149 @@ settings:
     path = VAULT / ".obsidian/snippets/research-lab.css"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(css, encoding="utf-8")
+
+
+def build_research_library() -> None:
+    """Create the native Bases research library."""
+    base = f'''# generated_by: "{GENERATOR}"
+filters:
+  and:
+    - 'file.ext == "md"'
+    - 'file.folder != "_Templates"'
+properties:
+  file.name:
+    displayName: Note
+  file.mtime:
+    displayName: Updated
+  type:
+    displayName: Type
+  status:
+    displayName: Status
+  domain:
+    displayName: Domain
+  source:
+    displayName: Source
+views:
+  - type: table
+    name: Concepts
+    filters:
+      or:
+        - 'type == "mindmap-node"'
+        - 'type == "concept-note"'
+        - 'type == "lecture-concept"'
+    order:
+      - file.name
+      - domain
+      - status
+      - file.mtime
+  - type: table
+    name: Papers
+    filters:
+      or:
+        - 'type == "paper-guide"'
+        - 'type == "paper-note"'
+    order:
+      - file.name
+      - status
+      - source
+      - file.mtime
+  - type: table
+    name: Curriculum
+    filters:
+      or:
+        - 'type == "curriculum-lesson"'
+        - 'type == "course-hub"'
+    order:
+      - file.name
+      - domain
+      - status
+  - type: table
+    name: People and organizations
+    filters:
+      or:
+        - 'type == "public-contact"'
+        - 'type == "organization"'
+    order:
+      - file.name
+      - type
+      - file.mtime
+  - type: table
+    name: Lectures
+    filters:
+      or:
+        - 'type == "lecture-note"'
+        - 'type == "lecture-concept"'
+        - 'type == "course-hub"'
+    order:
+      - file.name
+      - course
+      - status
+      - file.mtime
+  - type: table
+    name: Research queue
+    filters:
+      or:
+        - 'status == "seed"'
+        - 'status == "developing"'
+        - 'status == "to-read"'
+        - 'status == "reading"'
+        - 'status == "captured"'
+    groupBy:
+      property: status
+      direction: ASC
+    order:
+      - file.name
+      - type
+      - status
+      - file.mtime
+  - type: table
+    name: Recently changed
+    limit: 50
+    order:
+      - file.name
+      - type
+      - file.mtime
+'''
+    write("Library/Research Library.base", base)
+
+
+def build_research_canvas() -> None:
+    """Create a fixed overview while leaving the global graph free to emerge."""
+    domains = [
+        ("concepts", "Concepts", "Mind Map/Embodied AI.md", -1550, 0, "#00a6fb"),
+        ("papers", "Papers", "Papers/Paper Guides.md", -800, 0, "#e87924"),
+        ("curriculum", "Curriculum", "Curriculum/Curriculum.md", -50, 0, "#4f8f58"),
+        ("robotics", "Robotics intelligence", "Robotics Intelligence/Robotics Intelligence.md", 700, 0, "#4f94a8"),
+        ("contacts", "Contacts", "Contacts/Contacts.md", -1550, 580, "#b5699f"),
+        ("organizations", "Organizations", "Organizations/Organizations.md", -800, 580, "#b0794f"),
+        ("reports", "Reports", "Reports/Daily Reports.md", -50, 580, "#9a6070"),
+        ("lectures", "Lectures", "Lectures/Lecture Notes.md", 700, 580, "#7965a8"),
+    ]
+    nodes: list[dict[str, Any]] = [
+        {"id": "workspace", "type": "group", "label": "Start here", "x": -480, "y": -800,
+         "width": 960, "height": 600, "color": "#4e6d5a"},
+        {"id": "home", "type": "file", "file": "Home.md", "x": -420, "y": -710,
+         "width": 500, "height": 430},
+        {"id": "library", "type": "file", "file": "Library/Research Library.base", "x": 130, "y": -710,
+         "width": 290, "height": 210},
+        {"id": "capture", "type": "text", "x": 130, "y": -450, "width": 290, "height": 190,
+         "text": "## Add research\n\nRun **QuickAdd: New concept**, **New paper**, or **New lecture**.\n\nUse native **Search** for retrieval."},
+    ]
+    edges: list[dict[str, Any]] = []
+    for domain_id, label, file_path, x, y, color in domains:
+        group_id = f"group-{domain_id}"
+        file_id = f"hub-{domain_id}"
+        nodes.extend([
+            {"id": group_id, "type": "group", "label": label, "x": x, "y": y,
+             "width": 650, "height": 500, "color": color},
+            {"id": file_id, "type": "file", "file": file_path, "x": x + 45, "y": y + 75,
+             "width": 560, "height": 365},
+        ])
+        edges.append({"id": f"home-{domain_id}", "fromNode": "home", "fromSide": "bottom",
+                      "toNode": file_id, "toSide": "top"})
+    payload = {"nodes": nodes, "edges": edges, "generated_by": GENERATOR}
+    path = VAULT / "Research Dashboard.canvas"
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 def node_path(node_id: str) -> str:
@@ -1569,9 +1706,9 @@ def build_lectures() -> None:
         nav("Lectures/Lecture Notes.md", "Lectures"), "",
         "# Lecture Notes", "",
         *callout(
-            "lecture", "Capture → transcribe → distill → connect",
+            "lecture", "Capture → distill → connect",
             [
-                "Record the lecture locally, preserve the raw transcript, then turn only durable ideas into linked concept notes.",
+                "Capture claims, equations, diagrams, and questions; then turn only durable ideas into linked concept notes.",
                 "", "The graph is built from deliberate links—not from auto-linking every word in a transcript.",
             ],
         ), "",
@@ -1581,33 +1718,15 @@ def build_lectures() -> None:
             "map",
         ), "",
         "## Capture workflow", "",
-        "1. Run **Templater: Create new note from template** and choose **Lecture Note**.",
-        "2. Fill the course, module, lecturer, and status properties.",
-        "3. Start **Voice Scribe: Record voice note**. Keep the audio embed and transcript in the lecture note.",
-        "4. During class, write only cues, equations, diagrams, and questions under **Live notes**.",
-        "5. After class, distill the mechanism and worked examples; create atomic concept notes only for reusable ideas.",
-        "6. Link each concept back to its source lecture, related concepts, papers, and curriculum notes.", "",
-        *callout(
-            "privacy", "Local transcription boundary",
-            [
-                "Voice Scribe runs Whisper on-device after a one-time model download. No API key is required.",
-                "Do not record a lecture unless the instructor and institutional rules permit it.",
-            ],
-        ), "",
+        "1. Run **QuickAdd: New lecture**.",
+        "2. Answer the title, course, module, and lecturer prompts once.",
+        "3. During class, write only cues, equations, diagrams, and questions under **Live notes**.",
+        "4. After class, distill the mechanism and worked examples; create atomic concept notes only for reusable ideas.",
+        "5. Link each concept back to its source lecture, related concepts, papers, and curriculum notes.", "",
         "## All lecture notes", "",
-        "```dataview",
-        "TABLE WITHOUT ID file.link AS \"Lecture\", course AS \"Course\", module AS \"Module\", date AS \"Date\", status AS \"Status\"",
-        "FROM \"Lectures/Notes\"",
-        "WHERE type = \"lecture-note\"",
-        "SORT date DESC",
-        "```", "",
+        "![[Library/Research Library.base#Lectures]]", "",
         "## Review queue", "",
-        "```dataview",
-        "TABLE WITHOUT ID file.link AS \"Lecture\", course AS \"Course\", status AS \"Status\"",
-        "FROM \"Lectures/Notes\"",
-        "WHERE type = \"lecture-note\" AND status != \"distilled\"",
-        "SORT date ASC",
-        "```",
+        "![[Library/Research Library.base#Research queue]]",
     ]
     write("Lectures/Lecture Notes.md", "\n".join(hub))
 
@@ -1615,14 +1734,8 @@ def build_lectures() -> None:
         frontmatter(type="map-of-content", aliases=["Courses"], tags=["moc", "lectures", "courses"], cssclasses=["research-note", "hub-note", "course-hub"]),
         nav("Lectures/Lecture Notes.md", "Lectures"), "", "# Courses", "",
         *callout("lecture", "Course-level maps", ["A course hub should connect lectures in sequence and expose the concepts that recur across them."]), "",
-        "```dataview",
-        "TABLE WITHOUT ID rows.file.link AS \"Lectures\"",
-        "FROM \"Lectures/Notes\"",
-        "WHERE type = \"lecture-note\" AND course",
-        "GROUP BY course",
-        "SORT key ASC",
-        "```", "",
-        *callout("method", "Create a course hub", ["Use the **Course Hub** template, then give every lecture in that course the exact same `course` property."]),
+        "![[Library/Research Library.base#Lectures]]", "",
+        *callout("method", "Create a course hub", ["Run **QuickAdd: New note from template**, choose **Course Hub**, then use the exact same `course` property on every lecture."]),
     ]
     write("Lectures/Courses.md", "\n".join(courses))
 
@@ -1630,23 +1743,18 @@ def build_lectures() -> None:
         frontmatter(type="map-of-content", aliases=["Lecture Concepts"], tags=["moc", "lectures", "concepts"], cssclasses=["research-note", "hub-note", "lecture-concepts-hub"]),
         nav("Lectures/Lecture Notes.md", "Lectures"), "", "# Lecture Concepts", "",
         *callout("concept", "Atomic, reusable understanding", ["Create a concept note when an idea has its own mechanism, equation, failure mode, or reusable explanation—not merely because a term appeared in a transcript."]), "",
-        "```dataview",
-        "TABLE WITHOUT ID file.link AS \"Concept\", course AS \"Course\", confidence AS \"Confidence\", source_lectures AS \"Source lectures\"",
-        "FROM \"Lectures/Concepts\"",
-        "WHERE type = \"lecture-concept\"",
-        "SORT file.name ASC",
-        "```", "",
+        "![[Library/Research Library.base#Concepts]]", "",
         *callout("graph", "Build a useful local graph", ["Link each concept to one source lecture, one broader concept or course hub, and—when real—one paper, curriculum lesson, or neighboring concept."]),
     ]
     write("Lectures/Concepts.md", "\n".join(concepts))
 
     write_template("_Templates/Lecture Note.md", '''---
 type: lecture-note
-aliases: ["<% tp.file.title %>"]
-date: "<% tp.date.now('YYYY-MM-DD') %>"
-course: ""
-module: ""
-lecturer: ""
+aliases: ["{{VALUE:title}}"]
+date: "{{DATE}}"
+course: "{{VALUE:course}}"
+module: "{{VALUE:module}}"
+lecturer: "{{VALUE:lecturer}}"
 status: captured
 source_audio: ""
 related_concepts: []
@@ -1657,7 +1765,7 @@ cssclasses: [research-note, lecture-note]
 
 [[Home|Research Lab]]  /  [[Lectures/Lecture Notes|Lectures]]
 
-# <% tp.file.title %>
+# {{VALUE:title}}
 
 > [!lecture] Course · Module · Date
 > Fill the properties first. Keep raw capture separate from distilled understanding.
@@ -1674,7 +1782,7 @@ cssclasses: [research-note, lecture-note]
 ## Live notes
 
 > [!tip] Capture selectively
-> Record equations, diagrams, examples, claims, and questions. Let Voice Scribe preserve the spoken detail.
+> Record equations, diagrams, examples, claims, and questions. Preserve only the source material you are permitted to keep.
 
 ## Core concepts and links
 
@@ -1703,16 +1811,16 @@ $$
 > [!summary] Five-minute reconstruction
 > Write this only after processing the lecture.
 
-## Transcript and recording
+## Source material
 
-> [!recording] Raw source
-> Use **Voice Scribe** here. Preserve the audio embed and transcript; do not mistake the transcript for the final note.
+> [!source] Raw source
+> Add permitted slides, links, audio, or a transcript here. Raw capture is evidence—not the final explanation.
 ''')
 
     write_template("_Templates/Lecture Concept.md", '''---
 type: lecture-concept
-aliases: ["<% tp.file.title %>"]
-course: ""
+aliases: ["{{VALUE:title}}"]
+course: "{{VALUE:course}}"
 confidence: seed
 source_lectures: []
 related_concepts: []
@@ -1723,7 +1831,7 @@ cssclasses: [research-note, lecture-concept-note]
 
 [[Home|Research Lab]]  /  [[Lectures/Concepts|Lecture Concepts]]
 
-# <% tp.file.title %>
+# {{VALUE:title}}
 
 > [!concept] One reusable idea
 > State the idea precisely enough that it can stand outside the source lecture.
@@ -1755,19 +1863,139 @@ cssclasses: [research-note, lecture-concept-note]
 > Write one question whose answer requires the mechanism, not just the definition.
 ''')
 
+    write_template("_Templates/Concept Note.md", '''---
+type: concept-note
+aliases: ["{{VALUE:title}}"]
+created: "{{DATE}}"
+updated: "{{DATE}}"
+status: seed
+domain: "{{VALUE:domain}}"
+hub: "[[Mind Map/Embodied AI]]"
+related_concepts: []
+related_papers: []
+tags: [concept-note]
+cssclasses: [research-note, concept-note]
+---
+
+[[Home|Research Lab]]  /  [[Mind Map/Embodied AI|Knowledge Graph]]
+
+# {{VALUE:title}}
+
+> [!concept] One-sentence definition
+> {{VALUE:definition}}
+
+## Why it matters
+
+State what this concept explains, enables, or rules out.
+
+## Mechanism
+
+1. **Input —**
+2. **Transformation —**
+3. **Output —**
+
+## Assumptions and failure modes
+
+- **Assumes:**
+- **Breaks when:**
+
+## Evidence
+
+- [ ] Add a primary paper, official implementation, or measured result.
+
+## Connections
+
+- **Broader map:** [[Mind Map/Embodied AI]]
+- **Related concepts:**
+- **Papers:**
+- **Curriculum:**
+
+## Retrieval check
+
+> [!question] Can I explain the transformation?
+> Write one question whose answer requires the mechanism—not only the name.
+''')
+
+    write_template("_Templates/Paper Note.md", '''---
+type: paper-note
+aliases: ["{{VALUE:title}}"]
+created: "{{DATE}}"
+status: to-read
+authors: "{{VALUE:authors}}"
+year: "{{VALUE:year}}"
+source: "{{VALUE:source_url}}"
+hub: "[[Papers/Paper Guides]]"
+related_concepts: []
+tags: [paper-note]
+cssclasses: [research-note, paper-note]
+---
+
+[[Home|Research Lab]]  /  [[Papers/Paper Guides|Paper Guides]]
+
+# {{VALUE:title}}
+
+> [!paper] Claim to test
+> {{VALUE:claim}}
+
+## Research question
+
+What exact limitation is the paper trying to remove?
+
+## Model or system step
+
+Name the input, learned transformation, output, and training signal. Avoid slogan-only analogies.
+
+## Method
+
+1. **Input —**
+2. **Representation —**
+3. **Prediction or action —**
+4. **Loss or supervision —**
+
+## Evidence table
+
+| Claim | Dataset / setup | Metric | Baseline | Result | Location |
+|---|---|---:|---:|---:|---|
+| | | | | | |
+
+## Figures to redraw
+
+- [ ] Main architecture
+- [ ] Training objective
+- [ ] Evaluation protocol
+
+## Failure modes and boundaries
+
+-
+
+## Connections
+
+- **Paper library:** [[Papers/Paper Guides]]
+- **Concepts:**
+- **Curriculum:**
+- **Code / project:**
+
+## Reproduction notes
+
+- **Compute:**
+- **Data:**
+- **Critical hyperparameters:**
+- **What I would test first:**
+''')
+
     write_template("_Templates/Course Hub.md", '''---
 type: course-hub
-aliases: ["<% tp.file.title %>"]
-course: "<% tp.file.title %>"
-semester: ""
-instructor: ""
+aliases: ["{{VALUE:title}}"]
+course: "{{VALUE:title}}"
+semester: "{{VALUE:semester}}"
+instructor: "{{VALUE:instructor}}"
 tags: [course, lectures]
 cssclasses: [research-note, hub-note, course-note]
 ---
 
 [[Home|Research Lab]]  /  [[Lectures/Courses|Courses]]
 
-# <% tp.file.title %>
+# {{VALUE:title}}
 
 > [!lecture] Course map
 > Scope, sequence, recurring mechanisms, and unresolved questions.
@@ -1776,21 +2004,11 @@ cssclasses: [research-note, hub-note, course-note]
 
 ## Lecture sequence
 
-```dataview
-TABLE WITHOUT ID file.link AS "Lecture", module AS "Module", date AS "Date", status AS "Status"
-FROM "Lectures/Notes"
-WHERE type = "lecture-note" AND course = this.course
-SORT date ASC
-```
+![[Library/Research Library.base#Lectures]]
 
 ## Concept network
 
-```dataview
-TABLE WITHOUT ID file.link AS "Concept", confidence AS "Confidence", source_lectures AS "Sources"
-FROM "Lectures/Concepts"
-WHERE type = "lecture-concept" AND course = this.course
-SORT file.name ASC
-```
+![[Library/Research Library.base#Concepts]]
 
 ## Recurring mechanisms
 
@@ -1823,16 +2041,22 @@ def build_home() -> None:
             ],
         ), "",
         *link_callout("Research surfaces", surfaces, "map"), "",
-        "## Find an idea by meaning", "",
+        "## Start here", "",
         *callout(
-            "semantic", "Semantic discovery: query → evidence → neighborhood",
+            "capture", "One capture command, one search, two maps",
             [
-                "1. Run **Smart Lookup: Open: Lookup view** and ask for the topic in ordinary language.",
-                "2. Preview the ranked matches and open the strongest evidence-bearing note.",
-                "3. Run **Smart Connections: Open: Connections view** to see that note's semantically related nodes as a graph and list.",
-                "", "Use **Omnisearch** when exact wording, filenames, or tags matter. Semantic results are leads to inspect, not evidence by themselves.",
+                f"1. Open {wiki('Research Dashboard.canvas', 'Research Dashboard')} for the fixed overview.",
+                f"2. Open {wiki('Library/Research Library.base', 'Research Library')} to filter concepts, papers, curriculum, people, lectures, or the review queue.",
+                "3. Run **QuickAdd: New concept**, **New paper**, or **New lecture** to create a routed, linked note from a template.",
+                "4. Use Obsidian's built-in **Search** (`Ctrl+Shift+F`) for every retrieval question.",
             ],
         ), "",
+        "### Useful native searches", "",
+        "- Exact phrase: `\"action chunking\"`",
+        "- Concepts only: `path:\"Mind Map\" flow matching`",
+        "- Papers only: `path:Papers transformer`",
+        "- Property: `[status:to-read]`",
+        "- Open tasks: `task-todo: evidence`", "",
         "## How the vault connects", "",
         "| From | Follow links to | Why |", "|---|---|---|",
         "| Concepts | Papers, curriculum, people, organizations | Move from an idea to evidence and study |",
@@ -1842,10 +2066,12 @@ def build_home() -> None:
         "| Reports | Organizations, concepts, papers, dated neighbors | Turn daily observations into cumulative knowledge |",
         "| Lectures | Course hubs, atomic concepts, papers, curriculum | Convert captured speech into durable understanding |", "",
         *callout(
-            "graph", "Navigate with native Graph View",
+            "graph", "Canvas fixes the map; Graph reveals the relationships",
             [
-                "Open **Graph View** for the complete system. Colors separate research surfaces.",
+                f"Use {wiki('Research Dashboard.canvas', 'Research Dashboard')} when domain clusters must stay in fixed positions.",
+                "Open **Graph View** for the complete linked system. Colors separate research surfaces and hub links pull each domain together.",
                 "Open a note's **Local Graph** at depth one or two for a readable neighborhood.",
+                "Native Graph is force-directed, so colors and links create coherent clusters but do not lock coordinates; Canvas is the stable overview.",
             ],
         ), "",
         *callout(
@@ -1854,7 +2080,7 @@ def build_home() -> None:
                 f"🔵 {wiki('Mind Map/Embodied AI.md', 'Concepts')} · 🟠 {wiki('Papers/Paper Guides.md', 'Papers')} · 🟢 {wiki('Curriculum/Curriculum.md', 'Curriculum')}",
                 f"🩷 {wiki('Contacts/Contacts.md', 'People')} · 🟡 {wiki('Organizations/Organizations.md', 'Organizations')} · 🔴 {wiki('Reports/Daily Reports.md', 'Reports')}",
                 f"🟣 {wiki('Lectures/Lecture Notes.md', 'Lectures')} · 🩵 {wiki('Robotics Intelligence/Robotics Intelligence.md', 'Robotics intelligence')}",
-                "Cross-cluster edges stay visible: they are the evidence, provenance, and study paths joining these areas.",
+                "Every note links to its domain hub. Cross-cluster edges remain deliberate evidence, provenance, or study paths.",
             ],
         ), "",
         *callout(
@@ -1873,36 +2099,31 @@ Open this **`obsidian/` directory** as an Obsidian vault. Start at `Home.md`.
 
 ## Install the reading tools
 
-The vault uses a compatibility-pinned Minimal theme and a deliberately small plugin stack:
+The vault uses the free Minimal theme, a native CSS snippet, and exactly one free/open-source community plugin:
 
-- **Style Settings + Minimal Theme Settings + Homepage** — editorial presentation and a stable landing page
-- **Dataview + Omnisearch + Advanced Tables** — structured indexes, retrieval, and comfortable Markdown authoring
-- **Smart Lookup + Smart Connections** — local semantic topic search followed by a graph-and-list neighborhood around the selected note
-- **Callout Manager** — discover and manage the vault's native, portable callout vocabulary
-- **Templater + Voice Scribe** — lecture templates and local, on-device Whisper transcription
+- **QuickAdd** — creates routed concept, paper, and lecture notes from ordinary Markdown templates.
+
+Everything else is built into Obsidian: Search, Bases, Graph, Canvas, Properties, Bookmarks, backlinks, and Local Graph.
 
 ```bash
 python scripts/install_obsidian_reading_tools.py
 ```
 
-Third-party theme/plugin code is installed locally under `.obsidian/` and ignored by Git. The tracked configuration enables the plugins and opens `Home.md` in Reading View. Release assets are version-pinned and checksum-verified by the installer.
+Third-party theme/plugin code is installed locally under `.obsidian/` and ignored by Git. Release assets are version-pinned and checksum-verified by the installer. The installer also removes the retired plugin directories from the older, redundant stack.
 
-## Search and semantic graph workflow
+## Daily workflow
 
-Use the tools according to the question:
+1. Open `Home.md` or `Research Dashboard.canvas`.
+2. Add research with `QuickAdd: New concept`, `QuickAdd: New paper`, or `QuickAdd: New lecture`.
+3. Browse structured records in `Library/Research Library.base`.
+4. Retrieve everything with native Search (`Ctrl+Shift+F`). Useful operators include `path:`, `tag:`, `[property:value]`, quoted phrases, and `task-todo:`.
+5. Use Local Graph for one note's neighborhood and global Graph for the full linked system.
 
-1. **Exact words, paths, or tags:** run Omnisearch.
-2. **An idea described in your own words:** run `Smart Lookup: Open: Lookup view`, enter a concrete query, and inspect the ranked previews.
-3. **A semantic neighborhood:** open the strongest result, then run `Smart Connections: Open: Connections view`. Its default Connections component renders related notes as both a graph and a list.
-4. **Explicit authored relationships:** use native Graph View or Local Graph.
+`Research Dashboard.canvas` keeps the eight domains in fixed positions. Native Graph is force-directed: path colors and hub links create coherent clusters, but Canvas is the stable map when coordinates must not drift.
 
-Smart Connections and Smart Lookup use a built-in local embedding model by default. Initial indexing can take several minutes and may download the model once. The generated embedding cache lives in `.smart-env/` and is ignored by Git.
+## Templates and capture
 
-The optional paid **Smart Graph** companion provides a direct typed-query-to-semantic-map workflow. It is deliberately not bundled: the free local workflow above reaches the graph by opening one inspected search result first, and no subscription should be assumed silently.
-
-## Lecture capture
-
-Start at `Lectures/Lecture Notes.md`. Templater is preconfigured to use `_Templates/`; Voice Scribe downloads its Whisper model on first use and then transcribes locally. Use the lecture template for capture, the concept template for reusable ideas, and deliberate wikilinks to build the graph. Recording permission remains the user's responsibility.
+QuickAdd reads `_Templates/` directly. The main commands route new notes to `Mind Map/Notes/`, `Papers/Notes/`, and `Lectures/Notes/`. Every template links to its domain hub so new notes join the correct graph cluster immediately.
 
 ## Rebuild
 
@@ -1919,7 +2140,7 @@ Canonical sources remain outside the vault:
 - `curriculum_plan.json`, `curriculum_state.json`, `learning_log.json` — roadmap and study state
 - `intelligence/reports/*.md` — dated reports
 
-Generated Markdown files carry `generated_by: {GENERATOR}`. The builder only removes files carrying that marker, so ordinary hand-written notes placed in the vault are preserved. The concept network uses Obsidian's native Graph View rather than a separately maintained Canvas. Do not hand-edit generated notes because the next build will replace them.
+Generated Markdown, Base, and Canvas files carry a generator marker. The builder only removes files carrying that marker, so ordinary hand-written notes are preserved. Do not hand-edit generated files because the next build will replace them.
 
 ## Privacy boundary
 
@@ -1930,7 +2151,15 @@ This repository is public. The Contacts area contains only verified public prove
 
 def validate_vault() -> dict[str, int]:
     markdown_files = list(VAULT.rglob("*.md"))
-    known = {path.relative_to(VAULT).with_suffix("").as_posix() for path in markdown_files}
+    navigable_files = [
+        path for path in VAULT.rglob("*")
+        if path.is_file() and path.suffix.lower() in {".md", ".canvas", ".base"}
+    ]
+    known = set()
+    for path in navigable_files:
+        relative = path.relative_to(VAULT).as_posix()
+        known.add(relative)
+        known.add(Path(relative).with_suffix("").as_posix())
     missing: list[tuple[str, str]] = []
     for path in markdown_files:
         text = path.read_text(encoding="utf-8")
@@ -1941,9 +2170,19 @@ def validate_vault() -> dict[str, int]:
     if missing:
         preview = "\n".join(f"{source} -> {target}" for source, target in missing[:20])
         raise ValueError(f"Unresolved Obsidian links ({len(missing)}):\n{preview}")
-    canvas_path = VAULT / "Mind Map/Embodied AI.canvas"
-    if canvas_path.exists():
-        raise ValueError("The generated Canvas should be absent; use native Obsidian Graph View")
+    canvas_path = VAULT / "Research Dashboard.canvas"
+    canvas = json.loads(canvas_path.read_text(encoding="utf-8"))
+    if canvas.get("generated_by") != GENERATOR:
+        raise ValueError("Research Dashboard.canvas is missing its generator marker")
+    if len([node for node in canvas["nodes"] if node["type"] == "group"]) != 9:
+        raise ValueError("Research Dashboard.canvas should have one workspace and eight domain groups")
+    for node in canvas["nodes"]:
+        if node["type"] == "file" and not (VAULT / node["file"]).exists():
+            raise ValueError(f"Canvas file node does not resolve: {node['file']}")
+    base_path = VAULT / "Library/Research Library.base"
+    base = base_path.read_text(encoding="utf-8")
+    if f'generated_by: "{GENERATOR}"' not in base[:200] or "name: Research queue" not in base:
+        raise ValueError("Research Library.base is missing its generated views")
     mindmap = load_json("intelligence/mindmap.json")
     node_files = list((VAULT / "Mind Map/Nodes").glob("*.md"))
     graph_links = sum(len(WIKILINK_RE.findall(path.read_text(encoding="utf-8"))) for path in node_files)
@@ -1971,7 +2210,9 @@ def build() -> dict[str, int]:
     build_curriculum(node_paths)
     build_reports(node_paths, org_paths)
     build_lectures()
+    build_research_library()
     build_home()
+    build_research_canvas()
     return validate_vault()
 
 

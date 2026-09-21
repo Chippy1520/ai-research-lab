@@ -5,10 +5,4 @@
 .obsidian/plugins/*/main.js
 .obsidian/plugins/*/manifest.json
 .obsidian/plugins/*/styles.css
-.obsidian/plugins/obsidian-style-settings/data.json
-.obsidian/plugins/obsidian-minimal-settings/data.json
-.obsidian/plugins/smart-connections/data.json
-.obsidian/plugins/smart-lookup/data.json
-.obsidian/plugins/callout-manager/data.json
-.smart-env/
 .trash/

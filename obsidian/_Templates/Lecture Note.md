@@ -1,11 +1,11 @@
-<%* /* generated_by: "build_obsidian_vault.py" */ -%>
+<!-- generated_by: "build_obsidian_vault.py" -->
 ---
 type: lecture-note
-aliases: ["<% tp.file.title %>"]
-date: "<% tp.date.now('YYYY-MM-DD') %>"
-course: ""
-module: ""
-lecturer: ""
+aliases: ["{{VALUE:title}}"]
+date: "{{DATE}}"
+course: "{{VALUE:course}}"
+module: "{{VALUE:module}}"
+lecturer: "{{VALUE:lecturer}}"
 status: captured
 source_audio: ""
 related_concepts: []
@@ -16,7 +16,7 @@ cssclasses: [research-note, lecture-note]
 
 [[Home|Research Lab]]  /  [[Lectures/Lecture Notes|Lectures]]
 
-# <% tp.file.title %>
+# {{VALUE:title}}
 
 > [!lecture] Course · Module · Date
 > Fill the properties first. Keep raw capture separate from distilled understanding.
@@ -33,7 +33,7 @@ cssclasses: [research-note, lecture-note]
 ## Live notes
 
 > [!tip] Capture selectively
-> Record equations, diagrams, examples, claims, and questions. Let Voice Scribe preserve the spoken detail.
+> Record equations, diagrams, examples, claims, and questions. Preserve only the source material you are permitted to keep.
 
 ## Core concepts and links
 
@@ -62,7 +62,7 @@ $$
 > [!summary] Five-minute reconstruction
 > Write this only after processing the lecture.
 
-## Transcript and recording
+## Source material
 
-> [!recording] Raw source
-> Use **Voice Scribe** here. Preserve the audio embed and transcript; do not mistake the transcript for the final note.
+> [!source] Raw source
+> Add permitted slides, links, audio, or a transcript here. Raw capture is evidence—not the final explanation.

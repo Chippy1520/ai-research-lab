@@ -1,13 +1,3 @@
 [
-  "obsidian-style-settings",
-  "obsidian-minimal-settings",
-  "homepage",
-  "dataview",
-  "omnisearch",
-  "table-editor-obsidian",
-  "templater-obsidian",
-  "voice-scribe",
-  "smart-connections",
-  "smart-lookup",
-  "callout-manager"
+  "quickadd"
 ]

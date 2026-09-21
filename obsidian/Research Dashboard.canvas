@@ -1,0 +1,252 @@
+{
+  "nodes": [
+    {
+      "id": "workspace",
+      "type": "group",
+      "label": "Start here",
+      "x": -480,
+      "y": -800,
+      "width": 960,
+      "height": 600,
+      "color": "#4e6d5a"
+    },
+    {
+      "id": "home",
+      "type": "file",
+      "file": "Home.md",
+      "x": -420,
+      "y": -710,
+      "width": 500,
+      "height": 430
+    },
+    {
+      "id": "library",
+      "type": "file",
+      "file": "Library/Research Library.base",
+      "x": 130,
+      "y": -710,
+      "width": 290,
+      "height": 210
+    },
+    {
+      "id": "capture",
+      "type": "text",
+      "x": 130,
+      "y": -450,
+      "width": 290,
+      "height": 190,
+      "text": "## Add research\n\nRun **QuickAdd: New concept**, **New paper**, or **New lecture**.\n\nUse native **Search** for retrieval."
+    },
+    {
+      "id": "group-concepts",
+      "type": "group",
+      "label": "Concepts",
+      "x": -1550,
+      "y": 0,
+      "width": 650,
+      "height": 500,
+      "color": "#00a6fb"
+    },
+    {
+      "id": "hub-concepts",
+      "type": "file",
+      "file": "Mind Map/Embodied AI.md",
+      "x": -1505,
+      "y": 75,
+      "width": 560,
+      "height": 365
+    },
+    {
+      "id": "group-papers",
+      "type": "group",
+      "label": "Papers",
+      "x": -800,
+      "y": 0,
+      "width": 650,
+      "height": 500,
+      "color": "#e87924"
+    },
+    {
+      "id": "hub-papers",
+      "type": "file",
+      "file": "Papers/Paper Guides.md",
+      "x": -755,
+      "y": 75,
+      "width": 560,
+      "height": 365
+    },
+    {
+      "id": "group-curriculum",
+      "type": "group",
+      "label": "Curriculum",
+      "x": -50,
+      "y": 0,
+      "width": 650,
+      "height": 500,
+      "color": "#4f8f58"
+    },
+    {
+      "id": "hub-curriculum",
+      "type": "file",
+      "file": "Curriculum/Curriculum.md",
+      "x": -5,
+      "y": 75,
+      "width": 560,
+      "height": 365
+    },
+    {
+      "id": "group-robotics",
+      "type": "group",
+      "label": "Robotics intelligence",
+      "x": 700,
+      "y": 0,
+      "width": 650,
+      "height": 500,
+      "color": "#4f94a8"
+    },
+    {
+      "id": "hub-robotics",
+      "type": "file",
+      "file": "Robotics Intelligence/Robotics Intelligence.md",
+      "x": 745,
+      "y": 75,
+      "width": 560,
+      "height": 365
+    },
+    {
+      "id": "group-contacts",
+      "type": "group",
+      "label": "Contacts",
+      "x": -1550,
+      "y": 580,
+      "width": 650,
+      "height": 500,
+      "color": "#b5699f"
+    },
+    {
+      "id": "hub-contacts",
+      "type": "file",
+      "file": "Contacts/Contacts.md",
+      "x": -1505,
+      "y": 655,
+      "width": 560,
+      "height": 365
+    },
+    {
+      "id": "group-organizations",
+      "type": "group",
+      "label": "Organizations",
+      "x": -800,
+      "y": 580,
+      "width": 650,
+      "height": 500,
+      "color": "#b0794f"
+    },
+    {
+      "id": "hub-organizations",
+      "type": "file",
+      "file": "Organizations/Organizations.md",
+      "x": -755,
+      "y": 655,
+      "width": 560,
+      "height": 365
+    },
+    {
+      "id": "group-reports",
+      "type": "group",
+      "label": "Reports",
+      "x": -50,
+      "y": 580,
+      "width": 650,
+      "height": 500,
+      "color": "#9a6070"
+    },
+    {
+      "id": "hub-reports",
+      "type": "file",
+      "file": "Reports/Daily Reports.md",
+      "x": -5,
+      "y": 655,
+      "width": 560,
+      "height": 365
+    },
+    {
+      "id": "group-lectures",
+      "type": "group",
+      "label": "Lectures",
+      "x": 700,
+      "y": 580,
+      "width": 650,
+      "height": 500,
+      "color": "#7965a8"
+    },
+    {
+      "id": "hub-lectures",
+      "type": "file",
+      "file": "Lectures/Lecture Notes.md",
+      "x": 745,
+      "y": 655,
+      "width": 560,
+      "height": 365
+    }
+  ],
+  "edges": [
+    {
+      "id": "home-concepts",
+      "fromNode": "home",
+      "fromSide": "bottom",
+      "toNode": "hub-concepts",
+      "toSide": "top"
+    },
+    {
+      "id": "home-papers",
+      "fromNode": "home",
+      "fromSide": "bottom",
+      "toNode": "hub-papers",
+      "toSide": "top"
+    },
+    {
+      "id": "home-curriculum",
+      "fromNode": "home",
+      "fromSide": "bottom",
+      "toNode": "hub-curriculum",
+      "toSide": "top"
+    },
+    {
+      "id": "home-robotics",
+      "fromNode": "home",
+      "fromSide": "bottom",
+      "toNode": "hub-robotics",
+      "toSide": "top"
+    },
+    {
+      "id": "home-contacts",
+      "fromNode": "home",
+      "fromSide": "bottom",
+      "toNode": "hub-contacts",
+      "toSide": "top"
+    },
+    {
+      "id": "home-organizations",
+      "fromNode": "home",
+      "fromSide": "bottom",
+      "toNode": "hub-organizations",
+      "toSide": "top"
+    },
+    {
+      "id": "home-reports",
+      "fromNode": "home",
+      "fromSide": "bottom",
+      "toNode": "hub-reports",
+      "toSide": "top"
+    },
+    {
+      "id": "home-lectures",
+      "fromNode": "home",
+      "fromSide": "bottom",
+      "toNode": "hub-lectures",
+      "toSide": "top"
+    }
+  ],
+  "generated_by": "build_obsidian_vault.py"
+}

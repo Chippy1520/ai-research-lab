@@ -58,10 +58,16 @@ def test_build_is_complete_and_idempotent():
     assert first["curriculum_lessons"] == len(curriculum["lessons"])
 
 
-def test_wikilinks_resolve_and_native_graph_replaces_canvas():
+def test_wikilinks_resolve_and_graph_canvas_roles_are_explicit():
     counts = validate_vault()
     assert counts["markdown_notes"] > 200
     assert not (VAULT / "Mind Map/Embodied AI.canvas").exists()
+    canvas = json.loads((VAULT / "Research Dashboard.canvas").read_text(encoding="utf-8"))
+    assert canvas["generated_by"] == "build_obsidian_vault.py"
+    assert len([node for node in canvas["nodes"] if node["type"] == "group"]) == 9
+    assert {node["label"] for node in canvas["nodes"] if node["type"] == "group"} >= {
+        "Concepts", "Papers", "Curriculum", "Contacts", "Organizations", "Reports", "Lectures"
+    }
     graph = json.loads((VAULT / ".obsidian/graph.json").read_text(encoding="utf-8"))
     assert graph["hideUnresolved"] is True
     assert graph["showOrphans"] is False
@@ -78,34 +84,31 @@ def test_wikilinks_resolve_and_native_graph_replaces_canvas():
         'path:"Robotics Intelligence"': 54472,
     }
     assert graph["showArrow"] is True
-    assert graph["repelStrength"] == 14.0
-    assert graph["linkStrength"] == 0.72
-    assert graph["linkDistance"] == 260
+    assert graph["repelStrength"] == 11.0
+    assert graph["linkStrength"] == 1.0
+    assert graph["linkDistance"] == 175
 
 
 def test_reading_theme_and_plugins_are_configured():
     appearance = json.loads((VAULT / ".obsidian/appearance.json").read_text(encoding="utf-8"))
     enabled = json.loads((VAULT / ".obsidian/community-plugins.json").read_text(encoding="utf-8"))
-    homepage = json.loads((VAULT / ".obsidian/plugins/homepage/data.json").read_text(encoding="utf-8"))
+    quickadd = json.loads((VAULT / ".obsidian/plugins/quickadd/data.json").read_text(encoding="utf-8"))
     css = (VAULT / ".obsidian/snippets/research-lab.css").read_text(encoding="utf-8")
     assert appearance["cssTheme"] == "Minimal"
-    assert {
-        "obsidian-style-settings", "obsidian-minimal-settings", "homepage",
-        "dataview", "omnisearch", "table-editor-obsidian", "templater-obsidian", "voice-scribe",
-        "smart-connections", "smart-lookup", "callout-manager",
-    } <= set(enabled)
-    dataview = json.loads((VAULT / ".obsidian/plugins/dataview/data.json").read_text(encoding="utf-8"))
-    templater = json.loads((VAULT / ".obsidian/plugins/templater-obsidian/data.json").read_text(encoding="utf-8"))
-    assert dataview["enableDataviewJs"] is False
-    assert dataview["enableInlineDataviewJs"] is False
-    assert templater["templates_folder"] == "_Templates"
-    assert homepage["homepages"]["Main Homepage"]["value"] == "Home"
-    assert homepage["homepages"]["Main Homepage"]["view"] == "Reading view"
-    assert "@settings" in css and "--research-reading-width" in css
-    assert '.callout[data-callout="semantic"]' in css
-    assert ".lookup-item-view .lookup-query-form" in css
+    assert enabled == ["quickadd"]
+    assert quickadd["disableOnlineFeatures"] is True
+    assert quickadd["templateFolderPaths"] == ["_Templates"]
+    assert {choice["name"] for choice in quickadd["choices"]} == {
+        "New concept", "New paper", "New lecture"
+    }
+    assert "--research-reading-width" in css
+    assert '.callout[data-callout="capture"]' in css
+    assert ".canvas-node-content" in css
+    assert ".smart-lookup" not in css and ".connections-list" not in css
     gitignore = (VAULT / ".gitignore").read_text(encoding="utf-8")
-    assert ".smart-env/" in gitignore
+    assert ".smart-env" not in gitignore
+    library = (VAULT / "Library/Research Library.base").read_text(encoding="utf-8")
+    assert "name: Concepts" in library and "name: Research queue" in library
 
 
 def test_full_paper_guides_are_present_and_connected():
@@ -167,8 +170,10 @@ def test_home_exposes_each_research_surface():
         "Organizations/Organizations", "Reports/Daily Reports", "Lectures/Lecture Notes",
     ):
         assert f"[[{target}" in home
-    assert "Smart Lookup: Open: Lookup view" in home
-    assert "Smart Connections: Open: Connections view" in home
+    assert "Research Dashboard" in home
+    assert "Research Library" in home
+    assert "built-in **Search**" in home
+    assert "Smart Lookup" not in home and "Omnisearch" not in home
 
 
 def test_directional_graph_relations_and_normalized_tags():
@@ -200,10 +205,15 @@ def test_authored_curriculum_and_lecture_capture_are_preserved():
     lecture_hub = (VAULT / "Lectures/Lecture Notes.md").read_text(encoding="utf-8")
     lecture_template = (VAULT / "_Templates/Lecture Note.md").read_text(encoding="utf-8")
     concept_template = (VAULT / "_Templates/Lecture Concept.md").read_text(encoding="utf-8")
-    assert "Voice Scribe" in lecture_hub
-    assert "FROM \"Lectures/Notes\"" in lecture_hub
-    assert "## Transcript and recording" in lecture_template
+    assert "QuickAdd: New lecture" in lecture_hub
+    assert "Research Library.base#Lectures" in lecture_hub
+    assert "## Source material" in lecture_template
     assert "## Failure modes and boundaries" in concept_template
+    assert "<%" not in lecture_template and "<%" not in concept_template
+    paper_template = (VAULT / "_Templates/Paper Note.md").read_text(encoding="utf-8")
+    research_template = (VAULT / "_Templates/Concept Note.md").read_text(encoding="utf-8")
+    assert "## Model or system step" in paper_template
+    assert "## Mechanism" in research_template
 
 
 def test_jobs_are_grouped_into_readable_company_sections():
