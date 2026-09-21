@@ -3,7 +3,7 @@ generated_by: "build_obsidian_vault.py"
 type: "map-of-content"
 aliases: ["AI Research Curriculum"]
 tags: ["moc", "curriculum"]
-updated: "2026-08-29"
+updated: "2026-09-21"
 cssclasses: ["research-note", "hub-note", "curriculum-hub"]
 ---
 
@@ -12,7 +12,8 @@ cssclasses: ["research-note", "hub-note", "curriculum-hub"]
 # AI Research Curriculum
 
 > [!curriculum] A perpetual ML → CV → Embodied AI spiral
-> Spiral indefinitely through mathematical foundations, modern methods, systems, evaluation, interdisciplinary connections, and changing frontiers. There is no terminal lesson or completeness claim.
+> Each lesson is a brief recall sheet plus an ordered English video path from respected universities, research labs, conferences, or technical educators.
+> Long generated textbook chapters are intentionally excluded: watch once, then return to the summary when you need to reconstruct the idea.
 >
 > **Current:** [[Curriculum/Lessons/Day 01 - Optimization Dynamics & AdamW|Day 01 - Optimization Dynamics & AdamW]] · **72 mapped lessons** · no terminal day
 
@@ -45,7 +46,8 @@ cssclasses: ["research-note", "hub-note", "curriculum-hub"]
 | 23 | [[Curriculum/Lessons/Day 67 - Foundation-Model Agents, Tool Use & Memory|Day 67 - Foundation-Model Agents, Tool Use & Memory]] | [[Curriculum/Lessons/Day 68 - Video Foundation Models & World-Centric Perception|Day 68 - Video Foundation Models & World-Centric Perception]] | [[Curriculum/Lessons/Day 69 - VLA Models, Cross-Embodiment Transfer & Action Tokenization|Day 69 - VLA Models, Cross-Embodiment Transfer & Action Tokenization]] |
 | 24 | [[Curriculum/Lessons/Day 70 - Frontier ML Review — Selected on Generation Day|Day 70 - Frontier ML Review — Selected on Generation Day]] | [[Curriculum/Lessons/Day 71 - Frontier Vision Review — Selected on Generation Day|Day 71 - Frontier Vision Review — Selected on Generation Day]] | [[Curriculum/Lessons/Day 72 - Frontier Embodied AI Review — Selected on Generation Day|Day 72 - Frontier Embodied AI Review — Selected on Generation Day]] |
 
-> [!method] Rolling-horizon policy
-> Before the mapped queue drops below 18 future days, research and append six new ML→CV→EAI cycles. Add roadmap spines only; author lesson content just in time.
-> Before authoring every module, review current literature and revise its emphasis without silently rewriting archived modules.
-> Generated modules remain immutable learning artifacts; corrections are appended to their research log.
+> [!method] Study protocol
+> 1. Watch the videos in order; later videos assume the earlier framing.
+> 2. Use the 30-second recall bullets before rewatching anything.
+> 3. Add only a correction, failure mode, or worked example that the summary did not preserve.
+> 4. Re-verify video availability and source quality whenever the roadmap is extended.

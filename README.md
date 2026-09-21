@@ -38,6 +38,7 @@ streamlit run app.py
 | File | Purpose |
 |---|---|
 | `curriculum_plan.json` | Open-ended prerequisite-aware lesson spine and live frontier anchors |
+| `curriculum_resources.json` | Brief recall summaries and ordered, verified English video paths |
 | `curriculum_state.json` | Current due day and strict rotation cursor |
 | `learning_log.json` | Completion, time, confidence, notes, and revisit queue |
 | `research_log.json` | Per-module sources, research dates, and appended corrections |
@@ -56,10 +57,11 @@ streamlit run app.py
 
 Open the repository's `obsidian/` directory as a vault and start at `Home.md`. It contains a native Graph View knowledge network with 113 embodied-AI concept notes, full paper companions converted from the canonical HTML, verified public contacts and organizations, the curriculum roadmap, current openings, recurring skill signals, and dated intelligence reports.
 
-Install the compatibility-pinned Minimal reading theme and the three curated helper plugins, then rebuild the generated notes:
+Install the compatibility-pinned Minimal reading theme and the single QuickAdd helper plugin, then rebuild the generated notes:
 
 ```powershell
 python scripts\install_obsidian_reading_tools.py
+python scripts\verify_curriculum_videos.py
 python scripts\build_obsidian_vault.py
 ```
 

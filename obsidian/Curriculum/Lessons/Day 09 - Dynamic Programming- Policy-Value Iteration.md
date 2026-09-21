@@ -7,7 +7,7 @@ cycle: 3
 domain: "Embodied AI & RL Robotics"
 stage: "Foundations"
 status: "planned"
-source: ["curriculum_plan.json"]
+source: ["curriculum_plan.json", "curriculum_resources.json"]
 tags: ["curriculum", "embodied-ai-rl-robotics", "foundations"]
 cssclasses: ["research-note", "curriculum-note"]
 related_concepts: ["Mind Map/Nodes/systems.md", "Mind Map/Nodes/policy.md"]
@@ -20,7 +20,7 @@ related_papers: []
 
 > [!curriculum] Embodied AI & RL Robotics · Foundations
 > **Cycle 3** · **status: planned**
-> Research and write only when this day becomes current.
+> Use the videos for first-pass learning; use this note for fast recall without rewatching.
 
 > [!sequence] Learning sequence
 > - [[Curriculum/Lessons/Day 08 - Spatial Derivatives, Scale Space & Features|← Day 08]]
@@ -31,11 +31,31 @@ related_papers: []
 > - [[Mind Map/Nodes/systems|Systems]]
 > - [[Mind Map/Nodes/policy|Policies / VLA]]
 
-## Foundation threads
+## Brief description
 
-- control
-- dynamics
-- probability
-- planning
-- real-time systems
-- safety
+Dynamic programming solves known finite MDPs by repeatedly applying Bellman backups: policy iteration alternates evaluation and improvement, while value iteration folds both into an optimality update.
+
+## Recall in 30 seconds
+
+- Policy evaluation predicts returns for a fixed policy; policy improvement acts greedily with respect to those values.
+- Policy iteration usually makes larger, costlier updates; value iteration makes cheaper partial backups.
+- Both rely on a known transition and reward model in the classical tabular setting.
+- The state-space explosion motivates sampling, approximation, and planning methods.
+
+## Watch in order
+
+> [!method] Why this sequence
+> Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.
+
+### 1. RL Course by David Silver - Lecture 3: Planning by Dynamic Programming
+
+> [!video] Google DeepMind · English · research lab
+> **Purpose:** Covers policy evaluation, policy iteration, value iteration, generalized policy iteration, and their convergence relationships.
+> [Watch on YouTube](https://www.youtube.com/watch?v=Nd1-UUMVfz4)
+
+> [!summary] After watching
+> Close the videos and explain the recall bullets in your own words. Add only corrections or a worked example below—do not recreate the lecture.
+
+## My correction or example
+
+-

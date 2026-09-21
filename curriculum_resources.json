@@ -1,0 +1,2729 @@
+{
+  "version": 1,
+  "updated_on": "2026-09-21",
+  "policy": {
+    "language": "English only",
+    "availability": "Every watch URL must return YouTube oEmbed metadata at verification time.",
+    "source_quality": "Use university courses, research labs, official conferences or professional foundations, and exceptionally established technical educators.",
+    "coverage": "Use one to three videos in an intentional order; together they must cover the named lesson rather than a narrow fragment.",
+    "maintenance": "Replace a dead or substantively inadequate video; do not add overlapping search or recommendation plugins."
+  },
+  "lessons": [
+    {
+      "day": 1,
+      "topic": "Optimization Dynamics & AdamW",
+      "description": "Optimization is the dynamics of how parameters move under noisy gradients; AdamW combines momentum and coordinate-wise scaling while keeping weight decay separate from the gradient update.",
+      "recall": [
+        "Momentum smooths persistent gradient directions; the second-moment estimate reduces steps along coordinates with repeatedly large gradients.",
+        "Bias correction matters early because both moving averages start at zero.",
+        "AdamW decouples parameter shrinkage from adaptive preconditioning, unlike adding an L2 term inside Adam.",
+        "Warm-up, clipping, schedules, and parameter-group choices still determine stability."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "CS231n Winter 2016: Lecture 3: Linear Classification 2, Optimization",
+          "author": "Andrej Karpathy",
+          "url": "https://www.youtube.com/watch?v=qlLChbHhbg4",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Andrej Karpathy.",
+          "coverage_role": "Builds the optimization foundation: loss landscapes, gradient-based learning, SGD dynamics, conditioning, and optimizer behavior.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "The Algorithm that Helps Machines Learn [AdamW]",
+          "author": "Jia-Bin Huang",
+          "url": "https://www.youtube.com/watch?v=1_nujVNUsto",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Jia-Bin Huang.",
+          "coverage_role": "Adds AdamW specifically, emphasizing decoupled weight decay and why it differs from putting an L2 penalty inside Adam.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 2,
+      "topic": "Image Formation, Sampling & Color",
+      "description": "Image formation maps light from a three-dimensional scene through optics and a sensor into sampled, quantized color measurements; every later vision method inherits the ambiguities introduced here.",
+      "recall": [
+        "Projection, illumination, surface reflectance, lens effects, and sensor response jointly create a pixel value.",
+        "Sampling below the scene's spatial bandwidth causes aliasing; prefilter before downsampling.",
+        "Color channels are device-dependent measurements, not intrinsic object properties.",
+        "Exposure and dynamic range trade signal-to-noise against clipping and motion blur."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Pinhole and Perspective Projection | Image Formation",
+          "author": "First Principles of Computer Vision",
+          "url": "https://www.youtube.com/watch?v=_EhY31MSbNM",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from First Principles of Computer Vision.",
+          "coverage_role": "Introduces geometric image formation through the pinhole camera and perspective projection.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Sampling Theory and Aliasing | Image Processing II",
+          "author": "First Principles of Computer Vision",
+          "url": "https://www.youtube.com/watch?v=YFZsxY_2_l4",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from First Principles of Computer Vision.",
+          "coverage_role": "Covers discrete image sampling, sampling limits, reconstruction, and spatial aliasing.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "Sensing Color | Image Sensing",
+          "author": "First Principles of Computer Vision",
+          "url": "https://www.youtube.com/watch?v=V4y3K6zoUQs",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from First Principles of Computer Vision.",
+          "coverage_role": "Completes the lesson with wavelength-sensitive sensing, color channels, and practical color-image acquisition.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 3,
+      "topic": "MDPs, Returns & Occupancy Measures",
+      "description": "A Markov decision process formalizes sequential choice with states, actions, transitions, rewards, and discounting; returns value trajectories, while occupancy measures describe how a policy distributes visits over state-action pairs.",
+      "recall": [
+        "The Markov assumption makes the current state sufficient for predicting the next transition.",
+        "A return aggregates future rewards, usually with discounting or a finite horizon.",
+        "Value functions are expectations under a policy and transition model, not properties of a state alone.",
+        "Occupancy measures connect trajectory optimization to expectations over visited state-action pairs."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it. Coverage boundary: Occupancy measures are developed through state-visitation distributions rather than a standalone measure-theoretic treatment.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "RL Course by David Silver - Lecture 2: Markov Decision Process",
+          "author": "Google DeepMind",
+          "url": "https://www.youtube.com/watch?v=lfHX2hHRMVQ",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel Google DeepMind.",
+          "coverage_role": "Establishes MDPs, policies, trajectories, discounted returns, value functions, and Bellman relationships.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "L1 MDPs, Exact Solution Methods, Max-ent RL (Foundations of Deep RL Series)",
+          "author": "Pieter Abbeel",
+          "url": "https://www.youtube.com/watch?v=2GwBez0D20A",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Pieter Abbeel.",
+          "coverage_role": "Extends the MDP treatment to policy-induced state visitation distributions, exact solution methods, and the occupancy perspective used in maximum-entropy RL.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 4,
+      "topic": "Probability, Estimation & Statistical Learning",
+      "description": "Statistical learning uses finite, noisy samples to estimate patterns that generalize beyond the observed data, separating uncertainty in the data from uncertainty introduced by the model and estimator.",
+      "recall": [
+        "A parameter, estimator, estimate, and predictive distribution are different objects.",
+        "Bias and variance describe systematic error and sampling sensitivity; neither alone determines generalization.",
+        "Likelihood expresses how a model explains data; priors and regularization inject assumptions.",
+        "Evaluation requires held-out data and a metric aligned with the decision that will use the prediction."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "1. Introduction to Statistics",
+          "author": "MIT OpenCourseWare",
+          "url": "https://www.youtube.com/watch?v=VPZD_aij8H0",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from MIT OpenCourseWare.",
+          "coverage_role": "Provides the probability-and-statistics framing needed to reason about populations, samples, models, and uncertainty.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "4. Parametric Inference (cont.) and Maximum Likelihood Estimation",
+          "author": "MIT OpenCourseWare",
+          "url": "https://www.youtube.com/watch?v=rLlZpnT02ZU",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from MIT OpenCourseWare.",
+          "coverage_role": "Develops parametric estimation and maximum-likelihood estimation from statistical principles.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "Lecture 05 - Training Versus Testing",
+          "author": "caltech",
+          "url": "https://www.youtube.com/watch?v=SEYAnnLazMU",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from caltech.",
+          "coverage_role": "Connects estimation to statistical learning through out-of-sample error, finite data, and generalization.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 5,
+      "topic": "2D Fourier Analysis & Phase",
+      "description": "The 2D Fourier transform represents an image as spatial frequencies with magnitude and phase, exposing how filtering, blur, sampling, and translation act in the frequency domain.",
+      "recall": [
+        "Low frequencies encode slow spatial variation; high frequencies encode edges, texture, and noise.",
+        "Magnitude says how much of a frequency exists, while phase controls where structures appear.",
+        "Convolution in space is multiplication in frequency, making linear filtering easy to reason about.",
+        "Sampling replicates the spectrum; overlap between replicas is aliasing."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Fourier Transform | Image Processing II",
+          "author": "First Principles of Computer Vision",
+          "url": "https://www.youtube.com/watch?v=tEzgtbnbXgQ",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from First Principles of Computer Vision.",
+          "coverage_role": "Introduces the image Fourier transform, spatial frequencies, and the magnitude/phase representation of image structure.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Image Filtering in Frequency Domain | Image Processing II",
+          "author": "First Principles of Computer Vision",
+          "url": "https://www.youtube.com/watch?v=OOu5KP3Gvx0",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from First Principles of Computer Vision.",
+          "coverage_role": "Applies 2D Fourier analysis to image filtering and clarifies how spectral modification affects reconstructed images.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 6,
+      "topic": "Bellman Operators & Contraction Proofs",
+      "description": "Bellman operators turn long-horizon prediction or control into a one-step backup; under discounting they are contractions, which explains why repeated backups converge to a unique fixed point.",
+      "recall": [
+        "Policy evaluation uses an expectation backup; optimal control replaces the policy average with a maximum.",
+        "The fixed point of the Bellman operator is the corresponding value function.",
+        "A discount factor below one makes the operator a contraction in the sup norm.",
+        "Approximation, sampling, or off-policy updates can break the clean tabular convergence story."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "DeepMind x UCL RL Lecture Series - Theoretical Fund. of Dynamic Programming Algorithms [4/13]",
+          "author": "Google DeepMind",
+          "url": "https://www.youtube.com/watch?v=XpbLq7rIJAA",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel Google DeepMind.",
+          "coverage_role": "Provides the theoretical treatment of Bellman operators, fixed points, contraction arguments, and convergence of dynamic-programming algorithms.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 7,
+      "topic": "Information Theory & Representation",
+      "description": "Information theory quantifies uncertainty and distinguishability, giving representation learning a language for deciding what information to preserve, discard, compress, or make predictive.",
+      "recall": [
+        "Entropy measures uncertainty; cross-entropy scores a predictive distribution against observed outcomes.",
+        "KL divergence is asymmetric and measures excess coding or distribution mismatch, not geometric distance.",
+        "Mutual information is the reduction in uncertainty about one variable after observing another.",
+        "A useful representation preserves task-relevant structure while suppressing nuisance variation; maximizing information blindly is not enough."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Introduction to Information Theory (Lecture 1) by Jaikumar Radhakrishnan",
+          "author": "International Centre for Theoretical Sciences",
+          "url": "https://www.youtube.com/watch?v=z6J-PTcJNa4",
+          "language": "English",
+          "source_type": "official_conference",
+          "source_rationale": "Academic conference, institute, or research-event recording hosted by International Centre for Theoretical Sciences.",
+          "coverage_role": "Introduces entropy, information, coding, and the probabilistic foundations of information theory.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Deep Representation Learning - Yoshua Bengio (MILA, Canada)",
+          "author": "Center for Language & Speech Processing(CLSP), JHU",
+          "url": "https://www.youtube.com/watch?v=-BjJMs8DS-8",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Center for Language & Speech Processing(CLSP), JHU.",
+          "coverage_role": "Connects information-processing ideas to learned representations, distributed features, abstraction, and deep architectures.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 8,
+      "topic": "Spatial Derivatives, Scale Space & Features",
+      "description": "Spatial derivatives reveal local change, scale space controls which structures are meaningful at each resolution, and feature detectors convert stable local patterns into points or descriptors for matching.",
+      "recall": [
+        "Image gradients provide edge direction and strength but amplify noise.",
+        "Gaussian smoothing before differentiation creates a well-behaved scale space.",
+        "Corners are repeatable where intensity changes in multiple directions; blobs represent characteristic scale.",
+        "A detector chooses locations; a descriptor makes those locations comparable across images."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Canny Edge Detector | Edge Detection",
+          "author": "First Principles of Computer Vision",
+          "url": "https://www.youtube.com/watch?v=hUC1uoigH6s",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from First Principles of Computer Vision.",
+          "coverage_role": "Introduces image derivatives, gradient-based edge evidence, smoothing, non-maximum suppression, and thresholding.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Lecture 05 - Scale-invariant Feature Transform (SIFT)",
+          "author": "UCF CRCV",
+          "url": "https://www.youtube.com/watch?v=NPcMS49V5hg",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from UCF CRCV.",
+          "coverage_role": "Develops scale space, extrema detection, orientation assignment, local descriptors, and scale-invariant features.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 9,
+      "topic": "Dynamic Programming: Policy/Value Iteration",
+      "description": "Dynamic programming solves known finite MDPs by repeatedly applying Bellman backups: policy iteration alternates evaluation and improvement, while value iteration folds both into an optimality update.",
+      "recall": [
+        "Policy evaluation predicts returns for a fixed policy; policy improvement acts greedily with respect to those values.",
+        "Policy iteration usually makes larger, costlier updates; value iteration makes cheaper partial backups.",
+        "Both rely on a known transition and reward model in the classical tabular setting.",
+        "The state-space explosion motivates sampling, approximation, and planning methods."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "RL Course by David Silver - Lecture 3: Planning by Dynamic Programming",
+          "author": "Google DeepMind",
+          "url": "https://www.youtube.com/watch?v=Nd1-UUMVfz4",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel Google DeepMind.",
+          "coverage_role": "Covers policy evaluation, policy iteration, value iteration, generalized policy iteration, and their convergence relationships.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 10,
+      "topic": "Linear Models, Kernels & Generalization",
+      "description": "Linear predictors provide interpretable baselines, kernels make linear learning nonlinear through similarity functions, and generalization theory explains why fitting training data is not the same as predicting new data.",
+      "recall": [
+        "Linear models are linear in parameters; feature maps can make their decision boundary nonlinear in the input.",
+        "The kernel trick computes inner products in an implicit feature space.",
+        "Margin, regularization, model capacity, and sample size jointly affect generalization.",
+        "A flexible kernel can still overfit, scale poorly with dataset size, and fail under distribution shift."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Lecture 03 -The Linear Model I",
+          "author": "caltech",
+          "url": "https://www.youtube.com/watch?v=FIbVs5GbBlQ",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from caltech.",
+          "coverage_role": "Builds linear prediction and classification from the hypothesis-set and learning-algorithm viewpoint.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Lecture 15 - Kernel Methods",
+          "author": "caltech",
+          "url": "https://www.youtube.com/watch?v=XUj5JbQihlU",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from caltech.",
+          "coverage_role": "Introduces feature mappings, the kernel trick, nonlinear decision functions, and kernelized learning.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "Lecture 05 - Training Versus Testing",
+          "author": "caltech",
+          "url": "https://www.youtube.com/watch?v=SEYAnnLazMU",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from caltech.",
+          "coverage_role": "Completes the sequence with out-of-sample error, generalization, and the distinction between fitting and learning.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 11,
+      "topic": "Projective Geometry & Camera Calibration",
+      "description": "Projective geometry explains how 3D points map to an image, while calibration estimates the intrinsic and extrinsic camera parameters needed to recover rays, poses, and metric measurements.",
+      "recall": [
+        "Homogeneous coordinates represent perspective projection and points at infinity uniformly.",
+        "Intrinsics describe the camera's internal projection; extrinsics place the camera in the world.",
+        "Calibration uses known geometry and many correspondences because noise and distortion make one view insufficient.",
+        "A pixel back-projects to a ray; depth requires extra geometry, motion, or prior knowledge."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "3D Computer Vision | Lecture 1 (Part 1): 2D and 1D projective geometry",
+          "author": "CVRP Lab at NUS",
+          "url": "https://www.youtube.com/watch?v=LAHQ_qIzNGU",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from CVRP Lab at NUS.",
+          "coverage_role": "Develops homogeneous coordinates, projective transformations, points at infinity, and the geometry underlying cameras.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Linear Camera Model | Camera Calibration",
+          "author": "First Principles of Computer Vision",
+          "url": "https://www.youtube.com/watch?v=qByYk6JggQU",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from First Principles of Computer Vision.",
+          "coverage_role": "Introduces the camera projection matrix and the relationship between world, camera, and image coordinates.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "Camera Calibration | Camera Calibration",
+          "author": "First Principles of Computer Vision",
+          "url": "https://www.youtube.com/watch?v=GUbWsXU1mac",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from First Principles of Computer Vision.",
+          "coverage_role": "Explains how camera parameters are estimated from geometric correspondences and calibration constraints.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 12,
+      "topic": "Monte Carlo and Temporal-Difference Learning",
+      "description": "Monte Carlo methods learn from complete sampled returns, while temporal-difference methods bootstrap from current value estimates; the trade is unbiased delayed targets versus lower-variance but biased incremental targets.",
+      "recall": [
+        "Monte Carlo waits for an outcome and does not require a transition model.",
+        "TD updates after each step using reward plus the next estimate.",
+        "Bootstrapping, sampling, and off-policy learning form the deadly triad when combined with function approximation.",
+        "Eligibility traces interpolate between one-step TD and full-return Monte Carlo."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "RL Course by David Silver - Lecture 4: Model-Free Prediction",
+          "author": "Google DeepMind",
+          "url": "https://www.youtube.com/watch?v=PnHCvfgC_ZA",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel Google DeepMind.",
+          "coverage_role": "Compares Monte Carlo and temporal-difference prediction, including bootstrapping, bias-variance behavior, TD errors, and multi-step returns.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 13,
+      "topic": "Backpropagation, Initialization & Normalization",
+      "description": "Backpropagation applies the chain rule efficiently through a computation graph; initialization and normalization keep signals and gradients in workable ranges so optimization can use that information.",
+      "recall": [
+        "The forward pass stores intermediates; the reverse pass propagates vector-Jacobian products.",
+        "Initialization should preserve activation and gradient scale across depth.",
+        "Normalization changes optimization geometry and stabilizes feature statistics, but its behavior depends on train/eval mode and batch structure.",
+        "Vanishing, exploding, dead, or noisy gradients are diagnostic symptoms, not problems solved by backprop alone."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "CS231n Winter 2016: Lecture 4: Backpropagation, Neural Networks 1",
+          "author": "Andrej Karpathy",
+          "url": "https://www.youtube.com/watch?v=i94OvYb6noo",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Andrej Karpathy.",
+          "coverage_role": "Derives computational graphs, chain-rule differentiation, gradient flow, and neural-network backpropagation.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Lecture 6 | Training Neural Networks I",
+          "author": "Stanford University School of Engineering",
+          "url": "https://www.youtube.com/watch?v=wEoyxE0GP2M",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Stanford University School of Engineering.",
+          "coverage_role": "Covers activation behavior, data preprocessing, weight initialization, normalization, and practical training stability.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 14,
+      "topic": "Multi-View Geometry, Epipolar Constraints & SfM",
+      "description": "Multi-view geometry uses correspondences between calibrated or uncalibrated images to constrain relative pose and triangulate structure; structure-from-motion repeatedly combines these constraints into a consistent camera-and-scene estimate.",
+      "recall": [
+        "The epipolar constraint reduces a point search in the second image to a line.",
+        "The essential matrix assumes calibrated cameras; the fundamental matrix absorbs intrinsics.",
+        "Triangulation needs parallax and accurate correspondences; small baselines make depth unstable.",
+        "SfM alternates correspondence, pose, triangulation, and bundle adjustment while rejecting outliers."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Epipolar Geometry | Uncalibrated Stereo",
+          "author": "First Principles of Computer Vision",
+          "url": "https://www.youtube.com/watch?v=6kpBqfgSPRc",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from First Principles of Computer Vision.",
+          "coverage_role": "Explains epipoles, epipolar lines, correspondence constraints, and uncalibrated two-view geometry.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "3D Computer Vision | Lecture 10 (Part 1): Structure-from-Motion (SfM) and bundle adjustment",
+          "author": "CVRP Lab at NUS",
+          "url": "https://www.youtube.com/watch?v=MUadR35FFqk",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from CVRP Lab at NUS.",
+          "coverage_role": "Extends two-view constraints to camera-pose and 3D-structure recovery, including bundle adjustment.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 15,
+      "topic": "Q-Learning, Function Approximation & DQN",
+      "description": "Q-learning estimates action values from off-policy bootstrapped targets; DQN extends it to high-dimensional observations with a neural network, replay buffer, and target network.",
+      "recall": [
+        "Q-learning targets reward plus the best estimated next action, independent of the behavior policy.",
+        "Function approximation couples updates across states, so replay reduces correlation and a target network slows target drift.",
+        "Overestimation, extrapolation, reward scale, and insufficient exploration can dominate performance.",
+        "DQN is principally a discrete-action method; continuous control needs another policy representation."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "RL Course by David Silver - Lecture 5: Model Free Control",
+          "author": "Google DeepMind",
+          "url": "https://www.youtube.com/watch?v=0g4j2k_Ggc4",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel Google DeepMind.",
+          "coverage_role": "Develops model-free control, on-policy versus off-policy learning, SARSA, and tabular Q-learning.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Reinforcement Learning 5: Function Approximation and Deep Reinforcement Learning",
+          "author": "Google DeepMind",
+          "url": "https://www.youtube.com/watch?v=wAk1lxmiW4c",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel Google DeepMind.",
+          "coverage_role": "Moves from tabular values to function approximation and deep Q-learning, including instability and DQN stabilization mechanisms.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 16,
+      "topic": "CNN Inductive Biases & Modern ConvNets",
+      "description": "Convolutional networks encode locality and weight sharing, producing translation-equivariant features; modern ConvNets retain this bias while borrowing normalization, residual, attention-like, and scaling ideas.",
+      "recall": [
+        "A convolution reuses local filters across positions, reducing parameters and building hierarchical receptive fields.",
+        "Pooling or striding trades spatial detail for context and approximate invariance.",
+        "Residual paths make deep networks easier to optimize by preserving identity information.",
+        "Architecture gains must be separated from changes in data, augmentation, training recipe, and compute."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it. Coverage boundary: The architecture lecture predates the newest ConvNeXt-style designs, but covers the enduring design principles behind modern ConvNets.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Lecture 5 | Convolutional Neural Networks",
+          "author": "Stanford University School of Engineering",
+          "url": "https://www.youtube.com/watch?v=bNb2fEVKeEo",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Stanford University School of Engineering.",
+          "coverage_role": "Explains convolution, receptive fields, parameter sharing, translation structure, pooling, and the central CNN inductive biases.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Lecture 9 | CNN Architectures",
+          "author": "Stanford University School of Engineering",
+          "url": "https://www.youtube.com/watch?v=DAOcjicFr1Y",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Stanford University School of Engineering.",
+          "coverage_role": "Surveys the architectural progression from early CNNs through deeper residual and multi-branch ConvNet designs.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 17,
+      "topic": "CNN Backbones, FPN & Detection",
+      "description": "A detection system turns backbone features into localized object predictions; feature pyramids expose multiple resolutions so heads can handle objects at different scales.",
+      "recall": [
+        "The backbone extracts visual features; the neck fuses scales; the head predicts classes and geometry.",
+        "Feature pyramids combine semantically strong coarse features with spatially precise fine features.",
+        "Anchor-based and anchor-free heads encode different candidate and assignment assumptions.",
+        "NMS, class imbalance, localization loss, resolution, and evaluation IoU thresholds shape observed performance."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Lecture 9 | CNN Architectures",
+          "author": "Stanford University School of Engineering",
+          "url": "https://www.youtube.com/watch?v=DAOcjicFr1Y",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Stanford University School of Engineering.",
+          "coverage_role": "Establishes CNN feature hierarchies and the backbone architectures reused by detection systems.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Lecture 11 | Detection and Segmentation",
+          "author": "Stanford University School of Engineering",
+          "url": "https://www.youtube.com/watch?v=nDPWywWRIRo",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Stanford University School of Engineering.",
+          "coverage_role": "Covers localization and object-detection pipelines, region proposals, classification/regression heads, and detector design.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "Feature Pyramid Networks | Lecture 37 (Part 1) | Applied Deep Learning",
+          "author": "Maziar Raissi",
+          "url": "https://www.youtube.com/watch?v=6fXBXNjd1JQ",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Maziar Raissi.",
+          "coverage_role": "Adds the explicit FPN construction: top-down pathways, lateral connections, and multi-scale detection features.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 18,
+      "topic": "Policy Gradients and Variance Reduction",
+      "description": "Policy-gradient methods optimize expected return directly by increasing the probability of sampled actions in proportion to an estimate of their advantage; variance reduction makes that stochastic gradient usable.",
+      "recall": [
+        "The log-derivative trick moves the policy gradient inside an expectation over trajectories.",
+        "Subtracting a state-dependent baseline does not change the expected gradient but can greatly reduce variance.",
+        "Rewards-to-go avoid crediting an action for rewards that occurred before it.",
+        "On-policy estimates are sensitive to batch size, reward scale, exploration, and advantage normalization."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "RL Course by David Silver - Lecture 7: Policy Gradient Methods",
+          "author": "Google DeepMind",
+          "url": "https://www.youtube.com/watch?v=KHZVXao4qXs",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel Google DeepMind.",
+          "coverage_role": "Derives the policy-gradient theorem and covers score-function gradients, baselines, actor-critic estimators, and variance reduction.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 19,
+      "topic": "Variational Inference, ELBO & VAEs",
+      "description": "Variational inference replaces an intractable posterior with a tractable approximation; the ELBO balances data reconstruction against posterior-to-prior regularization, and a VAE amortizes this inference with an encoder.",
+      "recall": [
+        "The ELBO is a lower bound because the gap to log evidence is a KL divergence to the true posterior.",
+        "The encoder predicts an approximate latent posterior; the decoder maps latent samples back to data distributions.",
+        "Reparameterization separates sampling noise from differentiable distribution parameters.",
+        "Posterior collapse occurs when the decoder can ignore the latent code; likelihood quality and sample appearance are not identical goals."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "MIT 6.S191 (2023): Deep Generative Modeling",
+          "author": "Alexander Amini",
+          "url": "https://www.youtube.com/watch?v=3G5hWM6jqPk",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Alexander Amini.",
+          "coverage_role": "Introduces latent-variable generative models, variational inference, the ELBO, reparameterization, VAE training, and sampling.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 20,
+      "topic": "Semantic, Instance & Panoptic Segmentation",
+      "description": "Semantic segmentation labels categories per pixel, instance segmentation separates individual objects, and panoptic segmentation unifies countable things with amorphous stuff in one scene representation.",
+      "recall": [
+        "Semantic masks do not distinguish two objects of the same class; instance masks do.",
+        "Panoptic output assigns every pixel a semantic label and, for things, an instance identity.",
+        "Decoder resolution, multi-scale context, boundary quality, and label taxonomy determine useful output.",
+        "IoU variants measure different failure modes; class imbalance and small objects need explicit attention."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Lecture 11 | Detection and Segmentation",
+          "author": "Stanford University School of Engineering",
+          "url": "https://www.youtube.com/watch?v=nDPWywWRIRo",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Stanford University School of Engineering.",
+          "coverage_role": "Introduces dense semantic labeling and the relationship between detection and instance-aware segmentation.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "CV3DST - Instance and panoptic segmentation",
+          "author": "Dynamic Vision and Learning Group",
+          "url": "https://www.youtube.com/watch?v=LMZI8DDyltQ",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Dynamic Vision and Learning Group.",
+          "coverage_role": "Develops instance segmentation and then unifies semantic and instance outputs through panoptic segmentation and its evaluation.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 21,
+      "topic": "Actor-Critic Methods & Generalized Advantage Estimation",
+      "description": "Actor-critic methods use a learned value function to train a policy, combining the flexibility of policy gradients with bootstrapped credit assignment; GAE controls the bias-variance trade in advantages.",
+      "recall": [
+        "The actor chooses actions; the critic estimates value and supplies an advantage-like learning signal.",
+        "A one-step TD error is a noisy local advantage estimate.",
+        "GAE exponentially mixes multi-step TD residuals using a parameter that trades variance for bias.",
+        "Critic error can bias the actor, so value loss, advantage scale, and shared representations require monitoring."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "DeepMind x UCL RL Lecture Series - Policy-Gradient and Actor-Critic methods [9/13]",
+          "author": "Google DeepMind",
+          "url": "https://www.youtube.com/watch?v=y3oqOjHilio",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel Google DeepMind.",
+          "coverage_role": "Builds actor-critic algorithms from policy gradients, value-function critics, bootstrapping, and compatible learning signals.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "L3 Policy Gradients and Advantage Estimation (Foundations of Deep RL Series)",
+          "author": "Pieter Abbeel",
+          "url": "https://www.youtube.com/watch?v=AKbX1Zvo7r8",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Pieter Abbeel.",
+          "coverage_role": "Focuses on advantage estimators and the bias-variance tradeoff culminating in generalized advantage estimation.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 22,
+      "topic": "Normalizing Flows & Change of Variables",
+      "description": "A normalizing flow builds a flexible density by composing invertible transformations whose Jacobian determinants are tractable, enabling exact likelihood and reversible sampling.",
+      "recall": [
+        "Change of variables adjusts density by the absolute determinant of the transformation's Jacobian.",
+        "Composition gives expressive mappings while log-determinants add across layers.",
+        "Invertibility and cheap determinants constrain architecture design.",
+        "High likelihood does not guarantee perceptual quality or reliable out-of-distribution detection."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Cornell CS 6785: Deep Generative Models. Lecture 7: Normalizing Flows",
+          "author": "Volodymyr Kuleshov",
+          "url": "https://www.youtube.com/watch?v=3IqRV40LKPs",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Volodymyr Kuleshov.",
+          "coverage_role": "Derives change-of-variables density evaluation and develops invertible transformations, Jacobian determinants, coupling layers, and flow architectures.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 23,
+      "topic": "Vision Transformers & Patch Geometry",
+      "description": "Vision Transformers split images into patch tokens and model their interactions with self-attention; patch size, positional information, and hierarchical design determine the balance between global context, detail, and compute.",
+      "recall": [
+        "Patch projection converts fixed image regions into a token sequence; smaller patches preserve detail but increase attention cost.",
+        "Self-attention mixes information globally, while position encodings prevent the sequence from becoming orderless.",
+        "ViTs have weaker built-in locality than CNNs and therefore depend strongly on data and training regularization.",
+        "Resolution changes alter token geometry, so positional interpolation and memory scaling matter at deployment."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it. Coverage boundary: A single focused research lecture covers the core ViT and patch geometry; hierarchical and shifted-window variants are not treated in depth.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Vision Transformer Basics",
+          "author": "Samuel Albanie",
+          "url": "https://www.youtube.com/watch?v=vsqKGZT8Qn8",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Samuel Albanie.",
+          "coverage_role": "Explains image-to-patch tokenization, patch embeddings, positional information, self-attention, class tokens, and the geometric consequences of treating images as token grids.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 24,
+      "topic": "PPO: Clipping, Trust Regions & Diagnostics",
+      "description": "PPO stabilizes on-policy policy-gradient updates by limiting how far the new action probabilities move from the behavior policy; clipping is a practical surrogate for trust-region control, not a hard guarantee.",
+      "recall": [
+        "The probability ratio compares the new and old policy on sampled actions.",
+        "Clipping removes incentive for excessively large beneficial updates but does not strictly bound KL divergence.",
+        "GAE, value loss, entropy, minibatch reuse, and advantage normalization are part of the algorithmic system.",
+        "Track KL, clip fraction, entropy, value error, and return together; reward alone can hide collapse."
+      ],
+      "coverage_note": "One university lecture develops trust-region policy updates, TRPO, PPO clipping, and the practical behavior used to diagnose unstable policy updates.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Further Contemporary RL Algorithms (TRPO, PPO - Lecture 13, Summer 2023)",
+          "author": "Paderborn University - Department LEA",
+          "url": "https://www.youtube.com/watch?v=H8rElrvs9Lo",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University-hosted reinforcement-learning lecture from Paderborn University.",
+          "coverage_role": "Builds from trust-region policy updates and TRPO to PPO clipping, including practical algorithm behavior and implementation considerations.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 25,
+      "topic": "Attention, RoPE & KV-Caching",
+      "description": "Transformer inference combines content-based attention with positional rotation and a cache of previous keys and values; these choices determine context handling, memory use, and generation speed.",
+      "recall": [
+        "Queries select information from keys and aggregate the corresponding values.",
+        "RoPE encodes relative position by rotating query and key features before their dot product.",
+        "Autoregressive decoding reuses past keys and values so earlier tokens are not recomputed.",
+        "KV-cache memory grows with layers, sequence length, batch size, heads, and precision, making bandwidth a deployment bottleneck."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Stanford CS25: V1 I Transformers United: DL Models that have revolutionized NLP, CV, RL",
+          "author": "Stanford Online",
+          "url": "https://www.youtube.com/watch?v=P127jhj-8-Y",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Stanford Online.",
+          "coverage_role": "Establishes transformer architecture and self-attention before the positional and inference-specific material.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "RoPE: Understanding Rotary Positional Embeddings in transformers",
+          "author": "Hugging Face",
+          "url": "https://www.youtube.com/watch?v=jlGf2qieSk0",
+          "language": "English",
+          "source_type": "professional_foundation",
+          "source_rationale": "Technical instruction from the established professional or educational organization Hugging Face.",
+          "coverage_role": "Explains rotary positional embeddings and how rotation injects relative-position information into attention.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "How KV Cache Speeds Up LLMs for Faster AI Models on GPUs",
+          "author": "IBM Technology",
+          "url": "https://www.youtube.com/watch?v=o0gkdZBtwEg",
+          "language": "English",
+          "source_type": "professional_foundation",
+          "source_rationale": "Technical instruction from the established professional or educational organization IBM Technology.",
+          "coverage_role": "Completes the lesson with autoregressive KV reuse, latency benefits, and memory costs.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 26,
+      "topic": "Self-Supervised Visual Representation Learning",
+      "description": "Self-supervised visual learning creates supervision from the images themselves, training representations through invariance, reconstruction, clustering, or teacher-student prediction before downstream labels are introduced.",
+      "recall": [
+        "The pretext objective determines which variations become invariant and which information is preserved.",
+        "Contrastive methods distinguish related views from alternatives; non-contrastive methods prevent collapse through architectural or optimization asymmetry.",
+        "Masked and predictive methods learn by reconstructing pixels, tokens, or latent targets.",
+        "Representation quality must be tested across frozen, fine-tuned, dense, and shifted downstream tasks."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it. Coverage boundary: Predates some newer masked-image and teacher-student systems, but covers the central objectives and evaluation framework.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "10L – Self-supervised learning in computer vision",
+          "author": "Alfredo Canziani (冷在)",
+          "url": "https://www.youtube.com/watch?v=8L10w1KoOU8",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Alfredo Canziani (冷在).",
+          "coverage_role": "Full university lecture surveying visual pretext tasks, representation learning, contrastive objectives, and downstream transfer.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 27,
+      "topic": "Maximum-Entropy RL & Soft Actor-Critic",
+      "description": "Maximum-entropy reinforcement learning optimizes reward while preserving policy entropy; Soft Actor-Critic implements this with off-policy critics and a stochastic actor for robust continuous control.",
+      "recall": [
+        "The objective rewards both task return and entropy, so optimal behavior remains stochastic when several actions are useful.",
+        "Soft values replace the hard maximum with an entropy-regularized backup.",
+        "SAC learns twin critics from replay and updates a reparameterized stochastic actor.",
+        "Temperature controls the reward-entropy trade and can be adapted toward a target entropy."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "L1 MDPs, Exact Solution Methods, Max-ent RL (Foundations of Deep RL Series)",
+          "author": "Pieter Abbeel",
+          "url": "https://www.youtube.com/watch?v=2GwBez0D20A",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Pieter Abbeel.",
+          "coverage_role": "Derives the maximum-entropy objective and soft value-learning foundations.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "L5 DDPG and SAC (Foundations of Deep RL Series)",
+          "author": "Pieter Abbeel",
+          "url": "https://www.youtube.com/watch?v=pg-lKy7JIRk",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Pieter Abbeel.",
+          "coverage_role": "Builds on maximum-entropy RL to present Soft Actor-Critic, its actor-critic updates, and its relation to deterministic off-policy control.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 28,
+      "topic": "Diffusion, Score Matching & SDEs",
+      "description": "Diffusion models learn to reverse a gradual corruption process; score matching estimates gradients of log density, and the same evolution can be expressed through stochastic differential equations or related deterministic flows.",
+      "recall": [
+        "The forward process destroys structure with known noise; the learned reverse process reconstructs samples step by step.",
+        "A denoiser, noise predictor, and score are related parameterizations of the same conditional information.",
+        "The reverse-time SDE requires the score; a probability-flow ODE shares its marginals without stochastic sampling.",
+        "Noise schedule, objective weighting, solver, guidance, and latent representation jointly determine quality and speed."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "MIT 6.S184: Flow Matching and Diffusion Models - Lecture 01 - Generative AI with SDEs (2025)",
+          "author": "Peter Holderrieth",
+          "url": "https://www.youtube.com/watch?v=GCoP2w-Cqtg",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Peter Holderrieth.",
+          "coverage_role": "Introduces forward and reverse stochastic processes and the SDE formulation of diffusion generative models.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "MIT 6.S184: Flow Matching and Diffusion Models - Lecture 03A - Score Functions (2026)",
+          "author": "Peter Holderrieth",
+          "url": "https://www.youtube.com/watch?v=ngC3QnYSVNM",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Peter Holderrieth.",
+          "coverage_role": "Develops score functions and score estimation, connecting denoising objectives to reverse-time generation.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 29,
+      "topic": "NeRF Volume Rendering & Positional Encoding",
+      "description": "NeRF represents a scene as a continuous field of density and view-dependent radiance, then synthesizes images by integrating samples along camera rays; positional encoding lets an MLP represent fine spatial variation.",
+      "recall": [
+        "Each 3D sample predicts density and color conditioned on position and viewing direction.",
+        "Volume rendering accumulates transmittance-weighted color from front to back along a ray.",
+        "Positional encoding exposes high frequencies that a plain MLP learns poorly.",
+        "Accurate camera poses and many views are central; rendering speed, dynamic scenes, and extrapolation remain challenges."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "3D Computer Vision | Neural Field Representations",
+          "author": "CVRP Lab at NUS",
+          "url": "https://www.youtube.com/watch?v=a5hbNFRxZT4",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from CVRP Lab at NUS.",
+          "coverage_role": "University lecture covering neural fields and NeRF's coordinate MLP, positional encoding, ray sampling, and differentiable volume rendering.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 30,
+      "topic": "Model-Based RL and Uncertainty-Aware Planning",
+      "description": "Model-based RL learns or uses a transition model to predict consequences and plan; uncertainty awareness separates reliable imagined rollouts from regions where model error would compound.",
+      "recall": [
+        "A model may predict next observations, latent states, rewards, or full trajectory distributions.",
+        "Planning evaluates candidate action sequences through the model and executes only part before replanning.",
+        "Epistemic uncertainty indicates unfamiliar data and should shorten, penalize, or diversify imagined rollouts.",
+        "Better one-step prediction does not guarantee better control; errors matter in proportion to how planning exploits them."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it. Coverage boundary: Uncertainty is treated in the model-based-RL context; detailed Bayesian filtering or formal risk-sensitive planning is outside these lectures.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "CS 285: Lecture 12, Part 1: Model-Based RL with Policies",
+          "author": "RAIL",
+          "url": "https://www.youtube.com/watch?v=UQGS4ycGv8g",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel RAIL.",
+          "coverage_role": "Introduces learned dynamics models, policy learning through models, and sources of model bias.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "CS 285: Lecture 12, Part 2: Model-Based RL with Policies",
+          "author": "RAIL",
+          "url": "https://www.youtube.com/watch?v=2POKgmzPAto",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel RAIL.",
+          "coverage_role": "Continues with practical model-based policy optimization and strategies for handling prediction error and uncertainty.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 31,
+      "topic": "Flow Matching & Optimal-Transport Paths",
+      "description": "Flow matching learns a time-dependent vector field that transports a simple distribution to the data distribution; choosing the probability path determines the target velocities and links the method to optimal transport.",
+      "recall": [
+        "Training regresses a vector field on samples drawn along a chosen conditional path.",
+        "Generation solves an ODE from noise to data rather than iteratively denoising a stochastic chain.",
+        "Different couplings and paths produce different curvature, variance, and integration cost.",
+        "Optimal-transport-inspired paths can be straighter, but practical minibatch couplings only approximate global transport."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "\"Optimal Transport for Statistics and Machine Learning\" Prof. Philippe Rigollet, MIT",
+          "author": "Center for Intelligent Systems CIS EPFL",
+          "url": "https://www.youtube.com/watch?v=G8KsRBWb1PE",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Center for Intelligent Systems CIS EPFL.",
+          "coverage_role": "Supplies the optimal-transport foundation: couplings, transport costs, and Wasserstein geometry.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "MIT 6.S184: Flow Matching and Diffusion Models - Lecture 02: Flow Matching (2026)",
+          "author": "Peter Holderrieth",
+          "url": "https://www.youtube.com/watch?v=PNkMKWW8Khw",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Peter Holderrieth.",
+          "coverage_role": "Derives conditional probability paths and velocity-field regression, including transport-inspired paths used by flow-matching models.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 32,
+      "topic": "3D Gaussian Splatting & Differentiable Rasterization",
+      "description": "3D Gaussian Splatting represents a scene with anisotropic colored Gaussians and renders them by differentiable projection and alpha composition, trading NeRF-style implicit fields for fast explicit primitives.",
+      "recall": [
+        "Each Gaussian stores position, covariance, opacity, and view-dependent appearance.",
+        "Projection turns a 3D covariance into a screen-space ellipse that can be sorted and composited.",
+        "Optimization alternates parameter updates with densification and pruning to allocate detail.",
+        "Fast rendering comes with memory cost, visibility-order approximations, and difficulty handling dynamics or sparse views."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it. Coverage boundary: Low-level CUDA implementation and production renderer engineering are not the lecture's primary focus.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "3D Gaussian Splatting | Guest Lecture for \"Computer Graphics in the AI Era\"",
+          "author": "Barney (Barnabás) Börcsök",
+          "url": "https://www.youtube.com/watch?v=MBVmQSA24Yk",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Barney (Barnabás) Börcsök.",
+          "coverage_role": "Full academic guest lecture on the Gaussian scene representation, projection and splatting, differentiable alpha compositing, optimization, and rendering.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 33,
+      "topic": "POMDPs, Belief State & Recurrent Policies",
+      "description": "A POMDP models decision-making when observations do not reveal the true state; a belief state summarizes uncertainty, while recurrent policies learn an implicit memory when exact Bayesian filtering is impractical.",
+      "recall": [
+        "Observation and state are different: the agent acts from evidence about a hidden process.",
+        "A belief is a probability distribution over states and is sufficient for optimal control when updated exactly.",
+        "History-based recurrent policies approximate filtering but may forget, miscalibrate, or exploit spurious temporal cues.",
+        "Active sensing matters because actions can improve information as well as reward."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it. Coverage boundary: Recurrent-policy implementation details are secondary to the POMDP and partially observable RL formulation.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "CS885 Module 4: Partially Observable Reinforcement Learning",
+          "author": "Pascal Poupart",
+          "url": "https://www.youtube.com/watch?v=96V9tWNFaS4",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Pascal Poupart.",
+          "coverage_role": "Graduate lecture connecting POMDPs and belief-state reasoning to reinforcement learning under partial observability, including learned history representations.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 34,
+      "topic": "Sequence Models: RNNs, S4 & Mamba",
+      "description": "Sequence models compress and propagate context through recurrent state, structured state spaces, or selective state updates; RNNs, S4, and Mamba differ mainly in how they preserve long-range information and parallelize computation.",
+      "recall": [
+        "RNNs update a hidden state sequentially and struggle with long gradients and limited parallelism.",
+        "Structured state-space models turn linear dynamical systems into long convolutions that can be trained in parallel.",
+        "Mamba makes state updates input-dependent, selectively remembering or discarding tokens.",
+        "Long-context benchmarks must distinguish true memory and retrieval from local pattern matching."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it. Coverage boundary: The talk emphasizes structured state-space models; Mamba-specific hardware-aware scan implementation receives less detail than the mathematical lineage.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "MedAI #41: Efficiently Modeling Long Sequences with Structured State Spaces | Albert Gu",
+          "author": "Stanford MedAI",
+          "url": "https://www.youtube.com/watch?v=luCBXCErkCs",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Stanford MedAI.",
+          "coverage_role": "Albert Gu presents the recurrence/state-space foundation, structured state-space models such as S4, and the line of work leading to selective sequence models.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 35,
+      "topic": "Video Motion: Optical Flow, Tracking & Temporal Models",
+      "description": "Video motion methods estimate how image content moves, associate entities across frames, and model temporal context; optical flow, tracking, and learned temporal features solve related but distinct correspondence problems.",
+      "recall": [
+        "Optical flow is a dense apparent-motion field, not necessarily physical 3D motion.",
+        "Brightness constancy and local smoothness make flow estimable but fail under occlusion, lighting changes, and large displacement.",
+        "Tracking maintains identity through time and must handle disappearance, re-entry, and ambiguity.",
+        "Temporal models need evaluation on motion, identity, causality, and long-range consistency rather than frame accuracy alone."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Lecture 06 - Optical Flow",
+          "author": "UCF CRCV",
+          "url": "https://www.youtube.com/watch?v=5VyLAH8BhF8",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from UCF CRCV.",
+          "coverage_role": "Covers motion fields, brightness constancy, classical optical-flow constraints, and estimation.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "CV3DST - Object tracking",
+          "author": "Dynamic Vision and Learning Group",
+          "url": "https://www.youtube.com/watch?v=QtAYgtBnhws",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Dynamic Vision and Learning Group.",
+          "coverage_role": "Moves from frame-to-frame motion to object tracking and temporal state estimation.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "Rui Hou - Action Recognition, Temporal Localization and Detection in Trimmed and Untrimmed Videos",
+          "author": "UCF CRCV",
+          "url": "https://www.youtube.com/watch?v=HpyQV1Ux5NI",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from UCF CRCV.",
+          "coverage_role": "Completes the progression with learned temporal representations for video understanding, action recognition, and temporal localization.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 36,
+      "topic": "Offline RL, Behavior Regularization & Dataset Shift",
+      "description": "Offline RL learns policies only from a fixed dataset, so it must improve without querying the environment while avoiding actions whose values are unsupported by the logged behavior distribution.",
+      "recall": [
+        "Distribution shift makes the learned policy visit actions that the dataset cannot evaluate reliably.",
+        "Bootstrapping can amplify optimistic errors on out-of-distribution actions.",
+        "Behavior regularization, conservative values, and uncertainty penalties trade improvement against staying near support.",
+        "Dataset coverage and reward quality often matter more than the nominal algorithm."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "CS 285: Lecture 15, Part 1: Offline Reinforcement Learning",
+          "author": "RAIL",
+          "url": "https://www.youtube.com/watch?v=NV4oSWe1H9o",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel RAIL.",
+          "coverage_role": "Introduces the fixed-dataset setting and why distribution shift breaks ordinary off-policy RL.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "CS 285: Lecture 15, Part 2: Offline Reinforcement Learning",
+          "author": "RAIL",
+          "url": "https://www.youtube.com/watch?v=9HrN6nHoxD8",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel RAIL.",
+          "coverage_role": "Develops conservative and behavior-constrained approaches for avoiding out-of-distribution actions.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "CS 285: Lecture 15, Part 3: Offline Reinforcement Learning",
+          "author": "RAIL",
+          "url": "https://www.youtube.com/watch?v=YNritd36FB0",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel RAIL.",
+          "coverage_role": "Completes the lecture with practical offline-RL objectives, algorithm comparisons, and evaluation concerns.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 37,
+      "topic": "Graph Neural Networks & Geometric Deep Learning",
+      "description": "Graph neural networks learn on entities and relations by exchanging messages along edges; geometric deep learning generalizes this idea by respecting permutation, rotation, translation, or manifold symmetries.",
+      "recall": [
+        "Message passing aggregates neighbor information with shared functions and permutation-invariant pooling.",
+        "Depth expands the receptive field but can cause over-smoothing, over-squashing, and expensive neighborhoods.",
+        "Equivariance makes outputs transform predictably with the input and reduces sample complexity when the symmetry is real.",
+        "Graph construction encodes assumptions and can dominate downstream performance."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "AMMI 2022 Course \"Geometric Deep Learning\" - Lecture 1 (Introduction) - Michael Bronstein",
+          "author": "Michael Bronstein",
+          "url": "https://www.youtube.com/watch?v=5c_-KX1sRDQ",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Michael Bronstein.",
+          "coverage_role": "Introduces geometric priors, symmetry, invariance/equivariance, and the geometric-deep-learning blueprint.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "AMMI Course \"Geometric Deep Learning\" - Lecture 6 (Graphs & Sets II) - Petar Veličković",
+          "author": "Michael Bronstein",
+          "url": "https://www.youtube.com/watch?v=i79ewWQiUX4",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Michael Bronstein.",
+          "coverage_role": "Specializes the blueprint to graphs and sets, covering message passing, graph architectures, expressivity, and limitations.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 38,
+      "topic": "Open-Vocabulary Detection & Foundation Segmentation",
+      "description": "Open-vocabulary perception replaces a fixed class list with language-conditioned recognition, while foundation segmentation models use prompts to produce masks that transfer across categories and domains.",
+      "recall": [
+        "Vision-language pretraining aligns image regions or features with text so class names can be supplied at inference.",
+        "Open-vocabulary detection must localize and name objects beyond the detector's supervised category set.",
+        "Promptable segmentation predicts masks from points, boxes, text, or prior masks but does not guarantee semantic correctness.",
+        "Vocabulary bias, background confusion, calibration, and domain shift require explicit evaluation."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Lecture 11 | Detection and Segmentation",
+          "author": "Stanford University School of Engineering",
+          "url": "https://www.youtube.com/watch?v=nDPWywWRIRo",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Stanford University School of Engineering.",
+          "coverage_role": "Establishes closed-set object detection and semantic/instance segmentation architectures and metrics.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Open-Vocabulary Visual Perception upon Frozen Vision and Language Models (Yin Cui, Google)",
+          "author": "Computer Vision in the Wild (CVinW)",
+          "url": "https://www.youtube.com/watch?v=LAesxhjebDA",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Computer Vision in the Wild (CVinW).",
+          "coverage_role": "Extends detection and segmentation to open vocabularies using frozen vision-language foundation models.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 39,
+      "topic": "Imitation Learning, DAgger & Inverse RL",
+      "description": "Imitation learning trains behavior from demonstrations; DAgger reduces compounding error by querying an expert on learner-visited states, while inverse RL infers a reward that could explain expert behavior.",
+      "recall": [
+        "Behavior cloning is supervised learning under the demonstrator's state distribution.",
+        "Small action errors change future states, so deployment can drift outside the training distribution.",
+        "DAgger aggregates corrections from states induced by the current learner, at the cost of expert interaction.",
+        "Inverse RL is underdetermined: many rewards explain the same behavior, so assumptions and evaluation matter."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it. Coverage boundary: Only the first IRL lecture part is included; it establishes the formulation but omits some later adversarial-IRL variants.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "CS 285: Lecture 2, Imitation Learning. Part 1",
+          "author": "RAIL",
+          "url": "https://www.youtube.com/watch?v=tbLaFtYpWWU",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel RAIL.",
+          "coverage_role": "Introduces behavioral cloning and supervised imitation learning.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "CS 285: Lecture 2, Imitation Learning. Part 2",
+          "author": "RAIL",
+          "url": "https://www.youtube.com/watch?v=YivJ9KDjn-o",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel RAIL.",
+          "coverage_role": "Explains compounding covariate shift and interactive data aggregation approaches such as DAgger.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "CS 285: Lecture 20, Inverse Reinforcement Learning, Part 1",
+          "author": "RAIL",
+          "url": "https://www.youtube.com/watch?v=EcxpbhDeuZw",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel RAIL.",
+          "coverage_role": "Introduces inverse reinforcement learning as inference of objectives or rewards from expert behavior.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 40,
+      "topic": "Self-Supervised, Contrastive & Multimodal Learning",
+      "description": "Self-supervised and contrastive learning build representations from paired views or modalities; multimodal objectives align related signals while preserving enough modality-specific information for downstream reasoning.",
+      "recall": [
+        "Positive-pair design defines what the representation should treat as equivalent.",
+        "Negatives, stop-gradient, momentum teachers, or redundancy constraints are alternative ways to avoid collapsed features.",
+        "Multimodal alignment can enable zero-shot transfer but may discard details not shared across modalities.",
+        "Dataset composition, shortcut correlations, and retrieval metrics shape what apparent alignment means."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it. Coverage boundary: Audio and video multimodality are not treated in depth; image-text learning supplies the principal multimodal case study.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "MedAI Session 8: Self-supervision & Contrastive Frameworks: a vision-based review | Nandita Bhaskhar",
+          "author": "Stanford MedAI",
+          "url": "https://www.youtube.com/watch?v=OF_7dBbb_N0",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Stanford MedAI.",
+          "coverage_role": "Reviews self-supervised pretext learning, contrastive objectives, positive/negative construction, and visual representations.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "OpenAI CLIP: ConnectingText and Images (Paper Explained)",
+          "author": "Yannic Kilcher",
+          "url": "https://www.youtube.com/watch?v=T9XSU0pKX2E",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Yannic Kilcher.",
+          "coverage_role": "Shows how contrastive learning extends across image and language modalities in CLIP, including zero-shot transfer.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 41,
+      "topic": "Generative Vision: Latent Diffusion & Controllable Synthesis",
+      "description": "Latent diffusion performs denoising in a compressed representation to reduce cost, while conditioning and guidance steer synthesis through text, images, geometry, or control signals.",
+      "recall": [
+        "An autoencoder maps pixels to a latent space where diffusion is cheaper.",
+        "A conditional denoiser combines noisy latents, timestep information, and control context.",
+        "Classifier-free guidance trades diversity for stronger conditioning by extrapolating between conditional and unconditional predictions.",
+        "Controllability depends on data alignment and conditioning architecture; guidance cannot recover missing knowledge or exact geometry."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Latent Diffusion Models",
+          "author": "William Smith",
+          "url": "https://www.youtube.com/watch?v=wuwByIh5kDU",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator William Smith.",
+          "coverage_role": "Explains moving diffusion into an autoencoder latent space and the architecture underlying latent image diffusion.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "CMU 10799 S26: Lecture 7 - Guidance & Controllable Generation - Diffusion & Flow Matching",
+          "author": "Kelly He",
+          "url": "https://www.youtube.com/watch?v=lPipzIG6rkc",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Kelly He.",
+          "coverage_role": "Covers classifier/classifier-free guidance and structural conditioning methods for controllable synthesis.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 42,
+      "topic": "World Models & Latent Imagination",
+      "description": "World models learn compact predictive dynamics and use imagined trajectories to evaluate behavior; latent imagination is useful only when the representation preserves control-relevant consequences and uncertainty.",
+      "recall": [
+        "The model predicts future latent states, observations, rewards, or termination from state-action history.",
+        "Learning and planning in latent space can ignore pixel detail and make long rollouts cheaper.",
+        "A policy can exploit model errors, so uncertainty, short horizons, and real-data correction are essential.",
+        "Visual prediction quality is not the same as decision quality; test whether imagined differences change action choices correctly."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it. Coverage boundary: Concentrates on the Dreamer family rather than surveying every world-model architecture.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Dream to Control: Learning Behaviors by Latent Imagination",
+          "author": "Danijar Hafner",
+          "url": "https://www.youtube.com/watch?v=BDxRNnhPTlU",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel Danijar Hafner.",
+          "coverage_role": "First-author presentation of Dreamer: latent dynamics learning, imagined rollouts, value learning, and policy optimization inside a learned world model.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 43,
+      "topic": "Uncertainty, Calibration & Bayesian Deep Learning",
+      "description": "Predictive uncertainty separates noise in outcomes from uncertainty about the model; calibration asks whether stated probabilities match observed frequencies, and Bayesian approximations represent distributions over plausible predictors.",
+      "recall": [
+        "Aleatoric uncertainty comes from irreducible variability; epistemic uncertainty can shrink with relevant data.",
+        "A calibrated 80% prediction should be correct about 80% of the time within the evaluated population.",
+        "Ensembles, variational methods, and posterior approximations capture different slices of model uncertainty.",
+        "Calibration can fail under shift, and a low expected calibration error can hide class- or region-specific risk."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Yarin Gal - Uncertainty in Deep Learning | MLSS Kraków 2023",
+          "author": "ML in PL",
+          "url": "https://www.youtube.com/watch?v=fxiI_akW6MA",
+          "language": "English",
+          "source_type": "official_conference",
+          "source_rationale": "Academic conference, institute, or research-event recording hosted by ML in PL.",
+          "coverage_role": "Covers epistemic and aleatoric uncertainty, approximate Bayesian deep learning, and practical predictive-uncertainty methods.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Meelis Kull: \"Calibration and confidence in Machine Learning\"",
+          "author": "University of Tartu Institute of Computer Science",
+          "url": "https://www.youtube.com/watch?v=zSNQTfKGvhE",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from University of Tartu Institute of Computer Science .",
+          "coverage_role": "Adds the distinct calibration perspective: confidence reliability, calibration assessment, and post-hoc correction.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 44,
+      "topic": "3D Scene Understanding and Point/Implicit Representations",
+      "description": "3D scene understanding turns point clouds, images, or depth into geometry and semantics; point-based networks process samples directly, while implicit fields represent continuous occupancy, distance, or radiance.",
+      "recall": [
+        "Point sets are unordered and irregular, so architectures need permutation invariance and neighborhood reasoning.",
+        "Voxel and mesh methods introduce regular structure but trade resolution against memory or topology complexity.",
+        "Implicit functions query continuous coordinates for occupancy, signed distance, or appearance.",
+        "Sensor sparsity, occlusion, coordinate frames, and evaluation thresholds strongly affect apparent 3D quality."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Lecture 18 - Efficient Point Cloud Recognition | MIT 6.S965",
+          "author": "MIT HAN Lab",
+          "url": "https://www.youtube.com/watch?v=xtxRKbd_2W0",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel MIT HAN Lab.",
+          "coverage_role": "Covers explicit point-cloud representations and efficient neural recognition of unordered 3D data.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Computer Vision - Lecture 9.1 (Coordinate-based Networks: Implicit Neural Representations)",
+          "author": "Tübingen Machine Learning",
+          "url": "https://www.youtube.com/watch?v=r6n3tZJoTdI",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Tübingen Machine Learning.",
+          "coverage_role": "Covers continuous coordinate-based implicit representations for geometry, appearance, and neural scenes.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 45,
+      "topic": "Robot Kinematics, Dynamics & Operational-Space Control",
+      "description": "Robot kinematics maps joint motion to task-space motion, dynamics relates forces to acceleration, and operational-space control commands end-effector behavior while respecting the robot's full-body mechanics.",
+      "recall": [
+        "Forward kinematics maps joints to poses; the Jacobian maps joint velocities to task-space velocity.",
+        "Dynamics combines inertia, Coriolis/centrifugal effects, gravity, and external forces.",
+        "Operational-space control shapes task acceleration or wrench through dynamically consistent mappings.",
+        "Singularities, torque limits, contacts, model error, and competing tasks require regularization and prioritization."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Lecture 5 | Introduction to Robotics",
+          "author": "Stanford",
+          "url": "https://www.youtube.com/watch?v=u79KfNgP1Cc",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Stanford.",
+          "coverage_role": "Stanford robotics-course treatment of manipulator differential kinematics, Jacobians, forces, and the transition toward dynamics.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Lecture 6 | Introduction to Robotics",
+          "author": "Stanford",
+          "url": "https://www.youtube.com/watch?v=fwHc0a8DMQ0",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Stanford.",
+          "coverage_role": "Continues the Stanford sequence through manipulator dynamics and feedback-control foundations.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "Lecture 14: MIT 6.800/6.843 Robotics Manipulation (Fall 2021) | \"Manipulator Control\"",
+          "author": "underactuated",
+          "url": "https://www.youtube.com/watch?v=CfDPMYfk_0o",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from underactuated.",
+          "coverage_role": "Connects dynamics to task-space/manipulator control, including operational objectives, feedback, and contact-aware control.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 46,
+      "topic": "Causal Representation Learning & Invariance",
+      "description": "Causal representation learning seeks latent variables and mechanisms that remain meaningful across interventions and environments; invariance supplies a test for distinguishing stable causes from predictive shortcuts.",
+      "recall": [
+        "Correlation predicts within observed regimes; causal structure predicts selected interventions and shifts.",
+        "An invariant mechanism retains the same conditional relationship across suitable environments.",
+        "Latent causal variables are generally not identifiable without assumptions, interventions, or multiple environments.",
+        "Causal language does not make a representation causal; specify the graph, intervention, and falsifiable invariance claim."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it. Coverage boundary: Identifiability theory and modern latent causal-discovery benchmarks are not covered exhaustively.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Learning Representations Using Causal Invariance - Leon Bottou",
+          "author": "Institute for Advanced Study",
+          "url": "https://www.youtube.com/watch?v=yFXPU2lMNdk",
+          "language": "English",
+          "source_type": "official_conference",
+          "source_rationale": "Academic conference, institute, or research-event recording hosted by Institute for Advanced Study.",
+          "coverage_role": "Research lecture connecting causal structure, interventions/environments, invariant mechanisms, and learned representations that generalize beyond observational correlations.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 47,
+      "topic": "4D Dynamic Reconstruction & Neural Scene Flow",
+      "description": "4D reconstruction models geometry as it changes through time, combining camera motion, scene deformation, correspondence, and rendering; neural scene flow estimates continuous 3D motion rather than only image-plane displacement.",
+      "recall": [
+        "Dynamic reconstruction must separate observer motion from non-rigid scene motion.",
+        "Scene flow is 3D displacement over time; optical flow is its projected 2D evidence.",
+        "Temporal consistency and canonical-space deformation reduce ambiguity but impose motion assumptions.",
+        "Occlusion, topology change, sparse views, timing errors, and long sequences expose drift and hallucinated geometry."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Temporally Coherent 4D Reconstruction of Complex Dynamic Scenes",
+          "author": "ComputerVisionFoundation Videos",
+          "url": "https://www.youtube.com/watch?v=9v6i8VZZE5k",
+          "language": "English",
+          "source_type": "official_conference",
+          "source_rationale": "Academic conference, institute, or research-event recording hosted by ComputerVisionFoundation Videos.",
+          "coverage_role": "Introduces temporally coherent dynamic-scene reconstruction and the geometric constraints needed to recover changing 3D structure.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Flow4R: Unifying 4D Reconstruction and Tracking with Scene Flow",
+          "author": "Shenhan Qian",
+          "url": "https://www.youtube.com/watch?v=DmaG6F3qlmk",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Shenhan Qian.",
+          "coverage_role": "Shows a modern neural formulation that unifies reconstruction, tracking, and scene-flow estimation over time.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 48,
+      "topic": "Motion Planning, Trajectory Optimization & MPC",
+      "description": "Motion planning searches for collision-free behavior, trajectory optimization refines a parameterized path under costs and constraints, and model predictive control repeatedly replans from updated state estimates.",
+      "recall": [
+        "Sampling-based planners explore feasible connectivity; optimization-based planners exploit smooth local structure.",
+        "Trajectory optimization balances dynamics, collision, task, smoothness, and actuator constraints.",
+        "MPC executes the first part of a finite-horizon plan, observes again, and shifts the horizon.",
+        "Model error, latency, non-convexity, and uncertain obstacles require margins, feedback, and fallback behavior."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it. Coverage boundary: The final lecture emphasizes trajectory stabilization; detailed MPC solver engineering and real-time iteration are not treated exhaustively.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Lecture 15 | MIT 6.881 (Robotic Manipulation), Fall 2020 | Motion Planning (Part 1)",
+          "author": "underactuated",
+          "url": "https://www.youtube.com/watch?v=RjKkA_6-0C4",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from underactuated.",
+          "coverage_role": "Introduces configuration-space motion planning, collision constraints, and search/sampling-based planning.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Lecture 10 | MIT 6.832 (Underactuated Robotics), Spring 2020 | Trajectory Optimization",
+          "author": "underactuated",
+          "url": "https://www.youtube.com/watch?v=ZTizHbj339w",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from underactuated.",
+          "coverage_role": "Reformulates planning as constrained trajectory optimization with dynamics and costs.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "Lecture 12: MIT 6.832 Underactuated Robotics (Spring 2022) | \"Trajectory Stabilization\"",
+          "author": "underactuated",
+          "url": "https://www.youtube.com/watch?v=sd7Lj7StBkA",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from underactuated.",
+          "coverage_role": "Closes the loop through receding-horizon/trajectory-stabilization ideas that connect optimized plans to model-predictive feedback control.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 49,
+      "topic": "Meta-Learning, Continual Learning & Adaptation",
+      "description": "Meta-learning adapts from a small amount of task data, while continual learning preserves useful knowledge across a sequence of changing tasks; both study how learning itself should change with experience.",
+      "recall": [
+        "Gradient-based meta-learning optimizes an initialization or update rule for rapid task adaptation.",
+        "Metric and memory-based methods adapt by comparison or retrieval rather than many parameter updates.",
+        "Continual learning must balance plasticity on new data with stability of old capabilities.",
+        "Task boundaries, replay access, evaluation order, and distribution drift determine whether an adaptation claim is meaningful."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "CS 182: Lecture 21: Part 1: Meta-Learning",
+          "author": "RAIL",
+          "url": "https://www.youtube.com/watch?v=h7qyQeXKxZE",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel RAIL.",
+          "coverage_role": "Introduces meta-learning and learning-to-adapt formulations from Berkeley's CS 182.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "[Continual Learning Course] Lecture #1: Introduction and Motivation",
+          "author": "ContinualAI",
+          "url": "https://www.youtube.com/watch?v=z9DDg2CJjeE",
+          "language": "English",
+          "source_type": "professional_foundation",
+          "source_rationale": "Technical instruction from the established professional or educational organization ContinualAI.",
+          "coverage_role": "Adds continual and lifelong learning, catastrophic forgetting, changing task distributions, and the motivation for persistent adaptation.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 50,
+      "topic": "Domain Adaptation, Test-Time Adaptation & Robustness",
+      "description": "Domain adaptation transfers a model across different train and test distributions, test-time adaptation updates it using unlabeled deployment data, and robustness asks which changes the system should withstand without unsafe degradation.",
+      "recall": [
+        "Covariate, label, and concept shift require different assumptions and corrections.",
+        "Feature alignment can erase class information or align the wrong modes if labels and supports differ.",
+        "Test-time adaptation must avoid leakage, collapse, and irreversible updates under nonstationary streams.",
+        "Report source performance, target performance, calibration, and failure detection—not only average target accuracy."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "[ML 2021 (English version)] Lecture 27: Domain Adaptation",
+          "author": "Hung-yi Lee",
+          "url": "https://www.youtube.com/watch?v=8AKqH6V9kjE",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Hung-yi Lee.",
+          "coverage_role": "Builds the domain-shift problem and principal supervised and unsupervised domain-adaptation approaches.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Test-Time Adaptation: Next Steps for Robust Visual Recognition",
+          "author": "Ai2",
+          "url": "https://www.youtube.com/watch?v=EyyMSjxbvII",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel Ai2.",
+          "coverage_role": "Extends adaptation to deployment-time distribution shifts and discusses robustness objectives, assumptions, and failure modes.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 51,
+      "topic": "Diffusion Policy for Visuomotor Control",
+      "description": "Diffusion Policy models a distribution over action sequences and generates a receding-horizon chunk conditioned on observations, using iterative denoising to represent multimodal visuomotor behavior.",
+      "recall": [
+        "The policy denoises an action trajectory rather than predicting one action independently.",
+        "Action chunks capture temporal coherence and reduce compounding from stepwise behavior cloning.",
+        "At deployment, the robot repeatedly conditions, samples a chunk, executes part, and replans.",
+        "Sampling latency, observation alignment, chunk horizon, multimodal data quality, and closed-loop correction determine control performance."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Diffusion in RL and robotics: how expressive policies changed how we use continuous actions",
+          "author": "Simons Institute for the Theory of Computing",
+          "url": "https://www.youtube.com/watch?v=agi3xLTGyaU",
+          "language": "English",
+          "source_type": "official_conference",
+          "source_rationale": "Academic conference, institute, or research-event recording hosted by Simons Institute for the Theory of Computing.",
+          "coverage_role": "Explains why diffusion models are useful as expressive, multimodal continuous-action policies in RL and robotics.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Princeton Robotics - Russ Tedrake - Dexterous Manipulation with Diffusion Policies",
+          "author": "Intelligent Robot Motion Lab",
+          "url": "https://www.youtube.com/watch?v=whpK0HDtOJ0",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Intelligent Robot Motion Lab.",
+          "coverage_role": "Connects action diffusion to visuomotor manipulation, receding-horizon execution, dexterity, and real-robot deployment.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 52,
+      "topic": "Scaling Laws, Data Mixtures & Test-Time Compute",
+      "description": "Scaling laws describe predictable trends with model, data, and compute; data mixtures choose which capabilities receive that compute, and test-time compute spends additional inference effort on search, sampling, or verification.",
+      "recall": [
+        "Power-law trends summarize a regime; they do not guarantee extrapolation after architecture, data, or objective changes.",
+        "Compute-optimal training balances model size and useful token or example count.",
+        "Mixture weights change the learned task distribution and can dominate aggregate scaling gains.",
+        "Test-time compute helps only when extra samples or reasoning can be selected by a reliable verifier or policy."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Jared Kaplan | Scaling Laws and Their Implications for Coding AI",
+          "author": "Harvard CMSA",
+          "url": "https://www.youtube.com/watch?v=Suhp3OLASSo",
+          "language": "English",
+          "source_type": "official_conference",
+          "source_rationale": "Academic conference, institute, or research-event recording hosted by Harvard CMSA.",
+          "coverage_role": "Introduces empirical neural scaling laws and the relationships among model size, data, compute, and loss.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Danqi Chen: Data Selection for Pre-training and Instruction-tuning of LLMs",
+          "author": "KUIS AI",
+          "url": "https://www.youtube.com/watch?v=SFuNEkGUziA",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from KUIS AI.",
+          "coverage_role": "Covers data selection and mixture quality for pretraining and instruction tuning, complementing compute-centric scaling laws.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "Inference-time scaling and reasoning: Lecture 12 of NLPwDL 25/26",
+          "author": "Ivan Habernal",
+          "url": "https://www.youtube.com/watch?v=ZbaFQjWB6Vo",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Ivan Habernal.",
+          "coverage_role": "Completes the lesson with inference-time scaling, reasoning-time compute, and the shift from train-time to test-time resource allocation.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 53,
+      "topic": "Vision-Language Models and Visual Reasoning",
+      "description": "Vision-language models align visual and textual representations or generate language from images; visual reasoning requires grounding intermediate claims in image evidence rather than relying on linguistic priors.",
+      "recall": [
+        "Contrastive models support retrieval and zero-shot classification; generative models condition a language decoder on visual tokens.",
+        "Resolution, region representation, connector architecture, and instruction data control what visual detail reaches the model.",
+        "Correct language can be produced from dataset priors without inspecting the image.",
+        "Evaluate grounding, counting, spatial relations, OCR, calibration, and adversarial counterexamples separately."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "CS 198-126: Lecture 22 - Multimodal Learning",
+          "author": "Machine Learning at Berkeley",
+          "url": "https://www.youtube.com/watch?v=_Y-D5jrX7IQ",
+          "language": "English",
+          "source_type": "official_conference",
+          "source_rationale": "Academic conference, institute, or research-event recording hosted by Machine Learning at Berkeley.",
+          "coverage_role": "Establishes multimodal representation, fusion, alignment, and cross-modal learning foundations.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Multimodal Representation Learning for Vision and Language - Kai-Wei Chang (UCLA)",
+          "author": "Center for Language & Speech Processing(CLSP), JHU",
+          "url": "https://www.youtube.com/watch?v=0_iIggNL1YU",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Center for Language & Speech Processing(CLSP), JHU.",
+          "coverage_role": "Focuses on joint vision-language representations and learning objectives used by modern VLMs.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "Lecture 5: Vision and Language (Desmond Elliott)",
+          "author": "LxMLS Lisbon Machine Learning School",
+          "url": "https://www.youtube.com/watch?v=cKbNZcgNhFY",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from LxMLS Lisbon Machine Learning School.",
+          "coverage_role": "Applies the foundations to captioning, grounding, question answering, and visual-language reasoning tasks.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 54,
+      "topic": "Sim-to-Real, System Identification & Domain Randomization",
+      "description": "Sim-to-real transfers policies or models from simulation to hardware by identifying important dynamics, randomizing uncertain factors, and adapting representations or controllers to residual mismatch.",
+      "recall": [
+        "System identification estimates simulator or controller parameters from real trajectories.",
+        "Domain randomization trains across a distribution so the real system is likely to lie inside learned robustness.",
+        "Randomizing irrelevant variables wastes capacity; omitting a causal factor creates brittle transfer.",
+        "Validate progressively with uncertainty bounds, safety limits, residual adaptation, and hardware-specific latency/noise tests."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Lecture 1: Introduction to Identification, Estimation, and Learning",
+          "author": "dLabRoboticsMIT",
+          "url": "https://www.youtube.com/watch?v=MfUBy2Fxlmg",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from dLabRoboticsMIT.",
+          "coverage_role": "Introduces system identification and estimation as mechanisms for reducing model mismatch.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Research at NVIDIA: Structured Domain Randomization",
+          "author": "NVIDIA",
+          "url": "https://www.youtube.com/watch?v=1WdjWJYx9AY",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel NVIDIA.",
+          "coverage_role": "Explains domain randomization and how structured variation can make synthetic training data useful in reality.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "Learning and Deploying Robust Locomotion Policies with Minimal Dynamics Randomization",
+          "author": "Oxford Dynamic Robot Systems Group",
+          "url": "https://www.youtube.com/watch?v=kGkOoJ_DAwQ",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel Oxford Dynamic Robot Systems Group.",
+          "coverage_role": "Shows the complete sim-to-real loop for learned robot control, including dynamics variation and real-hardware deployment.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 55,
+      "topic": "ML Systems: Accelerators, Mixed Precision & Distributed Training",
+      "description": "ML systems turn tensor programs into efficient distributed execution; accelerators exploit parallel arithmetic, mixed precision reduces memory and bandwidth, and distributed strategies partition data, model state, or pipeline work.",
+      "recall": [
+        "Throughput is constrained by compute, memory capacity, memory bandwidth, communication, and input pipelines.",
+        "Mixed precision keeps selected operations or master states at higher precision to prevent overflow and underflow.",
+        "Data parallelism replicates model state; tensor, pipeline, and sharded methods divide it in different ways.",
+        "Scaling efficiency must include synchronization, stragglers, failures, reproducibility, and total cost—not only device utilization."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Lecture 15 | Efficient Methods and Hardware for Deep Learning",
+          "author": "Stanford University School of Engineering",
+          "url": "https://www.youtube.com/watch?v=eZdOkDtYMoo",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Stanford University School of Engineering.",
+          "coverage_role": "Covers efficient computation, memory movement, model compression, and accelerator architecture.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "NVAITC Webinar: Automatic Mixed Precision Training in PyTorch",
+          "author": "NVIDIA Developer",
+          "url": "https://www.youtube.com/watch?v=b5dAmcBKxHg",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel NVIDIA Developer.",
+          "coverage_role": "Explains reduced-precision arithmetic, loss scaling, numerical stability, and practical mixed-precision training.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "Distributed Deep Learning",
+          "author": "Argonne Leadership Computing Facility",
+          "url": "https://www.youtube.com/watch?v=GGR7CzIHt14",
+          "language": "English",
+          "source_type": "professional_foundation",
+          "source_rationale": "Technical instruction from the established professional or educational organization Argonne Leadership Computing Facility.",
+          "coverage_role": "Completes the systems view with distributed training, parallel execution, communication, and large-compute infrastructure.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 56,
+      "topic": "Efficient Vision: Quantization, Distillation & Edge Deployment",
+      "description": "Efficient vision compresses computation and memory through quantization, distillation, pruning, and architecture design, then measures the resulting model on the actual edge runtime rather than proxy FLOPs alone.",
+      "recall": [
+        "Quantization maps values to fewer levels; calibration or quantization-aware training controls the induced error.",
+        "Distillation trains a smaller student to match a teacher's outputs or intermediate behavior.",
+        "Latency depends on operator support, memory movement, batch size, and hardware—not just parameter count.",
+        "Evaluate accuracy, tail latency, energy, memory, thermal behavior, and robustness after conversion."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Lec 30 | Quantization, Pruning & Distillation",
+          "author": "NPTEL IIT Delhi",
+          "url": "https://www.youtube.com/watch?v=Kx5x3HYBDls",
+          "language": "English",
+          "source_type": "professional_foundation",
+          "source_rationale": "Technical instruction from the established professional or educational organization NPTEL IIT Delhi.",
+          "coverage_role": "Provides the algorithmic foundation for quantization and knowledge distillation, with pruning as useful adjacent context.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Machine Learning on the Edge - From Microcontrollers to Embedded Linux Devices",
+          "author": "Toronto Machine Learning Series (TMLS)",
+          "url": "https://www.youtube.com/watch?v=KpwXcVk4hZY",
+          "language": "English",
+          "source_type": "official_conference",
+          "source_rationale": "Academic conference, institute, or research-event recording hosted by Toronto Machine Learning Series (TMLS).",
+          "coverage_role": "Covers deployment constraints and implementation choices across microcontrollers and embedded Linux edge devices.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 57,
+      "topic": "ROS 2, Real-Time Robot Software & Hardware Interfaces",
+      "description": "ROS 2 organizes robot software as communicating nodes over DDS, while real-time design and hardware interfaces determine whether sensing and control deadlines remain predictable on physical systems.",
+      "recall": [
+        "Topics stream data, services answer requests, and actions manage long-running goals with feedback and cancellation.",
+        "Quality-of-service settings encode reliability, durability, history, and timing assumptions.",
+        "Real-time behavior requires bounded callbacks, memory use, scheduling, and transport—not merely a high loop rate.",
+        "Hardware interfaces separate controllers from device drivers but still require explicit units, timestamps, limits, and failure states."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "ROS 2 going industrial - D. Stogl N. Banovic - b-robotized GmbH",
+          "author": "ROS-I Consortium",
+          "url": "https://www.youtube.com/watch?v=jlO9Q-QWD4I",
+          "language": "English",
+          "source_type": "professional_foundation",
+          "source_rationale": "Technical instruction from the established professional or educational organization ROS-I Consortium.",
+          "coverage_role": "Introduces ROS 2 architecture and the requirements that arise in production and industrial robot software.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "ROS 2 + DDS Interoperation",
+          "author": "Real-Time Innovations",
+          "url": "https://www.youtube.com/watch?v=GGqcrccWfeE",
+          "language": "English",
+          "source_type": "professional_foundation",
+          "source_rationale": "Technical instruction from the established professional or educational organization Real-Time Innovations.",
+          "coverage_role": "Explains the DDS communication layer, interoperability, and middleware-facing interfaces underlying ROS 2.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "Deep Dark ROS E3: Real Time in ROS2 Intro",
+          "author": "The Construct Robotics Institute",
+          "url": "https://www.youtube.com/watch?v=1vnMiPfaVcs",
+          "language": "English",
+          "source_type": "professional_foundation",
+          "source_rationale": "Technical instruction from the established professional or educational organization The Construct Robotics Institute.",
+          "coverage_role": "Covers real-time behavior, scheduling concerns, latency, and how ROS 2 participates in time-critical robot stacks.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 58,
+      "topic": "Data-Centric ML, Evaluation & Reproducibility",
+      "description": "Data-centric ML improves the dataset, labels, splits, and evaluation process as deliberately as the model; reproducibility records enough code, data lineage, configuration, and randomness to explain a result.",
+      "recall": [
+        "Label quality, coverage, duplicates, leakage, and split design can dominate algorithm changes.",
+        "Metrics must correspond to the operational cost and be reported with uncertainty and subgroup breakdowns.",
+        "An ablation changes one causal factor at a time; a benchmark score without controls is weak evidence.",
+        "Reproducibility needs immutable data versions, executable environments, seeds, hardware details, and failure logs."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Data centric AI development  From Big Data to Good Data   Andrew Ng",
+          "author": "Databricks",
+          "url": "https://www.youtube.com/watch?v=avoijDORAlc",
+          "language": "English",
+          "source_type": "professional_foundation",
+          "source_rationale": "Technical instruction from the established professional or educational organization Databricks.",
+          "coverage_role": "Motivates systematic dataset iteration, labeling quality, error analysis, and the data-centric development loop.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Lecture 15 - Evaluation Metrics | Data Science & Machine Learning | University of Bremen",
+          "author": "Hendrik Heuer",
+          "url": "https://www.youtube.com/watch?v=1TJ6154M1hQ",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Hendrik Heuer.",
+          "coverage_role": "Supplies the evaluation layer: metric selection, confusion-matrix-derived measures, and interpretation of model performance.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "TechAide AI4Good 2020 - Joelle Pineau: Building Reproducible, Reusable and Robust Deep RL Systems",
+          "author": "Hugo Larochelle",
+          "url": "https://www.youtube.com/watch?v=Phy9Yex5bm4",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Hugo Larochelle.",
+          "coverage_role": "Explains experimental reproducibility, reusable research infrastructure, reporting discipline, and robustness of empirical conclusions.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 59,
+      "topic": "Dataset Design, Long-Tail Metrics & Failure Analysis",
+      "description": "Vision datasets define the visual world a model can learn; long-tailed distributions, annotation policy, and scenario coverage require metrics and failure analysis that expose rare but consequential errors.",
+      "recall": [
+        "Class counts alone do not capture variation in pose, context, geography, sensors, and difficulty.",
+        "Macro, per-class, and worst-group metrics reveal failures hidden by aggregate accuracy.",
+        "Detection and segmentation require matching and IoU conventions that can change conclusions.",
+        "Turn error clusters into named failure modes with representative examples, likely causes, and a data-collection response."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "CPSC 330 Lecture 3: data splitting",
+          "author": "Mike Gelbart",
+          "url": "https://www.youtube.com/watch?v=arrhrBjOPhY",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Mike Gelbart.",
+          "coverage_role": "Covers defensible dataset splitting and leakage prevention as core dataset-design requirements.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Shir Bar - Lecture 6 - Evaluation Metrics in Computer Vision for Ecology",
+          "author": "CV4Ecology",
+          "url": "https://www.youtube.com/watch?v=alO00a0cINg",
+          "language": "English",
+          "source_type": "official_conference",
+          "source_rationale": "Academic conference, institute, or research-event recording hosted by CV4Ecology.",
+          "coverage_role": "Provides computer-vision-specific metrics and demonstrates why evaluation must reflect task and data characteristics.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "Deva Ramanan - Understanding Visual Appearances in the Long-tail",
+          "author": "UBC Computer Science",
+          "url": "https://www.youtube.com/watch?v=YTHqXEI_vgs",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from UBC Computer Science.",
+          "coverage_role": "Addresses rare categories, long-tailed appearance distributions, diagnostic slicing, and failures hidden by aggregate metrics.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 60,
+      "topic": "Robot Evaluation, Safety Cases & Reproducible Benchmarks",
+      "description": "Robot evaluation must connect repeatable benchmark measurements to a safety argument, covering task success, robustness, recovery, human interaction, and reproducibility across hardware and environments.",
+      "recall": [
+        "Success rate needs a precise task, initial-condition distribution, timeout, and failure taxonomy.",
+        "Average performance hides tail risk; report interventions, collisions, near misses, and recovery time.",
+        "A safety case links hazards, claims, mitigations, and evidence rather than declaring a system safe from one benchmark.",
+        "Reproducible robotics needs calibrated hardware, logged software versions, environment descriptions, seeds, and raw episode traces."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Robotic Standard Test Methods",
+          "author": "DHS Science and Technology Directorate",
+          "url": "https://www.youtube.com/watch?v=_kQ6M7ZALJI",
+          "language": "English",
+          "source_type": "professional_foundation",
+          "source_rationale": "Technical instruction from the established professional or educational organization DHS Science and Technology Directorate.",
+          "coverage_role": "Introduces standardized physical test methods and repeatable measurement of robot capabilities.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Fabio Bonsignorio - Why Do We Need Benchmarking and Reproducible Research in Robotics?",
+          "author": "EURA - Jean Monnet Centre of Excellence",
+          "url": "https://www.youtube.com/watch?v=y0Z_2pmhj_I",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from EURA - Jean Monnet Centre of Excellence.",
+          "coverage_role": "Explains reproducible robotics benchmarking, comparable protocols, and the institutional need for shared evaluation practice.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "Stanford Seminar - Safety (and Liveness!) of Robot Behaviors",
+          "author": "Stanford Online",
+          "url": "https://www.youtube.com/watch?v=Mcc6wYfzNFY",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Stanford Online.",
+          "coverage_role": "Adds formal safety and liveness reasoning needed to turn test evidence into an assurance or safety case.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 61,
+      "topic": "Interpretability, Mechanistic Analysis & Alignment",
+      "description": "Interpretability studies what information a model represents and how computation produces behavior; mechanistic analysis traces causal components, while alignment asks whether those mechanisms reliably support intended objectives.",
+      "recall": [
+        "Attribution is a hypothesis about influence, not automatically a causal explanation.",
+        "Mechanistic work needs interventions such as ablation, activation patching, or controlled feature steering.",
+        "Distributed and superposed representations make neuron-level stories incomplete.",
+        "An interpretable mechanism is useful for alignment only if it predicts failures and supports reliable monitoring or control."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Interpretability: Understanding how AI models think",
+          "author": "Anthropic",
+          "url": "https://www.youtube.com/watch?v=fGKNUvivvnc",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel Anthropic.",
+          "coverage_role": "Provides an authoritative overview of interpretability goals, methods, and their relevance to model behavior.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Introduction to Mechanistic Interpretability with David Bau",
+          "author": "NDIF Team",
+          "url": "https://www.youtube.com/watch?v=37CUO4WGiQ4",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from NDIF Team.",
+          "coverage_role": "Moves from behavioral explanation to causal, component-level analysis of learned mechanisms.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "How difficult is AI alignment? | Anthropic Research Salon",
+          "author": "Anthropic",
+          "url": "https://www.youtube.com/watch?v=IPmt8b-qLgk",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel Anthropic.",
+          "coverage_role": "Connects interpretability evidence to alignment objectives, oversight, uncertainty, and unresolved safety problems.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 62,
+      "topic": "Adversarial Robustness, OOD Detection & Model Editing",
+      "description": "Adversarial robustness studies worst-case input sensitivity, OOD detection flags unfamiliar data, and model editing changes selected knowledge or behavior; all three require testing side effects beyond the targeted examples.",
+      "recall": [
+        "Adversarial examples exploit local decision geometry under a defined threat model.",
+        "OOD scores are meaningful only relative to specified in- and out-distributions.",
+        "Robust accuracy must be measured with strong adaptive attacks, not a single weak perturbation.",
+        "An edit should be specific, generalize to paraphrases, persist appropriately, and avoid damaging unrelated behavior."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "On the Adversarial Robustness of Deep Learning",
+          "author": "Microsoft Research",
+          "url": "https://www.youtube.com/watch?v=YgYiECAr9Gs",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel Microsoft Research.",
+          "coverage_role": "Covers adversarial examples, threat models, attacks, defenses, and the limits of empirical robustness.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "[ICCV 2023 Tutorial] Sharon Yixuan Li: Out-of-Distribution detection",
+          "author": "Andrei Bursuc",
+          "url": "https://www.youtube.com/watch?v=hgLC9_9ZCJI",
+          "language": "English",
+          "source_type": "official_conference",
+          "source_rationale": "Academic conference, institute, or research-event recording hosted by Andrei Bursuc.",
+          "coverage_role": "Introduces OOD detection, uncertainty scores, evaluation protocols, and open-world deployment concerns.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "David Bau: Interpretability and model editing",
+          "author": "UC Berkeley EECS",
+          "url": "https://www.youtube.com/watch?v=8QPVKpzyZdY",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from UC Berkeley EECS.",
+          "coverage_role": "Explains causal localization and direct editing of model knowledge or behavior, including evaluation of edit specificity.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 63,
+      "topic": "Safe RL, Constraints, Shielding & Human Oversight",
+      "description": "Safe RL constrains learning and execution through cost objectives, shields, recovery policies, and human oversight, recognizing that reward optimization alone does not encode operational acceptability.",
+      "recall": [
+        "A constrained MDP distinguishes reward from safety costs or hard limits.",
+        "A shield overrides or filters an action when a verified safety condition would be violated.",
+        "Training safety and deployment safety differ because exploration, estimation error, and distribution shift change risk.",
+        "Oversight needs calibrated uncertainty, meaningful intervention points, audit logs, and a safe fallback state."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "RLSS 2023 - Safe Reinforcement Learning - Felix Berkenkamp",
+          "author": "Universitat Pompeu Fabra - Barcelona",
+          "url": "https://www.youtube.com/watch?v=HhTBUHiZWPE",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Universitat Pompeu Fabra - Barcelona.",
+          "coverage_role": "Establishes safe-RL objectives, constrained decision making, safe exploration, and safety guarantees.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Shield Synthesis for Safe Reinforcement Learning",
+          "author": "Simons Institute for the Theory of Computing",
+          "url": "https://www.youtube.com/watch?v=DUkqNJ-rwck",
+          "language": "English",
+          "source_type": "official_conference",
+          "source_rationale": "Academic conference, institute, or research-event recording hosted by Simons Institute for the Theory of Computing.",
+          "coverage_role": "Focuses on runtime shields and formal intervention mechanisms that prevent unsafe actions.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "Research talk: Safe reinforcement learning using advantage-based intervention",
+          "author": "Microsoft Research",
+          "url": "https://www.youtube.com/watch?v=3PEOFPtVrPw",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel Microsoft Research.",
+          "coverage_role": "Covers intervention and oversight mechanisms in which an external controller or human supervisor constrains learned behavior.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 64,
+      "topic": "Neural Operators, Scientific ML & Differentiable Simulation",
+      "description": "Scientific ML combines physical structure with learned approximations; neural operators learn mappings between functions, and differentiable simulators expose gradients through numerical models for inverse problems and control.",
+      "recall": [
+        "An operator maps an input field or boundary condition to an output field, not merely one finite vector to another.",
+        "Discretization invariance is a goal: behavior should transfer across meshes or resolutions within the modeled regime.",
+        "Physics-informed losses encode equations and constraints but can be poorly conditioned or under-identify solutions.",
+        "Differentiable simulation gradients inherit approximation, contact, and solver errors and must be checked against perturbations."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Fourier Neural Operator (FNO) [Physics Informed Machine Learning]",
+          "author": "Steve Brunton",
+          "url": "https://www.youtube.com/watch?v=W8PybqAk6Ik",
+          "language": "English",
+          "source_type": "respected_educator",
+          "source_rationale": "Lecture by the established researcher or technical educator Steve Brunton.",
+          "coverage_role": "Introduces operator learning and Fourier Neural Operators for learning mappings between function spaces and PDE solutions.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "ETH Zürich DLSC: Physics-Informed Neural Networks - Introduction",
+          "author": "CAMLab, ETH Zürich",
+          "url": "https://www.youtube.com/watch?v=Oh1nhCNlqjg",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from CAMLab, ETH Zürich.",
+          "coverage_role": "Places neural operators alongside physics-informed learning and the broader scientific-ML problem setting.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "ETH Zürich DLSC: Introduction to Differentiable Physics Part 1",
+          "author": "CAMLab, ETH Zürich",
+          "url": "https://www.youtube.com/watch?v=1Edfts3UzaY",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from CAMLab, ETH Zürich.",
+          "coverage_role": "Explains differentiable simulation and gradient propagation through physical models.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 65,
+      "topic": "Event Cameras, Active Vision & Computational Imaging",
+      "description": "Event cameras asynchronously report brightness changes, active vision chooses sensing actions, and computational imaging jointly designs optics, acquisition, and reconstruction to recover information unavailable to a conventional frame pipeline.",
+      "recall": [
+        "An event encodes a thresholded log-intensity change with pixel, polarity, and timestamp, not an absolute brightness measurement.",
+        "High temporal range and dynamic range come with sparse noise, calibration, and reconstruction challenges.",
+        "Active vision treats viewpoint, focus, illumination, or exposure as controllable variables.",
+        "Computational imaging should be evaluated as a complete optics-sensor-algorithm system under realistic noise."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Event Cameras: a New Way of Sensing - Davide Scaramuzza - ICCP 2024 Keynote",
+          "author": "UZH Robotics and Perception Group",
+          "url": "https://www.youtube.com/watch?v=0wGBpgIrd9M",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel UZH Robotics and Perception Group.",
+          "coverage_role": "Covers event-camera sensing, asynchronous measurements, high dynamic range, low latency, and event-based algorithms.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Learning Representations for Active Vision",
+          "author": "Simons Institute for the Theory of Computing",
+          "url": "https://www.youtube.com/watch?v=QrvK3jPRc8k",
+          "language": "English",
+          "source_type": "official_conference",
+          "source_rationale": "Academic conference, institute, or research-event recording hosted by Simons Institute for the Theory of Computing.",
+          "coverage_role": "Explains perception systems that choose viewpoints or actions to obtain more informative visual observations.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "The Eternal Camera. Shree K. Nayar, Computer Vision Lab @ Columbia Engineering",
+          "author": "Columbia Engineering",
+          "url": "https://www.youtube.com/watch?v=4CaIOf-Rcvs",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Columbia Engineering.",
+          "coverage_role": "Broadens the lesson to computational-camera design and joint optimization of optics, sensors, and algorithms.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 66,
+      "topic": "Active Perception and Information-Gathering Control",
+      "description": "Active perception selects actions partly for the information they reveal, coupling belief estimation with control so the agent can reduce uncertainty before committing to a task action.",
+      "recall": [
+        "A sensing action can have low immediate task reward but high value of information.",
+        "Belief-space planning predicts how actions change both physical state and uncertainty.",
+        "Information gain, entropy reduction, and task value are related but not interchangeable objectives.",
+        "Approximate beliefs and expensive lookahead require receding horizons, learned surrogates, and safety-aware exploration."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Christopher Denniston on Active Robot Perception for Understanding the World | Toronto AIR Seminar",
+          "author": "AI Robotics Seminar - University of Toronto",
+          "url": "https://www.youtube.com/watch?v=ffyGHsoZKwo",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from AI Robotics Seminar - University of Toronto.",
+          "coverage_role": "Introduces active robot perception and the coupling between sensing actions, scene understanding, and downstream decisions.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Geoffrey A. Hollinger - Information Gathering with Multi-Robot Teams",
+          "author": "ARL Workshop on Heterogeneity, Diversity and Resilience in Multi-Robot Systems",
+          "url": "https://www.youtube.com/watch?v=DRKj-SHLS58",
+          "language": "English",
+          "source_type": "official_conference",
+          "source_rationale": "Academic conference, institute, or research-event recording hosted by ARL Workshop on Heterogeneity, Diversity and Resilience in Multi-Robot Systems.",
+          "coverage_role": "Develops information objectives, informative planning, uncertainty reduction, and control for single- and multi-robot sensing.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 67,
+      "topic": "Foundation-Model Agents, Tool Use & Memory",
+      "description": "Foundation-model agents combine a pretrained model with tools, external memory, and a control loop; reliability depends on grounding each action, managing state, and verifying outcomes rather than treating fluent plans as execution.",
+      "recall": [
+        "The agent loop observes, updates state, selects a tool or response, executes, and incorporates the result.",
+        "Working context, episodic history, and durable semantic memory have different lifetimes and failure modes.",
+        "Tool schemas and permissions define the action space and must constrain irreversible operations.",
+        "Planning benchmarks should measure completion, recovery, cost, and factual grounding across long horizons."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "5 Types of AI Agents: Autonomous Functions & Real-World Applications",
+          "author": "IBM Technology",
+          "url": "https://www.youtube.com/watch?v=fXizBc03D7E",
+          "language": "English",
+          "source_type": "professional_foundation",
+          "source_rationale": "Technical instruction from the established professional or educational organization IBM Technology.",
+          "coverage_role": "Establishes agent architectures, autonomy levels, planning loops, and the place of foundation models in agent systems.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "What AI Agent Skills Are and How They Work",
+          "author": "IBM Technology",
+          "url": "https://www.youtube.com/watch?v=Lg-meK5IU8Q",
+          "language": "English",
+          "source_type": "professional_foundation",
+          "source_rationale": "Technical instruction from the established professional or educational organization IBM Technology.",
+          "coverage_role": "Explains reusable skills and tool interfaces through which agents act on external systems.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "The Four Types of Memory Every AI Agent Needs",
+          "author": "IBM Technology",
+          "url": "https://www.youtube.com/watch?v=BacJ6sEhqMo",
+          "language": "English",
+          "source_type": "professional_foundation",
+          "source_rationale": "Technical instruction from the established professional or educational organization IBM Technology.",
+          "coverage_role": "Completes the architecture with working, episodic, semantic, and procedural memory and their operational roles.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 68,
+      "topic": "Video Foundation Models & World-Centric Perception",
+      "description": "Video foundation models learn temporal representations or generative dynamics from large video corpora; world-centric perception asks whether those features preserve persistent objects, geometry, motion, and cause beyond short frame correlations.",
+      "recall": [
+        "Video supervision provides motion and temporal continuity without manual labels.",
+        "Masked prediction, contrastive objectives, and latent prediction preserve different aspects of time.",
+        "A world-centric representation should maintain identity, 3D structure, and dynamics through occlusion and viewpoint change.",
+        "Short-clip accuracy can hide weak long-term memory, physical inconsistency, and dependence on appearance shortcuts."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Gedas Bertasius - Video Understanding with Modern Language Models",
+          "author": "Vision & Graphics Seminar at MIT",
+          "url": "https://www.youtube.com/watch?v=vmHTdNOf3NI",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from Vision & Graphics Seminar at MIT.",
+          "coverage_role": "Covers large-scale video understanding, temporal representation, and the integration of language-model techniques with video.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Yann LeCun | Self-Supervised Learning, JEPA, World Models, and the future of AI",
+          "author": "Harvard CMSA",
+          "url": "https://www.youtube.com/watch?v=yUmDRxV0krg",
+          "language": "English",
+          "source_type": "official_conference",
+          "source_rationale": "Academic conference, institute, or research-event recording hosted by Harvard CMSA.",
+          "coverage_role": "Explains predictive representation learning and world models for learning persistent, action-relevant structure beyond frame-level recognition.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 69,
+      "topic": "VLA Models, Cross-Embodiment Transfer & Action Tokenization",
+      "description": "Vision-language-action models map perception and instructions to robot actions, pool experience across embodiments, and encode continuous control as tokens, chunks, or generated trajectories.",
+      "recall": [
+        "A VLA connects a visual-language backbone to an action representation and robot-specific interfaces.",
+        "Cross-embodiment transfer needs shared semantics plus explicit handling of different kinematics, sensors, and action spaces.",
+        "Action tokenization simplifies sequence modeling but introduces quantization, timing, and control-frequency choices.",
+        "Evaluate closed-loop robustness, intervention rate, novel tasks, and embodiment transfer—not only offline action prediction."
+      ],
+      "coverage_note": "Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.",
+      "videos": [
+        {
+          "order": 1,
+          "title": "Gemini Robotics: Bringing AI to the physical world",
+          "author": "Google DeepMind",
+          "url": "https://www.youtube.com/watch?v=4MvGnmmP3c0",
+          "language": "English",
+          "source_type": "research_lab",
+          "source_rationale": "First-party research or technical lecture from the established lab/channel Google DeepMind.",
+          "coverage_role": "Introduces modern vision-language-action models and the grounding of multimodal foundation models in physical robot actions.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 2,
+          "title": "Spring 2024 GRASP SFI - Karl Pertsch, University of California, Berkeley and Stanford University",
+          "author": "GRASP Lab",
+          "url": "https://www.youtube.com/watch?v=81PgFEH62Uw",
+          "language": "English",
+          "source_type": "university_course",
+          "source_rationale": "University course, academic lab, or university-hosted lecture from GRASP Lab.",
+          "coverage_role": "Covers generalist robot policies and cross-robot or cross-embodiment transfer, including the Octo line of research.",
+          "oembed_verified_on": "2026-09-21"
+        },
+        {
+          "order": 3,
+          "title": "π0: A Foundation Model for Robotics with Sergey Levine - 719",
+          "author": "The TWIML AI Podcast with Sam Charrington",
+          "url": "https://www.youtube.com/watch?v=5mY71rGXAkM",
+          "language": "English",
+          "source_type": "professional_foundation",
+          "source_rationale": "Technical instruction from the established professional or educational organization The TWIML AI Podcast with Sam Charrington.",
+          "coverage_role": "Explains a prominent VLA policy, including continuous-action generation and alternatives to simple discrete action tokenization.",
+          "oembed_verified_on": "2026-09-21"
+        }
+      ],
+      "selection_status": "verified"
+    },
+    {
+      "day": 70,
+      "topic": "Frontier ML Review — Selected on Generation Day",
+      "description": "This live review slot identifies one consequential machine-learning development, reconstructs its mechanism and evidence, and compares it with the strongest relevant baseline rather than summarizing general news.",
+      "recall": [
+        "Name the exact learning problem, model step, and claimed improvement.",
+        "Separate primary evidence from author interpretation, demos, and community speculation.",
+        "Check whether gains survive matched data, compute, evaluation protocol, and ablation.",
+        "Record what changed relative to the previous frontier review and what remains uncertain."
+      ],
+      "coverage_note": "The roadmap deliberately does not name the lesson concept until generation day. Selecting videos now would fabricate scope and conflict with the curriculum's generation-day frontier-refresh policy.",
+      "videos": [],
+      "selection_status": "deferred_until_topic_selected"
+    },
+    {
+      "day": 71,
+      "topic": "Frontier Vision Review — Selected on Generation Day",
+      "description": "This live review slot selects one consequential computer-vision development and traces the full perception pipeline, evidence, and boundary conditions from sensor input to evaluated output.",
+      "recall": [
+        "Specify the task, visual representation, supervision, and output rather than relying on a model name.",
+        "Inspect dataset composition, splits, metrics, resolution, and compute before comparing results.",
+        "Look for qualitative failure cases involving geometry, occlusion, rare classes, or distribution shift.",
+        "Connect the result to the nearest established vision baseline and state what is genuinely new."
+      ],
+      "coverage_note": "The roadmap deliberately does not name the lesson concept until generation day. Selecting videos now would fabricate scope and conflict with the curriculum's generation-day frontier-refresh policy.",
+      "videos": [],
+      "selection_status": "deferred_until_topic_selected"
+    },
+    {
+      "day": 72,
+      "topic": "Frontier Embodied AI Review — Selected on Generation Day",
+      "description": "This live review slot selects one consequential embodied-AI result and evaluates the complete loop from sensing and policy inference to action, hardware execution, safety, and reproducible evidence.",
+      "recall": [
+        "Identify the embodiment, observation and action spaces, data source, policy mechanism, and control frequency.",
+        "Distinguish offline prediction, simulation success, curated demonstrations, and autonomous real-world trials.",
+        "Check interventions, resets, failures, latency, safety constraints, and task-distribution coverage.",
+        "Compare against a matched robotic baseline and state which capability transfers beyond the demonstrated setup."
+      ],
+      "coverage_note": "The roadmap deliberately does not name the lesson concept until generation day. Selecting videos now would fabricate scope and conflict with the curriculum's generation-day frontier-refresh policy.",
+      "videos": [],
+      "selection_status": "deferred_until_topic_selected"
+    }
+  ]
+}

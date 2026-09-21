@@ -7,7 +7,7 @@ cycle: 4
 domain: "Embodied AI & RL Robotics"
 stage: "Foundations"
 status: "planned"
-source: ["curriculum_plan.json"]
+source: ["curriculum_plan.json", "curriculum_resources.json"]
 tags: ["curriculum", "embodied-ai-rl-robotics", "foundations"]
 cssclasses: ["research-note", "curriculum-note"]
 related_concepts: ["Mind Map/Nodes/learning.md", "Mind Map/Nodes/systems.md", "Mind Map/Nodes/policy.md"]
@@ -20,7 +20,7 @@ related_papers: []
 
 > [!curriculum] Embodied AI & RL Robotics · Foundations
 > **Cycle 4** · **status: planned**
-> Research and write only when this day becomes current.
+> Use the videos for first-pass learning; use this note for fast recall without rewatching.
 
 > [!sequence] Learning sequence
 > - [[Curriculum/Lessons/Day 11 - Projective Geometry & Camera Calibration|← Day 11]]
@@ -32,11 +32,31 @@ related_papers: []
 > - [[Mind Map/Nodes/systems|Systems]]
 > - [[Mind Map/Nodes/policy|Policies / VLA]]
 
-## Foundation threads
+## Brief description
 
-- control
-- dynamics
-- probability
-- planning
-- real-time systems
-- safety
+Monte Carlo methods learn from complete sampled returns, while temporal-difference methods bootstrap from current value estimates; the trade is unbiased delayed targets versus lower-variance but biased incremental targets.
+
+## Recall in 30 seconds
+
+- Monte Carlo waits for an outcome and does not require a transition model.
+- TD updates after each step using reward plus the next estimate.
+- Bootstrapping, sampling, and off-policy learning form the deadly triad when combined with function approximation.
+- Eligibility traces interpolate between one-step TD and full-return Monte Carlo.
+
+## Watch in order
+
+> [!method] Why this sequence
+> Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it.
+
+### 1. RL Course by David Silver - Lecture 4: Model-Free Prediction
+
+> [!video] Google DeepMind · English · research lab
+> **Purpose:** Compares Monte Carlo and temporal-difference prediction, including bootstrapping, bias-variance behavior, TD errors, and multi-step returns.
+> [Watch on YouTube](https://www.youtube.com/watch?v=PnHCvfgC_ZA)
+
+> [!summary] After watching
+> Close the videos and explain the recall bullets in your own words. Add only corrections or a worked example below—do not recreate the lecture.
+
+## My correction or example
+
+-

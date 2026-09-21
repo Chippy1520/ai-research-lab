@@ -10,7 +10,7 @@ from urllib.parse import urlparse
 import yaml
 from bs4 import BeautifulSoup
 
-from scripts.build_obsidian_vault import PAPER_SPECS, VAULT, build, validate_vault
+from scripts.build_obsidian_vault import PAPER_SPECS, VAULT, build, safe_filename, validate_vault
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -195,12 +195,54 @@ def test_directional_graph_relations_and_normalized_tags():
         assert all(tag_pattern.fullmatch(tag) for tag in tags), (path, tags)
 
 
-def test_authored_curriculum_and_lecture_capture_are_preserved():
-    lesson = (VAULT / "Curriculum/Lessons/Day 01 - Optimization Dynamics & AdamW.md").read_text(encoding="utf-8")
-    assert "modules/module_01.py" in lesson
-    assert "[!lesson] Authored technical lesson" in lesson
-    assert "### 15 · Video masterclasses and source ledger" in lesson
-    assert lesson.count("### ") >= 15
+def test_curriculum_is_recall_first_and_video_led():
+    plan = _json("curriculum_plan.json")
+    resources = _json("curriculum_resources.json")
+    by_day = {int(item["day"]): item for item in resources["lessons"]}
+    assert set(by_day) == {int(item["day"]) for item in plan["lessons"]}
+
+    allowed_sources = {
+        "university_course",
+        "research_lab",
+        "official_conference",
+        "professional_foundation",
+        "respected_educator",
+    }
+    for planned in plan["lessons"]:
+        day = int(planned["day"])
+        resource = by_day[day]
+        assert resource["topic"] == planned["topic"]
+        if planned["stage"] == "Live review":
+            assert resource["selection_status"] == "deferred_until_topic_selected"
+            assert resource["videos"] == []
+        else:
+            assert resource["selection_status"] == "verified"
+            assert 1 <= len(resource["videos"]) <= 3
+        assert 3 <= len(resource["recall"]) <= 5
+        assert len(resource["description"]) <= 600
+        assert [int(video["order"]) for video in resource["videos"]] == list(
+            range(1, len(resource["videos"]) + 1)
+        )
+        for video in resource["videos"]:
+            assert video["language"] == "English"
+            assert video["source_type"] in allowed_sources
+            assert video["source_rationale"]
+            assert video["oembed_verified_on"]
+            assert video["url"].startswith("https://www.youtube.com/watch?v=")
+
+        path = VAULT / f"Curriculum/Lessons/Day {day:02d} - {safe_filename(planned['topic'])}.md"
+        lesson = path.read_text(encoding="utf-8")
+        assert "## Brief description" in lesson
+        assert "## Recall in 30 seconds" in lesson
+        if planned["stage"] == "Live review":
+            assert "## Video path selected on generation day" in lesson
+        else:
+            assert "## Watch in order" in lesson
+        assert "curriculum_resources.json" in lesson
+        assert "Authored technical lesson" not in lesson
+        assert "Video masterclasses and source ledger" not in lesson
+        assert "$$" not in lesson
+        assert len(lesson.splitlines()) <= 120
 
     lecture_hub = (VAULT / "Lectures/Lecture Notes.md").read_text(encoding="utf-8")
     lecture_template = (VAULT / "_Templates/Lecture Note.md").read_text(encoding="utf-8")

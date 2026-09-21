@@ -7,10 +7,8 @@ be rebuilt safely; hand-written notes without that marker are left untouched.
 """
 from __future__ import annotations
 
-import ast
 import json
 import re
-import textwrap
 from collections import defaultdict
 from pathlib import Path
 from typing import Any, Iterable
@@ -1383,104 +1381,22 @@ def build_robotics_intelligence(org_paths: dict[str, str]) -> None:
     write("Robotics Intelligence/Skill Signals.md", "\n".join(signals))
 
 
-def extract_streamlit_article(source: Path) -> str:
-    """Export literal Streamlit teaching prose to durable Markdown.
-
-    Interactive widgets and generated plots remain in the app; headings, prose,
-    equations, code, cautions, captions, and literal video links become part of
-    the corresponding Obsidian lesson.
-    """
-    tree = ast.parse(source.read_text(encoding="utf-8"))
-    article = next(
-        (node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == "_render_article"),
-        None,
-    )
-    if article is None:
-        return ""
-
-    def literal(node: ast.AST) -> Any | None:
-        try:
-            return ast.literal_eval(node)
-        except (ValueError, TypeError, SyntaxError):
-            return None
-
-    functions = {
-        node.name: node for node in tree.body if isinstance(node, ast.FunctionDef)
-    }
-
-    def streamlit_calls(function: ast.FunctionDef, seen: set[str] | None = None) -> list[ast.Call]:
-        seen = set(seen or ())
-        if function.name in seen:
-            return []
-        seen.add(function.name)
-        candidates = sorted(
-            (node for node in ast.walk(function) if isinstance(node, ast.Call)),
-            key=lambda node: (node.lineno, node.col_offset),
-        )
-        result: list[ast.Call] = []
-        for call_node in candidates:
-            if (
-                isinstance(call_node.func, ast.Attribute)
-                and isinstance(call_node.func.value, ast.Name)
-                and call_node.func.value.id == "st"
-            ):
-                result.append(call_node)
-            elif isinstance(call_node.func, ast.Name) and call_node.func.id in functions:
-                helper = functions[call_node.func.id]
-                if helper.name.startswith("_render_"):
-                    result.extend(streamlit_calls(helper, seen))
-        return result
-
-    rendered: list[str] = []
-    calls = streamlit_calls(article)
-    for node in calls:
-        method = node.func.attr
-        if not node.args:
-            continue
-        value = literal(node.args[0])
-        if not isinstance(value, str):
-            continue
-        value = textwrap.dedent(value).strip()
-        if not value:
-            continue
-        if method == "header":
-            rendered.extend([f"## {value}", ""])
-        elif method == "subheader":
-            rendered.extend([f"### {value}", ""])
-        elif method == "markdown":
-            if re.search(r"<[A-Za-z][^>]*>", value):
-                value = html_to_markdown(value, heading_style="ATX", bullets="-", strip=["div", "span"]).strip()
-                value = value.replace("  \n", "\\\n")
-            rendered.extend([value, ""])
-        elif method == "latex":
-            rendered.extend(["$$", value, "$$", ""])
-        elif method == "code":
-            language = ""
-            for keyword in node.keywords:
-                if keyword.arg == "language":
-                    candidate = literal(keyword.value)
-                    if isinstance(candidate, str):
-                        language = candidate
-            rendered.extend([f"```{language}", value, "```", ""])
-        elif method == "caption":
-            rendered.extend([f"*{value}*", ""])
-        elif method in {"info", "warning"}:
-            rendered.extend([*callout(method, method.title(), value.splitlines()), ""])
-        elif method == "video":
-            rendered.extend([f"> [!video] Lecture companion\n> [Open video]({value})", ""])
-    markdown = "\n".join(rendered)
-    markdown = re.sub(r"\n{3,}", "\n\n", markdown)
-    return markdown.strip()
-
 
 def build_curriculum(node_paths: dict[str, str]) -> None:
     plan = load_json("curriculum_plan.json")
+    resources = load_json("curriculum_resources.json")
     state = load_json("curriculum_state.json")
     learning = load_json("learning_log.json")
     mindmap = load_json("intelligence/mindmap.json")
     nodes = mindmap["nodes"]
     node_labels = {node["id"]: node["label"] for node in nodes}
     entries = {item["day"]: item for item in learning["entries"]}
+    resources_by_day = {int(item["day"]): item for item in resources["lessons"]}
+    expected_days = {int(item["day"]) for item in plan["lessons"]}
+    if set(resources_by_day) != expected_days:
+        missing = sorted(expected_days - set(resources_by_day))
+        extra = sorted(set(resources_by_day) - expected_days)
+        raise ValueError(f"curriculum_resources.json day mismatch: missing={missing}, extra={extra}")
     domain_roots = {
         "Machine Learning": ("learning",),
         "Computer Vision": ("perception",),
@@ -1503,6 +1419,7 @@ def build_curriculum(node_paths: dict[str, str]) -> None:
 
     for day, (lesson, relative, _) in lessons_by_day.items():
         record = entries.get(day)
+        resource = resources_by_day[day]
         related_ids = related_by_day[day]
         related_concepts = [(node_paths[node_id], node_labels[node_id]) for node_id in related_ids if node_id in node_paths]
         related_papers = list(dict.fromkeys(
@@ -1517,11 +1434,7 @@ def build_curriculum(node_paths: dict[str, str]) -> None:
         if next_link:
             sequence_links.append((next_link[1], f"Day {day + 1:02d} →"))
         status = record["status"] if record else lesson["status"]
-        module_source = ROOT / "modules" / f"module_{day:02d}.py"
-        authored_content = extract_streamlit_article(module_source) if module_source.exists() else ""
-        canonical_sources = ["curriculum_plan.json"]
-        if authored_content:
-            canonical_sources.append(f"modules/{module_source.name}")
+        canonical_sources = ["curriculum_plan.json", "curriculum_resources.json"]
         lines = [
             frontmatter(
                 type="curriculum-lesson", aliases=[lesson["topic"]], day=day, cycle=lesson["cycle"],
@@ -1537,7 +1450,7 @@ def build_curriculum(node_paths: dict[str, str]) -> None:
                 "curriculum", f"{lesson['domain']} · {lesson['stage']}",
                 [
                     f"**Cycle {lesson['cycle']}** · **status: {status}**",
-                    lesson["content_policy"],
+                    "Use the videos for first-pass learning; use this note for fast recall without rewatching.",
                 ],
             ), "",
             *link_callout("Learning sequence", sequence_links, "sequence"), "",
@@ -1546,7 +1459,6 @@ def build_curriculum(node_paths: dict[str, str]) -> None:
             lines.extend([*link_callout("Knowledge-graph concepts", related_concepts, "concepts"), ""])
         if related_papers:
             lines.extend([*link_callout("Paper companions", related_papers, "study"), ""])
-        lines.extend(["## Foundation threads", "", *[f"- {item}" for item in lesson.get("foundation_threads", [])], ""])
         prerequisites = lesson.get("prerequisites", [])
         if prerequisites:
             prerequisite_links = []
@@ -1567,20 +1479,45 @@ def build_curriculum(node_paths: dict[str, str]) -> None:
         if day == state["current_day"]:
             lines.extend([*callout(
                 "current", "Current due lesson",
-                ["Generate or deepen this lesson just in time rather than pre-authoring future modules."],
+                ["Watch the sequence once, then test whether the recall summary is enough to reconstruct the concept."],
             ), ""])
-        if authored_content:
+        lines.extend([
+            "## Brief description", "", resource["description"], "",
+            "## Recall in 30 seconds", "",
+            *[f"- {point}" for point in resource["recall"]], "",
+        ])
+        if resource["videos"]:
             lines.extend([
-                "---", "",
-                *callout(
-                    "lesson", "Authored technical lesson",
-                    [
-                        "The complete static chapter is exported from the canonical Streamlit module.",
-                        "Interactive plots and controls remain available in the research-lab application.",
-                    ],
-                ), "",
-                authored_content, "",
+                "## Watch in order", "",
+                f"> [!method] Why this sequence\n> {resource['coverage_note']}", "",
             ])
+        else:
+            lines.extend([
+                "## Video path selected on generation day", "",
+                f"> [!pending] Topic intentionally unresolved\n> {resource['coverage_note']}", "",
+            ])
+        for video in sorted(resource["videos"], key=lambda item: int(item["order"])):
+            lines.extend([
+                f"### {video['order']}. {video['title']}", "",
+                f"> [!video] {video['author']} · English · {video['source_type'].replace('_', ' ')}",
+                f"> **Purpose:** {video['coverage_role']}",
+                f"> [Watch on YouTube]({video['url']})", "",
+            ])
+        if resource["videos"]:
+            lines.extend([
+                "> [!summary] After watching",
+                "> Close the videos and explain the recall bullets in your own words. Add only corrections or a worked example below—do not recreate the lecture.",
+                "",
+            ])
+        else:
+            lines.extend([
+                "> [!next] Generation-day action",
+                "> Select the exact frontier topic first, add its reputable English video path to `curriculum_resources.json`, and run `python scripts/verify_curriculum_videos.py` before studying.",
+                "",
+            ])
+        lines.extend([
+            "## My correction or example", "", "- ", "",
+        ])
         write(relative, "\n".join(lines))
 
     domains = plan["policy"]["rotation"]
@@ -1598,7 +1535,8 @@ def build_curriculum(node_paths: dict[str, str]) -> None:
         *callout(
             "curriculum", "A perpetual ML → CV → Embodied AI spiral",
             [
-                plan["policy"]["coverage"], "",
+                "Each lesson is a brief recall sheet plus an ordered English video path from respected universities, research labs, conferences, or technical educators.",
+                "Long generated textbook chapters are intentionally excluded: watch once, then return to the summary when you need to reconstruct the idea.", "",
                 f"**Current:** {wiki(current[1], current[2])} · **{len(plan['lessons'])} mapped lessons** · no terminal day",
             ],
         ), "",
@@ -1611,8 +1549,13 @@ def build_curriculum(node_paths: dict[str, str]) -> None:
         overview.append(f"| {cycle} | {' | '.join(cells)} |")
     overview.extend([
         "", *callout(
-            "method", "Rolling-horizon policy",
-            [plan["horizon_policy"]["extension_rule"], plan["policy"]["frontier_refresh"], plan["policy"]["archive"]],
+            "method", "Study protocol",
+            [
+                "1. Watch the videos in order; later videos assume the earlier framing.",
+                "2. Use the 30-second recall bullets before rewatching anything.",
+                "3. Add only a correction, failure mode, or worked example that the summary did not preserve.",
+                "4. Re-verify video availability and source quality whenever the roadmap is extended.",
+            ],
         ),
     ])
     write("Curriculum/Curriculum.md", "\n".join(overview))

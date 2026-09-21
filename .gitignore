@@ -11,3 +11,4 @@ htmlcov/
 .DS_Store
 .agents/
 .claude/
+obsidian/.smart-env/

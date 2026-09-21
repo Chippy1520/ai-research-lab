@@ -1,12 +1,12 @@
 {
-  "version": 2,
-  "updated_on": "2026-08-29",
+  "version": 3,
+  "updated_on": "2026-09-21",
   "horizon_policy": {
     "mode": "rolling_open_ended",
     "terminal_day": null,
     "minimum_mapped_ahead_days": 18,
     "extension_batch_cycles": 6,
-    "extension_rule": "Before the mapped queue drops below 18 future days, research and append six new ML→CV→EAI cycles. Add roadmap spines only; author lesson content just in time."
+    "extension_rule": "Before the mapped queue drops below 18 future days, research and append six new ML→CV→EAI cycles. Every added lesson must include a concise recall summary and a live-verified ordered English video path from respected sources."
   },
   "policy": {
     "rotation": [
@@ -14,10 +14,10 @@
       "Computer Vision",
       "Embodied AI & RL Robotics"
     ],
-    "generation": "Just in time: exactly one current-day module is researched and authored per generate-next request.",
-    "frontier_refresh": "Before authoring every module, review current literature and revise its emphasis without silently rewriting archived modules.",
-    "archive": "Generated modules remain immutable learning artifacts; corrections are appended to their research log.",
-    "coverage": "Spiral indefinitely through mathematical foundations, modern methods, systems, evaluation, interdisciplinary connections, and changing frontiers. There is no terminal lesson or completeness claim."
+    "generation": "Every mapped lesson has a brief Obsidian recall sheet and ordered video path; exactly one current-day interactive Streamlit module is still researched and authored just in time.",
+    "frontier_refresh": "Re-check live frontier lessons, source reputation, English language, video availability, and coverage before each roadmap extension.",
+    "archive": "Recall summaries may be corrected when evidence changes; preserve personal corrections separately from generated text.",
+    "coverage": "Spiral through foundations, modern methods, systems, evaluation, and changing frontiers. Each lesson should be understandable from a concise summary after its ordered videos have been watched once."
   },
   "supporting_cs_threads": [
     "Algorithms and data structures",
@@ -39,7 +39,7 @@
       "topic": "Optimization Dynamics & AdamW",
       "stage": "Foundations",
       "status": "generated",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -57,7 +57,7 @@
       "topic": "Image Formation, Sampling & Color",
       "stage": "Foundations",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -75,7 +75,7 @@
       "topic": "MDPs, Returns & Occupancy Measures",
       "stage": "Foundations",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -93,7 +93,7 @@
       "topic": "Probability, Estimation & Statistical Learning",
       "stage": "Foundations",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -111,7 +111,7 @@
       "topic": "2D Fourier Analysis & Phase",
       "stage": "Foundations",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -129,7 +129,7 @@
       "topic": "Bellman Operators & Contraction Proofs",
       "stage": "Foundations",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -147,7 +147,7 @@
       "topic": "Information Theory & Representation",
       "stage": "Foundations",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -165,7 +165,7 @@
       "topic": "Spatial Derivatives, Scale Space & Features",
       "stage": "Foundations",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -183,7 +183,7 @@
       "topic": "Dynamic Programming: Policy/Value Iteration",
       "stage": "Foundations",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -201,7 +201,7 @@
       "topic": "Linear Models, Kernels & Generalization",
       "stage": "Foundations",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -219,7 +219,7 @@
       "topic": "Projective Geometry & Camera Calibration",
       "stage": "Foundations",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -237,7 +237,7 @@
       "topic": "Monte Carlo and Temporal-Difference Learning",
       "stage": "Foundations",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -255,7 +255,7 @@
       "topic": "Backpropagation, Initialization & Normalization",
       "stage": "Foundations",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -273,7 +273,7 @@
       "topic": "Multi-View Geometry, Epipolar Constraints & SfM",
       "stage": "Foundations",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -291,7 +291,7 @@
       "topic": "Q-Learning, Function Approximation & DQN",
       "stage": "Foundations",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -309,7 +309,7 @@
       "topic": "CNN Inductive Biases & Modern ConvNets",
       "stage": "Core",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -327,7 +327,7 @@
       "topic": "CNN Backbones, FPN & Detection",
       "stage": "Core",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -345,7 +345,7 @@
       "topic": "Policy Gradients and Variance Reduction",
       "stage": "Core",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -363,7 +363,7 @@
       "topic": "Variational Inference, ELBO & VAEs",
       "stage": "Core",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -381,7 +381,7 @@
       "topic": "Semantic, Instance & Panoptic Segmentation",
       "stage": "Core",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -399,7 +399,7 @@
       "topic": "Actor-Critic Methods & Generalized Advantage Estimation",
       "stage": "Core",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -417,7 +417,7 @@
       "topic": "Normalizing Flows & Change of Variables",
       "stage": "Core",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -435,7 +435,7 @@
       "topic": "Vision Transformers & Patch Geometry",
       "stage": "Core",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -453,7 +453,7 @@
       "topic": "PPO: Clipping, Trust Regions & Diagnostics",
       "stage": "Core",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -471,7 +471,7 @@
       "topic": "Attention, RoPE & KV-Caching",
       "stage": "Modern",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -489,7 +489,7 @@
       "topic": "Self-Supervised Visual Representation Learning",
       "stage": "Modern",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -507,7 +507,7 @@
       "topic": "Maximum-Entropy RL & Soft Actor-Critic",
       "stage": "Modern",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -525,7 +525,7 @@
       "topic": "Diffusion, Score Matching & SDEs",
       "stage": "Modern",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -543,7 +543,7 @@
       "topic": "NeRF Volume Rendering & Positional Encoding",
       "stage": "Modern",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -561,7 +561,7 @@
       "topic": "Model-Based RL and Uncertainty-Aware Planning",
       "stage": "Modern",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -579,7 +579,7 @@
       "topic": "Flow Matching & Optimal-Transport Paths",
       "stage": "Modern",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -597,7 +597,7 @@
       "topic": "3D Gaussian Splatting & Differentiable Rasterization",
       "stage": "Modern",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -615,7 +615,7 @@
       "topic": "POMDPs, Belief State & Recurrent Policies",
       "stage": "Modern",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -633,7 +633,7 @@
       "topic": "Sequence Models: RNNs, S4 & Mamba",
       "stage": "Modern",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -651,7 +651,7 @@
       "topic": "Video Motion: Optical Flow, Tracking & Temporal Models",
       "stage": "Modern",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -669,7 +669,7 @@
       "topic": "Offline RL, Behavior Regularization & Dataset Shift",
       "stage": "Modern",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -687,7 +687,7 @@
       "topic": "Graph Neural Networks & Geometric Deep Learning",
       "stage": "Modern",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -705,7 +705,7 @@
       "topic": "Open-Vocabulary Detection & Foundation Segmentation",
       "stage": "Modern",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -723,7 +723,7 @@
       "topic": "Imitation Learning, DAgger & Inverse RL",
       "stage": "Modern",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -741,7 +741,7 @@
       "topic": "Self-Supervised, Contrastive & Multimodal Learning",
       "stage": "Modern",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -759,7 +759,7 @@
       "topic": "Generative Vision: Latent Diffusion & Controllable Synthesis",
       "stage": "Modern",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -777,7 +777,7 @@
       "topic": "World Models & Latent Imagination",
       "stage": "Modern",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -795,7 +795,7 @@
       "topic": "Uncertainty, Calibration & Bayesian Deep Learning",
       "stage": "Integration",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -813,7 +813,7 @@
       "topic": "3D Scene Understanding and Point/Implicit Representations",
       "stage": "Integration",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -831,7 +831,7 @@
       "topic": "Robot Kinematics, Dynamics & Operational-Space Control",
       "stage": "Integration",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -849,7 +849,7 @@
       "topic": "Causal Representation Learning & Invariance",
       "stage": "Integration",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -867,7 +867,7 @@
       "topic": "4D Dynamic Reconstruction & Neural Scene Flow",
       "stage": "Integration",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -885,7 +885,7 @@
       "topic": "Motion Planning, Trajectory Optimization & MPC",
       "stage": "Integration",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -903,7 +903,7 @@
       "topic": "Meta-Learning, Continual Learning & Adaptation",
       "stage": "Frontier",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -921,7 +921,7 @@
       "topic": "Domain Adaptation, Test-Time Adaptation & Robustness",
       "stage": "Frontier",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -939,7 +939,7 @@
       "topic": "Diffusion Policy for Visuomotor Control",
       "stage": "Frontier",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -957,7 +957,7 @@
       "topic": "Scaling Laws, Data Mixtures & Test-Time Compute",
       "stage": "Frontier",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -975,7 +975,7 @@
       "topic": "Vision-Language Models and Visual Reasoning",
       "stage": "Frontier",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -993,7 +993,7 @@
       "topic": "Sim-to-Real, System Identification & Domain Randomization",
       "stage": "Frontier",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -1011,7 +1011,7 @@
       "topic": "ML Systems: Accelerators, Mixed Precision & Distributed Training",
       "stage": "Systems",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -1029,7 +1029,7 @@
       "topic": "Efficient Vision: Quantization, Distillation & Edge Deployment",
       "stage": "Systems",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -1047,7 +1047,7 @@
       "topic": "ROS 2, Real-Time Robot Software & Hardware Interfaces",
       "stage": "Systems",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -1065,7 +1065,7 @@
       "topic": "Data-Centric ML, Evaluation & Reproducibility",
       "stage": "Systems",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -1083,7 +1083,7 @@
       "topic": "Dataset Design, Long-Tail Metrics & Failure Analysis",
       "stage": "Systems",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -1101,7 +1101,7 @@
       "topic": "Robot Evaluation, Safety Cases & Reproducible Benchmarks",
       "stage": "Systems",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -1119,7 +1119,7 @@
       "topic": "Interpretability, Mechanistic Analysis & Alignment",
       "stage": "Frontier",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -1137,7 +1137,7 @@
       "topic": "Adversarial Robustness, OOD Detection & Model Editing",
       "stage": "Frontier",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -1155,7 +1155,7 @@
       "topic": "Safe RL, Constraints, Shielding & Human Oversight",
       "stage": "Frontier",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -1173,7 +1173,7 @@
       "topic": "Neural Operators, Scientific ML & Differentiable Simulation",
       "stage": "Frontier",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -1191,7 +1191,7 @@
       "topic": "Event Cameras, Active Vision & Computational Imaging",
       "stage": "Frontier",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -1209,7 +1209,7 @@
       "topic": "Active Perception and Information-Gathering Control",
       "stage": "Frontier",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -1227,7 +1227,7 @@
       "topic": "Foundation-Model Agents, Tool Use & Memory",
       "stage": "Frontier",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -1245,7 +1245,7 @@
       "topic": "Video Foundation Models & World-Centric Perception",
       "stage": "Frontier",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -1263,7 +1263,7 @@
       "topic": "VLA Models, Cross-Embodiment Transfer & Action Tokenization",
       "stage": "Frontier",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Brief recall note with an ordered, English-only, live-verified video path.",
       "foundation_threads": [
         "control",
         "dynamics",
@@ -1281,7 +1281,7 @@
       "topic": "Frontier ML Review — Selected on Generation Day",
       "stage": "Live review",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Stable review method only; select the exact frontier topic and verify its English video path on generation day.",
       "foundation_threads": [
         "probability & statistics",
         "linear algebra",
@@ -1299,7 +1299,7 @@
       "topic": "Frontier Vision Review — Selected on Generation Day",
       "stage": "Live review",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Stable review method only; select the exact frontier topic and verify its English video path on generation day.",
       "foundation_threads": [
         "signal processing",
         "geometry",
@@ -1317,7 +1317,7 @@
       "topic": "Frontier Embodied AI Review — Selected on Generation Day",
       "stage": "Live review",
       "status": "planned",
-      "content_policy": "Research and write only when this day becomes current.",
+      "content_policy": "Stable review method only; select the exact frontier topic and verify its English video path on generation day.",
       "foundation_threads": [
         "control",
         "dynamics",

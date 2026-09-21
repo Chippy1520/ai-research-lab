@@ -7,7 +7,7 @@ cycle: 9
 domain: "Computer Vision"
 stage: "Modern"
 status: "planned"
-source: ["curriculum_plan.json"]
+source: ["curriculum_plan.json", "curriculum_resources.json"]
 tags: ["curriculum", "computer-vision", "modern"]
 cssclasses: ["research-note", "curriculum-note"]
 related_concepts: ["Mind Map/Nodes/representation.md", "Mind Map/Nodes/supervised.md", "Mind Map/Nodes/learning.md", "Mind Map/Nodes/perception.md"]
@@ -20,7 +20,7 @@ related_papers: ["Papers/I-JEPA.md", "Papers/JEPA.md", "Papers/V-JEPA.md", "Pape
 
 > [!curriculum] Computer Vision · Modern
 > **Cycle 9** · **status: planned**
-> Research and write only when this day becomes current.
+> Use the videos for first-pass learning; use this note for fast recall without rewatching.
 
 > [!sequence] Learning sequence
 > - [[Curriculum/Lessons/Day 25 - Attention, RoPE & KV-Caching|← Day 25]]
@@ -39,11 +39,31 @@ related_papers: ["Papers/I-JEPA.md", "Papers/JEPA.md", "Papers/V-JEPA.md", "Pape
 > - [[Papers/V-JEPA|V-JEPA]]
 > - [[Papers/V-JEPA 2|V-JEPA 2]]
 
-## Foundation threads
+## Brief description
 
-- signal processing
-- geometry
-- numerical methods
-- graphics
-- algorithms
-- hardware
+Self-supervised visual learning creates supervision from the images themselves, training representations through invariance, reconstruction, clustering, or teacher-student prediction before downstream labels are introduced.
+
+## Recall in 30 seconds
+
+- The pretext objective determines which variations become invariant and which information is preserved.
+- Contrastive methods distinguish related views from alternatives; non-contrastive methods prevent collapse through architectural or optimization asymmetry.
+- Masked and predictive methods learn by reconstructing pixels, tokens, or latent targets.
+- Representation quality must be tested across frozen, fine-tuned, dense, and shifted downstream tasks.
+
+## Watch in order
+
+> [!method] Why this sequence
+> Watch in order: foundation first, then mechanism, then application or diagnostics where the topic needs it. Coverage boundary: Predates some newer masked-image and teacher-student systems, but covers the central objectives and evaluation framework.
+
+### 1. 10L – Self-supervised learning in computer vision
+
+> [!video] Alfredo Canziani (冷在) · English · respected educator
+> **Purpose:** Full university lecture surveying visual pretext tasks, representation learning, contrastive objectives, and downstream transfer.
+> [Watch on YouTube](https://www.youtube.com/watch?v=8L10w1KoOU8)
+
+> [!summary] After watching
+> Close the videos and explain the recall bullets in your own words. Add only corrections or a worked example below—do not recreate the lecture.
+
+## My correction or example
+
+-

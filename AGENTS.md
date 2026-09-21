@@ -16,14 +16,29 @@ fluff or claim finite coverage of an evolving field.
 - A module becomes historical after generation. Correct it by appending provenance or
   correction notes; do not silently rewrite the learner's past context.
 
+## Obsidian recall curriculum
+- `curriculum_resources.json` is the canonical recall-and-video layer for every mapped day.
+- Each named-topic Obsidian curriculum note contains a brief description, three to five durable recall
+  points, and one to three ordered YouTube videos. Do not export the long Streamlit article,
+  derivations, or equation catalogue into these notes.
+- Videos must be English, live through YouTube oEmbed, and collectively cover the named
+  lesson. Prefer university courses, research labs, official conferences or professional
+  foundations, then exceptionally established technical educators.
+- Record the exact oEmbed title and author, why the source is respected, the role of each
+  video in the sequence, and the verification date. Run
+  `python scripts/verify_curriculum_videos.py` whenever the resource file changes.
+- Frontier-review entries still require a stable method overview; replace their topical
+  video path when the generation-day subject is selected.
+
 ## Perpetual rolling horizon
 - There is no terminal curriculum day. The existing lesson list is only a mapped-ahead
   queue, never a completion boundary.
 - Before `generate next`, calculate mapped days remaining after the current day. If fewer
   than `horizon_policy.minimum_mapped_ahead_days` remain, research and append
   `horizon_policy.extension_batch_cycles` complete ML→CV→EAI cycles.
-- Append roadmap spines only—topic, stage, prerequisites, and foundation threads. Do not
-  pre-author those modules.
+- Append roadmap spines plus concise recall/video records only—topic, stage, prerequisites,
+  foundation threads, recall summary, and verified video sequence. Do not pre-author the
+  long interactive Streamlit module.
 - Choose extensions from unresolved learning-log questions, prerequisite gaps, adjacent
   computer-science foundations, maturing research areas, and generation-day literature.
 - Preserve contiguous day/cycle numbers and strict domain rotation forever. Keep
