@@ -225,18 +225,20 @@ def build_settings() -> None:
             "showAttachments": False, "hideUnresolved": True, "showOrphans": False,
             "collapse-color-groups": False,
             "colorGroups": [
-                {"query": "path:\"Mind Map/Nodes\"", "color": {"a": 1, "rgb": 5162853}},
-                {"query": "path:Papers", "color": {"a": 1, "rgb": 3389416}},
-                {"query": "path:Curriculum", "color": {"a": 1, "rgb": 13408614}},
-                {"query": "path:Contacts", "color": {"a": 1, "rgb": 11043118}},
-                {"query": "path:Organizations", "color": {"a": 1, "rgb": 11369038}},
-                {"query": "path:Reports", "color": {"a": 1, "rgb": 9470064}},
-                {"query": "path:Lectures", "color": {"a": 1, "rgb": 6904466}},
+                {"query": "path:\"Mind Map\"", "color": {"a": 1, "rgb": 42747}},
+                {"query": "path:Papers", "color": {"a": 1, "rgb": 16743168}},
+                {"query": "path:Curriculum", "color": {"a": 1, "rgb": 3715072}},
+                {"query": "path:Contacts", "color": {"a": 1, "rgb": 16196997}},
+                {"query": "path:Organizations", "color": {"a": 1, "rgb": 16766474}},
+                {"query": "path:Reports", "color": {"a": 1, "rgb": 15672124}},
+                {"query": "path:Lectures", "color": {"a": 1, "rgb": 8599788}},
+                {"query": "path:\"Robotics Intelligence\"", "color": {"a": 1, "rgb": 54472}},
             ],
-            "collapse-display": False, "showArrow": False, "textFadeMultiplier": 0,
-            "nodeSizeMultiplier": 1.15, "lineSizeMultiplier": 0.85,
-            "collapse-forces": False, "centerStrength": 0.45, "repelStrength": 12,
-            "linkStrength": 0.9, "linkDistance": 220, "scale": 0.75, "close": True,
+            "collapse-display": False, "showArrow": True, "textFadeMultiplier": 0.65,
+            "nodeSizeMultiplier": 1.35, "lineSizeMultiplier": 0.7,
+            "collapse-forces": False, "centerStrength": 0.28,
+            "repelStrength": 14.0, "linkStrength": 0.72, "linkDistance": 260,
+            "scale": 0.55, "close": True,
         },
     }
     for relative, payload in settings.items():
@@ -374,6 +376,7 @@ settings:
 .callout[data-callout="hierarchy"] { --callout-color: 88, 113, 91; --callout-icon: lucide-git-branch; }
 .callout[data-callout="outgoing"] { --callout-color: 62, 111, 142; --callout-icon: lucide-arrow-up-right; }
 .callout[data-callout="incoming"] { --callout-color: 132, 104, 144; --callout-icon: lucide-arrow-down-left; }
+.callout[data-callout="palette"] { --callout-color: 0, 166, 251; --callout-icon: lucide-palette; }
 .callout[data-callout="sequence"],
 .callout[data-callout="prerequisite"] { --callout-color: 105, 117, 132; --callout-icon: lucide-route; }
 
@@ -1722,6 +1725,15 @@ def build_home() -> None:
             [
                 "Open **Graph View** for the complete system. Colors separate research surfaces.",
                 "Open a note's **Local Graph** at depth one or two for a readable neighborhood.",
+            ],
+        ), "",
+        *callout(
+            "palette", "Graph cluster key",
+            [
+                f"🔵 {wiki('Mind Map/Embodied AI.md', 'Concepts')} · 🟠 {wiki('Papers/Paper Guides.md', 'Papers')} · 🟢 {wiki('Curriculum/Curriculum.md', 'Curriculum')}",
+                f"🩷 {wiki('Contacts/Contacts.md', 'People')} · 🟡 {wiki('Organizations/Organizations.md', 'Organizations')} · 🔴 {wiki('Reports/Daily Reports.md', 'Reports')}",
+                f"🟣 {wiki('Lectures/Lecture Notes.md', 'Lectures')} · 🩵 {wiki('Robotics Intelligence/Robotics Intelligence.md', 'Robotics intelligence')}",
+                "Cross-cluster edges stay visible: they are the evidence, provenance, and study paths joining these areas.",
             ],
         ), "",
         *callout(

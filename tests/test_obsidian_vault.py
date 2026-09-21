@@ -65,7 +65,21 @@ def test_wikilinks_resolve_and_native_graph_replaces_canvas():
     assert graph["hideUnresolved"] is True
     assert graph["showOrphans"] is False
     assert graph["showTags"] is False
-    assert len(graph["colorGroups"]) >= 6
+    assert len(graph["colorGroups"]) == 8
+    assert {group["query"]: group["color"]["rgb"] for group in graph["colorGroups"]} == {
+        'path:"Mind Map"': 42747,
+        "path:Papers": 16743168,
+        "path:Curriculum": 3715072,
+        "path:Contacts": 16196997,
+        "path:Organizations": 16766474,
+        "path:Reports": 15672124,
+        "path:Lectures": 8599788,
+        'path:"Robotics Intelligence"': 54472,
+    }
+    assert graph["showArrow"] is True
+    assert graph["repelStrength"] == 14.0
+    assert graph["linkStrength"] == 0.72
+    assert graph["linkDistance"] == 260
 
 
 def test_reading_theme_and_plugins_are_configured():

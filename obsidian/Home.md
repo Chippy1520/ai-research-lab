@@ -38,6 +38,12 @@ cssclasses: ["research-note", "hub-note", "home-note"]
 > Open **Graph View** for the complete system. Colors separate research surfaces.
 > Open a note's **Local Graph** at depth one or two for a readable neighborhood.
 
+> [!palette] Graph cluster key
+> 🔵 [[Mind Map/Embodied AI|Concepts]] · 🟠 [[Papers/Paper Guides|Papers]] · 🟢 [[Curriculum/Curriculum|Curriculum]]
+> 🩷 [[Contacts/Contacts|People]] · 🟡 [[Organizations/Organizations|Organizations]] · 🔴 [[Reports/Daily Reports|Reports]]
+> 🟣 [[Lectures/Lecture Notes|Lectures]] · 🩵 [[Robotics Intelligence/Robotics Intelligence|Robotics intelligence]]
+> Cross-cluster edges stay visible: they are the evidence, provenance, and study paths joining these areas.
+
 > [!source] Canonical-source rule
 > The vault is generated from repository JSON, HTML, and Markdown. Edit canonical sources, then run `python scripts/build_obsidian_vault.py`.
 

@@ -8,65 +8,72 @@
   "collapse-color-groups": false,
   "colorGroups": [
     {
-      "query": "path:\"Mind Map/Nodes\"",
+      "query": "path:\"Mind Map\"",
       "color": {
         "a": 1,
-        "rgb": 5162853
+        "rgb": 42747
       }
     },
     {
       "query": "path:Papers",
       "color": {
         "a": 1,
-        "rgb": 3389416
+        "rgb": 16743168
       }
     },
     {
       "query": "path:Curriculum",
       "color": {
         "a": 1,
-        "rgb": 13408614
+        "rgb": 3715072
       }
     },
     {
       "query": "path:Contacts",
       "color": {
         "a": 1,
-        "rgb": 11043118
+        "rgb": 16196997
       }
     },
     {
       "query": "path:Organizations",
       "color": {
         "a": 1,
-        "rgb": 11369038
+        "rgb": 16766474
       }
     },
     {
       "query": "path:Reports",
       "color": {
         "a": 1,
-        "rgb": 9470064
+        "rgb": 15672124
       }
     },
     {
       "query": "path:Lectures",
       "color": {
         "a": 1,
-        "rgb": 6904466
+        "rgb": 8599788
+      }
+    },
+    {
+      "query": "path:\"Robotics Intelligence\"",
+      "color": {
+        "a": 1,
+        "rgb": 54472
       }
     }
   ],
   "collapse-display": false,
-  "showArrow": false,
-  "textFadeMultiplier": 0,
-  "nodeSizeMultiplier": 1.15,
-  "lineSizeMultiplier": 0.85,
+  "showArrow": true,
+  "textFadeMultiplier": 0.65,
+  "nodeSizeMultiplier": 1.35,
+  "lineSizeMultiplier": 0.7,
   "collapse-forces": false,
-  "centerStrength": 0.45,
-  "repelStrength": 12,
-  "linkStrength": 0.9,
-  "linkDistance": 220,
-  "scale": 0.75,
+  "centerStrength": 0.28,
+  "repelStrength": 14.0,
+  "linkStrength": 0.72,
+  "linkDistance": 260,
+  "scale": 0.55,
   "close": true
 }
