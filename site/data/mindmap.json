@@ -1,10 +1,14 @@
 {
   "version": 1,
-  "updated": "2026-09-18",
+  "updated": "2026-09-25",
   "title": "Embodied AI mind map",
   "center": "embodied-ai",
   "scope": "Perception, learning, policies, frameworks, and labs for physical intelligence. Hardware/materials only when they change the learning problem. Company nodes pull live jobs from the robotics intelligence desk.",
   "changelog": [
+    {
+      "date": "2026-09-25",
+      "note": "Patched skild-s1 / skild-ai / rl / isaac (Physical Self-Play soccer), world-models (insertion WM / NowWAM / THAW / PatchWAM), flow-matching + smolvla (Coda, ForceRFT), sim2real (ARSTAG), geom-3d + vggt (GAM, RegVGGT), wbc (S³), ros2 + nvidia-gear (Isaac ROS 5.0), pi0 / robot-fm / vla-family."
+    },
     {
       "date": "2026-09-18",
       "note": "Patched world models (Agile-WAM/DexTouch-WM), flow matching (Agile-WAM), diffusion policy (Movement Trend Guidance), sim-to-real (ReShoot), geom-3d (FAMOS), WBC (LYRIC), VLA family (dexterous post-training), sequence models (Workspace Models)."
@@ -346,9 +350,19 @@
       "label": "Flow matching",
       "kind": "method",
       "domain": "learning",
-      "brief": "Regress a velocity field that transports noise to data along nearly straight ODE paths. Fewer function evaluations than diffusion. Robot uses in 2026: π₀/SmolVLA action experts; VGFM (IROS 2026, arXiv 2609.14261) value-guides intermediate flow times without BPTT; FMP (arXiv 2609.15631) replaces AMP discriminators with an online OT+flow reward on Unitree G1. 17 Sep 2026: Agile-WAM (arXiv 2609.20761) is direct vision-tactile-to-action flow matching that jointly emits action chunks and future vis/tactile latents — first-party 11.9 ms and +29.4% relative real success. TraceFlow (arXiv 2609.20646) steers a frozen flow expert from success/failure traces (one terminal bit; no weight update) — first-party 21→39/50 ordered packing.",
+      "brief": "Regress a velocity field that transports noise to data along nearly straight ODE paths. Fewer function evaluations than diffusion. 23 Sep 2026: CFM expert distillation into a shared multi-task policy (arXiv 2609.28107) beats naive concat-dataset training on RLBench at fixed size. 18 Sep: Coda (arXiv 2609.21216) reallocates FM integration budget to one learned endpoint residual — 5-step 74.68% vs 71.64% on 50 RoboTwin Easy, 2-step 2.12×; frozen official SmolVLA two-step 60.8%→69.4%. 17 Sep: Agile-WAM / TraceFlow still the contact and frozen-expert neighbors.",
       "why": "SmolVLA's action expert is 0.75d because the path is short. Lipman et al. 2210.02747 is the paper.",
       "resources": [
+        {
+          "type": "paper",
+          "title": "Coda — fewer FM steps via learned endpoint correction (arXiv 2609.21216)",
+          "url": "https://arxiv.org/abs/2609.21216"
+        },
+        {
+          "type": "paper",
+          "title": "Distillation for Efficient Multitask CFM policies (arXiv 2609.28107)",
+          "url": "https://arxiv.org/abs/2609.28107"
+        },
         {
           "type": "paper",
           "title": "Agile-WAM — vis-tactile-to-action flow matching (arXiv 2609.20761)",
@@ -383,6 +397,8 @@
       "parent": "gen-world",
       "layer": 3,
       "research_directions": [
+        "Endpoint correction (Coda) vs extra Euler steps vs TraceFlow guidance on the same frozen expert",
+        "Single-task CFM distillation into one multi-task student vs independent per-task experts",
         "Joint vis-tactile flow WAMs vs frozen-expert TraceFlow guidance on the same contact task",
         "Value guidance at random flow times vs extra Euler steps at inference",
         "Flow-matched motion priors vs AMP for humanoid walking from a default pose",
@@ -465,9 +481,19 @@
       "label": "SmolVLA",
       "kind": "paper",
       "domain": "policy",
-      "brief": "Hugging Face, 450M. SmolVLM-2 + flow expert, community data, async inference. LIBERO-competitive with 10× smaller VLAs. SO-100 average 78.3% after community pretrain (51.7 without).",
+      "brief": "Hugging Face, 450M. SmolVLM-2 + flow expert, community data, async inference. LIBERO-competitive with 10× smaller VLAs. SO-100 average 78.3% after community pretrain (51.7 without). 18–19 Sep 2026: Coda (arXiv 2609.21216) lifts frozen official SmolVLA two-step success 60.8%→69.4% with a trained endpoint residual; ForceRFT (arXiv 2609.22840) keeps that prior frozen and RL-fine-tunes a force-conditioned residual on real insertion/assembly.",
       "why": "The open, one-GPU VLA you can actually fine-tune.",
       "resources": [
+        {
+          "type": "paper",
+          "title": "Coda — endpoint correction on frozen SmolVLA (arXiv 2609.21216)",
+          "url": "https://arxiv.org/abs/2609.21216"
+        },
+        {
+          "type": "paper",
+          "title": "ForceRFT — residual RL on frozen SmolVLA (arXiv 2609.22840)",
+          "url": "https://arxiv.org/abs/2609.22840"
+        },
         {
           "type": "video",
           "title": "Hugging Face — SmolVLA (official)",
@@ -490,7 +516,10 @@
         }
       ],
       "parent": "vla-family",
-      "layer": 3
+      "layer": 3,
+      "research_directions": [
+        "Coda endpoint residual vs ForceRFT force residual on the same SmolVLA checkpoint"
+      ]
     },
     {
       "id": "openvla",
@@ -524,9 +553,14 @@
       "label": "π₀",
       "kind": "paper",
       "domain": "policy",
-      "brief": "Physical Intelligence: Paligemma-scale VLM + diffusion/flow action expert. Cross-embodiment generalist. ~3–7× SmolVLA in params.",
+      "brief": "Physical Intelligence: Paligemma-scale VLM + diffusion/flow action expert. Cross-embodiment generalist. ~3–7× SmolVLA in params. 21 Sep 2026: ARSTAG reports π₀.₅ at 74.6% mean real dual-arm success from agent-generated sim data (first-party, arXiv 2609.24563). 20 Sep: Grounded Action Model lists 61% vs 53% π₀.₅ on LIBERO-PRO (arXiv 2609.23863).",
       "why": "The industrial VLA recipe. GEN-1.5 and Skild S1 are the 2026 one-shot cousins.",
       "resources": [
+        {
+          "type": "paper",
+          "title": "ARSTAG — π0.5 sim-to-real from agent-generated demos (arXiv 2609.24563)",
+          "url": "https://arxiv.org/abs/2609.24563"
+        },
         {
           "type": "video",
           "title": "Physical Intelligence — π0: Our First Generalist Robotic Policy",
@@ -574,9 +608,14 @@
       "label": "Skild S1",
       "kind": "paper",
       "domain": "policy",
-      "brief": "Skild AI foundation model: long-horizon tasks from a single video prompt, in-context, no weight update. Company-reported ~66% per-step vs 9% baseline; trained with NVIDIA Isaac Lab / Cosmos. Cross-embodiment is the pitch.",
-      "why": "Same 2026 one-shot cluster as GEN-1.5, different lab. Compare claims, don't merge them.",
+      "brief": "Skild AI foundation model: long-horizon tasks from a single video prompt, in-context, no weight update. Company-reported ~66% per-step vs 9% baseline; trained with NVIDIA Isaac Lab / Cosmos. 23 Sep 2026: Physical Self-Play (official blog) post-trains an S1-class base by competing against itself in Isaac Sim on soccer — 140 years of simulated play, then transferred onto a humanoid. First-party claim that human-data pretrain caps at human skill and self-play is the path past it. Treat numbers and transfer as first-party.",
+      "why": "Same 2026 one-shot cluster as GEN-1.5, different lab. Self-play is now the post-training story, not another video prompt. Compare claims, don't merge them.",
       "resources": [
+        {
+          "type": "blog",
+          "title": "Physical Self-Play (Skild, 23 Sep 2026)",
+          "url": "https://www.skild.ai/blogs/physical-self-play"
+        },
         {
           "type": "video",
           "title": "Skild — Introducing S1",
@@ -590,7 +629,11 @@
       ],
       "company_id": "skild-ai",
       "parent": "robot-fm",
-      "layer": 3
+      "layer": 3,
+      "research_directions": [
+        "Independent replication of soccer self-play transfer outside Skild hardware",
+        "Does self-play post-training preserve S1 in-context prompting, or overwrite it?"
+      ]
     },
     {
       "id": "physbrain",
@@ -624,9 +667,14 @@
       "label": "VGGT",
       "kind": "paper",
       "domain": "perception",
-      "brief": "CVPR 2025 Best Paper. One transformer: cameras, depth, points, tracks from 1–hundreds of views in <1 s, often beating BA-based pipelines. At test, fuse depth+cameras rather than the point-map head.",
+      "brief": "CVPR 2025 Best Paper. One transformer: cameras, depth, points, tracks from 1–hundreds of views in <1 s, often beating BA-based pipelines. At test, fuse depth+cameras rather than the point-map head. 20 Sep 2026: RegVGGT (arXiv 2609.23286, ECCV 2026) is training-free token regulation for streaming VGGT — admits ≤1% of tokens per frame so thousands of frames fit on a consumer GPU.",
       "why": "A perception backbone for robots that need 3D without a COLMAP ritual.",
       "resources": [
+        {
+          "type": "paper",
+          "title": "RegVGGT — streaming VGGT via regulated memory (arXiv 2609.23286)",
+          "url": "https://arxiv.org/abs/2609.23286"
+        },
         {
           "type": "guide",
           "title": "Our VGGT guide",
@@ -644,7 +692,10 @@
         }
       ],
       "parent": "geom-3d",
-      "layer": 3
+      "layer": 3,
+      "research_directions": [
+        "Streaming RegVGGT memory vs full-context VGGT as a live robot perception backbone"
+      ]
     },
     {
       "id": "dinov2",
@@ -717,18 +768,37 @@
       "label": "World models",
       "kind": "concept",
       "domain": "learning",
-      "brief": "Predict future observations (or latents) to plan. STL, video DMs, and some VLA imagination heads sit here. STLight is the efficient CNN end; GEN-1.5's 30 s memory is the foundation-model end. 17 Sep 2026: Agile-WAM (arXiv 2609.20761) flow-matches action chunks plus future vis/tactile latents at different horizons (vision far, touch next-frame) — first-party +29.4% relative real success at 11.9 ms, not a giant video backbone. DexTouch-WM (arXiv 2609.20649) scales the same contact prediction from human touch (0→100 h human, 5 h robot fixed). Earlier 17 Sep: MoWAM drops future-video generation at inference for explicit robot-motion prediction. 16 Sep: WholeBodyWAM pretrains a Motion Expert on UniMotion-4K (>4K h).",
+      "brief": "Predict future observations (or latents) to plan. STL, video DMs, and some VLA imagination heads sit here. 23 Sep 2026: Hansen et al. train one wrist-cam + proprio world model on ≤90 insertion tasks — first-party 56% zero-shot on unseen geometry vs 7% model-free (IROS 2026, arXiv 2609.28258). NowWAM (arXiv 2609.28339) drops future-frame targets: denoise the current observation and emit actions from the same DiT stream — 87.7% LIBERO-Plus with FLUX2-Klein, 1.8× cheaper than future-target co-training. 22 Sep: PatchWAM (arXiv 2609.25961) writes continuous actions as patches so one backbone predicts motion and next scene (91.8% LIBERO-Plus / 96.12% RoboTwin 2.0, full-data). 21 Sep: THAW (arXiv 2609.24682) distills a frozen world model's features into a 0.8B VLA — 97.9% LIBERO, 32 ms / 1.86 GB on an RTX 5090; deployed policy is identical to the undistilled student.",
       "why": "A policy that can predict contact is halfway to recovering from it.",
       "research_directions": [
+        "Feature-distill a frozen WM into a VLA (THAW) vs keep a WAM in the loop (PatchWAM/NowWAM)",
+        "Wrist-cam insertion world models vs video DiT WAMs under contact-rich latency",
         "Human-touch world models (DexTouch-WM) vs robot-only tactile logs at fixed robot hours",
         "Tactile WAMs (Agile-WAM 11.9 ms) vs video WAMs (MoWAM/DIDO) under contact-rich latency",
         "Wrist-cam STL as collision prior",
-        "Latent world models for humanoids",
-        "One-step distilled WAMs vs multi-step video imagination under closed-loop latency",
-        "Human-video world-latent actions as VLA mid-training vs OXE-only",
-        "Map-token JEPA world models for mobile manipulation, not just ObjectNav"
+        "Latent world models for humanoids"
       ],
       "resources": [
+        {
+          "type": "paper",
+          "title": "Generalizable Robotic Insertion with World Models (arXiv 2609.28258)",
+          "url": "https://arxiv.org/abs/2609.28258"
+        },
+        {
+          "type": "paper",
+          "title": "NowWAM — denoising as generative adaptation, no future target (arXiv 2609.28339)",
+          "url": "https://arxiv.org/abs/2609.28339"
+        },
+        {
+          "type": "paper",
+          "title": "Think Like a World Model, Act Like a VLA (arXiv 2609.24682)",
+          "url": "https://arxiv.org/abs/2609.24682"
+        },
+        {
+          "type": "paper",
+          "title": "PatchWAM — action-as-patch unified world-action model (arXiv 2609.25961)",
+          "url": "https://arxiv.org/abs/2609.25961"
+        },
         {
           "type": "paper",
           "title": "Agile-WAM — agile tactile world-action model (arXiv 2609.20761)",
@@ -753,21 +823,6 @@
           "type": "paper",
           "title": "WLA³ — World Latent Action Modeling (arXiv 2609.15870)",
           "url": "https://arxiv.org/abs/2609.15870"
-        },
-        {
-          "type": "paper",
-          "title": "DIDO — one-step world-action distillation (arXiv 2609.15570)",
-          "url": "https://arxiv.org/abs/2609.15570"
-        },
-        {
-          "type": "paper",
-          "title": "GLAM — latent world model over global map memory (arXiv 2609.14561)",
-          "url": "https://arxiv.org/abs/2609.14561"
-        },
-        {
-          "type": "video",
-          "title": "David Ha / World Models lineage explained",
-          "url": "https://www.youtube.com/watch?v=b1roEd6liWI"
         }
       ],
       "parent": "gen-world",
@@ -778,14 +833,26 @@
       "label": "Reinforcement learning",
       "kind": "concept",
       "domain": "learning",
-      "brief": "Learn from reward, not (only) demos. On real robots: expensive, unsafe, sample-hungry. Still the path for locomotion, recovery, and improving a cloned policy. 16 Sep 2026: Real-Time EXPO-FT (Dong, Hung, Sadigh, Finn; arXiv 2609.18207) RL-finetunes a delayed VLA by splitting slow chunk proposals from a fast edit policy; 10 min of online data lifts four dynamic real tasks 42%→97% (first-party), no human intervention.",
+      "brief": "Learn from reward, not (only) demos. On real robots: expensive, unsafe, sample-hungry. Still the path for locomotion, recovery, and improving a cloned policy. 23 Sep 2026: Skild Physical Self-Play post-trains S1 in Isaac Sim (soccer, 140 simulated years → humanoid; first-party). 19 Sep: ForceRFT (arXiv 2609.22840) keeps a frozen SmolVLA chunk prior and RL-fine-tunes a force-conditioned residual on wrist wrench — plug insertion / ring-on-peg / wipe. 16 Sep: Real-Time EXPO-FT (arXiv 2609.18207) 10 min online, 42%→97% on four dynamic real tasks (first-party).",
       "why": "Humanoid labs mix IL for manipulation with RL for balance. Don't pretend BC replaced RL.",
       "research_directions": [
+        "Self-play in Isaac vs residual force RL (ForceRFT) as VLA post-training",
+        "Does ForceRFT's frozen-SmolVLA residual transfer from insertion to SO-100 contact?",
         "Offline RL on teleop logs",
         "RL fine-tune of a VLA action expert",
         "Does Real-Time EXPO-FT's edit policy transfer from Kinetix/dynamic tabletop to SO-100 contact?"
       ],
       "resources": [
+        {
+          "type": "blog",
+          "title": "Physical Self-Play (Skild, 23 Sep 2026)",
+          "url": "https://www.skild.ai/blogs/physical-self-play"
+        },
+        {
+          "type": "paper",
+          "title": "ForceRFT — force-guided residual RL on a frozen SmolVLA (arXiv 2609.22840)",
+          "url": "https://arxiv.org/abs/2609.22840"
+        },
         {
           "type": "paper",
           "title": "Real-Time EXPO-FT (arXiv 2609.18207)",
@@ -837,9 +904,14 @@
       "label": "Isaac Lab / Sim",
       "kind": "framework",
       "domain": "systems",
-      "brief": "NVIDIA robot learning sim. Skild cites it for S1 experience. GPU-parallel RL and synthetic data. 16 Sep 2026: official blog on NemoClaw/Hermes agents that inspect Blender scenes, author OpenUSD physics/semantics, and SimReady-validate before Isaac Sim / Isaac Lab handoff — the bottleneck is a sim-ready world, not another policy.",
+      "brief": "NVIDIA robot learning sim. Skild cites it for S1 experience and, on 23 Sep 2026, for Physical Self-Play soccer (140 simulated years in Isaac Sim, then humanoid transfer — first-party). GPU-parallel RL and synthetic data. 16 Sep: NemoClaw/Hermes agents author OpenUSD physics before Isaac Sim / Isaac Lab handoff.",
       "why": "The sim side of foundation-model pretraining when you don't have a factory fleet.",
       "resources": [
+        {
+          "type": "blog",
+          "title": "Physical Self-Play — Isaac Sim soccer self-play (Skild, 23 Sep 2026)",
+          "url": "https://www.skild.ai/blogs/physical-self-play"
+        },
         {
           "type": "blog",
           "title": "How to Use AI Agents to Prepare 3D Scenes for Simulation (NVIDIA, 16 Sep 2026)",
@@ -864,9 +936,14 @@
       "label": "ROS 2",
       "kind": "framework",
       "domain": "systems",
-      "brief": "Robot middleware: topics, tf, controllers. Not a policy. Still how most arms talk to cameras and drivers.",
+      "brief": "Robot middleware: topics, tf, controllers. Not a policy. Still how most arms talk to cameras and drivers. 22 Sep 2026: NVIDIA Isaac ROS 5.0 + official blog on migrating a CUDA node onto ROS 2 Lyrical `rosidl::Buffer` / CUDA buffer backend — GPU-resident Image payloads without host copies when publisher and subscriber share a device.",
       "why": "LeRobot can hide it; production stacks usually don't.",
       "resources": [
+        {
+          "type": "blog",
+          "title": "Accelerating a ROS 2 Node with an AI Agent and NVIDIA Isaac ROS (22 Sep 2026)",
+          "url": "https://developer.nvidia.com/blog/accelerating-a-ros-2-node-with-an-ai-agent-and-nvidia-isaac-ros/"
+        },
         {
           "type": "video",
           "title": "DigiKey — What is ROS / ROS 2?",
@@ -1109,9 +1186,14 @@
       "label": "Skild AI",
       "kind": "lab",
       "domain": "labs",
-      "brief": "Omni-bodied foundation models. S1: video-prompt long-horizon tasks. Isaac Lab + Cosmos for experience.",
+      "brief": "Omni-bodied foundation models. S1: video-prompt long-horizon tasks. Isaac Lab + Cosmos for experience. 23 Sep 2026: Physical Self-Play — first-party soccer self-play in Isaac Sim (140 simulated years) transferred to a humanoid; next release promised on multi-agent social behaviors.",
       "company_id": "skild-ai",
       "resources": [
+        {
+          "type": "blog",
+          "title": "Physical Self-Play (Skild, 23 Sep 2026)",
+          "url": "https://www.skild.ai/blogs/physical-self-play"
+        },
         {
           "type": "video",
           "title": "Skild — Introducing S1",
@@ -1325,9 +1407,14 @@
       "label": "Whole-body control",
       "kind": "concept",
       "domain": "policy",
-      "brief": "Lower-body RL + upper IK, or a learned high-rate controller under a VLA. NVIDIA SONIC / GR00T-WBC; Figure Helix System 0 (~1 kHz). 17 Sep 2026: LYRIC (arXiv 2609.19688) is a generative flow-matching controller for language-driven contact-rich whole-body object interaction (planner + closed-loop action generator) — first-party 90.3% vs 74.2% held-out OMOMO vs the strongest kinematic-planner baseline. 16 Sep: KINO (arXiv 2609.18869) uses VLM-selected whole-body keyframes as the interface to an RL loco-manipulation policy (44%→92% with saliency sampling; Unitree G1).",
+      "brief": "Lower-body RL + upper IK, or a learned high-rate controller under a VLA. NVIDIA SONIC / GR00T-WBC; Figure Helix System 0 (~1 kHz). 22 Sep 2026: S³ (arXiv 2609.26420) samples frozen text-to-motion, retargets to Unitree G1, rolls out under SONIC in sim, and keeps the best of N — no training; hardware-gate passes 33→85 of 200 prompts at N=8, all 177 gate-selected clips complete standing on the real G1. 17 Sep: LYRIC flow WBC; 16 Sep: KINO keyframe VLM+RL.",
       "why": "Tabletop VLAs stall on humanoids. This is the actuator-side neighbor.",
       "resources": [
+        {
+          "type": "paper",
+          "title": "S³ — physics-in-the-loop text-to-motion for humanoids, no training (arXiv 2609.26420)",
+          "url": "https://arxiv.org/abs/2609.26420"
+        },
         {
           "type": "paper",
           "title": "LYRIC — language-driven flow matching for whole-body object interaction (arXiv 2609.19688)",
@@ -1357,6 +1444,7 @@
       "parent": "embodiment",
       "layer": 3,
       "research_directions": [
+        "Training-free sample-simulate-select (S³) vs learned flow WBC (LYRIC) on the same G1",
         "Language-conditioned flow WBC (LYRIC) vs keyframe VLM+RL (KINO) on the same humanoid"
       ]
     },
@@ -1481,15 +1569,21 @@
       "label": "Sim-to-real",
       "kind": "concept",
       "domain": "learning",
-      "brief": "Train in sim (Isaac, MuJoCo), run on metal. Domain randomization, residual RL, or GEN-1.5’s claim: sim demos as prompts with no sim in pretrain. 17 Sep 2026: ReShoot (arXiv 2609.19661) re-renders recorded demos under edited appearance (VLM caption + edge-conditioned video) and copies actions/proprio verbatim — first-party recolored object success 0%→42.9% / 47.5% on two real platforms with 43 and 100 source demos. 16 Sep: function-preserving Real-to-Sim-to-Real (arXiv 2609.18293) deforms reconstructed meshes under contact-interface constraints so synthetic demos stay physically valid.",
+      "brief": "Train in sim (Isaac, MuJoCo), run on metal. Domain randomization, residual RL, or GEN-1.5’s claim: sim demos as prompts with no sim in pretrain. 21 Sep 2026: ARSTAG (arXiv 2609.24563) is an agentic Real2Sim2Real pipeline from one RGB + instruction to policy data; π₀.₅ reaches 74.6% mean real success on seven dual-arm tasks (first-party). 17 Sep: ReShoot appearance re-render; 16 Sep: function-preserving mesh deformation (arXiv 2609.18293).",
       "why": "Data multiplier when you do not own a factory.",
       "research_directions": [
+        "Agentic scene+demo synthesis (ARSTAG) vs constraint-guided mesh deformation for contact insertion",
         "ReShoot appearance re-render vs extra teleop in each new visual context",
         "GEN-1.5 sim-prompt replication on SO-100",
         "Isaac locomotion + LeRobot manipulation",
         "Constraint-guided mesh deformation vs naive shape aug for contact-rich insertion"
       ],
       "resources": [
+        {
+          "type": "paper",
+          "title": "ARSTAG — agentic Real2Sim2Real data generation (arXiv 2609.24563)",
+          "url": "https://arxiv.org/abs/2609.24563"
+        },
         {
           "type": "paper",
           "title": "ReShoot — generative visual domain randomization of recorded demos (arXiv 2609.19661)",
@@ -1633,8 +1727,13 @@
       "label": "NVIDIA GEAR",
       "kind": "lab",
       "domain": "labs",
-      "brief": "GR00T, Isaac, Cosmos, SONIC WBC. The open-ish humanoid stack. OSMO (NVIDIA, Apache-2.0) is the YAML orchestrator used internally for GR00T / Isaac Lab / Isaac Sim: one workflow across training GPUs, sim, and Jetson HIL.",
+      "brief": "GR00T, Isaac, Cosmos, SONIC WBC. The open-ish humanoid stack. 22 Sep 2026: Isaac ROS 5.0 ships ROS 2 Lyrical plus CUDA `rosidl::Buffer` transport on every Isaac ROS node; OSMO remains the YAML orchestrator for GR00T / Isaac Lab / Isaac Sim / Jetson HIL.",
       "resources": [
+        {
+          "type": "blog",
+          "title": "Isaac ROS 5.0 / CUDA buffer backend (NVIDIA, 22 Sep 2026)",
+          "url": "https://developer.nvidia.com/blog/accelerating-a-ros-2-node-with-an-ai-agent-and-nvidia-isaac-ros/"
+        },
         {
           "type": "docs",
           "title": "NVIDIA OSMO",
@@ -2200,12 +2299,18 @@
       "domain": "perception",
       "parent": "perception",
       "layer": 2,
-      "brief": "Multi-view geometry, depth, and feed-forward 3D — what a policy uses instead of guessing in pixels. 17 Sep 2026: FAMOS (arXiv 2609.20817) predicts movable-part segmentation and joint parameters from a sparse unordered set of partial point clouds (variable views, including one) — feed-forward articulation, not another VGGT clone.",
+      "brief": "Multi-view geometry, depth, and feed-forward 3D — what a policy uses instead of guessing in pixels. 20 Sep 2026: Grounded Action Model (arXiv 2609.23863) makes metric 3D object grounding the backbone, not an implicit VLA side-effect — language/point/box prompts → object-centric geometry → action chunks. First-party 61% LIBERO-PRO vs 53% π₀.₅; 17/20 vs 4/20 under visual shift on a bimanual YAM. 17 Sep: FAMOS feed-forward articulation from sparse point clouds.",
       "why": "VGGT, DUSt3R, MASt3R, and depth sit here, not as a flat list under Perception.",
       "research_directions": [
+        "Explicit 3D-grounded action models (GAM) vs VGGT features as a frozen VLA backbone",
         "Feed-forward articulation (FAMOS) vs VGGT static geometry as a manipulation prior"
       ],
       "resources": [
+        {
+          "type": "paper",
+          "title": "Grounded Action Model — 3D grounding as a robot foundation (arXiv 2609.23863)",
+          "url": "https://arxiv.org/abs/2609.23863"
+        },
         {
           "type": "paper",
           "title": "FAMOS — feed-forward 3D articulation from sparse observations (arXiv 2609.20817)",
@@ -2369,12 +2474,23 @@
       "domain": "policy",
       "parent": "policy",
       "layer": 2,
-      "brief": "Condition a policy on language and cameras. RT, OpenVLA, SmolVLA, π₀, Helix. 17 Sep 2026: high-DoF dexterous VLA post-training (arXiv 2609.19666) adds a temporal hand-action codec, buffered DAgger, and latent residual RL — first-party 100% on five real tasks (20 trials each) within the reported post-training budgets. Treat as first-party until replicated on a public hand.",
+      "brief": "Condition a policy on language and cameras. RT, OpenVLA, SmolVLA, π₀, Helix. 21 Sep 2026: THAW (arXiv 2609.24682) distills frozen world-model features into a compact VLA with no extra test-time compute (0.8B, 97.9% LIBERO). 20 Sep: GAM (arXiv 2609.23863) replaces implicit VLM grounding with metric 3D object tokens. 17 Sep: high-DoF dexterous VLA post-training (arXiv 2609.19666).",
       "why": "The VLA cluster is one layer, the individual papers are the next.",
       "research_directions": [
+        "World-model feature distillation (THAW) vs explicit 3D grounding (GAM) as the VLA prior",
         "Hand-action codec + residual RL vs joint-space RL when adapting an open VLA to a dexterous hand"
       ],
       "resources": [
+        {
+          "type": "paper",
+          "title": "Think Like a World Model, Act Like a VLA (arXiv 2609.24682)",
+          "url": "https://arxiv.org/abs/2609.24682"
+        },
+        {
+          "type": "paper",
+          "title": "Grounded Action Model (arXiv 2609.23863)",
+          "url": "https://arxiv.org/abs/2609.23863"
+        },
         {
           "type": "paper",
           "title": "Towards High-DoF Dexterous Manipulation through VLA Post-Training (arXiv 2609.19666)",
@@ -2394,10 +2510,22 @@
       "domain": "policy",
       "parent": "policy",
       "layer": 2,
-      "brief": "Large cross-embodiment models: GR00T, RDT, GEN-1.5, Skild S1, PhysBrain 1.5.",
+      "brief": "Large cross-embodiment models: GR00T, RDT, GEN-1.5, Skild S1, PhysBrain 1.5. 23 Sep 2026: S1 gains a first-party self-play post-training stage (soccer in Isaac Sim). 20 Sep: Grounded Action Models argue metric 3D grounding should be the FM backbone, not a VLM/video prior (arXiv 2609.23863).",
       "why": "These are labs' bets on one model, many bodies — not another ACT variant.",
-      "research_directions": [],
+      "research_directions": [
+        "Self-play post-training of a video-prompt FM vs residual RL on a frozen VLA"
+      ],
       "resources": [
+        {
+          "type": "blog",
+          "title": "Physical Self-Play (Skild, 23 Sep 2026)",
+          "url": "https://www.skild.ai/blogs/physical-self-play"
+        },
+        {
+          "type": "paper",
+          "title": "Grounded Action Model (arXiv 2609.23863)",
+          "url": "https://arxiv.org/abs/2609.23863"
+        },
         {
           "type": "video",
           "title": "NVIDIA — Isaac GR00T-Mimic / foundation robot models",
@@ -4376,6 +4504,21 @@
       "from": "world-models",
       "to": "wbc",
       "rel": "priors"
+    },
+    {
+      "from": "skild-s1",
+      "to": "rl",
+      "rel": "post-trains-with"
+    },
+    {
+      "from": "world-models",
+      "to": "vla-family",
+      "rel": "distills-into"
+    },
+    {
+      "from": "geom-3d",
+      "to": "robot-fm",
+      "rel": "grounds"
     }
   ]
 }
